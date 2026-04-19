@@ -1,425 +1,99 @@
 ---
-const site = {
-  name: "Worowo",
-  title: "Worowo — Fast, Simple Online Utility Tools",
-  description:
-    "Free online utility tools for image, text, file, and productivity tasks. No installation. Fast, simple, and privacy-friendly.",
-};
+const categories = [
+  {
+    title: "Quotes & Pricing",
+    description:
+      "Create quotations, proforma invoices, and pricing calculations for faster decisions.",
+    tools: [
+      "Quotation Generator",
+      "Proforma Invoice Generator",
+      "Profit Calculator",
+      "Margin Calculator",
+    ],
+    href: "/quotes-pricing/",
+  },
+  {
+    title: "Invoices & Documents",
+    description:
+      "Generate clear, ready-to-use business documents for clients, records, and daily operations.",
+    tools: [
+      "Receipt Generator",
+      "Delivery Note Generator",
+      "Commercial Invoice Generator",
+      "Purchase Order Generator",
+    ],
+    href: "/invoices-documents/",
+  },
+  {
+    title: "Packing & Shipping",
+    description:
+      "Prepare packing lists and shipping calculations for cartons, volume, and fulfillment.",
+    tools: [
+      "Packing List Generator",
+      "Volumetric Weight Calculator",
+      "How Many Fit Calculator",
+      "Carton Fill Rate Calculator",
+    ],
+    href: "/packing-shipping/",
+  },
+];
 
 const featuredTools = [
   {
-    name: "Image Watermark Tool",
-    description: "Add clean text or logo watermarks to images online in seconds.",
-    href: "/tools/image-watermark/",
+    name: "Quotation Generator",
+    description: "Create clean quotations in minutes.",
+    href: "/quotes-pricing/quotation-generator/",
   },
   {
-    name: "Image Converter",
-    description: "Convert JPG, PNG, WEBP, and more with a simple browser-based workflow.",
-    href: "/tools/image-converter/",
+    name: "Proforma Invoice Generator",
+    description: "Generate simple proforma invoices for customer confirmation.",
+    href: "/quotes-pricing/proforma-invoice-generator/",
   },
   {
-    name: "PDF Utilities",
-    description: "Merge, split, compress, and organize PDF files with minimal steps.",
-    href: "/tools/pdf-utilities/",
+    name: "Packing List Generator",
+    description: "Prepare packing lists for shipments and cartons.",
+    href: "/packing-shipping/packing-list-generator/",
   },
   {
-    name: "Text Tools",
-    description: "Clean, format, count, compare, and transform text for work and publishing.",
-    href: "/tools/text-tools/",
+    name: "Profit Calculator",
+    description: "Estimate product profit with simple inputs.",
+    href: "/quotes-pricing/profit-calculator/",
   },
   {
-    name: "Unit & Size Converters",
-    description: "Quick conversions for dimensions, weight, volume, file size, and more.",
-    href: "/tools/converters/",
+    name: "Margin Calculator",
+    description: "Check margin quickly before you quote.",
+    href: "/quotes-pricing/margin-calculator/",
   },
   {
-    name: "Packing Calculator",
-    description: "Estimate carton, pallet, or container loading plans with practical outputs.",
-    href: "/tools/packing-calculator/",
-  },
-];
-
-const benefits = [
-  {
-    title: "Fast by default",
-    text: "Built for speed with a lightweight front end and a clean user experience.",
-  },
-  {
-    title: "Simple to use",
-    text: "Clear workflows, low friction, and no unnecessary steps.",
-  },
-  {
-    title: "Browser-based",
-    text: "No installation required. Open the tool and get the job done.",
-  },
-  {
-    title: "Privacy-friendly",
-    text: "Designed around practical utility, minimal complexity, and reduced dependence on heavy platforms.",
-  },
-];
-
-const faqs = [
-  {
-    q: "What is Worowo?",
-    a: "Worowo is a lightweight utility website focused on simple online tools for common work and everyday tasks.",
-  },
-  {
-    q: "Who are these tools for?",
-    a: "They are designed for global users who want quick, practical, browser-based tools without unnecessary complexity.",
-  },
-  {
-    q: "Do I need to install anything?",
-    a: "No. Worowo tools are designed to work directly in the browser whenever possible.",
-  },
-  {
-    q: "Will more tools be added?",
-    a: "Yes. The site is being built as a growing collection of focused, single-purpose tools.",
+    name: "Volumetric Weight Calculator",
+    description: "Calculate chargeable shipping weight instantly.",
+    href: "/packing-shipping/volumetric-weight-calculator/",
   },
 ];
 ---
 
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{site.title}</title>
-    <meta name="description" content={site.description} />
-    <meta name="robots" content="index,follow" />
-    <link rel="canonical" href="https://www.worowo.com/" />
-
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={site.title} />
-    <meta property="og:description" content={site.description} />
-    <meta property="og:url" content="https://www.worowo.com/" />
-    <meta property="og:site_name" content={site.name} />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={site.title} />
-    <meta name="twitter:description" content={site.description} />
-
-    <script
-      type="application/ld+json"
-      set:html={JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        name: site.name,
-        url: "https://www.worowo.com/",
-        description: site.description,
-        inLanguage: "en",
-        potentialAction: {
-          "@type": "SearchAction",
-          target: "https://www.worowo.com/search?q={search_term_string}",
-          "query-input": "required name=search_term_string",
-        },
-      })}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>worowo — Lightweight business tools</title>
+    <meta
+      name="description"
+      content="Lightweight business tools for quotes, documents, packing, and shipping."
     />
-
-    <style>
-      :root {
-        --bg: #ffffff;
-        --bg-soft: #f6f8fb;
-        --text: #111827;
-        --text-soft: #5b6472;
-        --line: #e5e7eb;
-        --accent: #111827;
-        --accent-2: #2563eb;
-        --max: 1160px;
-        --radius: 18px;
-        --shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        margin: 0;
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        color: var(--text);
-        background: var(--bg);
-        line-height: 1.6;
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      img {
-        max-width: 100%;
-        display: block;
-      }
-
-      .container {
-        width: min(var(--max), calc(100% - 32px));
-        margin: 0 auto;
-      }
-
-      .site-header {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: rgba(255, 255, 255, 0.88);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(229, 231, 235, 0.8);
-      }
-
-      .nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        min-height: 72px;
-        gap: 20px;
-      }
-
-      .brand {
-        font-size: 1.2rem;
-        font-weight: 800;
-        letter-spacing: 0.02em;
-      }
-
-      .nav-links {
-        display: flex;
-        gap: 20px;
-        align-items: center;
-      }
-
-      .nav-links a {
-        color: var(--text-soft);
-        font-size: 0.96rem;
-      }
-
-      .nav-links a:hover,
-      .nav-links a:focus-visible {
-        color: var(--text);
-      }
-
-      .button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 46px;
-        padding: 0 18px;
-        border-radius: 999px;
-        border: 1px solid var(--text);
-        background: var(--text);
-        color: #fff;
-        font-weight: 700;
-      }
-
-      .button.secondary {
-        background: #fff;
-        color: var(--text);
-        border-color: var(--line);
-      }
-
-      .hero {
-        padding: 72px 0 40px;
-      }
-
-      .hero-inner {
-        display: grid;
-        grid-template-columns: 1.2fr 0.8fr;
-        gap: 28px;
-        align-items: center;
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        background: var(--bg-soft);
-        color: var(--text-soft);
-        font-size: 0.88rem;
-        font-weight: 700;
-      }
-
-      h1 {
-        margin: 18px 0 14px;
-        font-size: clamp(2.3rem, 6vw, 4.4rem);
-        line-height: 1.06;
-        letter-spacing: -0.04em;
-      }
-
-      .hero p {
-        margin: 0;
-        max-width: 680px;
-        color: var(--text-soft);
-        font-size: 1.08rem;
-      }
-
-      .hero-actions {
-        display: flex;
-        gap: 14px;
-        margin-top: 26px;
-        flex-wrap: wrap;
-      }
-
-      .hero-card {
-        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-        border: 1px solid var(--line);
-        border-radius: 28px;
-        padding: 24px;
-        box-shadow: var(--shadow);
-      }
-
-      .hero-card-title {
-        margin: 0 0 10px;
-        font-size: 1rem;
-        font-weight: 800;
-      }
-
-      .hero-card ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: grid;
-        gap: 12px;
-      }
-
-      .hero-card li {
-        padding: 14px 16px;
-        border-radius: 14px;
-        background: #fff;
-        border: 1px solid var(--line);
-        color: var(--text-soft);
-      }
-
-      section {
-        padding: 36px 0;
-      }
-
-      .section-title {
-        margin: 0 0 10px;
-        font-size: clamp(1.7rem, 3vw, 2.3rem);
-        letter-spacing: -0.03em;
-      }
-
-      .section-copy {
-        margin: 0 0 24px;
-        max-width: 760px;
-        color: var(--text-soft);
-      }
-
-      .tools-grid,
-      .benefit-grid,
-      .faq-grid {
-        display: grid;
-        gap: 18px;
-      }
-
-      .tools-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .benefit-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-
-      .faq-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .card {
-        border: 1px solid var(--line);
-        background: #fff;
-        border-radius: var(--radius);
-        padding: 22px;
-        box-shadow: var(--shadow);
-      }
-
-      .card:hover {
-        transform: translateY(-2px);
-        transition: 0.2s ease;
-      }
-
-      .card h3 {
-        margin: 0 0 8px;
-        font-size: 1.06rem;
-      }
-
-      .card p {
-        margin: 0 0 14px;
-        color: var(--text-soft);
-      }
-
-      .card .link {
-        font-weight: 700;
-        color: var(--accent-2);
-      }
-
-      .cta {
-        padding: 14px 0 80px;
-      }
-
-      .cta-box {
-        border-radius: 28px;
-        border: 1px solid var(--line);
-        background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
-        color: #fff;
-        padding: 34px;
-      }
-
-      .cta-box p {
-        color: rgba(255, 255, 255, 0.8);
-        max-width: 720px;
-      }
-
-      .cta-actions {
-        margin-top: 18px;
-        display: flex;
-        gap: 14px;
-        flex-wrap: wrap;
-      }
-
-      .cta .button.secondary {
-        background: rgba(255, 255, 255, 0.08);
-        color: #fff;
-        border-color: rgba(255, 255, 255, 0.16);
-      }
-
-      .site-footer {
-        border-top: 1px solid var(--line);
-        padding: 22px 0 40px;
-        color: var(--text-soft);
-        font-size: 0.95rem;
-      }
-
-      .footer-inner {
-        display: flex;
-        justify-content: space-between;
-        gap: 18px;
-        flex-wrap: wrap;
-      }
-
-      @media (max-width: 980px) {
-        .hero-inner,
-        .tools-grid,
-        .benefit-grid,
-        .faq-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .nav-links {
-          display: none;
-        }
-      }
-    </style>
+    <meta name="theme-color" content="#ffffff" />
   </head>
 
   <body>
     <header class="site-header">
-      <div class="container nav">
-        <a class="brand" href="/">{site.name}</a>
-        <nav class="nav-links" aria-label="Primary">
+      <div class="container header-inner">
+        <a href="/" class="logo">worowo</a>
+
+        <nav class="nav">
+          <a href="#categories">Categories</a>
           <a href="#tools">Tools</a>
-          <a href="#faq">FAQ</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
         </nav>
       </div>
     </header>
@@ -427,110 +101,497 @@ const faqs = [
     <main>
       <section class="hero">
         <div class="container hero-inner">
-          <div>
-            <div class="eyebrow">Fast online utility tools for global users</div>
-            <h1>Simple tools that help you get things done faster.</h1>
-            <p>
-              Worowo is building a focused collection of lightweight online tools for image, file,
-              text, conversion, and productivity tasks. Open a tool, finish the job, and move on.
-            </p>
-            <div class="hero-actions">
-              <a class="button" href="#tools">Explore tools</a>
-              <a class="button secondary" href="#faq">Read FAQ</a>
-            </div>
-          </div>
+          <p class="eyebrow">Lightweight business tools</p>
+          <h1>Instant tools for quotes, documents, packing, and shipping</h1>
+          <p class="hero-text">
+            Create clean business documents and simple calculations without opening
+            complex software. Fast, practical, and ready to use.
+          </p>
 
-          <aside class="hero-card" aria-label="Featured highlights">
-            <p class="hero-card-title">Why Worowo</p>
-            <ul>
-              <li>Lightweight pages built for speed and clarity</li>
-              <li>Practical tools with focused, single-purpose workflows</li>
-              <li>English-first experience for non-Chinese markets</li>
-              <li>Designed for gradual growth without unnecessary complexity</li>
-            </ul>
-          </aside>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#categories">Browse Tools</a>
+            <a class="btn btn-secondary" href="/quotes-pricing/quotation-generator/">
+              Start with Quotation Generator
+            </a>
+          </div>
         </div>
       </section>
 
-      <section id="tools">
+      <section id="categories" class="section">
         <div class="container">
-          <h2 class="section-title">Featured tools</h2>
-          <p class="section-copy">
-            Start with focused utility tools that solve practical problems clearly. More tools will be
-            added over time as the platform grows.
-          </p>
+          <div class="section-heading">
+            <h2>Categories</h2>
+            <p>
+              Built around real business tasks, not around complex software.
+            </p>
+          </div>
 
-          <div class="tools-grid">
+          <div class="category-grid">
+            {categories.map((category) => (
+              <article class="card category-card">
+                <h3>{category.title}</h3>
+                <p class="card-text">{category.description}</p>
+
+                <ul class="tool-list">
+                  {category.tools.map((tool) => <li>{tool}</li>)}
+                </ul>
+
+                <a class="text-link" href={category.href}>
+                  View category
+                </a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="tools" class="section section-soft">
+        <div class="container">
+          <div class="section-heading">
+            <h2>Featured tools</h2>
+            <p>Start with a few focused tools that solve practical business tasks.</p>
+          </div>
+
+          <div class="tool-grid">
             {featuredTools.map((tool) => (
-              <a class="card" href={tool.href}>
+              <article class="card tool-card">
                 <h3>{tool.name}</h3>
-                <p>{tool.description}</p>
-                <span class="link">Open tool →</span>
-              </a>
+                <p class="card-text">{tool.description}</p>
+                <a class="text-link" href={tool.href}>Open tool</a>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="about">
+      <section class="section">
         <div class="container">
-          <h2 class="section-title">Built around speed, simplicity, and practical utility</h2>
-          <p class="section-copy">
-            The site is designed for users who prefer fast, direct tools instead of heavy platforms.
-            Each tool is intended to be easy to understand, easy to use, and genuinely useful.
+          <div class="section-heading">
+            <h2>Why worowo</h2>
+          </div>
+
+          <div class="why-grid">
+            <article class="card small-card">
+              <h3>No complex setup</h3>
+              <p class="card-text">
+                Use the tool directly without installing software or learning a full editor.
+              </p>
+            </article>
+
+            <article class="card small-card">
+              <h3>Ready-to-use results</h3>
+              <p class="card-text">
+                Generate outputs that are easy to print, download, or send.
+              </p>
+            </article>
+
+            <article class="card small-card">
+              <h3>Built for practical tasks</h3>
+              <p class="card-text">
+                Focused on lightweight business actions, not bloated workflows.
+              </p>
+            </article>
+
+            <article class="card small-card">
+              <h3>Clean and quiet</h3>
+              <p class="card-text">
+                A simple interface designed to reduce friction and get the job done.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section section-soft">
+        <div class="container narrow">
+          <div class="section-heading align-left">
+            <h2>About</h2>
+          </div>
+          <p class="content-text">
+            worowo is a focused toolkit for lightweight business tasks around quoting,
+            documents, packing, and shipping. It is designed for people who want quick,
+            clear results without opening complex software.
           </p>
-
-          <div class="benefit-grid">
-            {benefits.map((item) => (
-              <div class="card">
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      <section id="faq">
-        <div class="container">
-          <h2 class="section-title">Frequently asked questions</h2>
-          <p class="section-copy">
-            A quick introduction to the direction of the site and how the tools are being developed.
+      <section id="contact" class="section">
+        <div class="container narrow">
+          <div class="section-heading align-left">
+            <h2>Contact</h2>
+          </div>
+          <p class="content-text">
+            For feedback, partnership inquiries, or support, contact:
           </p>
-
-          <div class="faq-grid">
-            {faqs.map((item) => (
-              <div class="card">
-                <h3>{item.q}</h3>
-                <p>{item.a}</p>
-              </div>
-            ))}
-          </div>
+          <p class="content-text">
+            <a class="text-link" href="mailto:hello@worowo.com">hello@worowo.com</a>
+          </p>
         </div>
       </section>
 
-      <section class="cta">
-        <div class="container">
-          <div class="cta-box">
-            <h2 class="section-title">Launching focused tools, one useful step at a time</h2>
-            <p>
-              Worowo is growing as a lightweight collection of online utilities for everyday digital
-              work. The direction is practical, global, and performance-first.
-            </p>
-            <div class="cta-actions">
-              <a class="button secondary" href="#tools">Browse tools</a>
-              <a class="button secondary" href="#faq">View FAQ</a>
-            </div>
+      <section id="privacy" class="section section-soft">
+        <div class="container narrow">
+          <div class="section-heading align-left">
+            <h2>Privacy Policy</h2>
           </div>
+          <p class="content-text">
+            worowo aims to collect as little personal information as possible.
+            When a tool works entirely in your browser, your data stays on your device.
+          </p>
+          <p class="content-text">
+            If a future tool requires server-side processing, only the minimum necessary
+            information will be processed to provide that function. We do not aim to build
+            intrusive tracking or unnecessary data collection into the product.
+          </p>
+        </div>
+      </section>
+
+      <section id="terms" class="section">
+        <div class="container narrow">
+          <div class="section-heading align-left">
+            <h2>Terms</h2>
+          </div>
+          <p class="content-text">
+            worowo provides practical tools for general business use. Users are responsible
+            for reviewing generated results before sending, printing, or using them in real
+            transactions.
+          </p>
+          <p class="content-text">
+            The tools are provided as-is, without guarantees of suitability for every legal,
+            tax, logistics, or commercial requirement in every country or situation.
+          </p>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="container footer-inner">
-        <div>© 2026 {site.name}. All rights reserved.</div>
-        <div>English-first online utility tools for global users.</div>
+        <p class="footer-brand">worowo</p>
+        <p class="footer-text">
+          Lightweight tools for quotes, documents, packing, and shipping.
+        </p>
+        <div class="footer-links">
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#terms">Terms</a>
+        </div>
       </div>
     </footer>
   </body>
 </html>
+
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #f7f7f5;
+    --text: #121212;
+    --text-soft: #5f5f5a;
+    --line: #e7e7e2;
+    --card: #ffffff;
+    --max: 1120px;
+    --radius: 18px;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+    line-height: 1.6;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .container {
+    width: min(var(--max), calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .narrow {
+    max-width: 760px;
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(231, 231, 226, 0.8);
+  }
+
+  .header-inner {
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .logo {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .nav a {
+    color: var(--text-soft);
+    font-size: 0.95rem;
+  }
+
+  .nav a:hover,
+  .text-link:hover {
+    color: var(--text);
+  }
+
+  .hero {
+    padding: 72px 0 48px;
+  }
+
+  .hero-inner {
+    max-width: 860px;
+  }
+
+  .eyebrow {
+    margin: 0 0 10px;
+    color: var(--text-soft);
+    font-size: 0.95rem;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 6vw, 4.2rem);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    max-width: 12ch;
+  }
+
+  .hero-text {
+    margin: 20px 0 0;
+    max-width: 680px;
+    font-size: 1.05rem;
+    color: var(--text-soft);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: 0.2s ease;
+    border: 1px solid transparent;
+  }
+
+  .btn-primary {
+    background: var(--text);
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.92;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    border-color: var(--line);
+    color: var(--text);
+  }
+
+  .btn-secondary:hover {
+    background: var(--bg-soft);
+  }
+
+  .section {
+    padding: 52px 0;
+  }
+
+  .section-soft {
+    background: var(--bg-soft);
+  }
+
+  .section-heading {
+    margin-bottom: 22px;
+    text-align: center;
+  }
+
+  .section-heading.align-left {
+    text-align: left;
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .section-heading p {
+    margin: 10px 0 0;
+    color: var(--text-soft);
+    font-size: 1rem;
+  }
+
+  .category-grid,
+  .tool-grid,
+  .why-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .category-grid,
+  .tool-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .why-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+
+  .card h3 {
+    margin: 0 0 10px;
+    font-size: 1.12rem;
+    line-height: 1.25;
+  }
+
+  .card-text,
+  .content-text {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.98rem;
+  }
+
+  .tool-list {
+    margin: 14px 0 16px;
+    padding-left: 18px;
+    color: var(--text-soft);
+  }
+
+  .tool-list li + li {
+    margin-top: 6px;
+  }
+
+  .text-link {
+    display: inline-block;
+    margin-top: 14px;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding: 28px 0 36px;
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-brand {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .footer-text {
+    margin: 0;
+    color: var(--text-soft);
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: 4px;
+  }
+
+  .footer-links a {
+    color: var(--text-soft);
+    font-size: 0.95rem;
+  }
+
+  @media (min-width: 720px) {
+    .hero {
+      padding: 96px 0 64px;
+    }
+
+    .category-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .tool-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .why-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1040px) {
+    .tool-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .header-inner {
+      align-items: flex-start;
+      padding: 14px 0;
+      flex-direction: column;
+    }
+
+    .nav {
+      gap: 12px 16px;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
+</style>
