@@ -2,6 +2,7 @@
 
 logs
 _.log
+.DS_Store
 npm-debug.log_
 yarn-debug.log*
 yarn-error.log*
@@ -106,6 +107,7 @@ out
 
 .nuxt
 dist
+.astro
 
 # Gatsby files
 

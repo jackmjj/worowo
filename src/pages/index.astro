@@ -1,0 +1,92 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+
+const tools = [
+  {
+    name: "图片压缩",
+    summary: "快速减小图片体积，适合上传、电商和分享场景。",
+    status: "即将上线",
+  },
+  {
+    name: "格式转换",
+    summary: "图片、文本和常见办公内容之间的一键转换。",
+    status: "规划中",
+  },
+  {
+    name: "文本处理",
+    summary: "去重、清洗、替换、计数，适合日常运营和内容编辑。",
+    status: "规划中",
+  },
+];
+---
+
+<MainLayout
+  title="Worowo | 在线工具首页"
+  description="Worowo 的 Astro 首页，展示轻量、高效的在线工具方向。"
+>
+  <main class="page-shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">WOROWO</p>
+        <h1>把常用在线工具做得更快一点，也更顺手一点。</h1>
+        <p class="lead">
+          这是 Worowo 的第一个首页版本。先把基础站点搭起来，再逐步补上图片处理、格式转换和文本效率工具。
+        </p>
+        <div class="hero-actions">
+          <a class="primary-action" href="#tools">查看规划工具</a>
+          <a class="secondary-action" href="https://github.com" target="_blank" rel="noreferrer">
+            GitHub 仓库
+          </a>
+        </div>
+      </div>
+
+      <aside class="hero-panel">
+        <p class="panel-label">Launch plan</p>
+        <ul>
+          <li>Astro 本地开发环境完成</li>
+          <li>Cloudflare Pages 部署配置就绪</li>
+          <li>首页作为后续工具导航入口</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="tools-section" id="tools">
+      <div class="section-heading">
+        <p class="eyebrow">Tools roadmap</p>
+        <h2>第一批适合做成在线工具的方向</h2>
+      </div>
+
+      <div class="tool-grid">
+        {tools.map((tool) => (
+          <article class="tool-card">
+            <span class="tool-status">{tool.status}</span>
+            <h3>{tool.name}</h3>
+            <p>{tool.summary}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="notes-section">
+      <div class="section-heading">
+        <p class="eyebrow">Why this stack</p>
+        <h2>现在这套组合，适合先把站跑起来</h2>
+      </div>
+
+      <div class="notes-grid">
+        <article>
+          <h3>Astro</h3>
+          <p>首屏轻、静态内容快，做工具站首页和落地页很合适。</p>
+        </article>
+        <article>
+          <h3>GitHub</h3>
+          <p>代码托管清晰，后续接入协作和自动部署都方便。</p>
+        </article>
+        <article>
+          <h3>Cloudflare Pages</h3>
+          <p>部署简单，CDN 覆盖广，适合先把公开站点稳定上线。</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</MainLayout>

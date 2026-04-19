@@ -1,19 +1,20 @@
 {
   "name": "worowo",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
-    "start": "wrangler dev",
-    "test": "vitest",
-    "cf-typegen": "wrangler types"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "cf:preview": "wrangler pages dev ./dist",
+    "deploy": "wrangler pages deploy ./dist"
+  },
+  "dependencies": {
+    "astro": "^5.7.0"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.12.4",
-    "@types/node": "^25.6.0",
-    "typescript": "^5.5.2",
-    "vitest": "~3.2.0",
+    "typescript": "^5.8.3",
     "wrangler": "^4.83.0"
   }
 }
