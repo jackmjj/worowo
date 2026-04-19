@@ -162,6 +162,7 @@ dist
 
 # wrangler project
 
+.wrangler-logs/
 .dev.vars*
 !.dev.vars.example
 .env*

@@ -1,92 +1,538 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
+const site = {
+  name: "Worowo",
+  title: "Worowo — Fast, Simple Online Utility Tools",
+  description:
+    "Free online utility tools for image, text, file, and productivity tasks. No installation. Fast, simple, and privacy-friendly.",
+};
 
-const tools = [
+const featuredTools = [
   {
-    name: "图片压缩",
-    summary: "快速减小图片体积，适合上传、电商和分享场景。",
-    status: "即将上线",
+    name: "Image Watermark Tool",
+    description: "Add clean text or logo watermarks to images online in seconds.",
+    href: "/tools/image-watermark/",
   },
   {
-    name: "格式转换",
-    summary: "图片、文本和常见办公内容之间的一键转换。",
-    status: "规划中",
+    name: "Image Converter",
+    description: "Convert JPG, PNG, WEBP, and more with a simple browser-based workflow.",
+    href: "/tools/image-converter/",
   },
   {
-    name: "文本处理",
-    summary: "去重、清洗、替换、计数，适合日常运营和内容编辑。",
-    status: "规划中",
+    name: "PDF Utilities",
+    description: "Merge, split, compress, and organize PDF files with minimal steps.",
+    href: "/tools/pdf-utilities/",
+  },
+  {
+    name: "Text Tools",
+    description: "Clean, format, count, compare, and transform text for work and publishing.",
+    href: "/tools/text-tools/",
+  },
+  {
+    name: "Unit & Size Converters",
+    description: "Quick conversions for dimensions, weight, volume, file size, and more.",
+    href: "/tools/converters/",
+  },
+  {
+    name: "Packing Calculator",
+    description: "Estimate carton, pallet, or container loading plans with practical outputs.",
+    href: "/tools/packing-calculator/",
+  },
+];
+
+const benefits = [
+  {
+    title: "Fast by default",
+    text: "Built for speed with a lightweight front end and a clean user experience.",
+  },
+  {
+    title: "Simple to use",
+    text: "Clear workflows, low friction, and no unnecessary steps.",
+  },
+  {
+    title: "Browser-based",
+    text: "No installation required. Open the tool and get the job done.",
+  },
+  {
+    title: "Privacy-friendly",
+    text: "Designed around practical utility, minimal complexity, and reduced dependence on heavy platforms.",
+  },
+];
+
+const faqs = [
+  {
+    q: "What is Worowo?",
+    a: "Worowo is a lightweight utility website focused on simple online tools for common work and everyday tasks.",
+  },
+  {
+    q: "Who are these tools for?",
+    a: "They are designed for global users who want quick, practical, browser-based tools without unnecessary complexity.",
+  },
+  {
+    q: "Do I need to install anything?",
+    a: "No. Worowo tools are designed to work directly in the browser whenever possible.",
+  },
+  {
+    q: "Will more tools be added?",
+    a: "Yes. The site is being built as a growing collection of focused, single-purpose tools.",
   },
 ];
 ---
 
-<MainLayout
-  title="Worowo | 在线工具首页"
-  description="Worowo 的 Astro 首页，展示轻量、高效的在线工具方向。"
->
-  <main class="page-shell">
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">WOROWO</p>
-        <h1>把常用在线工具做得更快一点，也更顺手一点。</h1>
-        <p class="lead">
-          这是 Worowo 的第一个首页版本。先把基础站点搭起来，再逐步补上图片处理、格式转换和文本效率工具。
-        </p>
-        <div class="hero-actions">
-          <a class="primary-action" href="#tools">查看规划工具</a>
-          <a class="secondary-action" href="https://github.com" target="_blank" rel="noreferrer">
-            GitHub 仓库
-          </a>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{site.title}</title>
+    <meta name="description" content={site.description} />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://www.worowo.com/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={site.title} />
+    <meta property="og:description" content={site.description} />
+    <meta property="og:url" content="https://www.worowo.com/" />
+    <meta property="og:site_name" content={site.name} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={site.title} />
+    <meta name="twitter:description" content={site.description} />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: site.name,
+        url: "https://www.worowo.com/",
+        description: site.description,
+        inLanguage: "en",
+        potentialAction: {
+          "@type": "SearchAction",
+          target: "https://www.worowo.com/search?q={search_term_string}",
+          "query-input": "required name=search_term_string",
+        },
+      })}
+    />
+
+    <style>
+      :root {
+        --bg: #ffffff;
+        --bg-soft: #f6f8fb;
+        --text: #111827;
+        --text-soft: #5b6472;
+        --line: #e5e7eb;
+        --accent: #111827;
+        --accent-2: #2563eb;
+        --max: 1160px;
+        --radius: 18px;
+        --shadow: 0 10px 30px rgba(17, 24, 39, 0.06);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.6;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .container {
+        width: min(var(--max), calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(229, 231, 235, 0.8);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 72px;
+        gap: 20px;
+      }
+
+      .brand {
+        font-size: 1.2rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .nav-links a {
+        color: var(--text-soft);
+        font-size: 0.96rem;
+      }
+
+      .nav-links a:hover,
+      .nav-links a:focus-visible {
+        color: var(--text);
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0 18px;
+        border-radius: 999px;
+        border: 1px solid var(--text);
+        background: var(--text);
+        color: #fff;
+        font-weight: 700;
+      }
+
+      .button.secondary {
+        background: #fff;
+        color: var(--text);
+        border-color: var(--line);
+      }
+
+      .hero {
+        padding: 72px 0 40px;
+      }
+
+      .hero-inner {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 28px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: var(--bg-soft);
+        color: var(--text-soft);
+        font-size: 0.88rem;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 18px 0 14px;
+        font-size: clamp(2.3rem, 6vw, 4.4rem);
+        line-height: 1.06;
+        letter-spacing: -0.04em;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 680px;
+        color: var(--text-soft);
+        font-size: 1.08rem;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 14px;
+        margin-top: 26px;
+        flex-wrap: wrap;
+      }
+
+      .hero-card {
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .hero-card-title {
+        margin: 0 0 10px;
+        font-size: 1rem;
+        font-weight: 800;
+      }
+
+      .hero-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 12px;
+      }
+
+      .hero-card li {
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: #fff;
+        border: 1px solid var(--line);
+        color: var(--text-soft);
+      }
+
+      section {
+        padding: 36px 0;
+      }
+
+      .section-title {
+        margin: 0 0 10px;
+        font-size: clamp(1.7rem, 3vw, 2.3rem);
+        letter-spacing: -0.03em;
+      }
+
+      .section-copy {
+        margin: 0 0 24px;
+        max-width: 760px;
+        color: var(--text-soft);
+      }
+
+      .tools-grid,
+      .benefit-grid,
+      .faq-grid {
+        display: grid;
+        gap: 18px;
+      }
+
+      .tools-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .benefit-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .faq-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .card {
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .card:hover {
+        transform: translateY(-2px);
+        transition: 0.2s ease;
+      }
+
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 1.06rem;
+      }
+
+      .card p {
+        margin: 0 0 14px;
+        color: var(--text-soft);
+      }
+
+      .card .link {
+        font-weight: 700;
+        color: var(--accent-2);
+      }
+
+      .cta {
+        padding: 14px 0 80px;
+      }
+
+      .cta-box {
+        border-radius: 28px;
+        border: 1px solid var(--line);
+        background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+        color: #fff;
+        padding: 34px;
+      }
+
+      .cta-box p {
+        color: rgba(255, 255, 255, 0.8);
+        max-width: 720px;
+      }
+
+      .cta-actions {
+        margin-top: 18px;
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .cta .button.secondary {
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        border-color: rgba(255, 255, 255, 0.16);
+      }
+
+      .site-footer {
+        border-top: 1px solid var(--line);
+        padding: 22px 0 40px;
+        color: var(--text-soft);
+        font-size: 0.95rem;
+      }
+
+      .footer-inner {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      @media (max-width: 980px) {
+        .hero-inner,
+        .tools-grid,
+        .benefit-grid,
+        .faq-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a class="brand" href="/">{site.name}</a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#tools">Tools</a>
+          <a href="#about">About</a>
+          <a href="#faq">FAQ</a>
+          <a href="/contact/">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-inner">
+          <div>
+            <div class="eyebrow">Fast online utility tools for global users</div>
+            <h1>Simple tools that help you get things done faster.</h1>
+            <p>
+              Worowo is building a focused collection of lightweight online tools for image, file,
+              text, conversion, and productivity tasks. Open a tool, finish the job, and move on.
+            </p>
+            <div class="hero-actions">
+              <a class="button" href="#tools">Explore tools</a>
+              <a class="button secondary" href="/about/">Learn more</a>
+            </div>
+          </div>
+
+          <aside class="hero-card" aria-label="Featured highlights">
+            <p class="hero-card-title">Why Worowo</p>
+            <ul>
+              <li>Lightweight pages built for speed and clarity</li>
+              <li>Practical tools with focused, single-purpose workflows</li>
+              <li>English-first experience for non-Chinese markets</li>
+              <li>Designed for gradual growth without unnecessary complexity</li>
+            </ul>
+          </aside>
         </div>
-      </div>
+      </section>
 
-      <aside class="hero-panel">
-        <p class="panel-label">Launch plan</p>
-        <ul>
-          <li>Astro 本地开发环境完成</li>
-          <li>Cloudflare Pages 部署配置就绪</li>
-          <li>首页作为后续工具导航入口</li>
-        </ul>
-      </aside>
-    </section>
+      <section id="tools">
+        <div class="container">
+          <h2 class="section-title">Featured tools</h2>
+          <p class="section-copy">
+            Start with focused utility tools that solve practical problems clearly. More tools will be
+            added over time as the platform grows.
+          </p>
 
-    <section class="tools-section" id="tools">
-      <div class="section-heading">
-        <p class="eyebrow">Tools roadmap</p>
-        <h2>第一批适合做成在线工具的方向</h2>
-      </div>
+          <div class="tools-grid">
+            {featuredTools.map((tool) => (
+              <a class="card" href={tool.href}>
+                <h3>{tool.name}</h3>
+                <p>{tool.description}</p>
+                <span class="link">Open tool →</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      <div class="tool-grid">
-        {tools.map((tool) => (
-          <article class="tool-card">
-            <span class="tool-status">{tool.status}</span>
-            <h3>{tool.name}</h3>
-            <p>{tool.summary}</p>
-          </article>
-        ))}
-      </div>
-    </section>
+      <section id="about">
+        <div class="container">
+          <h2 class="section-title">Built around speed, simplicity, and practical utility</h2>
+          <p class="section-copy">
+            The site is designed for users who prefer fast, direct tools instead of heavy platforms.
+            Each tool is intended to be easy to understand, easy to use, and genuinely useful.
+          </p>
 
-    <section class="notes-section">
-      <div class="section-heading">
-        <p class="eyebrow">Why this stack</p>
-        <h2>现在这套组合，适合先把站跑起来</h2>
-      </div>
+          <div class="benefit-grid">
+            {benefits.map((item) => (
+              <div class="card">
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      <div class="notes-grid">
-        <article>
-          <h3>Astro</h3>
-          <p>首屏轻、静态内容快，做工具站首页和落地页很合适。</p>
-        </article>
-        <article>
-          <h3>GitHub</h3>
-          <p>代码托管清晰，后续接入协作和自动部署都方便。</p>
-        </article>
-        <article>
-          <h3>Cloudflare Pages</h3>
-          <p>部署简单，CDN 覆盖广，适合先把公开站点稳定上线。</p>
-        </article>
+      <section id="faq">
+        <div class="container">
+          <h2 class="section-title">Frequently asked questions</h2>
+          <p class="section-copy">
+            A quick introduction to the direction of the site and how the tools are being developed.
+          </p>
+
+          <div class="faq-grid">
+            {faqs.map((item) => (
+              <div class="card">
+                <h3>{item.q}</h3>
+                <p>{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="cta">
+        <div class="container">
+          <div class="cta-box">
+            <h2 class="section-title">Launching focused tools, one useful step at a time</h2>
+            <p>
+              Worowo is growing as a lightweight collection of online utilities for everyday digital
+              work. The direction is practical, global, and performance-first.
+            </p>
+            <div class="cta-actions">
+              <a class="button secondary" href="#tools">Browse tools</a>
+              <a class="button secondary" href="/contact/">Contact</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>© 2026 {site.name}. All rights reserved.</div>
+        <div>English-first online utility tools for global users.</div>
       </div>
-    </section>
-  </main>
-</MainLayout>
+    </footer>
+  </body>
+</html>
