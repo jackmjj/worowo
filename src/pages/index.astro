@@ -1,5 +1,5 @@
 ---
-// worowo - Perfect Alignment Edition
+// worowo homepage
 const categories = [
   {
     title: "Quotes & Invoices",
@@ -36,6 +36,17 @@ const categories = [
     ],
     href: "/calculators/",
   },
+  {
+    title: "Printable Templates",
+    badge: "Static",
+    description: "Download and print — no editing required.",
+    tools: [
+      { name: "Blank Invoice Template", slug: "blank-invoice" },
+      { name: "Packing List Template", slug: "manual-packing-list" },
+      { name: "Checklist / Duty Roster", slug: "checklist" },
+    ],
+    href: "/templates/",
+  },
 ];
 ---
 
@@ -46,30 +57,22 @@ const categories = [
     <title>worowo — Skip the Software. Get the Result.</title>
     <meta
       name="description"
-      content="Instant business tools: invoices, quotes, packing documents, and business calculations in seconds."
+      content="Generate invoices, quotes, packing documents, printable templates, and business calculations in seconds."
     />
     <link rel="canonical" href="https://www.worowo.com/" />
     <meta name="theme-color" content="#ffffff" />
   </head>
 
   <body>
-    <header class="site-header">
-      <div class="container header-inner">
-        <a href="/" class="logo">worowo</a>
-        <nav class="nav">
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-          <a href="#privacy">Privacy</a>
-          <a href="#terms">Terms</a>
-        </nav>
-      </div>
-    </header>
-
     <main>
       <section class="hero">
         <div class="container hero-inner">
+          <a href="/" class="logo">worowo</a>
+
           <p class="eyebrow">Instant tools for business tasks</p>
-          <h1>Skip the Software. <br />Get the Result.</h1>
+
+          <h1>Skip the Software.<br />Get the Result.</h1>
+
           <p class="hero-text">
             Generate invoices, quotes, packing documents, and business calculations
             in seconds. <strong>No account, no setup, just results.</strong>
@@ -77,7 +80,7 @@ const categories = [
 
           <div class="hero-actions">
             <a href="/calculators/margin-calculator/" class="hero-btn">
-              Try Profit Margin Calculator
+              Calculate Profit Margin Now
             </a>
           </div>
         </div>
@@ -109,79 +112,52 @@ const categories = [
           </div>
         </div>
       </section>
-
-      <section class="bottom-section section-soft" id="about">
-        <div class="container narrow">
-          <div class="bottom-heading">
-            <h2>About</h2>
-          </div>
-          <p class="bottom-text">
-            worowo is a lightweight toolkit for everyday business tasks. It is
-            built for people who want clean results fast — without opening
-            complicated software, creating an account, or learning a full editor.
-          </p>
-          <p class="bottom-text">
-            The goal is simple: turn small but necessary business tasks into tools
-            that are practical, fast, and ready to use.
-          </p>
-        </div>
-      </section>
-
-      <section class="bottom-section" id="contact">
-        <div class="container narrow">
-          <div class="bottom-heading">
-            <h2>Contact</h2>
-          </div>
-          <p class="bottom-text">
-            For feedback, support, or partnership inquiries, contact:
-          </p>
-          <p class="bottom-text">
-            <a href="mailto:hello@worowo.com" class="inline-link">hello@worowo.com</a>
-          </p>
-        </div>
-      </section>
-
-      <section class="bottom-section section-soft" id="privacy">
-        <div class="container narrow">
-          <div class="bottom-heading">
-            <h2>Privacy</h2>
-          </div>
-          <p class="bottom-text">
-            worowo aims to collect as little information as possible. When a tool
-            works entirely in your browser, your data stays on your device.
-          </p>
-          <p class="bottom-text">
-            If a future tool requires server-side processing, only the minimum
-            necessary information will be used to provide that function.
-          </p>
-        </div>
-      </section>
-
-      <section class="bottom-section" id="terms">
-        <div class="container narrow">
-          <div class="bottom-heading">
-            <h2>Terms</h2>
-          </div>
-          <p class="bottom-text">
-            worowo provides practical tools for general business use. Users are
-            responsible for reviewing generated results before sending, printing,
-            or using them in real transactions.
-          </p>
-          <p class="bottom-text">
-            The tools are provided as-is, without guarantees of suitability for
-            every legal, tax, logistics, or commercial requirement in every
-            country or situation.
-          </p>
-        </div>
-      </section>
     </main>
 
     <footer class="site-footer">
       <div class="container footer-inner">
-        <span class="logo">worowo</span>
-        <p class="copyright">
-          © 2026 worowo. Skip the Software. Get the Result.
-        </p>
+        <div class="footer-top">
+          <span class="logo-small">worowo</span>
+          <p class="footer-tagline">Skip the Software. Get the Result.</p>
+        </div>
+
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h3>About</h3>
+            <p>
+              Lightweight tools for everyday business tasks — built for fast,
+              clean results without complex software.
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <h3>Contact</h3>
+            <p>
+              Feedback or support:
+              <a href="mailto:hello@worowo.com">hello@worowo.com</a>
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <h3>Privacy</h3>
+            <p>
+              Most tools are designed to run directly in your browser, with minimal
+              data collection.
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <h3>Terms</h3>
+            <p>
+              Please review generated results before using them in real business
+              transactions.
+            </p>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© 2026 worowo</p>
+        </div>
       </div>
     </footer>
   </body>
@@ -216,96 +192,56 @@ const categories = [
     -webkit-font-smoothing: antialiased;
   }
 
-  .container {
-    width: min(1140px, calc(100% - 60px));
-    margin: 0 auto;
-  }
-
-  .narrow {
-    max-width: 800px;
-  }
-
   a {
     color: inherit;
     text-decoration: none;
   }
 
-  /* Header */
-  .site-header {
-    height: 72px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--line);
-    position: sticky;
-    top: 0;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    z-index: 100;
+  .container {
+    width: min(1140px, calc(100% - 60px));
+    margin: 0 auto;
   }
 
-  .header-inner {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
+  .hero {
+    padding: 28px 0 56px;
+  }
+
+  .hero-inner {
+    max-width: 760px;
   }
 
   .logo {
-    font-size: 1.35rem;
+    display: inline-block;
+    margin-bottom: 48px;
+    font-size: 1.8rem;
     font-weight: 900;
     letter-spacing: -0.05em;
     text-transform: lowercase;
-    text-decoration: none;
     color: var(--text);
-    display: block;
-  }
-
-  .nav {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  .nav a {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-soft);
-    text-decoration: none;
-  }
-
-  .nav a:hover,
-  .inline-link:hover {
-    color: var(--primary);
-  }
-
-  /* Hero */
-  .hero {
-    padding: 80px 0 60px;
   }
 
   .eyebrow {
+    margin: 0 0 16px;
     color: var(--primary);
     font-weight: 700;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    margin-bottom: 16px;
   }
 
   h1 {
-    font-size: clamp(2.5rem, 6.5vw, 4rem);
-    line-height: 1.05;
-    letter-spacing: -0.04em;
     margin: 0 0 24px;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    line-height: 1.02;
+    letter-spacing: -0.05em;
     font-weight: 900;
   }
 
   .hero-text {
-    font-size: 1.25rem;
-    color: var(--text-soft);
-    max-width: 680px;
     margin: 0;
+    max-width: 720px;
+    font-size: 1.28rem;
+    color: var(--text-soft);
   }
 
   .hero-text strong {
@@ -320,16 +256,16 @@ const categories = [
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 46px;
+    min-height: 48px;
     padding: 0 18px;
     background: #2563eb;
     color: #ffffff;
     border-radius: 6px;
-    font-size: 0.95rem;
+    font-size: 0.96rem;
     font-weight: 700;
     text-decoration: none;
     transition: 0.2s ease;
-    box-shadow: 0 6px 18px -10px rgba(37, 99, 235, 0.55);
+    box-shadow: 0 8px 22px -12px rgba(37, 99, 235, 0.55);
   }
 
   .hero-btn:hover {
@@ -337,7 +273,6 @@ const categories = [
     transform: translateY(-1px);
   }
 
-  /* Main tools section */
   .section {
     padding-bottom: 100px;
   }
@@ -368,27 +303,27 @@ const categories = [
   }
 
   .badge {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: var(--bg-soft);
+    color: var(--text-soft);
     font-size: 0.65rem;
     font-weight: 800;
     text-transform: uppercase;
-    color: var(--text-soft);
-    background: var(--bg-soft);
-    padding: 3px 8px;
-    border-radius: 4px;
-    display: inline-block;
-    margin-bottom: 12px;
   }
 
   .card-header h2 {
+    margin: 0 0 8px;
     font-size: 1.6rem;
     font-weight: 850;
-    margin: 0 0 8px;
     letter-spacing: -0.02em;
   }
 
   .card-header p {
-    color: var(--text-soft);
     margin: 0 0 24px;
+    color: var(--text-soft);
     font-size: 1rem;
     line-height: 1.4;
   }
@@ -404,10 +339,10 @@ const categories = [
     align-items: center;
     padding: 18px 0;
     border-bottom: 1px dotted var(--line);
-    text-decoration: none;
     color: var(--text);
     font-weight: 600;
     font-size: 1rem;
+    text-decoration: none;
   }
 
   .tool-row:hover {
@@ -418,8 +353,8 @@ const categories = [
 
   .tool-row .arrow {
     color: var(--line);
-    transition: 0.2s;
     font-weight: 300;
+    transition: 0.2s;
   }
 
   .tool-row:hover .arrow {
@@ -427,85 +362,89 @@ const categories = [
     color: var(--text);
   }
 
-  /* Bottom sections */
-  .bottom-section {
-    padding: 56px 0;
-    scroll-margin-top: 84px;
-  }
-
-  .section-soft {
-    background: var(--bg-soft);
-  }
-
-  .bottom-heading {
-    margin-bottom: 16px;
-  }
-
-  .bottom-heading h2 {
-    font-size: 1.75rem;
-    font-weight: 800;
-    margin: 0;
-    letter-spacing: -0.02em;
-  }
-
-  .bottom-text {
-    font-size: 1rem;
-    color: var(--text-soft);
-    margin: 0 0 12px;
-  }
-
-  .inline-link {
-    color: var(--text);
-    font-weight: 600;
-  }
-
-  /* Footer */
   .site-footer {
-    padding: 36px 0 40px;
+    margin-top: 16px;
+    padding: 40px 0 28px;
     border-top: 1px solid var(--line);
+    background: var(--bg-soft);
   }
 
   .footer-inner {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 28px;
   }
 
-  .copyright {
-    font-size: 0.85rem;
-    color: var(--text-soft);
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding-bottom: 8px;
+  }
+
+  .logo-small {
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    text-transform: lowercase;
+  }
+
+  .footer-tagline {
     margin: 0;
+    color: var(--text-soft);
+    font-size: 0.92rem;
   }
 
-  /* Responsive */
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+
+  .footer-col h3 {
+    margin: 0 0 10px;
+    font-size: 0.92rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .footer-col p,
+  .footer-col a {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .footer-col a {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .footer-bottom {
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+
+  .footer-bottom p {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.85rem;
+  }
+
   @media (max-width: 900px) {
     .category-grid {
       grid-template-columns: 1fr;
     }
 
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
     .container {
       width: calc(100% - 40px);
-    }
-  }
-
-  @media (max-width: 768px) {
-    .site-header {
-      height: auto;
-    }
-
-    .header-inner {
-      padding: 14px 0;
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .nav {
-      gap: 12px 16px;
-    }
-
-    .hero {
-      padding: 60px 0 40px;
     }
   }
 
@@ -514,16 +453,21 @@ const categories = [
       width: calc(100% - 24px);
     }
 
+    .hero {
+      padding: 20px 0 40px;
+    }
+
+    .logo {
+      margin-bottom: 36px;
+      font-size: 1.6rem;
+    }
+
     h1 {
-      font-size: 2.2rem;
+      font-size: 2.4rem;
     }
 
     .hero-text {
-      font-size: 1.06rem;
-    }
-
-    .hero-actions {
-      margin-top: 20px;
+      font-size: 1.05rem;
     }
 
     .hero-btn {
@@ -534,8 +478,15 @@ const categories = [
       padding: 24px;
     }
 
-    .bottom-section {
-      padding: 40px 0;
+    .footer-top {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
     }
   }
 </style>
