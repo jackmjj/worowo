@@ -1,0 +1,80 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const tools = [
+  {
+    name: "Blank Invoice Template",
+    desc: "A clean invoice sheet for manual use",
+    status: "Coming soon",
+  },
+  {
+    name: "Packing List Template",
+    desc: "A pre-formatted sheet for handwritten packing details",
+    status: "Coming soon",
+  },
+  {
+    name: "Checklist / Duty Roster",
+    desc: "Simple printable lists for daily operations",
+    status: "Coming soon",
+  },
+  {
+    name: "Printable Receipt Template",
+    desc: "Future template placeholder",
+    status: "Coming soon",
+  },
+];
+---
+
+<BaseLayout
+  title="Free Printable Business Templates — worowo"
+  description="Download and print free business templates for invoices, packing lists, checklists, and daily operations."
+  canonical="https://www.worowo.com/templates/"
+>
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="topline">
+          <a href="/" class="logo">worowo</a>
+        </div>
+
+        <p class="breadcrumb"><a href="/">Home</a> &gt; Printable Templates</p>
+
+        <div class="hero-copy">
+          <h1 class="page-title">Free Printable Business Templates</h1>
+          <p class="page-summary">
+            Download and print ready-made layouts with no editing required.
+          </p>
+        </div>
+
+        <div class="divider"></div>
+      </div>
+    </section>
+
+    <section class="list-section">
+      <div class="container">
+        <div class="page-tools">
+          {tools.map((tool) => (
+            <div class="tool-row tool-row-static">
+              <div class="tool-meta">
+                <div>
+                <span class="tool-name">{tool.name}</span>
+                <span class="tool-desc">{tool.desc}</span>
+                </div>
+                <span class="tool-status">{tool.status}</span>
+              </div>
+              <span class="arrow">→</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="page-seo">
+          <p class="seo-copy">
+            Sometimes all you need is a ready-to-print document, not another editing tool. These printable templates give you clean layouts for invoices, packing lists, and daily checklists without requiring software, registration, or customization. Open, print, and use them immediately.
+          </p>
+        </div>
+
+        <div class="divider"></div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

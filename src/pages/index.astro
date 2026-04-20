@@ -1,507 +1,189 @@
 ---
-// worowo homepage
+import BaseLayout from "../layouts/BaseLayout.astro";
+
 const categories = [
   {
     title: "Quotes & Invoices",
-    badge: "Document",
+    badge: "Documents",
     description: "Professional docs in seconds — ready to send or print.",
-    tools: [
-      { name: "Quote / Estimate Generator", slug: "quote-generator" },
-      { name: "Invoice Generator", slug: "invoice-generator" },
-      { name: "Proforma Invoice Generator", slug: "proforma-invoice" },
-      { name: "Receipt Generator", slug: "receipt-generator" },
-    ],
     href: "/quotes-invoices/",
+    moreLabel: "More quotes & invoice tools",
+    tools: [
+      {
+        name: "Quote / Estimate Generator",
+        desc: "Create a clean price quote to send to a client",
+        status: "Coming soon",
+      },
+      {
+        name: "Invoice Generator",
+        desc: "Generate a professional invoice, ready to send or print",
+        status: "Coming soon",
+      },
+      {
+        name: "Proforma Invoice Generator",
+        desc: "Issue a proforma before the sale is confirmed",
+        status: "Coming soon",
+      },
+      {
+        name: "Receipt Generator",
+        desc: "Provide a simple proof of payment",
+        status: "Coming soon",
+      },
+    ],
   },
   {
     title: "Packing & Shipping",
-    badge: "Logistics",
+    badge: "Shipping",
     description: "Shipping paperwork without opening complex software.",
-    tools: [
-      { name: "Packing Slip Generator", slug: "packing-slip" },
-      { name: "Packing List Generator", slug: "packing-list" },
-      { name: "Delivery Note Generator", slug: "delivery-note" },
-    ],
     href: "/packing-shipping/",
+    moreLabel: "More packing & shipping tools",
+    tools: [
+      {
+        name: "Packing Slip Generator",
+        desc: "List the items included in a shipment",
+        status: "Coming soon",
+      },
+      {
+        name: "Packing List Generator",
+        desc: "Detailed list for larger or multi-box shipments",
+        status: "Coming soon",
+      },
+      {
+        name: "Delivery Note Generator",
+        desc: "Confirm what was delivered and when",
+        status: "Coming soon",
+      },
+      {
+        name: "Commercial Invoice Generator",
+        desc: "Future tool placeholder for shipping-related paperwork",
+        status: "Coming soon",
+      },
+    ],
   },
   {
     title: "Business Calculators",
-    badge: "Finance",
-    description: "Quick answers to the numbers that matter.",
-    tools: [
-      { name: "Profit Margin Calculator", slug: "margin-calculator" },
-      { name: "Markup Calculator", slug: "markup-calculator" },
-      { name: "Break-even Calculator", slug: "break-even" },
-      { name: "Landed Cost Calculator", slug: "landed-cost" },
-    ],
+    badge: "Calculators",
+    description: "Fast calculators for profit margin, markup, break-even pricing, and landed cost.",
     href: "/calculators/",
+    moreLabel: "More business calculators",
+    tools: [
+      {
+        name: "Profit Margin Calculator",
+        desc: "See how much profit you actually keep from each sale",
+        status: "Coming soon",
+      },
+      {
+        name: "Markup Calculator",
+        desc: "Set your selling price from your cost",
+        status: "Coming soon",
+      },
+      {
+        name: "Break-even Calculator",
+        desc: "Find the minimum price needed to cover your costs",
+        status: "Coming soon",
+      },
+      {
+        name: "Landed Cost Calculator",
+        desc: "Include shipping, tax, and fees in your true unit cost",
+        status: "Coming soon",
+      },
+    ],
   },
   {
     title: "Printable Templates",
-    badge: "Static",
+    badge: "Templates",
     description: "Download and print — no editing required.",
-    tools: [
-      { name: "Blank Invoice Template", slug: "blank-invoice" },
-      { name: "Packing List Template", slug: "manual-packing-list" },
-      { name: "Checklist / Duty Roster", slug: "checklist" },
-    ],
     href: "/templates/",
+    moreLabel: "More printable templates",
+    tools: [
+      {
+        name: "Blank Invoice Template",
+        desc: "A clean, ready-to-print invoice sheet",
+        status: "Coming soon",
+      },
+      {
+        name: "Packing List Template",
+        desc: "Pre-formatted packing list for manual use",
+        status: "Coming soon",
+      },
+      {
+        name: "Checklist / Duty Roster",
+        desc: "Simple printable checklists for daily operations",
+        status: "Coming soon",
+      },
+      {
+        name: "Printable Receipt Template",
+        desc: "Future template placeholder",
+        status: "Coming soon",
+      },
+    ],
   },
 ];
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>worowo — Skip the Software. Get the Result.</title>
-    <meta
-      name="description"
-      content="Generate invoices, quotes, packing documents, printable templates, and business calculations in seconds."
-    />
-    <link rel="canonical" href="https://www.worowo.com/" />
-    <meta name="theme-color" content="#ffffff" />
-  </head>
-
-  <body>
-    <main>
-      <section class="hero">
-        <div class="container">
-          <div class="hero-topline">
-            <a href="/" class="logo">worowo</a>
-          </div>
-
-          <div class="hero-inner">
-            <p class="eyebrow">Instant tools for business tasks</p>
-
-            <h1>Skip the Software.<br />Get the Result.</h1>
-
-            <p class="hero-text">
-              Generate invoices, quotes, packing documents, and business calculations
-              in seconds. <strong>No account, no setup, just results.</strong>
-            </p>
-
-            <div class="hero-actions">
-              <a href="/calculators/margin-calculator/" class="hero-btn">
-                Calculate Profit Margin Now
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="tools" class="section">
-        <div class="container">
-          <div class="category-grid">
-            {categories.map((category) => (
-              <div class="category-card">
-                <div class="card-inner">
-                  <header class="card-header">
-                    <span class="badge">{category.badge}</span>
-                    <h2>{category.title}</h2>
-                    <p>{category.description}</p>
-                  </header>
-
-                  <div class="tool-list">
-                    {category.tools.map((tool) => (
-                      <a href={`${category.href}${tool.slug}/`} class="tool-row">
-                        <span class="tool-name">{tool.name}</span>
-                        <span class="arrow">→</span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <div class="footer-top">
-          <span class="logo-small">worowo</span>
-          <p class="footer-tagline">Skip the Software. Get the Result.</p>
+<BaseLayout
+  title="worowo — Invoice, Quote, Packing List, Template, and Business Calculator Tools"
+  description="Free online tools for invoices, quotes, packing lists, printable templates, and business calculators. Create documents faster and calculate profit margins, markup, break-even pricing, and landed costs without complex software."
+  canonical="https://www.worowo.com/"
+>
+  <main>
+    <section class="section-tight">
+      <div class="container">
+        <div class="topline">
+          <a href="/" class="logo">worowo</a>
         </div>
 
-        <div class="footer-grid">
-          <div class="footer-col">
-            <h3>About</h3>
-            <p>
-              Lightweight tools for everyday business tasks — built for fast,
-              clean results without complex software.
-            </p>
-          </div>
+        <div class="hero-copy">
+          <p class="brand-line">Skip the Software. Get the Result.</p>
+          <h1 class="hero-title">Invoice, Quote, Packing List, Template, and Business Calculator Tools</h1>
+          <p class="hero-summary">
+            Create invoices, quotes, packing documents, printable templates, and pricing calculations in seconds. No account, no setup, just results.
+          </p>
 
-          <div class="footer-col">
-            <h3>Contact</h3>
-            <p>
-              Feedback or support:
-              <a href="mailto:hello@worowo.com">hello@worowo.com</a>
-            </p>
+          <div class="hero-actions">
+            <a href="#tools" class="hero-btn">Browse Tools</a>
           </div>
-
-          <div class="footer-col">
-            <h3>Privacy</h3>
-            <p>
-              Most tools are designed to run directly in your browser, with minimal
-              data collection.
-            </p>
-          </div>
-
-          <div class="footer-col">
-            <h3>Terms</h3>
-            <p>
-              Please review generated results before using them in real business
-              transactions.
-            </p>
-          </div>
-        </div>
-
-        <div class="footer-bottom">
-          <p>© 2026 worowo</p>
         </div>
       </div>
-    </footer>
-  </body>
-</html>
+    </section>
 
-<style>
-  :root {
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
-    --text: #0f172a;
-    --text-soft: #64748b;
-    --bg: #ffffff;
-    --bg-soft: #f8fafc;
-    --line: #e2e8f0;
-    --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
+    <section id="tools" class="section-tight">
+      <div class="container">
+        <div class="category-grid">
+          {categories.map((category) => (
+            <article class="category-card">
+              <div class="card-inner">
+                <header class="card-header">
+                  <span class="badge">{category.badge}</span>
+                  <h2>{category.title}</h2>
+                  <p>{category.description}</p>
+                </header>
 
-  * {
-    box-sizing: border-box;
-  }
+                <div class="tool-list">
+                  {category.tools.map((tool) => (
+                    <div class="tool-row tool-row-static">
+                      <div class="tool-meta">
+                        <div>
+                        <span class="tool-name">{tool.name}</span>
+                        <span class="tool-desc">{tool.desc}</span>
+                        </div>
+                        <span class="tool-status">{tool.status}</span>
+                      </div>
+                      <span class="arrow">→</span>
+                    </div>
+                  ))}
+                </div>
 
-  html {
-    scroll-behavior: smooth;
-  }
+                <a href={category.href} class="more-link">{category.moreLabel}</a>
+              </div>
+            </article>
+          ))}
+        </div>
 
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-stack);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .container {
-    width: min(1140px, calc(100% - 60px));
-    margin: 0 auto;
-  }
-
-  .hero {
-    padding: 0 0 56px;
-  }
-
-  .hero-topline {
-    padding: 20px 0 18px;
-    border-bottom: 1px solid var(--line);
-    margin-bottom: 44px;
-  }
-
-  .hero-inner {
-    width: 100%;
-  }
-
-  .logo {
-    display: inline-block;
-    font-size: 1.8rem;
-    font-weight: 900;
-    letter-spacing: -0.05em;
-    text-transform: lowercase;
-    color: var(--text);
-  }
-
-  .eyebrow,
-  h1,
-  .hero-text,
-  .hero-actions {
-    max-width: 760px;
-  }
-
-  .eyebrow {
-    margin: 0 0 16px;
-    color: var(--primary);
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-  }
-
-  h1 {
-    margin: 0 0 24px;
-    font-size: clamp(2.8rem, 7vw, 5rem);
-    line-height: 1.02;
-    letter-spacing: -0.05em;
-    font-weight: 900;
-  }
-
-  .hero-text {
-    margin: 0;
-    font-size: 1.28rem;
-    color: var(--text-soft);
-  }
-
-  .hero-text strong {
-    color: var(--text);
-  }
-
-  .hero-actions {
-    margin-top: 24px;
-  }
-
-  .hero-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 48px;
-    padding: 0 18px;
-    background: #2563eb;
-    color: #ffffff;
-    border-radius: 6px;
-    font-size: 0.96rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: 0.2s ease;
-    box-shadow: 0 8px 22px -12px rgba(37, 99, 235, 0.55);
-  }
-
-  .hero-btn:hover {
-    background: #1d4ed8;
-    transform: translateY(-1px);
-  }
-
-  .section {
-    padding-bottom: 100px;
-  }
-
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-  }
-
-  .category-card {
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: #fff;
-    transition: 0.2s;
-  }
-
-  .category-card:hover {
-    border-color: var(--text);
-    box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.08);
-  }
-
-  .card-inner {
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .badge {
-    display: inline-block;
-    margin-bottom: 12px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    background: var(--bg-soft);
-    color: var(--text-soft);
-    font-size: 0.65rem;
-    font-weight: 800;
-    text-transform: uppercase;
-  }
-
-  .card-header h2 {
-    margin: 0 0 8px;
-    font-size: 1.6rem;
-    font-weight: 850;
-    letter-spacing: -0.02em;
-  }
-
-  .card-header p {
-    margin: 0 0 24px;
-    color: var(--text-soft);
-    font-size: 1rem;
-    line-height: 1.4;
-  }
-
-  .tool-list {
-    border-top: 2px solid var(--text);
-    margin-bottom: 0;
-  }
-
-  .tool-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px 0;
-    border-bottom: 1px dotted var(--line);
-    color: var(--text);
-    font-weight: 600;
-    font-size: 1rem;
-    text-decoration: none;
-  }
-
-  .tool-row:hover {
-    color: var(--primary);
-    border-bottom-style: solid;
-    border-bottom-color: var(--text);
-  }
-
-  .tool-row .arrow {
-    color: var(--line);
-    font-weight: 300;
-    transition: 0.2s;
-  }
-
-  .tool-row:hover .arrow {
-    transform: translateX(4px);
-    color: var(--text);
-  }
-
-  .site-footer {
-    margin-top: 16px;
-    padding: 40px 0 28px;
-    border-top: 1px solid var(--line);
-    background: var(--bg-soft);
-  }
-
-  .footer-inner {
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-  }
-
-  .footer-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 16px;
-    padding-bottom: 8px;
-  }
-
-  .logo-small {
-    font-size: 1.2rem;
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    text-transform: lowercase;
-  }
-
-  .footer-tagline {
-    margin: 0;
-    color: var(--text-soft);
-    font-size: 0.92rem;
-  }
-
-  .footer-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 28px;
-  }
-
-  .footer-col h3 {
-    margin: 0 0 10px;
-    font-size: 0.92rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-
-  .footer-col p,
-  .footer-col a {
-    margin: 0;
-    color: var(--text-soft);
-    font-size: 0.92rem;
-    line-height: 1.6;
-  }
-
-  .footer-col a {
-    color: var(--text);
-    font-weight: 600;
-  }
-
-  .footer-bottom {
-    padding-top: 8px;
-    border-top: 1px solid var(--line);
-  }
-
-  .footer-bottom p {
-    margin: 0;
-    color: var(--text-soft);
-    font-size: 0.85rem;
-  }
-
-  @media (max-width: 900px) {
-    .category-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .footer-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .container {
-      width: calc(100% - 40px);
-    }
-  }
-
-  @media (max-width: 600px) {
-    .container {
-      width: calc(100% - 24px);
-    }
-
-    .hero {
-      padding: 0 0 40px;
-    }
-
-    .hero-topline {
-      padding: 16px 0 14px;
-      margin-bottom: 32px;
-    }
-
-    h1 {
-      font-size: 2.4rem;
-    }
-
-    .hero-text {
-      font-size: 1.05rem;
-    }
-
-    .hero-btn {
-      width: 100%;
-    }
-
-    .card-inner {
-      padding: 24px;
-    }
-
-    .footer-top {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .footer-grid {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-  }
-</style>
+        <p class="seo-copy">
+          worowo provides free online tools for invoices, quotes, packing lists, printable templates, and business calculators. Create documents faster, calculate profit margins and landed costs, and prepare shipping paperwork without opening complex software. Each tool is designed to be simple, fast, and ready to print or send.
+        </p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,80 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const tools = [
+  {
+    name: "Profit Margin Calculator",
+    desc: "See how much profit you actually keep from each sale",
+    status: "Coming soon",
+  },
+  {
+    name: "Markup Calculator",
+    desc: "Set your selling price from your cost",
+    status: "Coming soon",
+  },
+  {
+    name: "Break-even Calculator",
+    desc: "Find the minimum price needed to cover your costs",
+    status: "Coming soon",
+  },
+  {
+    name: "Landed Cost Calculator",
+    desc: "Include shipping, tax, and fees in your true unit cost",
+    status: "Coming soon",
+  },
+];
+---
+
+<BaseLayout
+  title="Business Calculators for Sellers and Small Businesses — worowo"
+  description="Use fast business calculators for profit margin, markup, break-even pricing, and landed cost."
+  canonical="https://www.worowo.com/calculators/"
+>
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="topline">
+          <a href="/" class="logo">worowo</a>
+        </div>
+
+        <p class="breadcrumb"><a href="/">Home</a> &gt; Business Calculators</p>
+
+        <div class="hero-copy">
+          <h1 class="page-title">Business Calculators for Sellers and Small Businesses</h1>
+          <p class="page-summary">
+            Get instant answers for profit margin, markup, break-even price, and landed cost.
+          </p>
+        </div>
+
+        <div class="divider"></div>
+      </div>
+    </section>
+
+    <section class="list-section">
+      <div class="container">
+        <div class="page-tools">
+          {tools.map((tool) => (
+            <div class="tool-row tool-row-static">
+              <div class="tool-meta">
+                <div>
+                <span class="tool-name">{tool.name}</span>
+                <span class="tool-desc">{tool.desc}</span>
+                </div>
+                <span class="tool-status">{tool.status}</span>
+              </div>
+              <span class="arrow">→</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="page-seo">
+          <p class="seo-copy">
+            These business calculators are built for sellers, traders, and small business owners who need fast and reliable answers, not a full accounting system. Whether you are pricing a product, checking a deal, or working out your break-even point, each tool delivers clear results in seconds without spreadsheets.
+          </p>
+        </div>
+
+        <div class="divider"></div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

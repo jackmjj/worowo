@@ -1,0 +1,80 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const tools = [
+  {
+    name: "Packing Slip Generator",
+    desc: "List the items included in a shipment",
+    status: "Coming soon",
+  },
+  {
+    name: "Packing List Generator",
+    desc: "Create a detailed list for large or multi-box shipments",
+    status: "Coming soon",
+  },
+  {
+    name: "Delivery Note Generator",
+    desc: "Confirm what was delivered, when, and to whom",
+    status: "Coming soon",
+  },
+  {
+    name: "Commercial Invoice Generator",
+    desc: "Future tool placeholder for shipping-related paperwork",
+    status: "Coming soon",
+  },
+];
+---
+
+<BaseLayout
+  title="Packing and Shipping Document Generators — worowo"
+  description="Create packing slips, packing lists, delivery notes, and shipping paperwork in seconds without Excel or Word."
+  canonical="https://www.worowo.com/packing-shipping/"
+>
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="topline">
+          <a href="/" class="logo">worowo</a>
+        </div>
+
+        <p class="breadcrumb"><a href="/">Home</a> &gt; Packing &amp; Shipping</p>
+
+        <div class="hero-copy">
+          <h1 class="page-title">Packing and Shipping Document Generators</h1>
+          <p class="page-summary">
+            Create accurate shipping paperwork without opening Excel or Word — fill in the details, download, and use it right away.
+          </p>
+        </div>
+
+        <div class="divider"></div>
+      </div>
+    </section>
+
+    <section class="list-section">
+      <div class="container">
+        <div class="page-tools">
+          {tools.map((tool) => (
+            <div class="tool-row tool-row-static">
+              <div class="tool-meta">
+                <div>
+                <span class="tool-name">{tool.name}</span>
+                <span class="tool-desc">{tool.desc}</span>
+                </div>
+                <span class="tool-status">{tool.status}</span>
+              </div>
+              <span class="arrow">→</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="page-seo">
+          <p class="seo-copy">
+            Packing slips, packing lists, and delivery notes are routine documents, but creating them from scratch wastes time. These tools help you prepare standardized shipping paperwork for single orders or regular shipments, with clean output that is ready to print or send. No spreadsheet setup is required.
+          </p>
+        </div>
+
+        <div class="divider"></div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
