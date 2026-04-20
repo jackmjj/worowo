@@ -247,6 +247,27 @@ const {
     line-height: 1.15;
   }
 
+  .category-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .category-link::after {
+    content: "→";
+    color: var(--primary);
+    font-size: 0.95em;
+    transition: transform 0.18s ease;
+  }
+
+  .category-link:hover {
+    color: var(--primary);
+  }
+
+  .category-link:hover::after {
+    transform: translateX(3px);
+  }
+
   .card-header p {
     margin: 0 0 20px;
     color: var(--text-soft);

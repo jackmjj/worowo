@@ -155,7 +155,9 @@ const categories = [
               <div class="card-inner">
                 <header class="card-header">
                   <span class="badge">{category.badge}</span>
-                  <h2>{category.title}</h2>
+                  <h2>
+                    <a href={category.href} class="category-link">{category.title}</a>
+                  </h2>
                   <p>{category.description}</p>
                 </header>
 
