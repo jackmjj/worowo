@@ -1,5 +1,5 @@
 ---
-// worowo - Left-aligned Dashboard Layout
+// worowo - Perfect Alignment Edition
 const categories = [
   {
     title: "Quotes & Invoices",
@@ -61,7 +61,7 @@ const categories = [
 
   <body>
     <header class="site-header">
-      <div class="container header-inner">
+      <div class="container">
         <a href="/" class="logo">worowo</a>
       </div>
     </header>
@@ -150,7 +150,6 @@ const categories = [
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
   body { 
     margin: 0; 
     background: #ffffff; 
@@ -160,11 +159,15 @@ const categories = [
     -webkit-font-smoothing: antialiased; 
   }
 
-  .container { width: min(1140px, calc(100% - 40px)); margin: 0 auto; }
+  /* 统一容器宽度：这是对齐的关键 */
+  .container { 
+    width: min(1140px, calc(100% - 60px)); /* 这里的 60px 提供了左右各 30px 的安全间距 */
+    margin: 0 auto; 
+  }
 
-  /* Header */
+  /* Header 优化 */
   .site-header { 
-    height: 64px; 
+    height: 72px; 
     display: flex; 
     align-items: center; 
     border-bottom: 1px solid var(--line);
@@ -174,17 +177,24 @@ const categories = [
     backdrop-filter: blur(10px);
     z-index: 100;
   }
-  .header-inner { display: flex; justify-content: flex-start; width: 100%; }
-  .logo { font-size: 1.35rem; font-weight: 900; letter-spacing: -0.05em; text-transform: lowercase; text-decoration: none; color: var(--text); }
+  .logo { 
+    font-size: 1.35rem; 
+    font-weight: 900; 
+    letter-spacing: -0.05em; 
+    text-transform: lowercase; 
+    text-decoration: none; 
+    color: var(--text);
+    display: block; /* 确保它是一个块级元素，更容易对齐 */
+  }
 
-  /* Hero: 左对齐 */
-  .hero { padding: 90px 0 60px; }
-  .eyebrow { color: var(--primary); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
+  /* Hero 布局 */
+  .hero { padding: 80px 0 60px; }
+  .eyebrow { color: var(--primary); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px; }
   h1 { font-size: clamp(2.5rem, 6.5vw, 4rem); line-height: 1.05; letter-spacing: -0.04em; margin: 0 0 24px; font-weight: 900; }
   .hero-text { font-size: 1.25rem; color: var(--text-soft); max-width: 680px; margin: 0; }
   .hero-text strong { color: var(--text); }
 
-  /* Grid Layout: 2x2 并排带外框 */
+  /* Grid Layout */
   .section { padding-bottom: 100px; }
   .category-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
 
@@ -196,7 +206,7 @@ const categories = [
   .card-header h2 { font-size: 1.6rem; font-weight: 850; margin: 0 0 8px; letter-spacing: -0.02em; }
   .card-header p { color: var(--text-soft); margin: 0 0 24px; font-size: 1rem; line-height: 1.4; }
 
-  /* Tool List: 2px 粗黑线 */
+  /* Tool List */
   .tool-list { border-top: 2px solid var(--text); margin-bottom: 24px; }
   .tool-row { 
     display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px dotted var(--line); 
@@ -208,7 +218,7 @@ const categories = [
 
   .view-all { margin-top: auto; font-size: 0.85rem; font-weight: 700; color: var(--text-soft); text-decoration: none; }
 
-  /* Footer Section */
+  /* Footer */
   .site-footer { border-top: 1px solid var(--line); background: var(--bg-soft); padding: 80px 0 40px; margin-top: 40px; }
   .footer-summary-grid { 
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; 
@@ -226,12 +236,12 @@ const categories = [
   /* Responsive */
   @media (max-width: 900px) {
     .category-grid, .footer-summary-grid { grid-template-columns: 1fr; }
-    .hero { padding: 60px 0 40px; }
+    .container { width: calc(100% - 40px); }
   }
 
   @media (max-width: 600px) {
+    .hero { padding: 60px 0 40px; }
     .card-inner { padding: 24px; }
-    .footer-bottom-inner { flex-direction: column; align-items: flex-start; }
     h1 { font-size: 2.2rem; }
   }
 </style>
