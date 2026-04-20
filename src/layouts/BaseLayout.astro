@@ -150,10 +150,10 @@ const {
 
   .brand-line {
     margin: 0 0 12px;
-    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+    font-size: 16px;
     font-weight: 800;
     letter-spacing: -0.03em;
-    color: var(--text);
+    color: #2563eb;
   }
 
   h1.page-title,
@@ -220,27 +220,38 @@ const {
   }
 
   .card-inner {
-    padding: 28px;
+    padding: 22px 28px 28px;
     display: flex;
     flex-direction: column;
     height: 100%;
   }
 
-  .badge {
-    display: inline-block;
+  .card-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     margin-bottom: 8px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
     padding: 2px 8px;
     border-radius: 4px;
     background: var(--bg-soft);
-    color: var(--text-soft);
-    font-size: 0.62rem;
-    font-weight: 800;
+    color: rgba(100, 116, 139, 0.82);
+    font-size: 0.58rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    flex-shrink: 0;
+    opacity: 0.9;
   }
 
   .card-header h2 {
-    margin: 0 0 6px;
+    margin: 0;
     font-size: 1.52rem;
     font-weight: 850;
     letter-spacing: -0.02em;
@@ -269,7 +280,7 @@ const {
   }
 
   .card-header p {
-    margin: 0 0 20px;
+    margin: 0 0 18px;
     color: var(--text-soft);
     font-size: 0.98rem;
     line-height: 1.45;
@@ -365,12 +376,26 @@ const {
     color: var(--primary);
   }
 
-  .seo-copy {
-    margin-top: 28px;
-    max-width: 860px;
+  .seo-statement {
+    padding: 60px 0 20px;
+  }
+
+  .statement-inner {
+    max-width: 850px;
+    border-left: 3px solid var(--text);
+    padding-left: 32px;
+  }
+
+  .statement-inner p {
+    margin: 0;
     color: var(--text-soft);
-    font-size: 0.98rem;
+    font-size: 1.1rem;
     line-height: 1.7;
+  }
+
+  .statement-inner strong {
+    color: var(--text);
+    font-weight: 800;
   }
 
   .breadcrumb {
@@ -519,6 +544,23 @@ const {
 
     .card-inner {
       padding: 22px;
+    }
+
+    .card-title-row {
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .seo-statement {
+      padding-top: 44px;
+    }
+
+    .statement-inner {
+      padding-left: 20px;
+    }
+
+    .statement-inner p {
+      font-size: 1rem;
     }
 
     .footer-top {

@@ -154,10 +154,12 @@ const categories = [
             <article class="category-card">
               <div class="card-inner">
                 <header class="card-header">
-                  <span class="badge">{category.badge}</span>
-                  <h2>
-                    <a href={category.href} class="category-link">{category.title}</a>
-                  </h2>
+                  <div class="card-title-row">
+                    <h2>
+                      <a href={category.href} class="category-link">{category.title}</a>
+                    </h2>
+                    <span class="badge">{category.badge}</span>
+                  </div>
                   <p>{category.description}</p>
                 </header>
 
@@ -182,9 +184,15 @@ const categories = [
           ))}
         </div>
 
-        <p class="seo-copy">
-          worowo provides free online tools for invoices, quotes, packing lists, printable templates, and business calculators. Create documents faster, calculate profit margins and landed costs, and prepare shipping paperwork without opening complex software. Each tool is designed to be simple, fast, and ready to print or send.
-        </p>
+        <section class="seo-statement">
+          <div class="statement-inner">
+            <p>
+              <strong>worowo</strong> provides free online tools for invoices, quotes, packing lists, printable templates, and business calculators.
+              Create documents faster, calculate profit margins and landed costs, and prepare shipping paperwork without opening complex software.
+              Each tool is designed to be simple, fast, and ready to print or send.
+            </p>
+          </div>
+        </section>
       </div>
     </section>
   </main>
