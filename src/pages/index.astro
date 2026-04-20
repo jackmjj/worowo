@@ -1,71 +1,80 @@
 ---
-// 建议后续将此数据移至 src/data/tools.ts
-const categories = [
+const toolGroups = [
   {
-    title: "Quotes & Pricing",
-    description: "Create quotations, proforma invoices, and pricing calculations.",
+    title: "Quotes & Invoices",
+    description:
+      "Generate professional business documents in seconds — ready to send or print.",
     tools: [
-      { name: "Quotation Generator", slug: "quotation-generator" },
-      { name: "Proforma Invoice Generator", slug: "proforma-invoice-generator" },
-      { name: "Profit Calculator", slug: "profit-calculator" },
-      { name: "Margin Calculator", slug: "margin-calculator" },
+      {
+        name: "Quote / Estimate Generator",
+        desc: "Create a clean price quote to send to a client",
+        href: "/quotes-invoices/quote-generator/",
+      },
+      {
+        name: "Invoice Generator",
+        desc: "Generate a professional invoice, ready to send or print",
+        href: "/quotes-invoices/invoice-generator/",
+      },
+      {
+        name: "Proforma Invoice Generator",
+        desc: "Issue a proforma before the sale is confirmed",
+        href: "/quotes-invoices/proforma-invoice/",
+      },
+      {
+        name: "Receipt Generator",
+        desc: "Provide a simple proof of payment",
+        href: "/quotes-invoices/receipt-generator/",
+      },
     ],
-    href: "/quotes-pricing/",
-  },
-  {
-    title: "Invoices & Documents",
-    description: "Generate clear business documents for clients and operations.",
-    tools: [
-      { name: "Receipt Generator", slug: "receipt-generator" },
-      { name: "Delivery Note Generator", slug: "delivery-note-generator" },
-      { name: "Commercial Invoice Generator", slug: "commercial-invoice-generator" },
-      { name: "Purchase Order Generator", slug: "purchase-order-generator" },
-    ],
-    href: "/invoices-documents/",
   },
   {
     title: "Packing & Shipping",
-    description: "Prepare packing lists and calculate shipping volume.",
+    description:
+      "Prepare packing documents and shipping paperwork without opening complex software.",
     tools: [
-      { name: "Packing List Generator", slug: "packing-list-generator" },
-      { name: "Volumetric Weight Calculator", slug: "volumetric-weight-calculator" },
-      { name: "How Many Fit Calculator", slug: "how-many-fit-calculator" },
-      { name: "Carton Fill Rate Calculator", slug: "carton-fill-rate-calculator" },
+      {
+        name: "Packing Slip Generator",
+        desc: "List the items included in a shipment",
+        href: "/packing-shipping/packing-slip/",
+      },
+      {
+        name: "Packing List Generator",
+        desc: "Detailed list for larger or multi-box shipments",
+        href: "/packing-shipping/packing-list/",
+      },
+      {
+        name: "Delivery Note Generator",
+        desc: "Confirm what was delivered and when",
+        href: "/packing-shipping/delivery-note/",
+      },
     ],
-    href: "/packing-shipping/",
-  },
-];
-
-const featuredTools = [
-  {
-    name: "Quotation Generator",
-    description: "Create clean quotations in minutes.",
-    href: "/quotes-pricing/quotation-generator/",
   },
   {
-    name: "Proforma Invoice Generator",
-    description: "Generate simple proforma invoices.",
-    href: "/quotes-pricing/proforma-invoice-generator/",
-  },
-  {
-    name: "Packing List Generator",
-    description: "Prepare packing lists for shipments.",
-    href: "/packing-shipping/packing-list-generator/",
-  },
-  {
-    name: "Profit Calculator",
-    description: "Estimate product profit instantly.",
-    href: "/quotes-pricing/profit-calculator/",
-  },
-  {
-    name: "Margin Calculator",
-    description: "Check margin quickly before quoting.",
-    href: "/quotes-pricing/margin-calculator/",
-  },
-  {
-    name: "Volumetric Weight Calculator",
-    description: "Calculate chargeable weight.",
-    href: "/packing-shipping/volumetric-weight-calculator/",
+    title: "Business Calculators",
+    description:
+      "Quick answers to the numbers that matter for pricing and daily operations.",
+    tools: [
+      {
+        name: "Profit Margin Calculator",
+        desc: "Find out exactly how much you're making per sale",
+        href: "/calculators/margin-calculator/",
+      },
+      {
+        name: "Markup Calculator",
+        desc: "Set the right selling price from your cost",
+        href: "/calculators/markup-calculator/",
+      },
+      {
+        name: "Break-even Calculator",
+        desc: "Know the minimum price to cover your costs",
+        href: "/calculators/break-even/",
+      },
+      {
+        name: "Landed Cost Calculator",
+        desc: "Factor in shipping, tax, and fees into true cost",
+        href: "/calculators/landed-cost/",
+      },
+    ],
   },
 ];
 ---
@@ -74,139 +83,141 @@ const featuredTools = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>worowo — Lightweight Business Tools for Quotes, Packing & Shipping</title>
+    <title>worowo — Skip the Software. Get the Result.</title>
     <meta
       name="description"
-      content="Instant online tools for small sellers and exporters. Generate quotations, invoices, and packing lists without complex software."
+      content="Generate invoices, quotes, packing documents, and business calculations in seconds. Ready to print or send. No account needed. No setup."
     />
-    <link rel="canonical" href="https://worowo.com/" />
+    <link rel="canonical" href="https://www.worowo.com/" />
     <meta name="theme-color" content="#ffffff" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@500;700&display=swap"
-      rel="stylesheet"
-    />
   </head>
 
   <body>
     <header class="site-header">
       <div class="container header-inner">
         <a href="/" class="logo">worowo</a>
-        <nav class="nav">
-          <a href="#categories">Categories</a>
-          <a href="#tools">Featured</a>
+
+        <nav class="nav" aria-label="Primary">
           <a href="#about">About</a>
-          <a href="mailto:hello@worowo.com" class="nav-contact">Contact</a>
+          <a href="#contact">Contact</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#terms">Terms</a>
         </nav>
       </div>
     </header>
 
     <main>
-      <section class="hero">
-        <div class="container hero-inner">
-          <p class="eyebrow">A Focused Toolkit for Exporters</p>
-          <h1>Instant tools for business tasks</h1>
-          <p class="hero-text">
-            Create professional documents and precise calculations in seconds.
-            <strong>No registration, no learning curve, just results.</strong>
-          </p>
-
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="/quotes-pricing/quotation-generator/">
-              Start Quotation Generator
-            </a>
-            <a class="btn btn-secondary" href="#categories">Browse Categories</a>
-          </div>
-        </div>
-      </section>
-
-      <section id="categories" class="section">
-        <div class="container">
-          <div class="section-heading align-left">
-            <h2>Categories</h2>
-            <p>Streamlined workflows for your daily business operations.</p>
+      <section class="hero-tools" id="top">
+        <div class="container hero-tools-inner">
+          <div class="hero-copy">
+            <p class="eyebrow">Instant tools for business tasks</p>
+            <h1>Skip the Software. Get the Result.</h1>
+            <p class="hero-text">
+              Generate invoices, quotes, packing documents, and business
+              calculations — ready to print or send, in seconds.
+            </p>
+            <p class="hero-subtext">
+              No account needed. No setup. Just the tool you came for.
+            </p>
           </div>
 
-          <div class="category-grid">
-            {categories.map((category) => (
-              <article class="card category-card">
-                <div class="card-header">
-                  <h3>{category.title}</h3>
-                  <p class="card-text">{category.description}</p>
-                </div>
+          <section class="tools-panel" aria-labelledby="tools-heading">
+            <div class="tools-heading-row">
+              <h2 id="tools-heading">Tools</h2>
+            </div>
 
-                <ul class="tool-list">
-                  {category.tools.map((tool) => (
-                    <li>
-                      <a href={`${category.href}${tool.slug}/`} class="tool-link-inline">
-                        {tool.name}
+            <div class="tool-groups">
+              {toolGroups.map((group) => (
+                <section class="tool-group">
+                  <div class="tool-group-header">
+                    <h3>{group.title}</h3>
+                    <p>{group.description}</p>
+                  </div>
+
+                  <div class="tool-list">
+                    {group.tools.map((tool) => (
+                      <a href={tool.href} class="tool-item">
+                        <div class="tool-info">
+                          <span class="tool-name">{tool.name}</span>
+                          <span class="tool-desc">{tool.desc}</span>
+                        </div>
+                        <span class="arrow" aria-hidden="true">→</span>
                       </a>
-                    </li>
-                  ))}
-                </ul>
-
-                <a class="action-link" href={category.href}>
-                  Explore all tools →
-                </a>
-              </article>
-            ))}
-          </div>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          </section>
         </div>
       </section>
 
-      <section id="tools" class="section section-soft">
-        <div class="container">
-          <div class="section-heading">
-            <h2>Featured Tools</h2>
-            <p>Most used tools by small business owners and sourcing agents.</p>
-          </div>
-
-          <div class="tool-grid">
-            {featuredTools.map((tool) => (
-              <a href={tool.href} class="card tool-card clickable">
-                <h3>{tool.name}</h3>
-                <p class="card-text">{tool.description}</p>
-                <span class="btn-text">Open Tool</span>
-              </a>
-            ))}
-          </div>
+      <section id="about" class="bottom-section section-soft">
+        <div class="container narrow">
+          <h2>About</h2>
+          <p>
+            worowo is a lightweight toolkit for everyday business tasks. It is
+            built for people who want clean results fast — without opening
+            complicated software, setting up accounts, or learning a full editor.
+          </p>
+          <p>
+            The goal is simple: turn small but necessary business tasks into
+            ready-to-use tools that are practical, fast, and easy to trust.
+          </p>
         </div>
       </section>
 
-      <section class="section">
-        <div class="container">
-          <div class="why-grid">
-            <div class="benefit-item">
-              <h4>No Setup Required</h4>
-              <p>Work directly in your browser without installing anything.</p>
-            </div>
-            <div class="benefit-item">
-              <h4>Print-Ready PDF</h4>
-              <p>Outputs are perfectly formatted for professional delivery.</p>
-            </div>
-            <div class="benefit-item">
-              <h4>Privacy First</h4>
-              <p>Your data stays in your browser. We don't track your business details.</p>
-            </div>
-          </div>
+      <section id="contact" class="bottom-section">
+        <div class="container narrow">
+          <h2>Contact</h2>
+          <p>
+            For feedback, partnership inquiries, or support, contact:
+          </p>
+          <p>
+            <a href="mailto:hello@worowo.com" class="inline-link"
+              >hello@worowo.com</a
+            >
+          </p>
+        </div>
+      </section>
+
+      <section id="privacy" class="bottom-section section-soft">
+        <div class="container narrow">
+          <h2>Privacy</h2>
+          <p>
+            worowo aims to collect as little information as possible. When a
+            tool works entirely in your browser, your data stays on your device.
+          </p>
+          <p>
+            If a future tool requires server-side processing, only the minimum
+            necessary information will be used to provide that function.
+          </p>
+        </div>
+      </section>
+
+      <section id="terms" class="bottom-section">
+        <div class="container narrow">
+          <h2>Terms</h2>
+          <p>
+            worowo provides practical tools for general business use. Users are
+            responsible for reviewing generated results before sending,
+            printing, or using them in real transactions.
+          </p>
+          <p>
+            The tools are provided as-is, without guarantees of suitability for
+            every legal, tax, logistics, or commercial requirement in every
+            country or situation.
+          </p>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <div class="container footer-inner">
-        <div class="footer-top">
-          <span class="logo">worowo</span>
-          <nav class="footer-links">
-            <a href="#about">About</a>
-            <a href="#privacy">Privacy</a>
-            <a href="#terms">Terms</a>
-          </nav>
-        </div>
-        <div class="footer-bottom">
-          <p>© 2026 worowo. Built for efficiency.</p>
-        </div>
+        <p class="footer-brand">worowo</p>
+        <p class="footer-text">
+          Skip the Software. Get the Result.
+        </p>
       </div>
     </footer>
   </body>
@@ -214,18 +225,16 @@ const featuredTools = [
 
 <style>
   :root {
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
-    --bg: #ffffff;
-    --bg-soft: #f8fafc;
     --text: #0f172a;
     --text-soft: #64748b;
+    --bg: #ffffff;
+    --bg-soft: #f8fafc;
     --line: #e2e8f0;
-    --card: #ffffff;
+    --accent: #2563eb;
     --max: 1200px;
-    --radius: 12px;
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --radius: 18px;
+    --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, sans-serif;
   }
 
   * {
@@ -240,275 +249,330 @@ const featuredTools = [
     margin: 0;
     background: var(--bg);
     color: var(--text);
-    font-family: "Inter", system-ui, sans-serif;
+    font-family: var(--font-stack);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
 
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
   .container {
-    width: min(var(--max), calc(100% - 40px));
+    width: min(var(--max), calc(100% - 32px));
     margin: 0 auto;
   }
 
-  .logo {
-    font-family: "Roboto", sans-serif;
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    text-transform: lowercase;
-    color: var(--text);
-  }
-
-  h1 {
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    line-height: 1.1;
-    letter-spacing: -0.04em;
-    margin-bottom: 24px;
+  .narrow {
+    max-width: 780px;
   }
 
   .site-header {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.86);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--line);
   }
 
   .header-inner {
-    height: 72px;
+    min-height: 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 20px;
+  }
+
+  .logo {
+    font-size: 1.25rem;
+    font-weight: 850;
+    letter-spacing: -0.05em;
+    text-transform: lowercase;
+    color: var(--text);
   }
 
   .nav {
     display: flex;
-    gap: 24px;
+    flex-wrap: wrap;
+    gap: 18px;
   }
 
   .nav a {
-    font-size: 0.9rem;
+    font-size: 0.94rem;
     font-weight: 500;
     color: var(--text-soft);
-    transition: 0.2s;
   }
 
-  .nav a:hover {
-    color: var(--primary);
+  .nav a:hover,
+  .inline-link:hover {
+    color: var(--accent);
   }
 
-  .hero {
-    padding: 100px 0 80px;
+  .hero-tools {
+    padding: 28px 0 40px;
+  }
+
+  .hero-tools-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
+    gap: 28px;
+    align-items: start;
+    min-height: calc(100vh - 64px - 28px);
+  }
+
+  .hero-copy {
+    padding-top: 8px;
   }
 
   .eyebrow {
-    color: var(--primary);
-    font-weight: 600;
-    font-size: 0.9rem;
+    margin: 0 0 10px;
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 12px;
+  }
+
+  h1 {
+    margin: 0 0 16px;
+    font-size: clamp(2.2rem, 5vw, 4.4rem);
+    line-height: 0.98;
+    letter-spacing: -0.05em;
+    font-weight: 900;
+    max-width: 10ch;
   }
 
   .hero-text {
-    font-size: 1.25rem;
+    margin: 0 0 12px;
+    font-size: 1.08rem;
     color: var(--text-soft);
-    max-width: 600px;
-    margin-bottom: 40px;
+    max-width: 56ch;
   }
 
-  .hero-actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: all 0.2s;
-    text-align: center;
-  }
-
-  .btn-primary {
-    background: var(--primary);
-    color: white;
-    border: 1px solid var(--primary);
-  }
-
-  .btn-primary:hover {
-    background: var(--primary-hover);
-    transform: translateY(-1px);
-  }
-
-  .btn-secondary {
-    border: 1px solid var(--line);
+  .hero-subtext {
+    margin: 0;
+    font-size: 1rem;
     color: var(--text);
+    font-weight: 600;
   }
 
-  .btn-secondary:hover {
-    background: var(--bg-soft);
+  .tools-panel {
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 18px;
+    background: var(--bg);
   }
 
-  .section {
-    padding: 80px 0;
+  .tools-heading-row {
+    margin-bottom: 8px;
+  }
+
+  .tools-heading-row h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+  }
+
+  .tool-groups {
+    display: grid;
+    gap: 18px;
+  }
+
+  .tool-group {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+  }
+
+  .tool-group:first-child {
+    border-top: 0;
+    padding-top: 8px;
+  }
+
+  .tool-group-header {
+    margin-bottom: 10px;
+  }
+
+  .tool-group-header h3 {
+    margin: 0 0 4px;
+    font-size: 1.06rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .tool-group-header p {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.92rem;
+  }
+
+  .tool-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tool-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    transition: 0.18s ease;
+  }
+
+  .tool-item:last-child {
+    border-bottom: 0;
+  }
+
+  .tool-item:hover {
+    transform: translateX(3px);
+  }
+
+  .tool-item:hover .tool-name,
+  .tool-item:hover .arrow {
+    color: var(--accent);
+  }
+
+  .tool-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .tool-name {
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .tool-desc {
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    line-height: 1.35;
+  }
+
+  .arrow {
+    font-size: 1.05rem;
+    color: #94a3b8;
+    flex-shrink: 0;
+  }
+
+  .bottom-section {
+    padding: 52px 0;
+    scroll-margin-top: 84px;
   }
 
   .section-soft {
     background: var(--bg-soft);
   }
 
-  .section-heading {
-    margin-bottom: 48px;
+  .bottom-section h2 {
+    margin: 0 0 14px;
+    font-size: 1.55rem;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
   }
 
-  .section-heading h2 {
-    font-size: 2rem;
-    letter-spacing: -0.02em;
-  }
-
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
-  }
-
-  .tool-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
-  }
-
-  .card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 32px;
-    transition: 0.3s;
-    box-shadow: var(--shadow-sm);
-  }
-
-  .tool-card.clickable {
-    display: block;
-    text-decoration: none;
-  }
-
-  .tool-card.clickable:hover {
-    border-color: var(--primary);
-    box-shadow: var(--shadow-md);
-  }
-
-  .tool-list {
-    list-style: none;
-    padding: 0;
-    margin: 24px 0;
-  }
-
-  .tool-list li {
-    margin-bottom: 12px;
-  }
-
-  .tool-link-inline {
-    font-size: 1rem;
-    color: var(--text);
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    transition: 0.2s;
-  }
-
-  .tool-link-inline:hover {
-    color: var(--primary);
-    text-decoration-color: var(--primary);
-  }
-
-  .action-link {
-    font-weight: 600;
-    color: var(--primary);
-    font-size: 0.9rem;
-  }
-
-  .why-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
-  }
-
-  .benefit-item h4 {
-    margin: 0 0 8px;
-    font-size: 1rem;
-  }
-
-  .benefit-item p,
-  .card-text {
-    margin: 0;
+  .bottom-section p {
+    margin: 0 0 12px;
     color: var(--text-soft);
+    font-size: 0.98rem;
   }
 
-  .btn-text {
-    display: inline-block;
-    margin-top: 16px;
+  .inline-link {
+    color: var(--text);
     font-weight: 600;
-    color: var(--primary);
   }
 
   .site-footer {
-    padding: 60px 0 40px;
     border-top: 1px solid var(--line);
-    background: var(--bg-soft);
+    padding: 24px 0 34px;
   }
 
-  .footer-top {
+  .footer-inner {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
+    flex-direction: column;
+    gap: 6px;
   }
 
-  .footer-links {
-    display: flex;
-    gap: 24px;
-    color: var(--text-soft);
-    font-size: 0.9rem;
+  .footer-brand {
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-transform: lowercase;
   }
 
-  .footer-bottom p {
+  .footer-text {
     margin: 0;
     color: var(--text-soft);
+    font-size: 0.94rem;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
+    .hero-tools-inner {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .hero-copy {
+      padding-top: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .container {
+      width: min(var(--max), calc(100% - 24px));
+    }
+
     .header-inner {
-      height: auto;
-      min-height: 72px;
-      padding: 14px 0;
-      flex-direction: column;
       align-items: flex-start;
-      gap: 16px;
+      flex-direction: column;
+      padding: 12px 0;
     }
 
     .nav {
-      flex-wrap: wrap;
-      gap: 12px 16px;
+      gap: 10px 14px;
     }
 
-    .hero {
-      padding: 60px 0;
+    .hero-tools {
+      padding: 18px 0 28px;
     }
 
-    .hero-actions {
-      flex-direction: column;
+    h1 {
+      max-width: none;
+      font-size: clamp(2rem, 11vw, 3rem);
     }
 
-    .why-grid {
-      grid-template-columns: 1fr;
+    .hero-text {
+      font-size: 1rem;
     }
 
-    .footer-top {
-      flex-direction: column;
-      gap: 24px;
-      text-align: center;
+    .hero-subtext {
+      font-size: 0.96rem;
+    }
+
+    .tools-panel {
+      padding: 14px;
+      border-radius: 16px;
+    }
+
+    .tool-item {
+      padding: 12px 0;
+    }
+
+    .tool-name {
+      font-size: 0.96rem;
+    }
+
+    .tool-desc {
+      font-size: 0.85rem;
+    }
+
+    .bottom-section {
+      padding: 40px 0;
     }
   }
 </style>
