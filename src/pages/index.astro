@@ -66,22 +66,26 @@ const categories = [
   <body>
     <main>
       <section class="hero">
-        <div class="container hero-inner">
-          <a href="/" class="logo">worowo</a>
+        <div class="container">
+          <div class="hero-topline">
+            <a href="/" class="logo">worowo</a>
+          </div>
 
-          <p class="eyebrow">Instant tools for business tasks</p>
+          <div class="hero-inner">
+            <p class="eyebrow">Instant tools for business tasks</p>
 
-          <h1>Skip the Software.<br />Get the Result.</h1>
+            <h1>Skip the Software.<br />Get the Result.</h1>
 
-          <p class="hero-text">
-            Generate invoices, quotes, packing documents, and business calculations
-            in seconds. <strong>No account, no setup, just results.</strong>
-          </p>
+            <p class="hero-text">
+              Generate invoices, quotes, packing documents, and business calculations
+              in seconds. <strong>No account, no setup, just results.</strong>
+            </p>
 
-          <div class="hero-actions">
-            <a href="/calculators/margin-calculator/" class="hero-btn">
-              Calculate Profit Margin Now
-            </a>
+            <div class="hero-actions">
+              <a href="/calculators/margin-calculator/" class="hero-btn">
+                Calculate Profit Margin Now
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -203,21 +207,33 @@ const categories = [
   }
 
   .hero {
-    padding: 28px 0 56px;
+    padding: 0 0 56px;
+  }
+
+  .hero-topline {
+    padding: 20px 0 18px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 44px;
   }
 
   .hero-inner {
-    max-width: 760px;
+    width: 100%;
   }
 
   .logo {
     display: inline-block;
-    margin-bottom: 48px;
     font-size: 1.8rem;
     font-weight: 900;
     letter-spacing: -0.05em;
     text-transform: lowercase;
     color: var(--text);
+  }
+
+  .eyebrow,
+  h1,
+  .hero-text,
+  .hero-actions {
+    max-width: 760px;
   }
 
   .eyebrow {
@@ -239,7 +255,6 @@ const categories = [
 
   .hero-text {
     margin: 0;
-    max-width: 720px;
     font-size: 1.28rem;
     color: var(--text-soft);
   }
@@ -454,12 +469,12 @@ const categories = [
     }
 
     .hero {
-      padding: 20px 0 40px;
+      padding: 0 0 40px;
     }
 
-    .logo {
-      margin-bottom: 36px;
-      font-size: 1.6rem;
+    .hero-topline {
+      padding: 16px 0 14px;
+      margin-bottom: 32px;
     }
 
     h1 {
