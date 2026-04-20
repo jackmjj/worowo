@@ -1,25 +1,28 @@
 ---
+// worowo - Dashboard Style Toolkit
+// 核心逻辑：去身份标签，强化工具属性，2x2 聚合布局
+
 const categories = [
   {
     title: "Quotes & Invoices",
     badge: "Document",
-    description: "Generate professional business documents in seconds — ready to send or print.",
+    description: "Professional docs in seconds — ready to send or print.",
     tools: [
-      { name: "Quote / Estimate Generator", desc: "Create a clean price quote to send to a client", slug: "quote-generator" },
-      { name: "Invoice Generator", desc: "Generate a professional invoice, ready to send or print", slug: "invoice-generator" },
-      { name: "Proforma Invoice Generator", desc: "Issue a proforma before the sale is confirmed", slug: "proforma-invoice" },
-      { name: "Receipt Generator", desc: "Provide a simple proof of payment", slug: "receipt-generator" },
+      { name: "Quote / Estimate Generator", slug: "quote-generator" },
+      { name: "Invoice Generator", slug: "invoice-generator" },
+      { name: "Proforma Invoice Generator", slug: "proforma-invoice" },
+      { name: "Receipt Generator", slug: "receipt-generator" },
     ],
     href: "/quotes-invoices/",
   },
   {
     title: "Packing & Shipping",
     badge: "Logistics",
-    description: "Accurate shipping paperwork without opening complex software.",
+    description: "Shipping paperwork without opening complex software.",
     tools: [
-      { name: "Packing Slip Generator", desc: "List the items included in a shipment", slug: "packing-slip" },
-      { name: "Packing List Generator", desc: "Detailed list for multi-box shipments", slug: "packing-list" },
-      { name: "Delivery Note Generator", desc: "Confirm what was delivered and when", slug: "delivery-note" },
+      { name: "Packing Slip Generator", slug: "packing-slip" },
+      { name: "Packing List Generator", slug: "packing-list" },
+      { name: "Delivery Note Generator", slug: "delivery-note" },
     ],
     href: "/packing-shipping/",
   },
@@ -28,10 +31,10 @@ const categories = [
     badge: "Finance",
     description: "Quick answers to the numbers that matter.",
     tools: [
-      { name: "Profit Margin Calculator", desc: "Find out how much you're making per sale", slug: "margin-calculator" },
-      { name: "Markup Calculator", desc: "Set the right selling price from your cost", slug: "markup-calculator" },
-      { name: "Break-even Calculator", desc: "Know the minimum price to cover costs", slug: "break-even" },
-      { name: "Landed Cost Calculator", desc: "Factor in shipping, tax, and fees", slug: "landed-cost" },
+      { name: "Profit Margin Calculator", slug: "margin-calculator" },
+      { name: "Markup Calculator", slug: "markup-calculator" },
+      { name: "Break-even Calculator", slug: "break-even" },
+      { name: "Landed Cost Calculator", slug: "landed-cost" },
     ],
     href: "/calculators/",
   },
@@ -40,9 +43,9 @@ const categories = [
     badge: "Static",
     description: "Download and print — no editing required.",
     tools: [
-      { name: "Blank Invoice Template", desc: "A clean, ready-to-print invoice sheet", slug: "blank-invoice" },
-      { name: "Packing List Template", desc: "Pre-formatted packing list for manual use", slug: "manual-packing-list" },
-      { name: "Checklist / Duty Roster", desc: "Simple checklists for daily operations", slug: "checklist" },
+      { name: "Blank Invoice Template", slug: "blank-invoice" },
+      { name: "Packing List Template", slug: "manual-packing-list" },
+      { name: "Checklist / Duty Roster", slug: "checklist" },
     ],
     href: "/templates/",
   },
@@ -54,7 +57,7 @@ const categories = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>worowo — Skip the Software. Get the Result.</title>
-    <meta name="description" content="Generate invoices, quotes, packing documents, and business calculations in seconds." />
+    <meta name="description" content="Generate invoices, quotes, and packing documents in seconds. No account needed. Instant business tools." />
     <link rel="canonical" href="https://www.worowo.com/" />
     <meta name="theme-color" content="#ffffff" />
   </head>
@@ -79,10 +82,6 @@ const categories = [
             Generate invoices, quotes, packing documents, and business calculations
             in seconds. <strong>No account, no setup, just results.</strong>
           </p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#tools">Start Generating</a>
-            <a class="btn btn-secondary" href="/quotes-invoices/invoice-generator/">Create Invoice</a>
-          </div>
         </div>
       </section>
 
@@ -90,25 +89,26 @@ const categories = [
         <div class="container">
           <div class="category-grid">
             {categories.map((category) => (
-              <article class="category-block">
-                <div class="category-header">
-                  <span class="category-badge">{category.badge}</span>
-                  <h2>{category.title}</h2>
-                  <p>{category.description}</p>
-                </div>
+              <div class="category-card">
+                <div class="card-inner">
+                  <header class="card-header">
+                    <span class="badge">{category.badge}</span>
+                    <h2>{category.title}</h2>
+                    <p>{category.description}</p>
+                  </header>
 
-                <div class="tool-list-container">
-                  {category.tools.map((tool) => (
-                    <a href={`${category.href}${tool.slug}/`} class="tool-item">
-                      <div class="tool-info">
+                  <div class="tool-list">
+                    {category.tools.map((tool) => (
+                      <a href={`${category.href}${tool.slug}/`} class="tool-row">
                         <span class="tool-name">{tool.name}</span>
-                        <span class="tool-desc">{tool.desc}</span>
-                      </div>
-                      <span class="arrow">→</span>
-                    </a>
-                  ))}
+                        <span class="arrow">→</span>
+                      </a>
+                    ))}
+                  </div>
+                  
+                  <a href={category.href} class="view-all">Explore Category →</a>
                 </div>
-              </article>
+              </div>
             ))}
           </div>
         </div>
@@ -117,24 +117,26 @@ const categories = [
 
     <footer class="site-footer">
       <div class="container">
-        <div class="footer-grid">
+        <div class="footer-content">
           <div class="footer-brand">
             <span class="logo">worowo</span>
-            <p>Built for people who want clean results fast — without opening complicated software or creating an account.</p>
+            <p>Built for efficiency. No logins, no tracking, just tools that work in your browser.</p>
           </div>
-          <div class="footer-links">
+          <div class="footer-nav">
             <div class="footer-col">
               <strong>Contact</strong>
               <a href="mailto:hello@worowo.com">hello@worowo.com</a>
             </div>
             <div class="footer-col">
-              <strong>Policy</strong>
+              <strong>Legal</strong>
               <a href="/privacy/">Privacy</a>
               <a href="/terms/">Terms</a>
             </div>
           </div>
         </div>
-        <p class="copyright">© 2026 worowo. Skip the Software. Get the Result.</p>
+        <div class="footer-bottom">
+          <p>© 2026 worowo. Optimized for speed and privacy.</p>
+        </div>
       </div>
     </footer>
   </body>
@@ -142,78 +144,132 @@ const categories = [
 
 <style>
   :root {
-    --primary: #2563eb;
     --text: #0f172a;
     --text-soft: #64748b;
-    --bg: #ffffff;
     --bg-soft: #f8fafc;
     --line: #e2e8f0;
-    --font-stack: system-ui, -apple-system, sans-serif;
+    --primary: #2563eb;
+    --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
 
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font-stack); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  body { 
+    margin: 0; 
+    background: #ffffff; 
+    color: var(--text); 
+    font-family: var(--font-stack); 
+    line-height: 1.5; 
+    -webkit-font-smoothing: antialiased; 
+  }
 
-  .container { width: min(1200px, calc(100% - 40px)); margin: 0 auto; }
+  .container { width: min(1140px, calc(100% - 40px)); margin: 0 auto; }
 
   /* Header */
-  .site-header { position: sticky; top: 0; z-index: 100; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-  .header-inner { height: 64px; display: flex; align-items: center; justify-content: space-between; }
-  .logo { font-size: 1.3rem; font-weight: 850; letter-spacing: -0.05em; text-transform: lowercase; color: var(--text); text-decoration: none; }
-  .nav a { font-size: 0.9rem; font-weight: 500; color: var(--text-soft); text-decoration: none; margin-left: 20px; }
+  .site-header { 
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    background: rgba(255, 255, 255, 0.85); 
+    backdrop-filter: blur(12px); 
+    border-bottom: 1px solid var(--line); 
+    height: 64px;
+    display: flex;
+    align-items: center;
+  }
+  .header-inner { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+  .logo { font-size: 1.3rem; font-weight: 850; letter-spacing: -0.05em; text-transform: lowercase; text-decoration: none; color: var(--text); }
+  .nav a { font-size: 0.9rem; font-weight: 500; color: var(--text-soft); text-decoration: none; margin-left: 20px; transition: 0.2s; }
+  .nav a:hover { color: var(--primary); }
 
   /* Hero */
-  .hero { padding: 80px 0 60px; }
-  .eyebrow { color: var(--primary); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px; }
-  h1 { font-size: clamp(2.2rem, 6vw, 3.8rem); line-height: 1.1; letter-spacing: -0.04em; margin: 0 0 20px; font-weight: 900; }
-  .hero-text { font-size: 1.2rem; color: var(--text-soft); max-width: 680px; margin-bottom: 32px; }
-  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero { padding: 90px 0 50px; }
+  .eyebrow { color: var(--primary); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+  h1 { font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1.05; letter-spacing: -0.04em; margin: 0 0 20px; font-weight: 900; }
+  .hero-text { font-size: 1.25rem; color: var(--text-soft); max-width: 650px; }
+  .hero-text strong { color: var(--text); }
+
+  /* Grid Layout - 2x2 并排 */
+  .section { padding-bottom: 100px; }
+  .category-grid { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 32px; 
+  }
+
+  /* Card 收拢外框样式 */
+  .category-card { 
+    border: 1px solid var(--line); 
+    border-radius: 12px; 
+    background: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .category-card:hover {
+    border-color: var(--text);
+    box-shadow: 0 12px 30px -15px rgba(0,0,0,0.08);
+  }
+
+  .card-inner { padding: 32px; display: flex; flex-direction: column; height: 100%; }
   
-  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 24px; border-radius: 6px; font-weight: 600; text-decoration: none; transition: 0.2s; }
-  .btn-primary { background: var(--text); color: #fff; }
-  .btn-secondary { border: 1px solid var(--line); color: var(--text); }
+  .badge { 
+    font-size: 0.65rem; 
+    font-weight: 800; 
+    text-transform: uppercase; 
+    color: var(--text-soft); 
+    background: var(--bg-soft); 
+    padding: 4px 8px; 
+    border-radius: 4px; 
+    display: inline-block; 
+    margin-bottom: 12px; 
+  }
+  
+  .card-header h2 { font-size: 1.6rem; font-weight: 850; margin: 0 0 8px; letter-spacing: -0.02em; }
+  .card-header p { color: var(--text-soft); margin: 0 0 24px; font-size: 0.95rem; line-height: 1.4; }
 
-  /* Category Grid - 核心改动：2列布局 */
-  .section { padding: 40px 0 100px; }
-  .category-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 60px 40px; }
+  /* 工具列表 - 保持2px粗黑线顶部 */
+  .tool-list { border-top: 2px solid var(--text); margin-bottom: 24px; }
+  .tool-row { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 16px 0; 
+    border-bottom: 1px dotted var(--line); 
+    text-decoration: none; 
+    color: var(--text);
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  .tool-row:hover { color: var(--primary); border-bottom-style: solid; border-bottom-color: var(--text); }
+  .tool-row .arrow { color: var(--line); transition: 0.2s; font-weight: 300; }
+  .tool-row:hover .arrow { transform: translateX(4px); color: var(--text); }
 
-  .category-header { margin-bottom: 20px; }
-  .category-badge { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--text-soft); background: var(--bg-soft); padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
-  .category-header h2 { font-size: 1.6rem; font-weight: 850; margin: 0 0 8px; letter-spacing: -0.02em; }
-  .category-header p { color: var(--text-soft); margin: 0; font-size: 0.95rem; line-height: 1.4; }
+  .view-all { margin-top: auto; font-size: 0.85rem; font-weight: 700; color: var(--text-soft); text-decoration: none; }
+  .view-all:hover { color: var(--primary); }
 
-  /* Tool List */
-  .tool-list-container { display: flex; flex-direction: column; border-top: 2px solid var(--text); }
-  .tool-item { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); transition: 0.2s; text-decoration: none; }
-  .tool-item:hover { padding-left: 6px; border-bottom-color: var(--text); }
-  .tool-info { display: flex; flex-direction: column; gap: 3px; }
-  .tool-name { font-size: 1.05rem; font-weight: 700; color: var(--text); }
-  .tool-desc { font-size: 0.85rem; color: var(--text-soft); }
-  .arrow { color: var(--line); font-size: 1.1rem; }
-  .tool-item:hover .arrow { color: var(--text); transform: translateX(3px); }
-
-  /* Footer - 重新设计的紧凑底部 */
-  .site-footer { background: var(--bg-soft); padding: 60px 0 40px; border-top: 1px solid var(--line); margin-top: 60px; }
-  .footer-grid { display: flex; justify-content: space-between; gap: 40px; margin-bottom: 40px; flex-wrap: wrap; }
-  .footer-brand { max-width: 400px; }
-  .footer-brand p { color: var(--text-soft); font-size: 0.9rem; margin-top: 15px; }
-  .footer-links { display: flex; gap: 60px; }
-  .footer-col { display: flex; flex-direction: column; gap: 10px; }
-  .footer-col strong { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  /* Footer - 紧凑化整合 */
+  .site-footer { border-top: 1px solid var(--line); padding: 70px 0 40px; background: var(--bg-soft); margin-top: 60px; }
+  .footer-content { display: flex; justify-content: space-between; gap: 40px; flex-wrap: wrap; margin-bottom: 40px; }
+  .footer-brand { max-width: 350px; }
+  .footer-brand p { font-size: 0.9rem; color: var(--text-soft); margin: 15px 0 0; line-height: 1.6; }
+  .footer-nav { display: flex; gap: 60px; }
+  .footer-col { display: flex; flex-direction: column; gap: 12px; }
+  .footer-col strong { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text); }
   .footer-col a { font-size: 0.9rem; color: var(--text-soft); text-decoration: none; }
   .footer-col a:hover { color: var(--primary); }
-  .copyright { font-size: 0.8rem; color: var(--text-soft); border-top: 1px solid var(--line); padding-top: 25px; margin: 0; }
+  .footer-bottom { border-top: 1px solid var(--line); padding-top: 30px; font-size: 0.85rem; color: var(--text-soft); }
 
-  /* Responsive */
-  @media (max-width: 960px) {
-    .category-grid { grid-template-columns: 1fr; gap: 50px; }
-    .footer-links { gap: 30px; }
+  /* 响应式适配 */
+  @media (max-width: 900px) {
+    .category-grid { grid-template-columns: 1fr; }
+    .hero { padding: 60px 0 30px; }
+    .footer-nav { gap: 40px; }
   }
 
   @media (max-width: 600px) {
-    .hero { padding: 60px 0 40px; }
-    .hero-actions .btn { width: 100%; }
-    .footer-grid { flex-direction: column; gap: 30px; }
+    .card-inner { padding: 24px; }
+    .footer-content { flex-direction: column; }
+    .header-inner { flex-direction: column; height: auto; padding: 15px 0; gap: 10px; }
+    .nav { margin-left: 0; }
+    .nav a { margin: 0 15px 0 0; }
   }
 </style>
