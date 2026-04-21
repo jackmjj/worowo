@@ -127,12 +127,16 @@ const categories = [
   canonical="https://www.worowo.com/"
 >
   <main>
-    <section class="section-tight">
+    <section class="section-tight home-hero">
       <div class="container">
-        <div class="topline">
+        <div class="topline home-topline">
           <a href="/" class="logo">worowo</a>
         </div>
+      </div>
 
+      <div class="home-hero-divider"></div>
+
+      <div class="container">
         <div class="hero-copy">
           <p class="brand-line">Skip the Software. Get the Result.</p>
           <h1 class="hero-title">Invoice, Quote, Packing List, Template, and Business Calculator Tools</h1>
@@ -209,3 +213,17 @@ const categories = [
     </section>
   </main>
 </BaseLayout>
+
+<style>
+  .home-topline {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .home-hero-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--line);
+    margin: 0 0 32px;
+  }
+</style>
