@@ -174,11 +174,7 @@ const relatedTools = [
     <div class="pm-results-bottom">
       <div class="pm-projection-title">Profit Projection</div>
 
-      <div class="pm-projection-grid">
-        <div class="pm-projection-item">
-          <span>Daily</span>
-          <strong id="projectionDaily">0.00</strong>
-        </div>
+      <div class="pm-projection-grid pm-projection-grid-3">
         <div class="pm-projection-item">
           <span>Weekly</span>
           <strong id="weeklyProfit">0.00</strong>
@@ -208,6 +204,38 @@ const relatedTools = [
       <li><strong>Calculate Margin</strong> — Enter cost price, selling price, and extra cost.</li>
       <li><strong>Find Selling Price</strong> — Enter cost price and target margin.</li>
       <li><strong>Find Cost Price</strong> — Enter selling price and target margin.</li>
+    </ul>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>Common Pricing and Profit Use Cases</h2>
+    <p>
+      Use this tool before sending quotes, reviewing supplier prices, comparing margins,
+      or estimating future earnings. It is especially useful when you need to work backwards
+      from a target margin or a fixed selling price.
+    </p>
+    <ul>
+      <li>Check margin before sending a quote</li>
+      <li>Find the selling price needed to hit a target margin</li>
+      <li>Find the highest cost price you can accept</li>
+      <li>Compare markup, margin, and break-even price</li>
+      <li>Estimate daily, weekly, monthly, and yearly profit</li>
+    </ul>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>Who This Calculator Is For</h2>
+    <p>
+      This calculator is useful for ecommerce sellers, importers, exporters, wholesalers,
+      retailers, marketplace sellers, and service businesses that need simple pricing and
+      profit planning.
+    </p>
+    <ul>
+      <li>Retail and ecommerce pricing</li>
+      <li>Wholesale and trade quotations</li>
+      <li>Marketplace fee and cost planning</li>
+      <li>Supplier negotiation</li>
+      <li>Simple profit forecasting</li>
     </ul>
   </div>
 
@@ -287,7 +315,6 @@ const relatedTools = [
         metric3Value: $("metric3Value"),
         metric4Value: $("metric4Value"),
 
-        projectionDaily: $("projectionDaily"),
         weeklyProfit: $("weeklyProfit"),
         monthlyProfit: $("monthlyProfit"),
         yearlyProfit: $("yearlyProfit"),
@@ -337,7 +364,6 @@ const relatedTools = [
         setText(els.metric2Value, 0, false);
         setText(els.metric3Value, 0, false);
         setText(els.metric4Value, 0, false);
-        setText(els.projectionDaily, 0, false);
         setText(els.weeklyProfit, 0, false);
         setText(els.monthlyProfit, 0, false);
         setText(els.yearlyProfit, 0, false);
@@ -486,7 +512,6 @@ const relatedTools = [
 
         setText(els.metric3Value, unitProfit);
         setText(els.metric4Value, dailyProfit);
-        setText(els.projectionDaily, dailyProfit);
         setText(els.weeklyProfit, dailyProfit * 7);
         setText(els.monthlyProfit, dailyProfit * 30);
         setText(els.yearlyProfit, dailyProfit * 365);
@@ -706,10 +731,14 @@ const relatedTools = [
     /* --- 投影网格 --- */
     .pm-projection-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       border: 1px solid #e2e8f0;
       border-radius: 12px;
       overflow: hidden;
+    }
+
+    .pm-projection-grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .pm-projection-item {
