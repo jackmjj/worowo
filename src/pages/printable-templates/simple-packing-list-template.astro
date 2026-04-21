@@ -1,0 +1,288 @@
+---
+import PrintableTemplateLayout from "../../layouts/PrintableTemplateLayout.astro";
+
+const pageMeta = {
+  title: "Simple Packing List Template",
+  description:
+    "Free simple packing list template in clean A4 format. Print it, fill it by hand, or save it as PDF for ecommerce, shipping, trading, and export use.",
+  canonical: "https://www.worowo.com/printable-templates/simple-packing-list-template/",
+  intro:
+    "Use this simple packing list template for ecommerce orders, carton packing records, trading shipments, and basic export documentation.",
+};
+
+const faqItems = [
+  {
+    question: "Can I print this packing list template directly?",
+    answer:
+      "Yes. Open the printable version and print it directly on A4 paper.",
+  },
+  {
+    question: "Can I save this template as PDF?",
+    answer:
+      "Yes. Open the printable version, choose Print in your browser, and select Save as PDF.",
+  },
+  {
+    question: "Is this template suitable for ecommerce shipments?",
+    answer:
+      "Yes. It works well for simple parcel packing lists, carton packing records, and general order documentation.",
+  },
+  {
+    question: "Is this a fillable generator?",
+    answer:
+      "This version is a blank printable template. A fillable online generator can be added later as a separate tool.",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Printable Templates",
+    href: "/printable-templates/",
+    desc: "Browse all printable business document templates.",
+  },
+  {
+    name: "Packing & Shipping",
+    href: "/packing-shipping/",
+    desc: "Explore shipping and packing related tools and templates.",
+  },
+];
+---
+
+<PrintableTemplateLayout
+  title={pageMeta.title}
+  description={pageMeta.description}
+  canonical={pageMeta.canonical}
+  eyebrow="Printable Template"
+  categoryLabel="Printable Templates"
+  categoryHref="/printable-templates/"
+  intro={pageMeta.intro}
+  faqItems={faqItems}
+  relatedTools={relatedTools}
+>
+  <div slot="actions" class="tpl-actions-row">
+    <div class="tpl-actions-copy">
+      <div class="tpl-actions-label">A4 Portrait Template</div>
+      <p>
+        Preview the full printable page below, then open the clean print view for
+        printing or PDF export.
+      </p>
+    </div>
+
+    <div class="tpl-actions-buttons">
+      <a
+        class="tpl-btn tpl-btn-primary"
+        href="/printable-templates/simple-packing-list-template-print/"
+        target="_blank"
+        rel="noopener"
+      >
+        Open Printable Template
+      </a>
+
+      <a class="tpl-btn tpl-btn-secondary" href="/printable-templates/">
+        Back to Printable Templates
+      </a>
+    </div>
+  </div>
+
+  <div slot="preview" class="tpl-preview-stage">
+    <div class="tpl-preview-scroll">
+      <div class="tpl-paper-frame">
+        <iframe
+          src="/printable-templates/simple-packing-list-template-print/"
+          title="Simple Packing List Template Preview"
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>What This Template Includes</h2>
+    <p>
+      This simple packing list template includes a packing list number, date,
+      order number, shipper and consignee fields, item lines, total quantity,
+      total packages, gross weight, net weight, remarks, and signature fields.
+    </p>
+    <ul>
+      <li>Sender and receiver information</li>
+      <li>Item description and quantity lines</li>
+      <li>Package or carton reference column</li>
+      <li>Weight summary area</li>
+      <li>Remarks and signature area</li>
+    </ul>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>Best Use Cases</h2>
+    <p>
+      This template is best for simple shipping records where a clean blank form
+      is more useful than a fully dynamic generator.
+    </p>
+    <ul>
+      <li>Small parcel shipments</li>
+      <li>Ecommerce packing records</li>
+      <li>Carton packing documentation</li>
+      <li>Trading and export support paperwork</li>
+      <li>Internal warehouse or dispatch use</li>
+    </ul>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>Why This Page Uses a Preview-First Layout</h2>
+    <p>
+      Printable templates are document-first pages. Most users want to see the
+      actual A4 page before reading supporting text, so this layout gives the
+      template preview the main visual priority.
+    </p>
+    <ul>
+      <li>Large A4-style preview area</li>
+      <li>Print and PDF action buttons close to the preview</li>
+      <li>Explanation content moved below the document</li>
+      <li>Better fit for printable business forms</li>
+    </ul>
+  </div>
+
+  <style>
+    .tpl-actions-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .tpl-actions-copy {
+      display: grid;
+      gap: 6px;
+      max-width: 620px;
+    }
+
+    .tpl-actions-label {
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .tpl-actions-copy p {
+      margin: 0;
+      color: var(--text-soft);
+      line-height: 1.7;
+      font-size: 0.94rem;
+    }
+
+    .tpl-actions-buttons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tpl-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 999px;
+      font-size: 0.96rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .tpl-btn-primary {
+      background: #2563eb;
+      color: #ffffff;
+      border: 1px solid #2563eb;
+      box-shadow: 0 14px 30px -18px rgba(37, 99, 235, 0.7);
+    }
+
+    .tpl-btn-primary:hover {
+      transform: translateY(-1px);
+    }
+
+    .tpl-btn-secondary {
+      background: #ffffff;
+      color: var(--text);
+      border: 1px solid #cbd5e1;
+    }
+
+    .tpl-btn-secondary:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+    }
+
+    .tpl-preview-stage {
+      display: flex;
+      justify-content: center;
+    }
+
+    .tpl-preview-scroll {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 2px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tpl-paper-frame {
+      width: 100%;
+      min-width: 820px;
+      max-width: 980px;
+      margin: 0 auto;
+      background: #e5e7eb;
+      border: 1px solid #d1d5db;
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    }
+
+    .tpl-paper-frame iframe {
+      display: block;
+      width: 100%;
+      height: 1180px;
+      border: 0;
+      border-radius: 12px;
+      background: #ffffff;
+    }
+
+    @media (max-width: 980px) {
+      .tpl-paper-frame {
+        min-width: 780px;
+      }
+
+      .tpl-paper-frame iframe {
+        height: 1120px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .tpl-actions-row {
+        align-items: stretch;
+      }
+
+      .tpl-actions-buttons {
+        width: 100%;
+        flex-direction: column;
+      }
+
+      .tpl-btn {
+        width: 100%;
+      }
+
+      .tpl-paper-frame {
+        min-width: 740px;
+        padding: 10px;
+        border-radius: 14px;
+      }
+
+      .tpl-paper-frame iframe {
+        height: 1080px;
+        border-radius: 10px;
+      }
+    }
+  </style>
+</PrintableTemplateLayout>

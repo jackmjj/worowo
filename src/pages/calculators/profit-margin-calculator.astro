@@ -2,6 +2,7 @@
 import ToolLayout from "../../layouts/ToolLayout.astro";
 
 const toolMeta = {
+  title: "Profit Margin Calculator",
   seoTitle: "Profit Margin Calculator, Selling Price, Cost Price & Profit Projection | worowo",
   slug: "profit-margin-calculator",
   category: "Business Calculators",
@@ -61,7 +62,8 @@ const relatedTools = [
 ---
 
 <ToolLayout
-  title={toolMeta.seoTitle}
+  title={toolMeta.title}
+  pageTitle={toolMeta.seoTitle}
   description={toolMeta.description}
   canonical={toolMeta.canonical}
   eyebrow="Business Calculator"

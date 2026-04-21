@@ -1,0 +1,189 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const tools = [
+  {
+    title: "Simple Packing List Template",
+    description:
+      "Clean A4 printable packing list template for shipping, ecommerce, trading, and export paperwork.",
+    href: "/printable-templates/simple-packing-list-template/",
+    tag: "Packing & Shipping",
+  },
+];
+---
+
+<BaseLayout
+  title="Printable Templates | worowo"
+  description="Free printable business templates for packing, shipping, invoicing, and trade paperwork."
+  canonical="https://www.worowo.com/printable-templates/"
+>
+  <main class="templates-page">
+    <section class="templates-hero">
+      <div class="container">
+        <div class="topline">
+          <a href="/" class="logo">worowo</a>
+        </div>
+      </div>
+
+      <div class="hero-divider"></div>
+
+      <div class="container">
+        <nav class="templates-breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span>&gt;</span>
+          <span>Printable Templates</span>
+        </nav>
+
+        <div class="templates-hero-copy">
+          <p class="eyebrow">Printable Templates</p>
+          <h1 class="templates-page-title">Printable Templates</h1>
+          <p class="templates-page-summary">
+            Ready-to-print business templates for shipping, packing, invoicing, and trade documentation.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="templates-main">
+      <div class="container">
+        <div class="template-grid">
+          {tools.map((tool) => (
+            <a class="template-card" href={tool.href}>
+              <span class="template-tag">{tool.tag}</span>
+              <h2>{tool.title}</h2>
+              <p>{tool.description}</p>
+              <span class="template-arrow">→</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <style>
+    .templates-page {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .templates-hero {
+      padding: 0 0 24px;
+    }
+
+    .templates-hero .topline {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .hero-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(15, 23, 42, 0.08);
+      margin: 0 0 18px;
+    }
+
+    .templates-breadcrumb {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0 0 16px;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+
+    .templates-hero-copy {
+      padding: 0 0 10px;
+      max-width: 780px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--primary);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .templates-page-title {
+      margin: 0 0 12px;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      line-height: 1.06;
+      letter-spacing: -0.035em;
+    }
+
+    .templates-page-summary {
+      margin: 0;
+      max-width: 760px;
+      color: var(--text-soft);
+      font-size: 1.02rem;
+      line-height: 1.8;
+    }
+
+    .templates-main {
+      padding: 12px 0 42px;
+    }
+
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .template-card {
+      position: relative;
+      display: block;
+      padding: 24px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 16px 40px -28px rgba(15, 23, 42, 0.25);
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .template-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--text);
+    }
+
+    .template-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #2563eb;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    .template-card h2 {
+      margin: 0 0 8px;
+      font-size: 1.08rem;
+      line-height: 1.35;
+    }
+
+    .template-card p {
+      margin: 0;
+      color: var(--text-soft);
+      line-height: 1.7;
+      font-size: 0.94rem;
+      max-width: 34ch;
+    }
+
+    .template-arrow {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .template-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>

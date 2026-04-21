@@ -1,0 +1,495 @@
+---
+const title = "Simple Packing List Template";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title} | worowo</title>
+    <meta
+      name="description"
+      content="Printable A4 simple packing list template for shipping, export, and ecommerce."
+    />
+    <meta name="robots" content="index,follow" />
+    <link
+      rel="canonical"
+      href="https://www.worowo.com/printable-templates/simple-packing-list-template-print/"
+    />
+
+    <style>
+      :root {
+        --paper-width: 210mm;
+        --paper-height: 297mm;
+
+        --margin-top: 14mm;
+        --margin-right: 14mm;
+        --margin-bottom: 14mm;
+        --margin-left: 14mm;
+
+        --text: #111111;
+        --line: #222222;
+        --line-light: #444444;
+        --bg: #f1f5f9;
+
+        --font-main: Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: var(--font-main);
+        color: var(--text);
+        background: var(--bg);
+      }
+
+      body {
+        padding: 24px;
+      }
+
+      .toolbar {
+        width: min(1100px, 100%);
+        margin: 0 auto 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .toolbar a {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .toolbar button {
+        appearance: none;
+        border: none;
+        background: #2563eb;
+        color: #fff;
+        min-height: 44px;
+        padding: 0 18px;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .toolbar button:hover {
+        filter: brightness(0.98);
+      }
+
+      .page-wrap {
+        width: min(100%, 1100px);
+        margin: 0 auto;
+        overflow: auto;
+        padding: 8px;
+      }
+
+      .page {
+        width: var(--paper-width);
+        min-width: var(--paper-width);
+        height: var(--paper-height);
+        margin: 0 auto;
+        background: #ffffff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        padding:
+          var(--margin-top)
+          var(--margin-right)
+          var(--margin-bottom)
+          var(--margin-left);
+        overflow: hidden;
+      }
+
+      .title {
+        margin: 0 0 5mm;
+        text-align: center;
+        font-size: 17pt;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .doc-meta {
+        display: grid;
+        grid-template-columns: 1.25fr 1fr 1fr;
+        gap: 5mm;
+        margin-bottom: 4.5mm;
+        font-size: 9.3pt;
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: flex-end;
+        gap: 2.2mm;
+        min-width: 0;
+      }
+
+      .meta-item-wide {
+        min-width: 0;
+      }
+
+      .meta-label {
+        white-space: nowrap;
+        flex: 0 0 auto;
+        line-height: 1.2;
+      }
+
+      .meta-line {
+        flex: 1 1 auto;
+        min-width: 24mm;
+        height: 0;
+        border-bottom: 0.5pt solid var(--line);
+      }
+
+      .section {
+        margin-top: 4mm;
+      }
+
+      .section-title {
+        margin: 0 0 2.2mm;
+        font-size: 10.2pt;
+        font-weight: 700;
+      }
+
+      .party-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8mm;
+      }
+
+      .party-lines {
+        display: grid;
+        gap: 2.4mm;
+      }
+
+      .fill-row {
+        display: flex;
+        align-items: flex-end;
+        gap: 2mm;
+        font-size: 9.2pt;
+        line-height: 1.25;
+        min-width: 0;
+      }
+
+      .fill-row .label {
+        white-space: nowrap;
+        flex: 0 0 auto;
+      }
+
+      .fill-row .fill {
+        flex: 1 1 auto;
+        min-width: 0;
+        border-bottom: 0.5pt solid var(--line);
+        height: 0;
+      }
+
+      .table-wrap {
+        margin-top: 4.5mm;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+
+      .items-table {
+        border: 0.75pt solid var(--line);
+      }
+
+      .items-table th,
+      .items-table td {
+        border-right: 0.5pt solid var(--line-light);
+        border-bottom: 0.5pt solid var(--line-light);
+        padding: 2mm 1.8mm;
+        font-size: 9pt;
+        vertical-align: middle;
+      }
+
+      .items-table th:last-child,
+      .items-table td:last-child {
+        border-right: none;
+      }
+
+      .items-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .items-table thead th {
+        height: 9mm;
+        text-align: center;
+        font-weight: 700;
+        line-height: 1.15;
+      }
+
+      .items-table tbody td {
+        height: 10.5mm;
+      }
+
+      .col-no {
+        width: 8%;
+        text-align: center;
+      }
+
+      .col-desc {
+        width: 40%;
+        text-align: left;
+      }
+
+      .col-qty {
+        width: 10%;
+        text-align: center;
+      }
+
+      .col-unit {
+        width: 10%;
+        text-align: center;
+      }
+
+      .col-package {
+        width: 16%;
+        text-align: center;
+      }
+
+      .col-remarks {
+        width: 16%;
+        text-align: left;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3.2mm 10mm;
+        margin-top: 4.5mm;
+      }
+
+      .remarks-box {
+        margin-top: 4mm;
+      }
+
+      .remarks-fill {
+        margin-top: 2mm;
+        border-bottom: 0.5pt solid var(--line);
+        height: 9mm;
+      }
+
+      .sign-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+        margin-top: 5mm;
+      }
+
+      .sign-grid .fill-row {
+        min-height: 7mm;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+
+      @media print {
+        html,
+        body {
+          width: 210mm;
+          height: 297mm;
+          background: #ffffff;
+          margin: 0;
+          padding: 0;
+        }
+
+        .toolbar {
+          display: none !important;
+        }
+
+        .page-wrap {
+          width: 210mm;
+          margin: 0;
+          padding: 0;
+          overflow: visible;
+        }
+
+        .page {
+          width: 210mm;
+          min-width: 210mm;
+          height: 297mm;
+          margin: 0;
+          padding:
+            var(--margin-top)
+            var(--margin-right)
+            var(--margin-bottom)
+            var(--margin-left);
+          box-shadow: none;
+          overflow: hidden;
+          break-after: avoid-page;
+          page-break-after: avoid;
+        }
+      }
+
+      @media screen and (max-width: 900px) {
+        body {
+          padding: 12px;
+        }
+
+        .toolbar {
+          margin-bottom: 12px;
+        }
+
+        .page-wrap {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="toolbar">
+      <a href="/printable-templates/simple-packing-list-template/">
+        ← Back to template page
+      </a>
+      <button onclick="window.print()">Print / Save as PDF</button>
+    </div>
+
+    <div class="page-wrap">
+      <div class="page">
+        <h1 class="title">Packing List</h1>
+
+        <div class="doc-meta">
+          <div class="meta-item meta-item-wide">
+            <span class="meta-label">Packing List No.</span>
+            <span class="meta-line"></span>
+          </div>
+
+          <div class="meta-item">
+            <span class="meta-label">Date</span>
+            <span class="meta-line"></span>
+          </div>
+
+          <div class="meta-item">
+            <span class="meta-label">Order No.</span>
+            <span class="meta-line"></span>
+          </div>
+        </div>
+
+        <section class="section">
+          <div class="party-grid">
+            <div>
+              <h2 class="section-title">Shipper / Sender</h2>
+              <div class="party-lines">
+                <div class="fill-row">
+                  <span class="label">Company / Name</span>
+                  <span class="fill"></span>
+                </div>
+                <div class="fill-row">
+                  <span class="label">Address Line 1</span>
+                  <span class="fill"></span>
+                </div>
+                <div class="fill-row">
+                  <span class="label">Address Line 2</span>
+                  <span class="fill"></span>
+                </div>
+                <div class="fill-row">
+                  <span class="label">Contact</span>
+                  <span class="fill"></span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h2 class="section-title">Consignee / Receiver</h2>
+              <div class="party-lines">
+                <div class="fill-row">
+                  <span class="label">Company / Name</span>
+                  <span class="fill"></span>
+                </div>
+                <div class="fill-row">
+                  <span class="label">Address Line 1</span>
+                  <span class="fill"></span>
+                </div>
+                <div class="fill-row">
+                  <span class="label">Address Line 2</span>
+                  <span class="fill"></span>
+                </div>
+                <div class="fill-row">
+                  <span class="label">Contact</span>
+                  <span class="fill"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="table-wrap">
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th class="col-no">No.</th>
+                <th class="col-desc">Item Description</th>
+                <th class="col-qty">Qty</th>
+                <th class="col-unit">Unit</th>
+                <th class="col-package">Package / Carton</th>
+                <th class="col-remarks">Remarks</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="col-no">1</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="col-no">2</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="col-no">3</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="col-no">4</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="col-no">5</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="col-no">6</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="col-no">7</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="col-no">8</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="col-no">9</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td class="col-no">10</td><td></td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="section">
+          <div class="summary-grid">
+            <div class="fill-row">
+              <span class="label">Total Quantity</span>
+              <span class="fill"></span>
+            </div>
+            <div class="fill-row">
+              <span class="label">Total Packages</span>
+              <span class="fill"></span>
+            </div>
+            <div class="fill-row">
+              <span class="label">Gross Weight</span>
+              <span class="fill"></span>
+            </div>
+            <div class="fill-row">
+              <span class="label">Net Weight</span>
+              <span class="fill"></span>
+            </div>
+          </div>
+        </section>
+
+        <section class="remarks-box">
+          <div class="fill-row">
+            <span class="label">Remarks</span>
+            <span class="fill"></span>
+          </div>
+        </section>
+
+        <section class="sign-grid">
+          <div class="fill-row">
+            <span class="label">Signature</span>
+            <span class="fill"></span>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>
