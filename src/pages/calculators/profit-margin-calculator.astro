@@ -1,0 +1,1008 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+
+const toolMeta = {
+  seoTitle: "Profit Margin Calculator, Selling Price, Cost Price & Profit Projection | worowo",
+  slug: "profit-margin-calculator",
+  category: "Business Calculators",
+  categoryHref: "/calculators/",
+  description:
+    "Free online profit margin calculator to calculate profit margin, selling price, cost price, markup, break-even price, and daily, weekly, monthly, and yearly profit projection.",
+  intro:
+    "Calculate profit margin, selling price, cost price, markup, break-even price, and projected earnings in one business calculator.",
+  canonical: "https://www.worowo.com/calculators/profit-margin-calculator/",
+};
+
+const faqItems = [
+  {
+    question: "What can this profit margin calculator do?",
+    answer:
+      "This calculator supports three pricing modes. You can calculate profit margin from cost and selling price, calculate the selling price you need from cost and target margin, or calculate the maximum cost price you can afford from selling price and target margin.",
+  },
+  {
+    question: "What is the difference between profit margin and markup?",
+    answer:
+      "Profit margin is based on selling price, while markup is based on total cost. For example, if your total cost is 100 and your selling price is 150, your profit is 50, your markup is 50%, and your profit margin is 33.33%.",
+  },
+  {
+    question: "How do I calculate selling price from target profit margin?",
+    answer:
+      "Use the Find Selling Price mode. Enter your cost price, target profit margin, and any extra cost. The calculator will work out the selling price required to reach your target margin.",
+  },
+  {
+    question: "How do I calculate cost price from selling price and target margin?",
+    answer:
+      "Use the Find Cost Price mode. Enter your selling price, target profit margin, and extra cost. The calculator will show the maximum cost price you can afford while keeping that margin.",
+  },
+  {
+    question: "What should I include in extra cost?",
+    answer:
+      "You can include shipping, packaging, transaction fees, platform fees, labor, or any other direct per-unit business cost. Including extra cost gives you a more realistic margin calculation.",
+  },
+  {
+    question: "How is profit projection calculated?",
+    answer:
+      "Profit projection is based on profit per unit multiplied by your daily sales volume. The calculator then estimates daily, weekly, monthly, and yearly profit using 7, 30, and 365 days.",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Markup Calculator",
+    href: "/calculators/markup-calculator/",
+    desc: "Calculate selling price from cost and target markup.",
+  },
+  {
+    name: "Business Calculators",
+    href: "/calculators/",
+    desc: "Browse all pricing, profit, and cost tools.",
+  },
+];
+---
+
+<ToolLayout
+  title={toolMeta.seoTitle}
+  description={toolMeta.description}
+  canonical={toolMeta.canonical}
+  eyebrow="Business Calculator"
+  categoryLabel={toolMeta.category}
+  categoryHref={toolMeta.categoryHref}
+  intro={toolMeta.intro}
+  faqItems={faqItems}
+  relatedTools={relatedTools}
+>
+  <div slot="form" class="pm-card pm-form-card">
+    <div class="pm-form-top js-sync-top">
+      <h2 id="formTitle" class="pm-title">Calculate Profit Margin</h2>
+      <p id="formDesc" class="pm-desc pm-desc-main">
+        Enter cost, price, and extra cost to calculate margin, unit profit, and projected earnings.
+      </p>
+
+      <div class="pm-mode-switch" role="tablist" aria-label="Calculation mode">
+        <button type="button" class="pm-mode-btn is-active" data-mode="margin">
+          Calculate Margin
+        </button>
+        <button type="button" class="pm-mode-btn" data-mode="selling">
+          Find Selling Price
+        </button>
+        <button type="button" class="pm-mode-btn" data-mode="cost">
+          Find Cost Price
+        </button>
+      </div>
+
+      <div class="pm-core-group">
+        <label class="pm-field">
+          <span id="field1Label">Cost Price</span>
+          <input id="field1" type="number" min="0" step="0.01" placeholder="e.g. 100" />
+        </label>
+
+        <label class="pm-field">
+          <span id="field2Label">Selling Price</span>
+          <input id="field2" type="number" min="0" step="0.01" placeholder="e.g. 150" />
+        </label>
+
+        <label class="pm-field">
+          <span id="field3Label">Extra Cost</span>
+          <input id="field3" type="number" min="0" step="0.01" placeholder="e.g. 10" />
+        </label>
+
+        <p id="extraHelp" class="pm-help pm-help-field">
+          Include shipping, packaging, fees, or other direct cost.
+        </p>
+      </div>
+    </div>
+
+    <div class="pm-form-bottom">
+      <div class="pm-sub-head">Optional Projection</div>
+
+      <label class="pm-field pm-field-secondary">
+        <span>Daily Sales Volume</span>
+        <input id="dailySales" type="number" min="0" step="1" placeholder="e.g. 20" />
+      </label>
+
+      <p class="pm-help pm-help-field">
+        Add daily sales to estimate profit over time.
+      </p>
+
+      <div class="pm-actions">
+        <button id="resetButton" type="button" class="pm-btn pm-btn-secondary">Reset</button>
+        <button id="calculateButton" type="button" class="pm-btn pm-btn-primary">
+          Calculate
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div slot="results" class="pm-dashboard">
+    <div class="pm-results-top js-sync-top">
+      <div class="pm-hero-panel">
+        <div id="heroLabel" class="pm-hero-label">Profit Margin</div>
+        <div id="headlineValue" class="pm-hero-value">0.00%</div>
+        <p id="headlineText" class="pm-hero-text">
+          <span class="pm-hero-stat-label">Unit Profit:</span>
+          <strong class="pm-hero-stat-value">0.00</strong>
+          <span class="pm-hero-dot">·</span>
+          <span class="pm-hero-stat-label">Daily Profit:</span>
+          <strong class="pm-hero-stat-value">0.00</strong>
+        </p>
+      </div>
+
+      <div class="pm-metrics-grid">
+        <div class="pm-metric-card">
+          <span id="metric1Label" class="pm-metric-label">Markup</span>
+          <strong id="metric1Value" class="pm-metric-value">0.00%</strong>
+        </div>
+
+        <div class="pm-metric-card">
+          <span id="metric2Label" class="pm-metric-label">Break-even Price</span>
+          <strong id="metric2Value" class="pm-metric-value">0.00</strong>
+        </div>
+      </div>
+
+      <div class="pm-inline-results">
+        <div class="pm-inline-row pm-inline-row-profit">
+          <span id="metric3Label">Profit per Unit</span>
+          <strong id="metric3Value">0.00</strong>
+        </div>
+        <div class="pm-inline-row pm-inline-row-profit">
+          <span id="metric4Label">Daily Profit</span>
+          <strong id="metric4Value">0.00</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="pm-results-bottom">
+      <div class="pm-projection-title">Profit Projection</div>
+
+      <div class="pm-projection-grid">
+        <div class="pm-projection-item">
+          <span>Daily</span>
+          <strong id="projectionDaily">0.00</strong>
+        </div>
+        <div class="pm-projection-item">
+          <span>Weekly</span>
+          <strong id="weeklyProfit">0.00</strong>
+        </div>
+        <div class="pm-projection-item">
+          <span>Monthly</span>
+          <strong id="monthlyProfit">0.00</strong>
+        </div>
+        <div class="pm-projection-item">
+          <span>Yearly</span>
+          <strong id="yearlyProfit">0.00</strong>
+        </div>
+      </div>
+
+      <p class="pm-help pm-help-micro pm-note">Estimated using 7 / 30 / 365 days.</p>
+    </div>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>How This Profit Margin Calculator Works</h2>
+    <p>
+      Use this calculator to work out profit margin, unit profit, markup, break-even price,
+      and projected earnings without using a spreadsheet. It is built for sellers, traders,
+      wholesalers, and small businesses that need faster pricing decisions.
+    </p>
+    <ul>
+      <li><strong>Calculate Margin</strong> — Enter cost price, selling price, and extra cost.</li>
+      <li><strong>Find Selling Price</strong> — Enter cost price and target margin.</li>
+      <li><strong>Find Cost Price</strong> — Enter selling price and target margin.</li>
+    </ul>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>Common Pricing and Profit Use Cases</h2>
+    <p>
+      Use this tool before sending quotes, reviewing supplier prices, comparing margins,
+      or estimating future earnings. It is especially useful when you need to work backwards
+      from a target margin or a fixed selling price.
+    </p>
+    <ul>
+      <li>Check margin before sending a quote</li>
+      <li>Find the selling price needed to hit a target margin</li>
+      <li>Find the highest cost price you can accept</li>
+      <li>Compare markup, margin, and break-even price</li>
+      <li>Estimate daily, weekly, monthly, and yearly profit</li>
+    </ul>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>Who This Calculator Is For</h2>
+    <p>
+      This calculator is useful for ecommerce sellers, importers, exporters, wholesalers,
+      retailers, marketplace sellers, and service businesses that need simple pricing and
+      profit planning.
+    </p>
+    <ul>
+      <li>Retail and ecommerce pricing</li>
+      <li>Wholesale and trade quotations</li>
+      <li>Marketplace fee and cost planning</li>
+      <li>Supplier negotiation</li>
+      <li>Simple profit forecasting</li>
+    </ul>
+  </div>
+
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const $ = (id) => document.getElementById(id);
+
+      const MODE_CONFIG = {
+        margin: {
+          formTitle: "Calculate Profit Margin",
+          formDesc:
+            "Enter cost, price, and extra cost to calculate margin, unit profit, and projected earnings.",
+          heroLabel: "Profit Margin",
+          buttonText: "Calculate Margin",
+          fields: [
+            { label: "Cost Price", placeholder: "e.g. 100" },
+            { label: "Selling Price", placeholder: "e.g. 150" },
+            { label: "Extra Cost", placeholder: "e.g. 10" },
+          ],
+          metricLabels: ["Markup", "Break-even Price", "Profit per Unit", "Daily Profit"],
+          headlineIsPercent: true,
+        },
+        selling: {
+          formTitle: "Find Selling Price",
+          formDesc:
+            "Enter cost, target margin, and extra cost to calculate the selling price you need.",
+          heroLabel: "Selling Price",
+          buttonText: "Calculate Selling Price",
+          fields: [
+            { label: "Cost Price", placeholder: "e.g. 100" },
+            { label: "Target Profit Margin (%)", placeholder: "e.g. 40" },
+            { label: "Extra Cost", placeholder: "e.g. 10" },
+          ],
+          metricLabels: ["Profit Margin", "Break-even Price", "Profit per Unit", "Daily Profit"],
+          headlineIsPercent: false,
+        },
+        cost: {
+          formTitle: "Find Cost Price",
+          formDesc:
+            "Enter price, target margin, and extra cost to calculate the maximum cost you can afford.",
+          heroLabel: "Cost Price",
+          buttonText: "Calculate Cost Price",
+          fields: [
+            { label: "Selling Price", placeholder: "e.g. 200" },
+            { label: "Target Profit Margin (%)", placeholder: "e.g. 40" },
+            { label: "Extra Cost", placeholder: "e.g. 10" },
+          ],
+          metricLabels: ["Profit Margin", "Maximum Cost Price", "Profit per Unit", "Daily Profit"],
+          headlineIsPercent: false,
+        },
+      };
+
+      const els = {
+        modeButtons: Array.from(document.querySelectorAll(".pm-mode-btn")),
+        formTitle: $("formTitle"),
+        formDesc: $("formDesc"),
+        field1Label: $("field1Label"),
+        field2Label: $("field2Label"),
+        field3Label: $("field3Label"),
+        field1: $("field1"),
+        field2: $("field2"),
+        field3: $("field3"),
+        dailySales: $("dailySales"),
+        calculateButton: $("calculateButton"),
+        resetButton: $("resetButton"),
+
+        heroLabel: $("heroLabel"),
+        headlineValue: $("headlineValue"),
+        headlineText: $("headlineText"),
+
+        metric1Label: $("metric1Label"),
+        metric2Label: $("metric2Label"),
+        metric3Label: $("metric3Label"),
+        metric4Label: $("metric4Label"),
+        metric1Value: $("metric1Value"),
+        metric2Value: $("metric2Value"),
+        metric3Value: $("metric3Value"),
+        metric4Value: $("metric4Value"),
+
+        projectionDaily: $("projectionDaily"),
+        weeklyProfit: $("weeklyProfit"),
+        monthlyProfit: $("monthlyProfit"),
+        yearlyProfit: $("yearlyProfit"),
+      };
+
+      let currentMode = "margin";
+
+      function toNumber(value) {
+        const n = parseFloat(value);
+        return Number.isFinite(n) ? n : 0;
+      }
+
+      function formatNumber(value) {
+        return value.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function formatPercent(value) {
+        return `${value.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}%`;
+      }
+
+      function setText(el, value, isPercent = false) {
+        if (!el) return;
+        el.textContent = isPercent ? formatPercent(value) : formatNumber(value);
+        el.classList.toggle("negative", value < 0);
+      }
+
+      function resetResults() {
+        els.headlineValue.textContent = MODE_CONFIG[currentMode].headlineIsPercent ? "0.00%" : "0.00";
+        els.headlineValue.classList.remove("negative");
+
+        els.headlineText.innerHTML = `
+          <span class="pm-hero-stat-label">Unit Profit:</span>
+          <strong class="pm-hero-stat-value">0.00</strong>
+          <span class="pm-hero-dot">·</span>
+          <span class="pm-hero-stat-label">Daily Profit:</span>
+          <strong class="pm-hero-stat-value">0.00</strong>
+        `;
+        els.headlineText.classList.remove("negative");
+
+        setText(els.metric1Value, 0, true);
+        setText(els.metric2Value, 0, false);
+        setText(els.metric3Value, 0, false);
+        setText(els.metric4Value, 0, false);
+        setText(els.projectionDaily, 0, false);
+        setText(els.weeklyProfit, 0, false);
+        setText(els.monthlyProfit, 0, false);
+        setText(els.yearlyProfit, 0, false);
+      }
+
+      function clearInputsAndResults() {
+        [els.field1, els.field2, els.field3, els.dailySales].forEach((input) => {
+          if (input) input.value = "";
+        });
+        resetResults();
+      }
+
+      function syncProjectionDivider() {
+        const leftTop = document.querySelector(".pm-form-top");
+        const rightTop = document.querySelector(".pm-results-top");
+        if (!leftTop || !rightTop) return;
+
+        leftTop.style.height = "";
+        rightTop.style.height = "";
+
+        if (window.innerWidth <= 980) return;
+
+        const maxHeight = Math.max(leftTop.offsetHeight, rightTop.offsetHeight);
+        leftTop.style.height = `${maxHeight}px`;
+        rightTop.style.height = `${maxHeight}px`;
+      }
+
+      function applyMode(mode) {
+        currentMode = mode;
+        const config = MODE_CONFIG[mode];
+
+        els.modeButtons.forEach((btn) => {
+          const active = btn.dataset.mode === mode;
+          btn.classList.toggle("is-active", active);
+          btn.setAttribute("aria-selected", active ? "true" : "false");
+        });
+
+        els.formTitle.textContent = config.formTitle;
+        els.formDesc.textContent = config.formDesc;
+        els.heroLabel.textContent = config.heroLabel;
+        els.calculateButton.textContent = config.buttonText;
+
+        els.field1Label.textContent = config.fields[0].label;
+        els.field2Label.textContent = config.fields[1].label;
+        els.field3Label.textContent = config.fields[2].label;
+
+        els.field1.placeholder = config.fields[0].placeholder;
+        els.field2.placeholder = config.fields[1].placeholder;
+        els.field3.placeholder = config.fields[2].placeholder;
+
+        els.metric1Label.textContent = config.metricLabels[0];
+        els.metric2Label.textContent = config.metricLabels[1];
+        els.metric3Label.textContent = config.metricLabels[2];
+        els.metric4Label.textContent = config.metricLabels[3];
+
+        clearInputsAndResults();
+        requestAnimationFrame(syncProjectionDivider);
+      }
+
+      function setHeadline(mainValue, unitProfit, dailyProfit, isPercent = false) {
+        if (!els.headlineValue || !els.headlineText) return;
+
+        els.headlineValue.textContent = isPercent ? formatPercent(mainValue) : formatNumber(mainValue);
+        els.headlineValue.classList.toggle("negative", mainValue < 0);
+
+        els.headlineText.innerHTML = `
+          <span class="pm-hero-stat-label">Unit Profit:</span>
+          <strong class="pm-hero-stat-value">${formatNumber(unitProfit)}</strong>
+          <span class="pm-hero-dot">·</span>
+          <span class="pm-hero-stat-label">Daily Profit:</span>
+          <strong class="pm-hero-stat-value">${formatNumber(dailyProfit)}</strong>
+        `;
+        els.headlineText.classList.toggle("negative", unitProfit < 0 || dailyProfit < 0);
+      }
+
+      function calculate() {
+        const a = toNumber(els.field1.value);
+        const b = toNumber(els.field2.value);
+        const extra = toNumber(els.field3.value);
+        const qty = toNumber(els.dailySales.value);
+
+        let cost = 0;
+        let price = 0;
+        let marginPct = 0;
+        let totalCost = 0;
+        let unitProfit = 0;
+        let markupPct = 0;
+        let secondaryValue = 0;
+        let dailyProfit = 0;
+
+        if (currentMode === "margin") {
+          cost = a;
+          price = b;
+          totalCost = cost + extra;
+          unitProfit = price - totalCost;
+          marginPct = price > 0 ? (unitProfit / price) * 100 : 0;
+          markupPct = totalCost > 0 ? (unitProfit / totalCost) * 100 : 0;
+          secondaryValue = totalCost;
+          dailyProfit = unitProfit * qty;
+
+          setHeadline(marginPct, unitProfit, dailyProfit, true);
+          setText(els.metric1Value, markupPct, true);
+          setText(els.metric2Value, secondaryValue);
+        }
+
+        if (currentMode === "selling") {
+          cost = a;
+          marginPct = b;
+          const margin = marginPct / 100;
+          totalCost = cost + extra;
+          price = margin < 1 ? totalCost / (1 - margin) : 0;
+          unitProfit = price - totalCost;
+          secondaryValue = totalCost;
+          dailyProfit = unitProfit * qty;
+
+          setHeadline(price, unitProfit, dailyProfit, false);
+          setText(els.metric1Value, marginPct, true);
+          setText(els.metric2Value, secondaryValue);
+        }
+
+        if (currentMode === "cost") {
+          price = a;
+          marginPct = b;
+          const margin = marginPct / 100;
+          const allowedTotalCost = price * (1 - margin);
+          cost = allowedTotalCost - extra;
+          totalCost = cost + extra;
+          unitProfit = price - totalCost;
+          secondaryValue = cost;
+          dailyProfit = unitProfit * qty;
+
+          setHeadline(cost, unitProfit, dailyProfit, false);
+          setText(els.metric1Value, marginPct, true);
+          setText(els.metric2Value, secondaryValue);
+        }
+
+        setText(els.metric3Value, unitProfit);
+        setText(els.metric4Value, dailyProfit);
+        setText(els.projectionDaily, dailyProfit);
+        setText(els.weeklyProfit, dailyProfit * 7);
+        setText(els.monthlyProfit, dailyProfit * 30);
+        setText(els.yearlyProfit, dailyProfit * 365);
+
+        requestAnimationFrame(syncProjectionDivider);
+      }
+
+      function resetForm() {
+        clearInputsAndResults();
+        requestAnimationFrame(syncProjectionDivider);
+      }
+
+      els.modeButtons.forEach((btn) => {
+        btn.addEventListener("click", () => applyMode(btn.dataset.mode));
+      });
+
+      [els.field1, els.field2, els.field3, els.dailySales].forEach((input) => {
+        input?.addEventListener("input", calculate);
+      });
+
+      els.calculateButton?.addEventListener("click", calculate);
+      els.resetButton?.addEventListener("click", resetForm);
+
+      window.addEventListener("resize", syncProjectionDivider);
+      window.addEventListener("load", syncProjectionDivider);
+
+      applyMode("margin");
+      requestAnimationFrame(syncProjectionDivider);
+    });
+  </script>
+
+  <style>
+    .pm-card,
+    .pm-dashboard {
+      display: grid;
+      grid-template-rows: auto auto;
+      background: #ffffff;
+      border: 1px solid #d7dee8;
+      box-shadow: 0 18px 50px -30px rgba(15, 23, 42, 0.24);
+      min-height: 100%;
+    }
+
+    .pm-card {
+      border-radius: 18px;
+      padding: 28px 28px 30px;
+      gap: 0;
+    }
+
+    .pm-dashboard {
+      border-radius: 18px;
+      padding: 18px 28px 20px;
+      gap: 0;
+    }
+
+    .pm-form-top,
+    .pm-results-top {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pm-form-bottom,
+    .pm-results-bottom {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 18px;
+    }
+
+    .pm-title {
+      margin: 0 0 6px;
+      font-size: 1.8rem;
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+    }
+
+    .pm-desc-main {
+      margin: 0 0 14px;
+      font-size: 0.94rem;
+      line-height: 1.55;
+      color: var(--text-soft);
+      max-width: 52ch;
+    }
+
+    .pm-mode-switch {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 18px;
+      padding: 5px;
+      border: 1px solid #dbe3ef;
+      border-radius: 14px;
+      background: #f8fafc;
+    }
+
+    .pm-mode-btn {
+      min-height: 40px;
+      padding: 0 10px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      background: transparent;
+      color: #475569;
+      font-size: 0.9rem;
+      font-weight: 700;
+      line-height: 1.15;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .pm-mode-btn:hover {
+      background: #eef4ff;
+      color: #1d4ed8;
+    }
+
+    .pm-mode-btn.is-active {
+      background: #ffffff;
+      color: #0f172a;
+      border-color: #c7d7ee;
+      box-shadow:
+        inset 0 0 0 1px rgba(37, 99, 235, 0.14),
+        0 6px 16px -12px rgba(15, 23, 42, 0.45);
+    }
+
+    .pm-core-group {
+      display: grid;
+      gap: 16px;
+    }
+
+    .pm-sub-head,
+    .pm-projection-title {
+      margin-bottom: 12px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+    }
+
+    .pm-field {
+      display: block;
+    }
+
+    .pm-field span {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .pm-field input {
+      width: 100%;
+      height: 62px;
+      padding: 0 18px;
+      border: 1px solid #9aa7b8;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+      font-size: 1.45rem;
+      line-height: 1;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .pm-field-secondary input {
+      font-size: 1.25rem;
+    }
+
+    .pm-field input::placeholder {
+      color: #94a3b8;
+      font-size: 1rem;
+    }
+
+    .pm-field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .pm-help {
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+
+    .pm-help-field {
+      margin: 2px 0 0;
+      font-size: 0.9rem;
+      max-width: 40ch;
+    }
+
+    .pm-help-micro {
+      font-size: 0.82rem;
+      color: #94a3b8;
+    }
+
+    .pm-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .pm-btn {
+      min-height: 52px;
+      padding: 0 24px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .pm-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .pm-btn-secondary {
+      border: none;
+      background: transparent;
+      color: var(--text);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    .pm-btn-primary {
+      min-width: 180px;
+      border: 1px solid #2563eb;
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 14px 30px -18px rgba(37, 99, 235, 0.7);
+    }
+
+    .pm-btn-primary:hover {
+      border-color: #1d4ed8;
+      background: #1d4ed8;
+    }
+
+    .pm-hero-panel {
+      border: 1px solid #cfe0f7;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #eef4fb 0%, #f7faff 100%);
+      padding: 18px 22px 16px;
+    }
+
+    .pm-hero-label {
+      margin-bottom: 10px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+
+    .pm-hero-value {
+      font-size: clamp(3rem, 7vw, 4.2rem);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      color: #047857;
+    }
+
+    .pm-hero-value.negative {
+      color: #dc2626;
+    }
+
+    .pm-hero-text {
+      margin: 12px 0 0;
+      font-size: 0.96rem;
+      line-height: 1.55;
+      color: #64748b;
+    }
+
+    .pm-hero-text.negative {
+      color: #b91c1c;
+    }
+
+    .pm-hero-stat-label {
+      font-weight: 600;
+    }
+
+    .pm-hero-stat-value {
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .pm-hero-dot {
+      display: inline-block;
+      margin: 0 8px;
+      color: #94a3b8;
+    }
+
+    .pm-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .pm-metric-card {
+      border: 1px solid #d7dee8;
+      border-radius: 14px;
+      background: #ffffff;
+      padding: 16px 18px 14px;
+    }
+
+    .pm-metric-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-soft);
+    }
+
+    .pm-metric-value {
+      display: block;
+      font-size: 1.95rem;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      font-weight: 850;
+      color: #0f172a;
+    }
+
+    .pm-metric-value.negative {
+      color: #dc2626;
+    }
+
+    .pm-inline-results {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .pm-inline-row {
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 15px 18px 14px;
+      background: #f8fafc;
+    }
+
+    .pm-inline-row span {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-soft);
+    }
+
+    .pm-inline-row strong {
+      display: block;
+      font-size: 1.62rem;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+      color: #0f172a;
+    }
+
+    .pm-inline-row-profit strong {
+      color: #047857;
+    }
+
+    .pm-inline-row strong.negative,
+    .pm-inline-row-profit strong.negative {
+      color: #dc2626;
+    }
+
+    .pm-projection-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+      border-top: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .pm-projection-item {
+      padding: 18px 12px;
+      border-right: 1px solid #e2e8f0;
+      text-align: center;
+    }
+
+    .pm-projection-item:last-child {
+      border-right: none;
+    }
+
+    .pm-projection-item span {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .pm-projection-item strong {
+      display: block;
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #0f172a;
+    }
+
+    .pm-projection-item strong.negative {
+      color: #dc2626;
+    }
+
+    .pm-note {
+      margin: 14px 0 0;
+    }
+
+    .content-card p {
+      max-width: 62ch;
+      margin: 0 0 16px;
+      line-height: 1.75;
+    }
+
+    .content-card ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .content-card li {
+      margin-bottom: 10px;
+      line-height: 1.75;
+    }
+
+    .content-card li:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 980px) {
+      .pm-mode-switch,
+      .pm-metrics-grid,
+      .pm-inline-results,
+      .pm-projection-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .pm-mode-btn:last-child {
+        grid-column: span 2;
+      }
+
+      .pm-form-top,
+      .pm-results-top {
+        height: auto !important;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .pm-card,
+      .pm-dashboard {
+        padding: 24px 20px;
+      }
+
+      .pm-title {
+        font-size: 1.7rem;
+      }
+
+      .pm-mode-switch,
+      .pm-metrics-grid,
+      .pm-inline-results,
+      .pm-projection-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pm-mode-btn:last-child {
+        grid-column: auto;
+      }
+
+      .pm-field input {
+        height: 56px;
+        font-size: 1.2rem;
+      }
+
+      .pm-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .pm-btn,
+      .pm-btn-secondary,
+      .pm-btn-primary,
+      .pm-mode-btn {
+        width: 100%;
+      }
+
+      .pm-projection-item {
+        border-right: none;
+      }
+
+      .pm-hero-dot {
+        display: none;
+      }
+
+      .pm-hero-text {
+        display: grid;
+        gap: 4px;
+      }
+    }
+  </style>
+</ToolLayout>

@@ -5,7 +5,7 @@ const tools = [
   {
     name: "Profit Margin Calculator",
     desc: "See how much profit you actually keep from each sale",
-    status: "Coming soon",
+    href: "/calculators/profit-margin-calculator/",
   },
   {
     name: "Markup Calculator",
@@ -53,18 +53,30 @@ const tools = [
     <section class="list-section">
       <div class="container">
         <div class="page-tools">
-          {tools.map((tool) => (
-            <div class="tool-row tool-row-static">
-              <div class="tool-meta">
-                <div>
-                <span class="tool-name">{tool.name}</span>
-                <span class="tool-desc">{tool.desc}</span>
+          {tools.map((tool) =>
+            tool.href ? (
+              <a href={tool.href} class="tool-row">
+                <div class="tool-meta">
+                  <div>
+                    <span class="tool-name">{tool.name}</span>
+                    <span class="tool-desc">{tool.desc}</span>
+                  </div>
                 </div>
-                <span class="tool-status">{tool.status}</span>
+                <span class="arrow">→</span>
+              </a>
+            ) : (
+              <div class="tool-row tool-row-static">
+                <div class="tool-meta">
+                  <div>
+                    <span class="tool-name">{tool.name}</span>
+                    <span class="tool-desc">{tool.desc}</span>
+                  </div>
+                  <span class="tool-status">{tool.status}</span>
+                </div>
+                <span class="arrow">→</span>
               </div>
-              <span class="arrow">→</span>
-            </div>
-          ))}
+            )
+          )}
         </div>
 
         <div class="page-seo">
