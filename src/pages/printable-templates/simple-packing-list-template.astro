@@ -74,7 +74,7 @@ const relatedTools = [
         target="_blank"
         rel="noopener"
       >
-        Open Printable Template
+        Open Full Printable Page
       </a>
 
       <a class="tpl-btn tpl-btn-secondary" href="/printable-templates/">
@@ -84,14 +84,35 @@ const relatedTools = [
   </div>
 
   <div slot="preview" class="tpl-preview-stage">
-    <div class="tpl-preview-scroll">
-      <div class="tpl-paper-frame">
-        <iframe
-          src="/printable-templates/simple-packing-list-template-print/"
-          title="Simple Packing List Template Preview"
-          loading="lazy"
-        ></iframe>
+    <div class="tpl-preview-desktop">
+      <div class="tpl-preview-scroll">
+        <div class="tpl-paper-frame">
+          <iframe
+            src="/printable-templates/simple-packing-list-template-print/?embed=1"
+            title="Simple Packing List Template Preview"
+            loading="lazy"
+          ></iframe>
+        </div>
       </div>
+    </div>
+
+    <div class="tpl-preview-mobile">
+      <a
+        class="tpl-mobile-paper"
+        href="/printable-templates/simple-packing-list-template-print/"
+        target="_blank"
+        rel="noopener"
+        aria-label="Open full printable template"
+      >
+        <div class="tpl-mobile-paper-scale">
+          <iframe
+            src="/printable-templates/simple-packing-list-template-print/?embed=1"
+            title="Simple Packing List Template Mobile Preview"
+            loading="lazy"
+            tabindex="-1"
+          ></iframe>
+        </div>
+      </a>
     </div>
   </div>
 
@@ -216,8 +237,11 @@ const relatedTools = [
     }
 
     .tpl-preview-stage {
-      display: flex;
-      justify-content: center;
+      display: block;
+    }
+
+    .tpl-preview-desktop {
+      display: block;
     }
 
     .tpl-preview-scroll {
@@ -249,6 +273,41 @@ const relatedTools = [
       background: #ffffff;
     }
 
+    .tpl-preview-mobile {
+      display: none;
+    }
+
+    .tpl-mobile-paper {
+      display: block;
+      width: min(100%, 340px);
+      margin: 0 auto;
+      padding: 10px;
+      border-radius: 16px;
+      border: 1px solid #d1d5db;
+      background: #e5e7eb;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    }
+
+    .tpl-mobile-paper-scale {
+      width: 794px;
+      height: 1123px;
+      transform-origin: top left;
+      transform: scale(0.38);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      margin-bottom: calc(-1123px * 0.62);
+    }
+
+    .tpl-mobile-paper-scale iframe {
+      width: 794px;
+      height: 1123px;
+      border: 0;
+      display: block;
+      pointer-events: none;
+      background: #fff;
+    }
+
     @media (max-width: 980px) {
       .tpl-paper-frame {
         min-width: 780px;
@@ -273,15 +332,12 @@ const relatedTools = [
         width: 100%;
       }
 
-      .tpl-paper-frame {
-        min-width: 740px;
-        padding: 10px;
-        border-radius: 14px;
+      .tpl-preview-desktop {
+        display: none;
       }
 
-      .tpl-paper-frame iframe {
-        height: 1080px;
-        border-radius: 10px;
+      .tpl-preview-mobile {
+        display: block;
       }
     }
   </style>

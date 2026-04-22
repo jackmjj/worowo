@@ -1,5 +1,6 @@
 ---
 const title = "Simple Packing List Template";
+const isEmbedded = Astro.url.searchParams.get("embed") === "1";
 ---
 
 <!DOCTYPE html>
@@ -22,17 +23,14 @@ const title = "Simple Packing List Template";
       :root {
         --paper-width: 210mm;
         --paper-height: 297mm;
-
         --margin-top: 14mm;
         --margin-right: 14mm;
         --margin-bottom: 14mm;
         --margin-left: 14mm;
-
         --text: #111111;
         --line: #222222;
         --line-light: #444444;
         --bg: #f1f5f9;
-
         --font-main: Arial, Helvetica, sans-serif;
       }
 
@@ -81,10 +79,6 @@ const title = "Simple Packing List Template";
         cursor: pointer;
       }
 
-      .toolbar button:hover {
-        filter: brightness(0.98);
-      }
-
       .page-wrap {
         width: min(100%, 1100px);
         margin: 0 auto;
@@ -128,10 +122,6 @@ const title = "Simple Packing List Template";
         display: flex;
         align-items: flex-end;
         gap: 2.2mm;
-        min-width: 0;
-      }
-
-      .meta-item-wide {
         min-width: 0;
       }
 
@@ -233,35 +223,12 @@ const title = "Simple Packing List Template";
         height: 10.5mm;
       }
 
-      .col-no {
-        width: 8%;
-        text-align: center;
-      }
-
-      .col-desc {
-        width: 40%;
-        text-align: left;
-      }
-
-      .col-qty {
-        width: 10%;
-        text-align: center;
-      }
-
-      .col-unit {
-        width: 10%;
-        text-align: center;
-      }
-
-      .col-package {
-        width: 16%;
-        text-align: center;
-      }
-
-      .col-remarks {
-        width: 16%;
-        text-align: left;
-      }
+      .col-no { width: 8%; text-align: center; }
+      .col-desc { width: 40%; text-align: left; }
+      .col-qty { width: 10%; text-align: center; }
+      .col-unit { width: 10%; text-align: center; }
+      .col-package { width: 16%; text-align: center; }
+      .col-remarks { width: 16%; text-align: left; }
 
       .summary-grid {
         display: grid;
@@ -274,21 +241,8 @@ const title = "Simple Packing List Template";
         margin-top: 4mm;
       }
 
-      .remarks-fill {
-        margin-top: 2mm;
-        border-bottom: 0.5pt solid var(--line);
-        height: 9mm;
-      }
-
       .sign-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0;
         margin-top: 5mm;
-      }
-
-      .sign-grid .fill-row {
-        min-height: 7mm;
       }
 
       @page {
@@ -322,11 +276,6 @@ const title = "Simple Packing List Template";
           min-width: 210mm;
           height: 297mm;
           margin: 0;
-          padding:
-            var(--margin-top)
-            var(--margin-right)
-            var(--margin-bottom)
-            var(--margin-left);
           box-shadow: none;
           overflow: hidden;
           break-after: avoid-page;
@@ -339,10 +288,6 @@ const title = "Simple Packing List Template";
           padding: 12px;
         }
 
-        .toolbar {
-          margin-bottom: 12px;
-        }
-
         .page-wrap {
           overflow-x: auto;
           -webkit-overflow-scrolling: touch;
@@ -352,28 +297,28 @@ const title = "Simple Packing List Template";
   </head>
 
   <body>
-    <div class="toolbar">
-      <a href="/printable-templates/simple-packing-list-template/">
-        ← Back to template page
-      </a>
-      <button onclick="window.print()">Print / Save as PDF</button>
-    </div>
+    {!isEmbedded && (
+      <div class="toolbar">
+        <a href="/printable-templates/simple-packing-list-template/">
+          ← Back to template page
+        </a>
+        <button onclick="window.print()">Print / Save as PDF</button>
+      </div>
+    )}
 
     <div class="page-wrap">
       <div class="page">
         <h1 class="title">Packing List</h1>
 
         <div class="doc-meta">
-          <div class="meta-item meta-item-wide">
+          <div class="meta-item">
             <span class="meta-label">Packing List No.</span>
             <span class="meta-line"></span>
           </div>
-
           <div class="meta-item">
             <span class="meta-label">Date</span>
             <span class="meta-line"></span>
           </div>
-
           <div class="meta-item">
             <span class="meta-label">Order No.</span>
             <span class="meta-line"></span>
@@ -385,44 +330,20 @@ const title = "Simple Packing List Template";
             <div>
               <h2 class="section-title">Shipper / Sender</h2>
               <div class="party-lines">
-                <div class="fill-row">
-                  <span class="label">Company / Name</span>
-                  <span class="fill"></span>
-                </div>
-                <div class="fill-row">
-                  <span class="label">Address Line 1</span>
-                  <span class="fill"></span>
-                </div>
-                <div class="fill-row">
-                  <span class="label">Address Line 2</span>
-                  <span class="fill"></span>
-                </div>
-                <div class="fill-row">
-                  <span class="label">Contact</span>
-                  <span class="fill"></span>
-                </div>
+                <div class="fill-row"><span class="label">Company / Name</span><span class="fill"></span></div>
+                <div class="fill-row"><span class="label">Address Line 1</span><span class="fill"></span></div>
+                <div class="fill-row"><span class="label">Address Line 2</span><span class="fill"></span></div>
+                <div class="fill-row"><span class="label">Contact</span><span class="fill"></span></div>
               </div>
             </div>
 
             <div>
               <h2 class="section-title">Consignee / Receiver</h2>
               <div class="party-lines">
-                <div class="fill-row">
-                  <span class="label">Company / Name</span>
-                  <span class="fill"></span>
-                </div>
-                <div class="fill-row">
-                  <span class="label">Address Line 1</span>
-                  <span class="fill"></span>
-                </div>
-                <div class="fill-row">
-                  <span class="label">Address Line 2</span>
-                  <span class="fill"></span>
-                </div>
-                <div class="fill-row">
-                  <span class="label">Contact</span>
-                  <span class="fill"></span>
-                </div>
+                <div class="fill-row"><span class="label">Company / Name</span><span class="fill"></span></div>
+                <div class="fill-row"><span class="label">Address Line 1</span><span class="fill"></span></div>
+                <div class="fill-row"><span class="label">Address Line 2</span><span class="fill"></span></div>
+                <div class="fill-row"><span class="label">Contact</span><span class="fill"></span></div>
               </div>
             </div>
           </div>
@@ -457,37 +378,19 @@ const title = "Simple Packing List Template";
 
         <section class="section">
           <div class="summary-grid">
-            <div class="fill-row">
-              <span class="label">Total Quantity</span>
-              <span class="fill"></span>
-            </div>
-            <div class="fill-row">
-              <span class="label">Total Packages</span>
-              <span class="fill"></span>
-            </div>
-            <div class="fill-row">
-              <span class="label">Gross Weight</span>
-              <span class="fill"></span>
-            </div>
-            <div class="fill-row">
-              <span class="label">Net Weight</span>
-              <span class="fill"></span>
-            </div>
+            <div class="fill-row"><span class="label">Total Quantity</span><span class="fill"></span></div>
+            <div class="fill-row"><span class="label">Total Packages</span><span class="fill"></span></div>
+            <div class="fill-row"><span class="label">Gross Weight</span><span class="fill"></span></div>
+            <div class="fill-row"><span class="label">Net Weight</span><span class="fill"></span></div>
           </div>
         </section>
 
         <section class="remarks-box">
-          <div class="fill-row">
-            <span class="label">Remarks</span>
-            <span class="fill"></span>
-          </div>
+          <div class="fill-row"><span class="label">Remarks</span><span class="fill"></span></div>
         </section>
 
         <section class="sign-grid">
-          <div class="fill-row">
-            <span class="label">Signature</span>
-            <span class="fill"></span>
-          </div>
+          <div class="fill-row"><span class="label">Signature</span><span class="fill"></span></div>
         </section>
       </div>
     </div>

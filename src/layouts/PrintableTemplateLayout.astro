@@ -41,14 +41,6 @@ const {
   <main class="pt-page">
     <section class="pt-hero">
       <div class="container">
-        <div class="topline">
-          <a href="/" class="logo">worowo</a>
-        </div>
-      </div>
-
-      <div class="hero-divider"></div>
-
-      <div class="container">
         <nav class="pt-breadcrumb" aria-label="Breadcrumb">
           <a href="/">Home</a>
           <span>&gt;</span>
@@ -59,8 +51,8 @@ const {
 
         <div class="pt-hero-copy">
           <p class="eyebrow">{eyebrow}</p>
-          <h1 class="pt-page-title">{title}</h1>
-          <p class="pt-page-summary pt-intro">{intro}</p>
+          <h1 class="page-title">{title}</h1>
+          <p class="page-summary pt-intro">{intro}</p>
         </div>
       </div>
     </section>
@@ -127,8 +119,6 @@ const {
         </div>
       </section>
     )}
-
-    <slot />
   </main>
 </BaseLayout>
 
@@ -138,19 +128,7 @@ const {
   }
 
   .pt-hero {
-    padding: 0 0 24px;
-  }
-
-  .pt-hero .topline {
-    border-bottom: none;
-    margin-bottom: 0;
-  }
-
-  .hero-divider {
-    width: 100%;
-    height: 1px;
-    background: rgba(15, 23, 42, 0.08);
-    margin: 0 0 18px;
+    padding: 22px 0 24px;
   }
 
   .pt-breadcrumb {
@@ -166,25 +144,7 @@ const {
     color: var(--primary);
   }
 
-  .pt-hero-copy {
-    max-width: 780px;
-  }
-
   .pt-intro {
-    max-width: 760px;
-  }
-
-  .pt-page-title {
-    margin: 0 0 10px;
-    font-size: clamp(2.15rem, 3vw, 2.9rem);
-    line-height: 1.06;
-    letter-spacing: -0.035em;
-  }
-
-  .pt-page-summary {
-    margin: 0;
-    font-size: 1.12rem;
-    color: var(--text-soft);
     max-width: 760px;
   }
 
@@ -339,12 +299,8 @@ const {
       padding: 20px;
     }
 
-    .pt-page-title {
+    .page-title {
       font-size: clamp(1.9rem, 8vw, 2.35rem);
-    }
-
-    .pt-page-summary {
-      font-size: 1rem;
     }
   }
 </style>
