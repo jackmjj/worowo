@@ -1,80 +1,47 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import ToolListSection from "../../components/tools/ToolListSection.astro";
+import ToolCategoryPageLayout from "../../layouts/ToolCategoryPageLayout.astro";
 
-const tools = [
+const shippingTools = [
   {
-    name: "Packing Slip Generator",
-    desc: "List the items included in a shipment",
+    title: "Packing List Template",
+    href: "/printable-templates/simple-packing-list-template/",
+    description: "Printable blank packing list template for manual filling, printing, or PDF download.",
+    icon: "template",
+    actionLabel: "View template",
+  },
+  {
+    title: "Packing Slip Generator",
+    description: "List the items included in a shipment with a simple fulfillment document.",
+    icon: "packing",
     status: "Coming soon",
   },
   {
-    name: "Packing List Generator",
-    desc: "Create a detailed list for large or multi-box shipments",
+    title: "Delivery Receipt Template",
+    description: "Printable proof-of-delivery style receipt template for local delivery and customer acknowledgment.",
+    icon: "delivery",
     status: "Coming soon",
   },
   {
-    name: "Delivery Note Generator",
-    desc: "Confirm what was delivered, when, and to whom",
-    status: "Coming soon",
-  },
-  {
-    name: "Commercial Invoice Generator",
-    desc: "Future tool placeholder for shipping-related paperwork",
+    title: "Commercial Invoice Generator",
+    description: "Prepare export and shipping-related invoice paperwork for cross-border orders.",
+    icon: "delivery",
     status: "Coming soon",
   },
 ];
 ---
 
-<BaseLayout
-  title="Packing and Shipping Document Generators — worowo"
-  description="Create packing slips, packing lists, delivery notes, and shipping paperwork in seconds without Excel or Word."
+<ToolCategoryPageLayout
+  title="Packing & Shipping"
+  description="Use packing lists and delivery documents for ecommerce, wholesale, export shipments, and local delivery workflows."
+  eyebrow="Category"
   canonical="https://www.worowo.com/packing-shipping/"
+  theme="green"
 >
-  <main>
-    <section class="page-hero">
-      <div class="container">
-        <div class="topline">
-          <a href="/" class="logo">worowo</a>
-        </div>
-
-        <p class="breadcrumb"><a href="/">Home</a> &gt; Packing &amp; Shipping</p>
-
-        <div class="hero-copy">
-          <h1 class="page-title">Packing and Shipping Document Generators</h1>
-          <p class="page-summary">
-            Create accurate shipping paperwork without opening Excel or Word — fill in the details, download, and use it right away.
-          </p>
-        </div>
-
-        <div class="divider"></div>
-      </div>
-    </section>
-
-    <section class="list-section">
-      <div class="container">
-        <div class="page-tools">
-          {tools.map((tool) => (
-            <div class="tool-row tool-row-static">
-              <div class="tool-meta">
-                <div>
-                <span class="tool-name">{tool.name}</span>
-                <span class="tool-desc">{tool.desc}</span>
-                </div>
-                <span class="tool-status">{tool.status}</span>
-              </div>
-              <span class="arrow">→</span>
-            </div>
-          ))}
-        </div>
-
-        <div class="page-seo">
-          <p class="seo-copy">
-            Packing slips, packing lists, and delivery notes are routine documents, but creating them from scratch wastes time. These tools help you prepare standardized shipping paperwork for single orders or regular shipments, with clean output that is ready to print or send. No spreadsheet setup is required.
-          </p>
-        </div>
-
-        <div class="divider"></div>
-      </div>
-    </section>
-  </main>
-</BaseLayout>
+  <ToolListSection
+    title="Shipping Documents"
+    description="A compact set of tools and printable templates for shipment records, delivery confirmation, and daily dispatch work."
+    tools={shippingTools}
+    theme="green"
+  />
+</ToolCategoryPageLayout>

@@ -1,92 +1,76 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const tools = [
-  {
-    name: "Profit Margin Calculator",
-    desc: "See how much profit you actually keep from each sale",
-    href: "/calculators/profit-margin-calculator/",
-  },
-  {
-    name: "Markup Calculator",
-    desc: "Set your selling price from your cost",
-    status: "Coming soon",
-  },
-  {
-    name: "Break-even Calculator",
-    desc: "Find the minimum price needed to cover your costs",
-    status: "Coming soon",
-  },
-  {
-    name: "Landed Cost Calculator",
-    desc: "Include shipping, tax, and fees in your true unit cost",
-    status: "Coming soon",
-  },
-];
+const targetHref = "/business-calculators/";
+const targetUrl = "https://www.worowo.com/business-calculators/";
 ---
 
 <BaseLayout
-  title="Business Calculators for Sellers and Small Businesses — worowo"
-  description="Use fast business calculators for profit margin, markup, break-even pricing, and landed cost."
-  canonical="https://www.worowo.com/calculators/"
+  title="Calculators | Worowo"
+  description="This page has moved to Business Calculators."
+  canonical={targetUrl}
+  noindex={true}
 >
-  <main>
-    <section class="page-hero">
-      <div class="container">
-        <div class="topline">
-          <a href="/" class="logo">worowo</a>
-        </div>
-
-        <p class="breadcrumb"><a href="/">Home</a> &gt; Business Calculators</p>
-
-        <div class="hero-copy">
-          <h1 class="page-title">Business Calculators for Sellers and Small Businesses</h1>
-          <p class="page-summary">
-            Get instant answers for profit margin, markup, break-even price, and landed cost.
-          </p>
-        </div>
-
-        <div class="divider"></div>
-      </div>
-    </section>
-
-    <section class="list-section">
-      <div class="container">
-        <div class="page-tools">
-          {tools.map((tool) =>
-            tool.href ? (
-              <a href={tool.href} class="tool-row">
-                <div class="tool-meta">
-                  <div>
-                    <span class="tool-name">{tool.name}</span>
-                    <span class="tool-desc">{tool.desc}</span>
-                  </div>
-                </div>
-                <span class="arrow">→</span>
-              </a>
-            ) : (
-              <div class="tool-row tool-row-static">
-                <div class="tool-meta">
-                  <div>
-                    <span class="tool-name">{tool.name}</span>
-                    <span class="tool-desc">{tool.desc}</span>
-                  </div>
-                  <span class="tool-status">{tool.status}</span>
-                </div>
-                <span class="arrow">→</span>
-              </div>
-            )
-          )}
-        </div>
-
-        <div class="page-seo">
-          <p class="seo-copy">
-            These business calculators are built for sellers, traders, and small business owners who need fast and reliable answers, not a full accounting system. Whether you are pricing a product, checking a deal, or working out your break-even point, each tool delivers clear results in seconds without spreadsheets.
-          </p>
-        </div>
-
-        <div class="divider"></div>
-      </div>
-    </section>
+  <main class="alias-page">
+    <div class="alias-card">
+      <span class="alias-eyebrow">Category Moved</span>
+      <h1>Business Calculators</h1>
+      <p>
+        This category now lives at <a href={targetHref}>{targetHref}</a>.
+      </p>
+    </div>
   </main>
+
+  <script define:vars={{ targetHref }} is:inline>
+    window.location.replace(targetHref);
+  </script>
 </BaseLayout>
+
+<style>
+  .alias-page {
+    min-height: 55vh;
+    display: grid;
+    place-items: center;
+    padding: 48px 16px 72px;
+    background: #f8fafc;
+  }
+
+  .alias-card {
+    width: min(720px, 100%);
+    padding: 28px;
+    border: 1px solid #dbe3ee;
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+  }
+
+  .alias-eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #7c3aed;
+  }
+
+  .alias-card h1 {
+    margin: 0 0 10px;
+    font-size: clamp(32px, 4vw, 44px);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: #0f172a;
+  }
+
+  .alias-card p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #475569;
+  }
+
+  .alias-card a {
+    color: #7c3aed;
+    font-weight: 700;
+  }
+</style>

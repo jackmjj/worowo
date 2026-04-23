@@ -1,0 +1,267 @@
+---
+import ToolIcon from "./ToolIcon.astro";
+
+type ThemeName = "blue" | "green" | "purple" | "orange";
+
+type ToolItem = {
+  title: string;
+  href?: string;
+  description: string;
+  icon?: string;
+  actionLabel?: string;
+  status?: string;
+};
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  tools: ToolItem[];
+  theme?: ThemeName;
+}
+
+const {
+  eyebrow = "Category",
+  title,
+  description = "",
+  tools = [],
+  theme = "blue",
+} = Astro.props;
+
+const themeTokens: Record<
+  ThemeName,
+  {
+    accent: string;
+    soft: string;
+    hoverBorder: string;
+    hoverShadow: string;
+  }
+> = {
+  blue: {
+    accent: "#2563eb",
+    soft: "#eff6ff",
+    hoverBorder: "#bfd4ff",
+    hoverShadow: "rgba(37, 99, 235, 0.10)",
+  },
+  green: {
+    accent: "#1f8f42",
+    soft: "#effaf2",
+    hoverBorder: "#c8ebd1",
+    hoverShadow: "rgba(34, 139, 68, 0.10)",
+  },
+  purple: {
+    accent: "#7c3aed",
+    soft: "#f5efff",
+    hoverBorder: "#decdfd",
+    hoverShadow: "rgba(124, 58, 237, 0.10)",
+  },
+  orange: {
+    accent: "#f97316",
+    soft: "#fff5ed",
+    hoverBorder: "#fed7aa",
+    hoverShadow: "rgba(249, 115, 22, 0.10)",
+  },
+};
+
+const tokens = themeTokens[theme];
+---
+
+<section
+  class="tool-section"
+  style={`--tool-accent:${tokens.accent};--tool-soft:${tokens.soft};--tool-hover-border:${tokens.hoverBorder};--tool-hover-shadow:${tokens.hoverShadow};`}
+>
+  <div class="tool-section-head">
+    <span class="tool-section-eyebrow">{eyebrow}</span>
+    <h2 class="tool-section-title">{title}</h2>
+    {description && <p class="tool-section-description">{description}</p>}
+  </div>
+
+  <div class="tool-list-grid">
+    {tools.map((tool) =>
+      tool.href ? (
+        <a class="tool-list-item" href={tool.href}>
+          <span class="tool-item-icon" aria-hidden="true">
+            <ToolIcon name={tool.icon ?? "grid"} />
+          </span>
+
+          <div class="tool-item-content">
+            <div class="tool-item-top">
+              <h3 class="tool-item-title">{tool.title}</h3>
+              <span class="tool-item-arrow">→</span>
+            </div>
+            <p class="tool-item-description">{tool.description}</p>
+            <span class="tool-item-action">{tool.actionLabel ?? "Open tool"}</span>
+          </div>
+        </a>
+      ) : (
+        <div class="tool-list-item tool-list-item-static">
+          <span class="tool-item-icon" aria-hidden="true">
+            <ToolIcon name={tool.icon ?? "grid"} />
+          </span>
+
+          <div class="tool-item-content">
+            <div class="tool-item-top">
+              <h3 class="tool-item-title">{tool.title}</h3>
+              <span class="tool-item-status">{tool.status ?? "Coming soon"}</span>
+            </div>
+            <p class="tool-item-description">{tool.description}</p>
+            <span class="tool-item-action tool-item-action-muted">
+              {tool.actionLabel ?? "Coming soon"}
+            </span>
+          </div>
+        </div>
+      )
+    )}
+  </div>
+</section>
+
+<style>
+  .tool-section {
+    margin-top: 48px;
+  }
+
+  .tool-section:first-child {
+    margin-top: 0;
+  }
+
+  .tool-section-head {
+    margin-bottom: 18px;
+  }
+
+  .tool-section-eyebrow {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tool-accent);
+  }
+
+  .tool-section-title {
+    margin: 0;
+    font-size: clamp(28px, 3vw, 38px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+  }
+
+  .tool-section-description {
+    max-width: 760px;
+    margin: 10px 0 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #475569;
+  }
+
+  .tool-list-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .tool-list-item {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 14px;
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #dbe3ee;
+    border-radius: 18px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    text-decoration: none;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  }
+
+  .tool-list-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--tool-hover-border);
+    box-shadow: 0 14px 28px var(--tool-hover-shadow);
+  }
+
+  .tool-list-item-static:hover {
+    transform: none;
+    border-color: #dbe3ee;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  }
+
+  .tool-item-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--tool-soft);
+    color: var(--tool-accent);
+    flex-shrink: 0;
+  }
+
+  .tool-item-content {
+    min-width: 0;
+  }
+
+  .tool-item-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .tool-item-title {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.25;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+  }
+
+  .tool-item-arrow {
+    font-size: 18px;
+    line-height: 1;
+    color: var(--tool-accent);
+    flex-shrink: 0;
+  }
+
+  .tool-item-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: #f3f4f6;
+    color: #6b7280;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .tool-item-description {
+    margin: 0 0 10px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #475569;
+  }
+
+  .tool-item-action {
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--tool-accent);
+  }
+
+  .tool-item-action-muted {
+    color: #94a3b8;
+  }
+
+  @media (max-width: 900px) {
+    .tool-list-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

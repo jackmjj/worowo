@@ -1,0 +1,47 @@
+---
+import ToolListSection from "../../components/tools/ToolListSection.astro";
+import ToolCategoryPageLayout from "../../layouts/ToolCategoryPageLayout.astro";
+
+const calculatorTools = [
+  {
+    title: "Profit Margin Calculator",
+    href: "/calculators/profit-margin-calculator/",
+    description: "Calculate selling price, gross profit, and margin quickly for products or services.",
+    icon: "profit",
+    actionLabel: "Open calculator",
+  },
+  {
+    title: "Markup Calculator",
+    description: "Work out markup percentages and recommended selling prices from cost inputs.",
+    icon: "calculator",
+    status: "Coming soon",
+  },
+  {
+    title: "Break-even Calculator",
+    description: "Find the point where your revenue covers your costs for a product or job.",
+    icon: "profit",
+    status: "Coming soon",
+  },
+  {
+    title: "Landed Cost Calculator",
+    description: "Estimate true per-unit cost by including shipping, tax, and extra fees.",
+    icon: "tax",
+    status: "Coming soon",
+  },
+];
+---
+
+<ToolCategoryPageLayout
+  title="Business Calculators"
+  description="Business calculators for pricing, profit margin, markup, break-even planning, and other day-to-day commerce tasks."
+  eyebrow="Category"
+  canonical="https://www.worowo.com/business-calculators/"
+  theme="purple"
+>
+  <ToolListSection
+    title="Business Calculators"
+    description="These calculators are designed for quick use, clear results, and practical business decisions."
+    tools={calculatorTools}
+    theme="purple"
+  />
+</ToolCategoryPageLayout>

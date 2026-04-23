@@ -1,0 +1,146 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+
+type ThemeName = "blue" | "green" | "purple" | "orange";
+
+interface Props {
+  title: string;
+  description: string;
+  eyebrow?: string;
+  canonical?: string;
+  theme?: ThemeName;
+}
+
+const {
+  title,
+  description,
+  eyebrow = "Tool Category",
+  canonical,
+  theme = "blue",
+} = Astro.props;
+
+const themeTokens: Record<
+  ThemeName,
+  {
+    accent: string;
+    glow: string;
+    wash: string;
+  }
+> = {
+  blue: {
+    accent: "#2563eb",
+    glow: "rgba(37, 99, 235, 0.12)",
+    wash: "rgba(219, 234, 254, 0.60)",
+  },
+  green: {
+    accent: "#1f8f42",
+    glow: "rgba(34, 139, 68, 0.12)",
+    wash: "rgba(231, 248, 235, 0.75)",
+  },
+  purple: {
+    accent: "#7c3aed",
+    glow: "rgba(124, 58, 237, 0.12)",
+    wash: "rgba(239, 229, 255, 0.80)",
+  },
+  orange: {
+    accent: "#f97316",
+    glow: "rgba(249, 115, 22, 0.12)",
+    wash: "rgba(255, 240, 228, 0.82)",
+  },
+};
+
+const tokens = themeTokens[theme];
+---
+
+<BaseLayout title={`${title} | Worowo`} description={description} canonical={canonical}>
+  <main
+    class="category-page"
+    style={`--category-accent:${tokens.accent};--category-glow:${tokens.glow};--category-wash:${tokens.wash};`}
+  >
+    <div class="category-page-inner">
+      <section class="category-hero">
+        <span class="category-eyebrow">{eyebrow}</span>
+        <h1 class="category-title">{title}</h1>
+        <p class="category-description">{description}</p>
+      </section>
+
+      <section class="category-content">
+        <slot />
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .category-page {
+    background:
+      radial-gradient(circle at top right, var(--category-wash) 0, transparent 38%),
+      #f8fafc;
+  }
+
+  .category-page-inner {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 48px 0 72px;
+  }
+
+  .category-hero {
+    margin-bottom: 40px;
+    position: relative;
+    padding: 6px 0 2px;
+  }
+
+  .category-hero::after {
+    content: "";
+    position: absolute;
+    top: -8px;
+    right: 0;
+    width: min(320px, 46vw);
+    height: 160px;
+    border-radius: 999px;
+    background: radial-gradient(circle at center, var(--category-glow) 0, transparent 72%);
+    pointer-events: none;
+  }
+
+  .category-eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--category-accent);
+  }
+
+  .category-title {
+    margin: 0 0 14px;
+    font-size: clamp(36px, 4.2vw, 56px);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: #0f172a;
+  }
+
+  .category-description {
+    max-width: 860px;
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.75;
+    color: #475569;
+  }
+
+  .category-content {
+    display: grid;
+    gap: 24px;
+  }
+
+  @media (max-width: 640px) {
+    .category-page-inner {
+      width: min(1180px, calc(100% - 24px));
+      padding: 32px 0 56px;
+    }
+
+    .category-description {
+      font-size: 16px;
+    }
+  }
+</style>

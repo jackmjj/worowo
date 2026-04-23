@@ -1,85 +1,46 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import ToolListSection from "../../components/tools/ToolListSection.astro";
+import ToolCategoryPageLayout from "../../layouts/ToolCategoryPageLayout.astro";
 
-const tools = [
+const billingTools = [
   {
-    name: "Quote / Estimate Generator",
-    desc: "Send a clear price quote before work begins",
+    title: "Invoice Generator",
+    description: "Create customer invoices with items, totals, and payment-ready billing details.",
+    icon: "invoice",
     status: "Coming soon",
   },
   {
-    name: "Invoice Generator",
-    desc: "Bill clients with a clean, professional invoice",
+    title: "Quote / Estimate Generator",
+    description: "Prepare quotes and estimates for products or services with customer info and totals.",
+    icon: "quote",
     status: "Coming soon",
   },
   {
-    name: "Proforma Invoice Generator",
-    desc: "Issue a formal quote before the sale is confirmed",
+    title: "Proforma Invoice Generator",
+    description: "Create proforma invoices for international trade and pre-sale confirmation.",
+    icon: "invoice",
     status: "Coming soon",
   },
   {
-    name: "Receipt Generator",
-    desc: "Provide proof of payment instantly",
-    status: "Coming soon",
-  },
-  {
-    name: "Commercial Invoice Generator",
-    desc: "Future tool placeholder",
+    title: "Receipt Generator",
+    description: "Generate simple receipts for payments received, cash sales, and record keeping.",
+    icon: "receipt",
     status: "Coming soon",
   },
 ];
 ---
 
-<BaseLayout
-  title="Quote and Invoice Generators — worowo"
-  description="Create quotes, invoices, proforma invoices, and receipts in seconds. Free online generators for professional business documents."
+<ToolCategoryPageLayout
+  title="Quotes & Invoices"
+  description="Create quotes, invoices, proforma invoices, and receipts with clean layouts built for small businesses, service providers, and trade use."
+  eyebrow="Category"
   canonical="https://www.worowo.com/quotes-invoices/"
+  theme="blue"
 >
-  <main>
-    <section class="page-hero">
-      <div class="container">
-        <div class="topline">
-          <a href="/" class="logo">worowo</a>
-        </div>
-
-        <p class="breadcrumb"><a href="/">Home</a> &gt; Quotes &amp; Invoices</p>
-
-        <div class="hero-copy">
-          <h1 class="page-title">Quote and Invoice Generators</h1>
-          <p class="page-summary">
-            Create professional business documents in seconds — no software to install, no account to create, and ready to send or print right away.
-          </p>
-        </div>
-
-        <div class="divider"></div>
-      </div>
-    </section>
-
-    <section class="list-section">
-      <div class="container">
-        <div class="page-tools">
-          {tools.map((tool) => (
-            <div class="tool-row tool-row-static">
-              <div class="tool-meta">
-                <div>
-                <span class="tool-name">{tool.name}</span>
-                <span class="tool-desc">{tool.desc}</span>
-                </div>
-                <span class="tool-status">{tool.status}</span>
-              </div>
-              <span class="arrow">→</span>
-            </div>
-          ))}
-        </div>
-
-        <div class="page-seo">
-          <p class="seo-copy">
-            Professional quotes and invoices should not require complex software or manual formatting. These free tools help freelancers, local businesses, and traders create clean documents in less than a minute. Fill in the details, generate the document, and print or send it immediately — without templates, spreadsheets, or account setup.
-          </p>
-        </div>
-
-        <div class="divider"></div>
-      </div>
-    </section>
-  </main>
-</BaseLayout>
+  <ToolListSection
+    title="Quote & Billing Tools"
+    description="Use these tools to prepare customer-facing billing documents quickly and generate clean quote and invoice workflows."
+    tools={billingTools}
+    theme="blue"
+  />
+</ToolCategoryPageLayout>
