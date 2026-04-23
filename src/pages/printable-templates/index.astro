@@ -4,6 +4,10 @@ import { printableTemplateEntries } from "../../data/printableTemplates";
 
 const sections = [
   {
+    title: "Quote & Billing",
+    tools: printableTemplateEntries.filter((tool) => tool.category === "Quote & Billing"),
+  },
+  {
     title: "Packing & Shipping",
     tools: printableTemplateEntries.filter((tool) => tool.category === "Packing & Shipping"),
   },
@@ -24,7 +28,7 @@ const sections = [
 
 <BaseLayout
   title="Printable Templates | worowo"
-  description="Free printable business templates for packing, shipping, invoicing, and trade paperwork."
+  description="Free printable business templates for invoicing, packing, shipping, employee scheduling, cash reconciliation, and field service paperwork."
   canonical="https://www.worowo.com/printable-templates/"
 >
   <main class="templates-page">
@@ -40,7 +44,7 @@ const sections = [
           <p class="eyebrow">Printable Templates</p>
           <h1 class="page-title">Printable Templates</h1>
           <p class="page-summary">
-            Ready-to-print business templates for shipping, packing, invoicing, and trade documentation.
+            Ready-to-print business templates for billing, shipping, employee scheduling, store operations, and field service documentation.
           </p>
         </div>
       </div>

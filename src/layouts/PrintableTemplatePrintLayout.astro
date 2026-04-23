@@ -1,7 +1,7 @@
 ---
 import "../styles/printable-template.css";
 import PrintToolbar from "../components/printable/PrintToolbar.astro";
-import { PAGE_CSS_RULES, getPaperModeKey } from "../lib/printable/paper";
+import { PAGE_CSS_RULES, PAPER_LABELS, getPaperModeKey } from "../lib/printable/paper";
 import type { OrientationType, PaperType } from "../lib/printable/types";
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
   backHref: string;
   canonical?: string;
   noindex?: boolean;
+  recommendedPaperNote?: string;
 }
 
 const {
@@ -24,6 +25,7 @@ const {
   backHref,
   canonical,
   noindex = true,
+  recommendedPaperNote = `Recommended paper size: ${PAPER_LABELS[defaultPaper]}`,
 } = Astro.props;
 
 const defaultPageRule = PAGE_CSS_RULES[getPaperModeKey(defaultPaper, orientation)];
@@ -48,6 +50,7 @@ const defaultPageRule = PAGE_CSS_RULES[getPaperModeKey(defaultPaper, orientation
       currentPaper={defaultPaper}
       supportedPapers={supportedPapers}
       backHref={backHref}
+      recommendedPaperNote={recommendedPaperNote}
     />
 
     <main class="print-page-wrap">

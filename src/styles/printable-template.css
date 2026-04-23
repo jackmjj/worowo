@@ -339,6 +339,11 @@ body.paper-a4 .paper.paper-dynamic.orientation-landscape {
   flex-wrap: wrap;
 }
 
+.topbar-stack {
+  display: grid;
+  gap: 6px;
+}
+
 .topbar-label {
   font-size: 14px;
   font-weight: 700;
@@ -350,6 +355,12 @@ body.paper-a4 .paper.paper-dynamic.orientation-landscape {
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.topbar-note {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
 }
 
 .topbar-actions {

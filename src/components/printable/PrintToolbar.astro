@@ -6,25 +6,30 @@ interface Props {
   currentPaper: PaperType;
   supportedPapers: PaperType[];
   backHref: string;
+  recommendedPaperNote?: string;
 }
 
-const { currentPaper, supportedPapers, backHref } = Astro.props;
+const { currentPaper, supportedPapers, backHref, recommendedPaperNote } = Astro.props;
 ---
 
 <div class="topbar">
   <div class="topbar-inner">
-    <div class="topbar-group">
-      <span class="topbar-label">Paper Size</span>
+    <div class="topbar-stack">
+      <div class="topbar-group">
+        <span class="topbar-label">Paper Size</span>
 
-      {supportedPapers.map((paper) => (
-        <button
-          type="button"
-          class={`btn paper-toggle ${paper === currentPaper ? "btn-active" : ""}`}
-          data-paper={paper}
-        >
-          {PAPER_LABELS[paper]}
-        </button>
-      ))}
+        {supportedPapers.map((paper) => (
+          <button
+            type="button"
+            class={`btn paper-toggle ${paper === currentPaper ? "btn-active" : ""}`}
+            data-paper={paper}
+          >
+            {PAPER_LABELS[paper]}
+          </button>
+        ))}
+      </div>
+
+      {recommendedPaperNote && <div class="topbar-note">{recommendedPaperNote}</div>}
     </div>
 
     <div class="topbar-actions">

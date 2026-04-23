@@ -8,7 +8,7 @@ export const printableTemplateConfigs: PrintableTemplateConfig[] = [
     printTitle: "INVOICE",
     description:
       "A printable invoice template for billing customers, listing items, recording totals, and saving clean invoice PDFs for small business or freelance use.",
-    category: "Retail Cash & Store Operations",
+    category: "Quote & Billing",
     seoTitle: "Simple Invoice Template | worowo",
     canonical: "https://www.worowo.com/printable-templates/simple-invoice-template/",
     pageEyebrow: "Printable Template",
@@ -20,7 +20,8 @@ export const printableTemplateConfigs: PrintableTemplateConfig[] = [
     previewOrientation: "portrait",
     previewTitle: getPreviewTitle("a4", "portrait"),
     previewDescription:
-      "Preview the invoice below, then open the print page to switch between A4 and US Letter before printing or saving as PDF.",
+      "Preview the full printable page below. This template is available in both US Letter and A4 print formats.",
+    recommendedPaperNote: "Recommended paper size: A4",
   },
   {
     slug: "simple-packing-list-template",
@@ -41,7 +42,8 @@ export const printableTemplateConfigs: PrintableTemplateConfig[] = [
     previewOrientation: "portrait",
     previewTitle: getPreviewTitle("a4", "portrait"),
     previewDescription:
-      "Preview the packing list below, then open the print page to switch paper size before printing or saving as PDF.",
+      "Preview the full printable page below. This template is available in both US Letter and A4 print formats.",
+    recommendedPaperNote: "Recommended paper size: A4",
   },
   {
     slug: "simple-employee-availability-form",
@@ -63,7 +65,8 @@ export const printableTemplateConfigs: PrintableTemplateConfig[] = [
     previewOrientation: "portrait",
     previewTitle: getPreviewTitle("letter", "portrait"),
     previewDescription:
-      "Preview the availability form below. The print page supports both US Letter and A4 output.",
+      "Preview the full printable page below. This template is available in both US Letter and A4 print formats.",
+    recommendedPaperNote: "Recommended paper size: US Letter",
   },
   {
     slug: "simple-weekly-employee-schedule-template",
@@ -85,7 +88,8 @@ export const printableTemplateConfigs: PrintableTemplateConfig[] = [
     previewOrientation: "landscape",
     previewTitle: getPreviewTitle("letter", "landscape"),
     previewDescription:
-      "Preview the schedule below. The print page supports both US Letter and A4 in landscape format.",
+      "Preview the full printable page below. This template is available in both US Letter and A4 print formats.",
+    recommendedPaperNote: "Recommended paper size: US Letter",
   },
   {
     slug: "simple-employee-timesheet-template",
@@ -107,7 +111,8 @@ export const printableTemplateConfigs: PrintableTemplateConfig[] = [
     previewOrientation: "portrait",
     previewTitle: getPreviewTitle("letter", "portrait"),
     previewDescription:
-      "Preview the timesheet below. The print page supports both US Letter and A4 output.",
+      "Preview the full printable page below. This template is available in both US Letter and A4 print formats.",
+    recommendedPaperNote: "Recommended paper size: US Letter",
   },
   {
     slug: "simple-daily-cash-drawer-reconciliation-form",
@@ -129,7 +134,8 @@ export const printableTemplateConfigs: PrintableTemplateConfig[] = [
     previewOrientation: "portrait",
     previewTitle: getPreviewTitle("letter", "portrait"),
     previewDescription:
-      "Preview the reconciliation form below. The print page supports both US Letter and A4 output.",
+      "Preview the full printable page below. This template is available in both US Letter and A4 print formats.",
+    recommendedPaperNote: "Recommended paper size: US Letter",
   },
   {
     slug: "simple-field-service-work-order-template",
@@ -151,7 +157,8 @@ export const printableTemplateConfigs: PrintableTemplateConfig[] = [
     previewOrientation: "portrait",
     previewTitle: getPreviewTitle("letter", "portrait"),
     previewDescription:
-      "Preview the work order below. The print page supports both US Letter and A4 output.",
+      "Preview the full printable page below. This template is available in both US Letter and A4 print formats.",
+    recommendedPaperNote: "Recommended paper size: US Letter",
   },
 ];
 

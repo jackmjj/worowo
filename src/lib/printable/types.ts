@@ -18,4 +18,5 @@ export type PrintableTemplateConfig = {
   previewOrientation?: OrientationType;
   previewTitle?: string;
   previewDescription?: string;
+  recommendedPaperNote?: string;
 };

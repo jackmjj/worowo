@@ -1,4 +1,5 @@
 ---
+import BaseLayout from "./BaseLayout.astro";
 import "../styles/printable-template.css";
 import PrintablePreviewFrame from "../components/printable/PrintablePreviewFrame.astro";
 
@@ -25,16 +26,9 @@ const {
 } = Astro.props;
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{pageTitle} | Worowo</title>
-    <meta name="description" content={description} />
-    {canonical && <link rel="canonical" href={canonical} />}
-  </head>
-  <body style="background: var(--page-bg);">
-    <main class="page-wrap">
+<BaseLayout title={`${pageTitle} | Worowo`} description={description} canonical={canonical}>
+  <main class="printable-page-shell">
+    <div class="page-wrap">
       <section class="hero">
         <span class="eyebrow">{eyebrow}</span>
         <h1 class="page-title">{pageTitle}</h1>
@@ -51,6 +45,13 @@ const {
       </PrintablePreviewFrame>
 
       <slot name="note" />
-    </main>
-  </body>
-</html>
+    </div>
+  </main>
+
+  <style>
+    .printable-page-shell {
+      min-height: calc(100vh - 79px);
+      background: var(--page-bg);
+    }
+  </style>
+</BaseLayout>

@@ -15,6 +15,7 @@ const config = getPrintableTemplateConfig("simple-invoice-template");
   supportedPapers={config.supportedPapers}
   backHref="/printable-templates/simple-invoice-template/"
   canonical={config.canonical}
+  recommendedPaperNote={config.recommendedPaperNote}
 >
   <PrintableDocumentShell dynamicPaper={true} orientation={config.defaultOrientation}>
     <InvoiceDocument />

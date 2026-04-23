@@ -1,124 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-
-const categories = [
-  {
-    title: "Quotes & Invoices",
-    badge: "Documents",
-    description: "Professional docs in seconds — ready to send or print.",
-    href: "/quotes-invoices/",
-    moreLabel: "More quotes & invoice tools",
-    tools: [
-      {
-        name: "Quote / Estimate Generator",
-        desc: "Create a clean price quote to send to a client",
-        status: "Coming soon",
-      },
-      {
-        name: "Invoice Generator",
-        desc: "Generate a professional invoice, ready to send or print",
-        status: "Coming soon",
-      },
-      {
-        name: "Proforma Invoice Generator",
-        desc: "Issue a proforma before the sale is confirmed",
-        status: "Coming soon",
-      },
-      {
-        name: "Receipt Generator",
-        desc: "Provide a simple proof of payment",
-        status: "Coming soon",
-      },
-    ],
-  },
-  {
-    title: "Packing & Shipping",
-    badge: "Shipping",
-    description: "Shipping paperwork without opening complex software.",
-    href: "/packing-shipping/",
-    moreLabel: "More packing & shipping tools",
-    tools: [
-      {
-        name: "Packing Slip Generator",
-        desc: "List the items included in a shipment",
-        status: "Coming soon",
-      },
-      {
-        name: "Packing List Generator",
-        desc: "Detailed list for larger or multi-box shipments",
-        status: "Coming soon",
-      },
-      {
-        name: "Delivery Note Generator",
-        desc: "Confirm what was delivered and when",
-        status: "Coming soon",
-      },
-      {
-        name: "Commercial Invoice Generator",
-        desc: "Future tool placeholder for shipping-related paperwork",
-        status: "Coming soon",
-      },
-    ],
-  },
-  {
-    title: "Business Calculators",
-    badge: "Calculators",
-    description: "Fast calculators for profit margin, markup, break-even pricing, and landed cost.",
-    href: "/calculators/",
-    moreLabel: "More business calculators",
-    tools: [
-      {
-        name: "Profit Margin Calculator",
-        desc: "See how much profit you actually keep from each sale",
-        href: "/calculators/profit-margin-calculator/",
-      },
-      {
-        name: "Markup Calculator",
-        desc: "Set your selling price from your cost",
-        status: "Coming soon",
-      },
-      {
-        name: "Break-even Calculator",
-        desc: "Find the minimum price needed to cover your costs",
-        status: "Coming soon",
-      },
-      {
-        name: "Landed Cost Calculator",
-        desc: "Include shipping, tax, and fees in your true unit cost",
-        status: "Coming soon",
-      },
-    ],
-  },
-  {
-    title: "Printable Templates",
-    badge: "Templates",
-    description: "Download and print — no editing required.",
-    href: "/printable-templates/",
-    moreLabel: "More printable templates",
-    tools: [
-      {
-        name: "Simple Invoice Template",
-        desc: "A clean A4 printable invoice sheet for billing customers",
-        href: "/printable-templates/simple-invoice-template/",
-      },
-      {
-        name: "Simple Packing List Template",
-        desc: "Clean A4 printable packing list for shipping and export paperwork",
-        href: "/printable-templates/simple-packing-list-template/",
-      },
-      {
-        name: "Checklist / Duty Roster",
-        desc: "Simple printable checklists for daily operations",
-        status: "Coming soon",
-      },
-      {
-        name: "Printable Receipt Template",
-        desc: "Future template placeholder",
-        status: "Coming soon",
-      },
-    ],
-  },
-];
+import { homeCategories } from "../data/homeCategories";
 ---
 
 <BaseLayout
@@ -146,47 +28,68 @@ const categories = [
     <section id="tools" class="section-tight">
       <div class="container">
         <div class="category-grid">
-          {categories.map((category) => (
-            <article class="category-card">
+          {homeCategories.map((category) => (
+            <article
+              class="category-card"
+              style={`--category:${category.theme.solid};--category-soft:${category.theme.soft};--category-soft-border:${category.theme.softBorder};--category-badge:${category.theme.badgeBg};--category-badge-text:${category.theme.badgeText};--category-glow:${category.theme.glow};`}
+            >
               <div class="card-inner">
                 <header class="card-header">
-                  <div class="card-title-row">
-                    <h2>
-                      <a href={category.href} class="category-link">{category.title}</a>
-                    </h2>
-                    <span class="badge">{category.badge}</span>
+                  <div class="category-header-main">
+                    <div class="category-icon-wrap">
+                      <span class="category-icon" set:html={category.icon}></span>
+                    </div>
+
+                    <div class="category-copy">
+                      <div class="card-title-row">
+                        <h2>
+                          <a href={category.href} class="category-link">{category.title}</a>
+                        </h2>
+                        <span class="badge">{category.badge}</span>
+                      </div>
+                      <p>{category.description}</p>
+                    </div>
                   </div>
-                  <p>{category.description}</p>
                 </header>
 
                 <div class="tool-list">
                   {category.tools.map((tool) =>
                     tool.href ? (
                       <a href={tool.href} class="tool-row">
-                        <div class="tool-meta">
-                          <div>
+                        <div class="tool-leading">
+                          <span class="tool-icon" set:html={tool.icon}></span>
+                          <div class="tool-copy">
                             <span class="tool-name">{tool.name}</span>
                             <span class="tool-desc">{tool.desc}</span>
                           </div>
                         </div>
-                        <span class="arrow">→</span>
+                        <div class="tool-trailing">
+                          <span class="arrow">→</span>
+                        </div>
                       </a>
                     ) : (
                       <div class="tool-row tool-row-static">
-                        <div class="tool-meta">
-                          <div>
+                        <div class="tool-leading">
+                          <span class="tool-icon" set:html={tool.icon}></span>
+                          <div class="tool-copy">
                             <span class="tool-name">{tool.name}</span>
                             <span class="tool-desc">{tool.desc}</span>
                           </div>
-                          <span class="tool-status">{tool.status}</span>
                         </div>
-                        <span class="arrow">→</span>
+                        <div class="tool-trailing">
+                          <span class="tool-status">{tool.status}</span>
+                          <span class="arrow arrow-muted">→</span>
+                        </div>
                       </div>
                     )
                   )}
                 </div>
 
-                <a href={category.href} class="more-link">{category.moreLabel}</a>
+                <a href={category.href} class="more-link">
+                  <span class="more-icon" set:html={category.moreIcon}></span>
+                  <span>{category.moreLabel}</span>
+                  <span class="more-arrow">→</span>
+                </a>
               </div>
             </article>
           ))}
@@ -273,33 +176,88 @@ const categories = [
   }
 
   .category-card {
+    position: relative;
     border: 1px solid var(--line);
-    border-radius: 12px;
-    background: #fff;
-    transition: 0.2s ease;
+    border-radius: 24px;
+    background:
+      radial-gradient(circle at top right, var(--category-glow), transparent 34%),
+      linear-gradient(180deg, #ffffff 0%, #fdfdfd 100%);
+    box-shadow: 0 18px 40px -30px rgba(15, 23, 42, 0.18);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .category-card::after {
+    content: "";
+    position: absolute;
+    right: -8%;
+    top: 18px;
+    width: 44%;
+    height: 116px;
+    border: 1px solid color-mix(in srgb, var(--category) 14%, transparent);
+    border-left: 0;
+    border-radius: 999px;
+    opacity: 0.8;
+    pointer-events: none;
   }
 
   .category-card:hover {
-    border-color: var(--text);
-    box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--category) 35%, #d6dbe4);
+    box-shadow: 0 28px 48px -30px rgba(15, 23, 42, 0.22);
   }
 
   .card-inner {
-    padding: 22px 28px 28px;
+    padding: 26px 24px 22px;
     display: flex;
     flex-direction: column;
     height: 100%;
   }
 
-  .card-header p {
-    margin: 0;
-    color: var(--text-soft);
-    line-height: 1.75;
+  .card-header {
+    margin-bottom: 22px;
+  }
+
+  .category-header-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .category-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    background: var(--category-soft);
+    border: 1px solid var(--category-soft-border);
+    color: var(--category);
+    flex-shrink: 0;
+  }
+
+  .category-icon,
+  .tool-icon,
+  .more-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .category-icon :global(svg) {
+    width: 28px;
+    height: 28px;
+  }
+
+  .category-copy {
+    min-width: 0;
+    flex: 1;
   }
 
   .card-title-row {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
     margin-bottom: 8px;
@@ -307,24 +265,33 @@ const categories = [
 
   .card-title-row h2 {
     margin: 0;
-    font-size: 1.45rem;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    font-size: 1.95rem;
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+  }
+
+  .card-header p {
+    margin: 0;
+    color: var(--text-soft);
+    line-height: 1.62;
+    font-size: 1.02rem;
+    max-width: 31ch;
   }
 
   .category-link:hover {
-    color: var(--primary);
+    color: var(--category);
   }
 
   .badge {
     display: inline-flex;
     align-items: center;
-    padding: 2px 8px;
-    border-radius: 4px;
-    background: var(--bg-soft);
-    color: rgba(100, 116, 139, 0.82);
-    font-size: 0.58rem;
-    font-weight: 700;
+    min-height: 34px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: var(--category-badge);
+    color: var(--category-badge-text);
+    font-size: 0.74rem;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     white-space: nowrap;
@@ -333,80 +300,145 @@ const categories = [
 
   .tool-list {
     display: grid;
-    gap: 0;
-    margin: 22px 0 18px;
-    border-top: 1px solid var(--line);
+    gap: 12px;
+    margin: 0 0 14px;
   }
 
   .tool-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--line);
-    transition: color 0.2s ease;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    background: #ffffff;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
   }
 
   .tool-row:hover {
-    color: var(--primary);
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--category) 28%, #d6dbe4);
+    box-shadow: 0 18px 30px -26px var(--category-glow);
   }
 
-  .tool-row-static {
-    color: inherit;
+  .tool-row-static:hover {
+    transform: none;
+    border-color: #e5e7eb;
+    box-shadow: none;
   }
 
-  .tool-meta {
+  .tool-leading {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    width: 100%;
+    align-items: flex-start;
+    gap: 14px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .tool-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: var(--category-soft);
+    border: 1px solid var(--category-soft-border);
+    color: var(--category);
+  }
+
+  .tool-icon :global(svg),
+  .more-icon :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+
+  .tool-copy {
+    min-width: 0;
   }
 
   .tool-name {
     display: block;
-    font-size: 0.98rem;
-    font-weight: 700;
-    line-height: 1.45;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.38;
+    color: var(--text);
   }
 
   .tool-desc {
     display: block;
     margin-top: 4px;
     color: var(--text-soft);
-    font-size: 0.9rem;
-    line-height: 1.65;
+    font-size: 0.92rem;
+    line-height: 1.58;
+  }
+
+  .tool-trailing {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    margin-left: 10px;
   }
 
   .tool-status {
-    flex-shrink: 0;
-    color: var(--text-soft);
-    font-size: 0.72rem;
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: #f3f4f6;
+    color: #6b7280;
+    font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
 
-  .arrow {
+  .arrow,
+  .more-arrow {
     flex-shrink: 0;
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: 1.1rem;
+    font-weight: 800;
     color: var(--primary);
+    transition: transform 0.18s ease;
+  }
+
+  .tool-row:hover .arrow,
+  .more-link:hover .more-arrow {
+    transform: translateX(2px);
+  }
+
+  .arrow-muted {
+    color: #94a3b8;
   }
 
   .more-link {
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    gap: 12px;
     margin-top: auto;
-    padding-top: 2px;
-    font-size: 0.92rem;
-    font-weight: 700;
+    min-height: 46px;
+    padding: 0 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #ffffff;
+    font-size: 1rem;
+    font-weight: 800;
     color: var(--primary);
+    transition: transform 0.18s ease, border-color 0.18s ease;
   }
 
   .more-link:hover {
-    color: #1d4ed8;
+    transform: translateY(-1px);
+    border-color: color-mix(in srgb, var(--category) 28%, #d6dbe4);
+  }
+
+  .more-icon {
+    color: var(--category);
+  }
+
+  .more-arrow {
+    margin-left: auto;
   }
 
   .seo-statement {
@@ -455,16 +487,44 @@ const categories = [
     }
 
     .card-inner {
-      padding: 20px;
+      padding: 20px 18px 18px;
+    }
+
+    .category-header-main {
+      gap: 14px;
+    }
+
+    .category-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+    }
+
+    .category-icon :global(svg) {
+      width: 24px;
+      height: 24px;
     }
 
     .card-title-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .card-title-row h2 {
+      font-size: 1.6rem;
+    }
+
+    .tool-row,
+    .tool-row-static {
       align-items: flex-start;
     }
 
-    .tool-meta {
+    .tool-trailing {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: flex-end;
+      gap: 8px;
+      margin-left: 0;
     }
 
     .statement-inner {
