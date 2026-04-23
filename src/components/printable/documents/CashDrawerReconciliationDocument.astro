@@ -1,0 +1,74 @@
+<div class="doc-header">
+  <div class="doc-title">Daily Cash Drawer Reconciliation</div>
+
+  <div class="doc-meta">
+    <div class="field-row"><span class="field-label">Date</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Register / Drawer</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Cashier</span><span class="field-line"></span></div>
+  </div>
+</div>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div class="box">
+      <h2 class="section-title">Opening & Closing</h2>
+      <div class="field-row"><span class="field-label">Starting Cash:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Expected Cash:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Actual Cash:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Over / Short:</span><span class="field-line"></span></div>
+    </div>
+
+    <div class="box">
+      <h2 class="section-title">Payment Summary</h2>
+      <div class="field-row"><span class="field-label">Cash Sales:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Card Payments:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Checks:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Payouts / Refunds:</span><span class="field-line"></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div>
+      <h2 class="section-title">Cash Count Breakdown</h2>
+      <table class="doc-table table-compact">
+        <thead>
+          <tr>
+            <th>Denomination</th>
+            <th>Qty</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {["100", "50", "20", "10", "5", "1", "Coins"].map((item) => (
+            <tr>
+              <td>{item}</td>
+              <td></td>
+              <td></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <h2 class="section-title">Notes / Exceptions</h2>
+      <div class="box">
+        <div class="notes-lines">
+          <div class="notes-line"></div>
+          <div class="notes-line"></div>
+          <div class="notes-line"></div>
+          <div class="notes-line"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div class="field-row"><span class="field-label">Cashier Signature:</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Manager Signature:</span><span class="field-line"></span></div>
+  </div>
+</section>

@@ -1,0 +1,185 @@
+---
+import PrintableTemplatePrintLayout from "../../layouts/PrintableTemplatePrintLayout.astro";
+import { getPrintableTemplateConfig } from "../../lib/printable/config";
+
+const config = getPrintableTemplateConfig("simple-employee-timesheet-template");
+
+const days = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+---
+
+<PrintableTemplatePrintLayout
+  pageTitle={config.printTitle}
+  description="Printable employee timesheet template with US Letter and A4 portrait paper size options."
+  defaultPaper={config.defaultPaper}
+  orientation={config.defaultOrientation}
+  supportedPapers={config.supportedPapers}
+  backHref={`/printable-templates/${config.slug}/`}
+  canonical={config.canonical}
+>
+  <div class="paper print-document portrait" aria-label="Printable employee timesheet">
+    <div class="doc-header">
+      <div class="doc-title">EMPLOYEE TIMESHEET</div>
+      <div class="doc-meta">
+        <div class="field-row">
+          <span class="field-label">Week Beginning:</span>
+          <span class="field-line"></span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Week Ending:</span>
+          <span class="field-line"></span>
+        </div>
+      </div>
+    </div>
+
+    <section class="doc-section">
+      <h2 class="section-title">Employee Information</h2>
+      <div class="box">
+        <div class="two-col">
+          <div>
+            <div class="field-row">
+              <span class="field-label">Employee Name:</span>
+              <span class="field-line"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Employee ID:</span>
+              <span class="field-line"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Department:</span>
+              <span class="field-line"></span>
+            </div>
+          </div>
+
+          <div>
+            <div class="field-row">
+              <span class="field-label">Position:</span>
+              <span class="field-line"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Supervisor:</span>
+              <span class="field-line"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="section-title">Weekly Time Entry</h2>
+      <table class="doc-table timesheet-table">
+        <thead>
+          <tr>
+            <th style="width: 12%;">Day</th>
+            <th style="width: 10%;">Date</th>
+            <th style="width: 11%;">Time In</th>
+            <th style="width: 11%;">Meal Out</th>
+            <th style="width: 11%;">Meal In</th>
+            <th style="width: 11%;">Time Out</th>
+            <th style="width: 12%;">Regular Hours</th>
+            <th style="width: 10%;">OT Hours</th>
+            <th style="width: 12%;">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {days.map((day) => (
+            <tr>
+              <td>{day}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="doc-section">
+      <div class="two-col">
+        <div class="box">
+          <h2 class="section-title">Notes</h2>
+          <div class="notes-lines">
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+          </div>
+        </div>
+
+        <div class="box">
+          <h2 class="section-title">Hours Summary</h2>
+          <div class="field-row">
+            <span class="field-label">Total Regular Hours:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Total Overtime Hours:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Total Hours:</span>
+            <span class="field-line"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="section-title">Certification</h2>
+      <div class="signature-grid timesheet-signatures">
+        <div class="box">
+          <div class="field-row">
+            <span class="field-label">Employee Signature:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Date:</span>
+            <span class="field-line"></span>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="field-row">
+            <span class="field-label">Supervisor Signature:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Date:</span>
+            <span class="field-line"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</PrintableTemplatePrintLayout>
+
+<style>
+  .timesheet-table td {
+    height: 34px;
+    vertical-align: top;
+  }
+
+  .timesheet-table th,
+  .timesheet-table td {
+    font-size: 9.25pt;
+    padding: 7px 6px;
+  }
+
+  .timesheet-signatures {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  body.paper-a4 .print-document.portrait .timesheet-table td {
+    height: 36px;
+  }
+</style>

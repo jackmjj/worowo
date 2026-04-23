@@ -1,0 +1,97 @@
+<div class="doc-header">
+  <div class="doc-title">Field Service Work Order</div>
+
+  <div class="doc-meta">
+    <div class="field-row"><span class="field-label">Work Order No.</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Date</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Technician</span><span class="field-line"></span></div>
+  </div>
+</div>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div class="box">
+      <h2 class="section-title">Customer Information</h2>
+      <div class="field-row"><span class="field-label">Customer Name:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Company:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Phone / Email:</span><span class="field-line"></span></div>
+    </div>
+
+    <div class="box">
+      <h2 class="section-title">Service Address</h2>
+      <div class="field-row"><span class="field-label">Address:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">City / State:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Arrival Window:</span><span class="field-line"></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section">
+  <div class="box">
+    <h2 class="section-title">Job Description</h2>
+    <div class="notes-lines">
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div>
+      <h2 class="section-title">Labor</h2>
+      <table class="doc-table table-compact">
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Hours</th>
+            <th>Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: 4 }).map(() => (
+            <tr><td></td><td></td><td></td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <h2 class="section-title">Materials</h2>
+      <table class="doc-table table-compact">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Used</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: 4 }).map(() => (
+            <tr><td></td><td></td><td></td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div class="box">
+      <h2 class="section-title">Service Notes</h2>
+      <div class="notes-lines">
+        <div class="notes-line"></div>
+        <div class="notes-line"></div>
+        <div class="notes-line"></div>
+      </div>
+    </div>
+
+    <div class="box signature-grid">
+      <div class="field-row"><span class="field-label">Technician Signature:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Customer Signature:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Completion Date:</span><span class="field-line"></span></div>
+    </div>
+  </div>
+</section>

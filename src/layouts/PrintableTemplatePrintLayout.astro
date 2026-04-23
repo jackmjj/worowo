@@ -1,0 +1,95 @@
+---
+import "../styles/printable-template.css";
+import PrintToolbar from "../components/printable/PrintToolbar.astro";
+import { PAGE_CSS_RULES, getPaperModeKey } from "../lib/printable/paper";
+import type { OrientationType, PaperType } from "../lib/printable/types";
+
+interface Props {
+  pageTitle: string;
+  description: string;
+  defaultPaper: PaperType;
+  orientation: OrientationType;
+  supportedPapers: PaperType[];
+  backHref: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const {
+  pageTitle,
+  description,
+  defaultPaper,
+  orientation,
+  supportedPapers,
+  backHref,
+  canonical,
+  noindex = true,
+} = Astro.props;
+
+const defaultPageRule = PAGE_CSS_RULES[getPaperModeKey(defaultPaper, orientation)];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle} | Worowo</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={noindex ? "noindex,follow" : "index,follow"} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <style id="dynamic-print-page-size" is:inline>{defaultPageRule}</style>
+  </head>
+  <body
+    class={`print-root paper-${defaultPaper} orientation-${orientation}`}
+    data-paper={defaultPaper}
+    data-orientation={orientation}
+  >
+    <PrintToolbar
+      currentPaper={defaultPaper}
+      supportedPapers={supportedPapers}
+      backHref={backHref}
+    />
+
+    <main class="print-page-wrap">
+      <slot />
+    </main>
+
+    <script define:vars={{ defaultPaper, orientation, pageRules: PAGE_CSS_RULES }} is:inline>
+      const body = document.body;
+      const printBtn = document.getElementById("printBtn");
+      const toggleButtons = Array.from(document.querySelectorAll(".paper-toggle"));
+      const styleTag = document.getElementById("dynamic-print-page-size");
+
+      function getPageRule(paper, pageOrientation) {
+        return pageRules[`${paper}-${pageOrientation}`];
+      }
+
+      function applyPaper(paper) {
+        body.dataset.paper = paper;
+        body.classList.remove("paper-letter", "paper-a4");
+        body.classList.add(`paper-${paper}`);
+
+        toggleButtons.forEach((btn) => {
+          const isActive = btn.dataset.paper === paper;
+          btn.classList.toggle("btn-active", isActive);
+        });
+      }
+
+      toggleButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          applyPaper(btn.dataset.paper || defaultPaper);
+        });
+      });
+
+      printBtn?.addEventListener("click", () => {
+        const paper = body.dataset.paper || defaultPaper;
+        if (styleTag) {
+          styleTag.textContent = getPageRule(paper, orientation);
+        }
+        window.print();
+      });
+
+      applyPaper(defaultPaper);
+    </script>
+  </body>
+</html>

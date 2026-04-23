@@ -1,0 +1,110 @@
+<div class="doc-header">
+  <div class="doc-title">Packing List</div>
+
+  <div class="doc-meta packing-meta">
+    <div class="field-row">
+      <span class="field-label">Packing List No.</span>
+      <span class="field-line"></span>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Date</span>
+      <span class="field-line"></span>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Order No.</span>
+      <span class="field-line"></span>
+    </div>
+  </div>
+</div>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div>
+      <h2 class="section-title">Shipper / Sender</h2>
+      <div class="box">
+        <div class="field-row"><span class="field-label">Company / Name:</span><span class="field-line"></span></div>
+        <div class="field-row"><span class="field-label">Address Line 1:</span><span class="field-line"></span></div>
+        <div class="field-row"><span class="field-label">Address Line 2:</span><span class="field-line"></span></div>
+        <div class="field-row"><span class="field-label">Contact:</span><span class="field-line"></span></div>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="section-title">Consignee / Receiver</h2>
+      <div class="box">
+        <div class="field-row"><span class="field-label">Company / Name:</span><span class="field-line"></span></div>
+        <div class="field-row"><span class="field-label">Address Line 1:</span><span class="field-line"></span></div>
+        <div class="field-row"><span class="field-label">Address Line 2:</span><span class="field-line"></span></div>
+        <div class="field-row"><span class="field-label">Contact:</span><span class="field-line"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section">
+  <table class="doc-table table-compact">
+    <thead>
+      <tr>
+        <th class="col-no">No.</th>
+        <th class="col-desc">Item Description</th>
+        <th class="col-qty">Qty</th>
+        <th class="col-unit">Unit</th>
+        <th class="col-package">Package / Carton</th>
+        <th class="col-remarks">Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>2</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>3</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>4</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>5</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>6</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>7</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>8</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>9</td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td>10</td><td></td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="doc-section">
+  <div class="summary-grid">
+    <div class="field-row"><span class="field-label">Total Quantity:</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Total Packages:</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Gross Weight:</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Net Weight:</span><span class="field-line"></span></div>
+  </div>
+</section>
+
+<section class="doc-section">
+  <div class="field-row"><span class="field-label">Remarks:</span><span class="field-line"></span></div>
+</section>
+
+<section class="doc-section">
+  <div class="field-row"><span class="field-label">Signature:</span><span class="field-line"></span></div>
+</section>
+
+<style>
+  .packing-meta {
+    min-width: 290px;
+  }
+
+  .col-no { width: 8%; text-align: center; }
+  .col-desc { width: 40%; }
+  .col-qty { width: 10%; text-align: center; }
+  .col-unit { width: 10%; text-align: center; }
+  .col-package { width: 16%; text-align: center; }
+  .col-remarks { width: 16%; }
+
+  tbody td {
+    height: 38px;
+    vertical-align: top;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 18px;
+  }
+</style>

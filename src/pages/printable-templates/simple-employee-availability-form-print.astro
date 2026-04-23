@@ -1,10 +1,10 @@
 ---
-import PackingListDocument from "../../components/printable/documents/PackingListDocument.astro";
 import PrintableDocumentShell from "../../components/printable/PrintableDocumentShell.astro";
+import EmployeeAvailabilityDocument from "../../components/printable/documents/EmployeeAvailabilityDocument.astro";
 import PrintableTemplatePrintLayout from "../../layouts/PrintableTemplatePrintLayout.astro";
 import { getPrintableTemplateConfig } from "../../lib/printable/config";
 
-const config = getPrintableTemplateConfig("simple-packing-list-template");
+const config = getPrintableTemplateConfig("simple-employee-availability-form");
 ---
 
 <PrintableTemplatePrintLayout
@@ -13,10 +13,10 @@ const config = getPrintableTemplateConfig("simple-packing-list-template");
   defaultPaper={config.defaultPaper}
   orientation={config.defaultOrientation}
   supportedPapers={config.supportedPapers}
-  backHref="/printable-templates/simple-packing-list-template/"
+  backHref="/printable-templates/simple-employee-availability-form/"
   canonical={config.canonical}
 >
   <PrintableDocumentShell dynamicPaper={true} orientation={config.defaultOrientation}>
-    <PackingListDocument />
+    <EmployeeAvailabilityDocument />
   </PrintableDocumentShell>
 </PrintableTemplatePrintLayout>

@@ -1,0 +1,88 @@
+<div class="doc-header">
+  <div class="doc-title">Employee Timesheet</div>
+
+  <div class="doc-meta">
+    <div class="field-row"><span class="field-label">Week Ending</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Pay Period</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Department</span><span class="field-line"></span></div>
+  </div>
+</div>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div class="box">
+      <h2 class="section-title">Employee Information</h2>
+      <div class="field-row"><span class="field-label">Employee Name:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Employee ID:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Supervisor:</span><span class="field-line"></span></div>
+    </div>
+
+    <div class="box">
+      <h2 class="section-title">Work Summary</h2>
+      <div class="field-row"><span class="field-label">Regular Hours:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Overtime Hours:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Total Hours:</span><span class="field-line"></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section">
+  <table class="doc-table table-compact timesheet-table">
+    <thead>
+      <tr>
+        <th class="day-col">Day</th>
+        <th>Date</th>
+        <th>Start</th>
+        <th>Lunch Out</th>
+        <th>Lunch In</th>
+        <th>End</th>
+        <th>Total</th>
+        <th>Overtime</th>
+      </tr>
+    </thead>
+    <tbody>
+      {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => (
+        <tr>
+          <td class="day-col">{day}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</section>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div class="box">
+      <h2 class="section-title">Notes</h2>
+      <div class="notes-lines">
+        <div class="notes-line"></div>
+        <div class="notes-line"></div>
+        <div class="notes-line"></div>
+      </div>
+    </div>
+
+    <div class="box signature-grid">
+      <div class="field-row"><span class="field-label">Employee Signature:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Supervisor Signature:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Date:</span><span class="field-line"></span></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .timesheet-table td {
+    height: 32px;
+  }
+
+  .day-col {
+    width: 18%;
+    font-weight: 700;
+  }
+</style>

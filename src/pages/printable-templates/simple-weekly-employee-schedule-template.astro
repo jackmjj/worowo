@@ -1,10 +1,10 @@
 ---
-import PackingListDocument from "../../components/printable/documents/PackingListDocument.astro";
 import PrintableDocumentShell from "../../components/printable/PrintableDocumentShell.astro";
+import WeeklyEmployeeScheduleDocument from "../../components/printable/documents/WeeklyEmployeeScheduleDocument.astro";
 import PrintableTemplatePageLayout from "../../layouts/PrintableTemplatePageLayout.astro";
 import { getPrintableTemplateConfig } from "../../lib/printable/config";
 
-const config = getPrintableTemplateConfig("simple-packing-list-template");
+const config = getPrintableTemplateConfig("simple-weekly-employee-schedule-template");
 const previewPaper = config.previewPaper ?? config.defaultPaper;
 const previewOrientation = config.previewOrientation ?? config.defaultOrientation;
 ---
@@ -15,17 +15,17 @@ const previewOrientation = config.previewOrientation ?? config.defaultOrientatio
   eyebrow={config.pageEyebrow}
   previewTitle={config.previewTitle!}
   previewDescription={config.previewDescription!}
-  printHref="/printable-templates/simple-packing-list-template-print/"
+  printHref="/printable-templates/simple-weekly-employee-schedule-template-print/"
   canonical={config.canonical}
 >
   <Fragment slot="preview">
     <PrintableDocumentShell paper={previewPaper} orientation={previewOrientation}>
-      <PackingListDocument />
+      <WeeklyEmployeeScheduleDocument />
     </PrintableDocumentShell>
   </Fragment>
 
   <div slot="note" class="helper-note">
-    This packing list template supports both A4 and US Letter from the shared
-    print page, while keeping the document content itself consistent.
+    This schedule stays in landscape format and now supports both US Letter and
+    A4 from the unified print page.
   </div>
 </PrintableTemplatePageLayout>

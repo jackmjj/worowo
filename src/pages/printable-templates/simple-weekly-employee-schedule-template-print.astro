@@ -1,10 +1,10 @@
 ---
-import PackingListDocument from "../../components/printable/documents/PackingListDocument.astro";
 import PrintableDocumentShell from "../../components/printable/PrintableDocumentShell.astro";
+import WeeklyEmployeeScheduleDocument from "../../components/printable/documents/WeeklyEmployeeScheduleDocument.astro";
 import PrintableTemplatePrintLayout from "../../layouts/PrintableTemplatePrintLayout.astro";
 import { getPrintableTemplateConfig } from "../../lib/printable/config";
 
-const config = getPrintableTemplateConfig("simple-packing-list-template");
+const config = getPrintableTemplateConfig("simple-weekly-employee-schedule-template");
 ---
 
 <PrintableTemplatePrintLayout
@@ -13,10 +13,10 @@ const config = getPrintableTemplateConfig("simple-packing-list-template");
   defaultPaper={config.defaultPaper}
   orientation={config.defaultOrientation}
   supportedPapers={config.supportedPapers}
-  backHref="/printable-templates/simple-packing-list-template/"
+  backHref="/printable-templates/simple-weekly-employee-schedule-template/"
   canonical={config.canonical}
 >
   <PrintableDocumentShell dynamicPaper={true} orientation={config.defaultOrientation}>
-    <PackingListDocument />
+    <WeeklyEmployeeScheduleDocument />
   </PrintableDocumentShell>
 </PrintableTemplatePrintLayout>

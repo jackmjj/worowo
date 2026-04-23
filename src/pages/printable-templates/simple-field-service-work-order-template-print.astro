@@ -1,0 +1,218 @@
+---
+import PrintableTemplatePrintLayout from "../../layouts/PrintableTemplatePrintLayout.astro";
+import { getPrintableTemplateConfig } from "../../lib/printable/config";
+
+const config = getPrintableTemplateConfig("simple-field-service-work-order-template");
+
+const materialRows = Array.from({ length: 5 }, (_, i) => i + 1);
+---
+
+<PrintableTemplatePrintLayout
+  pageTitle={config.printTitle}
+  description="Printable field service work order template with US Letter and A4 portrait paper size options."
+  defaultPaper={config.defaultPaper}
+  orientation={config.defaultOrientation}
+  supportedPapers={config.supportedPapers}
+  backHref={`/printable-templates/${config.slug}/`}
+  canonical={config.canonical}
+>
+  <div class="paper print-document portrait" aria-label="Printable field service work order">
+    <div class="doc-header">
+      <div class="doc-title">FIELD SERVICE WORK ORDER</div>
+      <div class="doc-meta">
+        <div class="field-row">
+          <span class="field-label">Work Order No.:</span>
+          <span class="field-line"></span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Date:</span>
+          <span class="field-line"></span>
+        </div>
+      </div>
+    </div>
+
+    <section class="doc-section">
+      <h2 class="section-title">Company & Customer Information</h2>
+      <div class="two-col">
+        <div class="box">
+          <div class="field-row">
+            <span class="field-label">Business Name:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Technician:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Phone / Email:</span>
+            <span class="field-line"></span>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="field-row">
+            <span class="field-label">Customer Name:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Service Address:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Phone:</span>
+            <span class="field-line"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="section-title">Job Details</h2>
+      <div class="box">
+        <div class="two-col">
+          <div>
+            <div class="field-row">
+              <span class="field-label">Requested Service:</span>
+              <span class="field-line"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Scheduled Time:</span>
+              <span class="field-line"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Arrival Time:</span>
+              <span class="field-line"></span>
+            </div>
+          </div>
+
+          <div>
+            <div class="field-row">
+              <span class="field-label">Completion Time:</span>
+              <span class="field-line"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Labor Hours:</span>
+              <span class="field-line"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Service Status:</span>
+              <span class="field-line"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="section-title">Work Performed</h2>
+      <div class="box">
+        <div class="notes-lines">
+          <div class="notes-line"></div>
+          <div class="notes-line"></div>
+          <div class="notes-line"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="section-title">Materials Used</h2>
+      <table class="doc-table work-order-table">
+        <thead>
+          <tr>
+            <th style="width: 10%;">No.</th>
+            <th style="width: 48%;">Description</th>
+            <th style="width: 14%;">Qty</th>
+            <th style="width: 14%;">Unit Cost</th>
+            <th style="width: 14%;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {materialRows.map((n) => (
+            <tr>
+              <td>{n}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="doc-section">
+      <div class="two-col">
+        <div class="box">
+          <h2 class="section-title">Service Notes</h2>
+          <div class="notes-lines">
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+          </div>
+        </div>
+
+        <div class="box">
+          <h2 class="section-title">Charges Summary</h2>
+          <div class="field-row">
+            <span class="field-label">Labor Charge:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Materials Charge:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Total Charge:</span>
+            <span class="field-line"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="section-title">Completion Acknowledgment</h2>
+      <div class="signature-grid work-order-signatures">
+        <div class="box">
+          <div class="field-row">
+            <span class="field-label">Technician Signature:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Date:</span>
+            <span class="field-line"></span>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="field-row">
+            <span class="field-label">Customer Signature:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Printed Name / Date:</span>
+            <span class="field-line"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</PrintableTemplatePrintLayout>
+
+<style>
+  .work-order-table td {
+    height: 34px;
+  }
+
+  .work-order-table th,
+  .work-order-table td {
+    font-size: 9.5pt;
+    padding: 7px 8px;
+  }
+
+  .work-order-signatures {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  body.paper-a4 .print-document.portrait .work-order-table td {
+    height: 36px;
+  }
+</style>

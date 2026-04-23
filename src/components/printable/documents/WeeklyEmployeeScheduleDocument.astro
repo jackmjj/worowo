@@ -1,0 +1,88 @@
+<div class="doc-header">
+  <div class="doc-title">Weekly Employee Schedule</div>
+
+  <div class="doc-meta schedule-meta">
+    <div class="field-row"><span class="field-label">Week Starting</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Location</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Manager</span><span class="field-line"></span></div>
+  </div>
+</div>
+
+<section class="doc-section">
+  <table class="doc-table table-compact schedule-table">
+    <thead>
+      <tr>
+        <th class="employee-col">Employee</th>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+        <th>Sun</th>
+        <th class="hours-col">Total Hours</th>
+      </tr>
+    </thead>
+    <tbody>
+      {Array.from({ length: 8 }).map((_, index) => (
+        <tr>
+          <td class="employee-col">{index + 1}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="hours-col"></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</section>
+
+<section class="doc-section">
+  <div class="three-col">
+    <div class="box">
+      <h2 class="section-title">Shift Key</h2>
+      <div class="field-row"><span class="field-label">Open:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Close:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Off:</span><span class="field-line"></span></div>
+    </div>
+
+    <div class="box">
+      <h2 class="section-title">Coverage Notes</h2>
+      <div class="notes-lines">
+        <div class="notes-line"></div>
+        <div class="notes-line"></div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2 class="section-title">Approval</h2>
+      <div class="field-row"><span class="field-label">Prepared By:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Approved By:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Date:</span><span class="field-line"></span></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .schedule-meta {
+    min-width: 280px;
+  }
+
+  .schedule-table td {
+    height: 50px;
+    vertical-align: top;
+  }
+
+  .employee-col {
+    width: 16%;
+    font-weight: 700;
+  }
+
+  .hours-col {
+    width: 12%;
+  }
+</style>

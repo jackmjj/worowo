@@ -1,13 +1,23 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { printableTemplateEntries } from "../../data/printableTemplates";
 
-const tools = [
+const sections = [
   {
-    title: "Simple Packing List Template",
-    description:
-      "Clean A4 printable packing list template for shipping, ecommerce, trading, and export paperwork.",
-    href: "/printable-templates/simple-packing-list-template/",
-    tag: "Packing & Shipping",
+    title: "Packing & Shipping",
+    tools: printableTemplateEntries.filter((tool) => tool.category === "Packing & Shipping"),
+  },
+  {
+    title: "Employee Scheduling & HR",
+    tools: printableTemplateEntries.filter((tool) => tool.category === "Employee Scheduling & HR"),
+  },
+  {
+    title: "Retail Cash & Store Operations",
+    tools: printableTemplateEntries.filter((tool) => tool.category === "Retail Cash & Store Operations"),
+  },
+  {
+    title: "Field Service & Job Forms",
+    tools: printableTemplateEntries.filter((tool) => tool.category === "Field Service & Job Forms"),
   },
 ];
 ---
@@ -38,16 +48,27 @@ const tools = [
 
     <section class="templates-main">
       <div class="container">
-        <div class="template-grid">
-          {tools.map((tool) => (
-            <a class="template-card" href={tool.href}>
-              <span class="template-tag">{tool.tag}</span>
-              <h2>{tool.title}</h2>
-              <p>{tool.description}</p>
-              <span class="template-arrow">→</span>
-            </a>
-          ))}
-        </div>
+        {sections.map((section) => (
+          section.tools.length > 0 && (
+            <section class="template-section">
+              <div class="section-heading">
+                <p class="section-kicker">Category</p>
+                <h2>{section.title}</h2>
+              </div>
+
+              <div class="template-grid">
+                {section.tools.map((tool) => (
+                  <a class="template-card" href={`/printable-templates/${tool.slug}/`}>
+                    <span class="template-tag">{tool.category}</span>
+                    <h3>{tool.cardTitle}</h3>
+                    <p>{tool.metaDescription}</p>
+                    <span class="template-arrow">→</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )
+        ))}
       </div>
     </section>
   </main>
@@ -72,6 +93,30 @@ const tools = [
 
     .templates-main {
       padding: 12px 0 42px;
+    }
+
+    .template-section + .template-section {
+      margin-top: 34px;
+    }
+
+    .section-heading {
+      margin-bottom: 16px;
+    }
+
+    .section-kicker {
+      margin: 0 0 6px;
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 1.55rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
     }
 
     .template-grid {
@@ -109,7 +154,7 @@ const tools = [
       font-weight: 800;
     }
 
-    .template-card h2 {
+    .template-card h3 {
       margin: 0 0 8px;
       font-size: 1.08rem;
       line-height: 1.35;

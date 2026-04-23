@@ -1,10 +1,10 @@
 ---
-import PackingListDocument from "../../components/printable/documents/PackingListDocument.astro";
+import InvoiceDocument from "../../components/printable/documents/InvoiceDocument.astro";
 import PrintableDocumentShell from "../../components/printable/PrintableDocumentShell.astro";
 import PrintableTemplatePrintLayout from "../../layouts/PrintableTemplatePrintLayout.astro";
 import { getPrintableTemplateConfig } from "../../lib/printable/config";
 
-const config = getPrintableTemplateConfig("simple-packing-list-template");
+const config = getPrintableTemplateConfig("simple-invoice-template");
 ---
 
 <PrintableTemplatePrintLayout
@@ -13,10 +13,10 @@ const config = getPrintableTemplateConfig("simple-packing-list-template");
   defaultPaper={config.defaultPaper}
   orientation={config.defaultOrientation}
   supportedPapers={config.supportedPapers}
-  backHref="/printable-templates/simple-packing-list-template/"
+  backHref="/printable-templates/simple-invoice-template/"
   canonical={config.canonical}
 >
   <PrintableDocumentShell dynamicPaper={true} orientation={config.defaultOrientation}>
-    <PackingListDocument />
+    <InvoiceDocument />
   </PrintableDocumentShell>
 </PrintableTemplatePrintLayout>

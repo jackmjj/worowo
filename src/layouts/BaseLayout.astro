@@ -159,28 +159,34 @@ const canonicalUrl = canonical || Astro.url.href;
         list-style: none;
       }
 
-      .desktop-nav details {
+      .desktop-group {
         position: relative;
+        padding-bottom: 10px;
+        margin-bottom: -10px;
       }
 
-      .desktop-nav details > summary {
+      .desktop-trigger {
+        appearance: none;
+        border: 0;
+        background: transparent;
+        padding: 0;
         display: flex;
         align-items: center;
         gap: 6px;
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
       }
 
-      .desktop-nav details[open] summary {
+      .desktop-group:hover .desktop-trigger,
+      .desktop-group:focus-within .desktop-trigger,
+      .desktop-group[data-open="true"] .desktop-trigger {
         color: var(--primary);
-      }
-
-      .desktop-nav summary::marker,
-      .desktop-nav summary::-webkit-details-marker {
-        display: none;
       }
 
       .desktop-flyout {
         position: absolute;
-        top: 100%;
+        top: calc(100% - 10px);
         right: 0;
         min-width: 260px;
         padding: 10px;
@@ -192,7 +198,9 @@ const canonicalUrl = canonical || Astro.url.href;
         gap: 4px;
       }
 
-      .desktop-nav details[open] > .desktop-flyout {
+      .desktop-group:hover > .desktop-flyout,
+      .desktop-group:focus-within > .desktop-flyout,
+      .desktop-group[data-open="true"] > .desktop-flyout {
         display: grid;
       }
 
@@ -394,14 +402,20 @@ const canonicalUrl = canonical || Astro.url.href;
           <nav class="desktop-nav" aria-label="Primary">
             {navGroups.map((group) => (
               group.children && group.children.length > 0 ? (
-                <details>
-                  <summary>{group.label}</summary>
+                <div class="desktop-group">
+                  <button
+                    class="desktop-trigger"
+                    type="button"
+                    aria-expanded="false"
+                  >
+                    {group.label}
+                  </button>
                   <div class="desktop-flyout">
                     {group.children.map((child) => (
                       <a href={child.href}>{child.label}</a>
                     ))}
                   </div>
-                </details>
+                </div>
               ) : (
                 <a href={group.href || "/"}>{group.label}</a>
               )
@@ -453,13 +467,17 @@ const canonicalUrl = canonical || Astro.url.href;
         const panel = document.getElementById("mobileNavPanel");
         if (!header || !toggle || !panel) return;
 
-        const desktopGroups = header.querySelectorAll(".desktop-nav details");
         const desktopMedia = window.matchMedia("(min-width: 901px)");
+        const desktopGroups = Array.from(header.querySelectorAll(".desktop-group"));
 
-        const closeDesktopGroups = (except) => {
+        const closeDesktopGroups = (except = null) => {
           desktopGroups.forEach((group) => {
             if (group !== except) {
-              group.removeAttribute("open");
+              group.setAttribute("data-open", "false");
+              const trigger = group.querySelector(".desktop-trigger");
+              if (trigger) {
+                trigger.setAttribute("aria-expanded", "false");
+              }
             }
           });
         };
@@ -472,36 +490,46 @@ const canonicalUrl = canonical || Astro.url.href;
         });
 
         desktopGroups.forEach((group) => {
-          const summary = group.querySelector("summary");
-          if (!summary) return;
+          const trigger = group.querySelector(".desktop-trigger");
+          if (!trigger) return;
+
+          group.setAttribute("data-open", "false");
 
           group.addEventListener("mouseenter", () => {
             if (!desktopMedia.matches) return;
             closeDesktopGroups(group);
-            group.setAttribute("open", "");
+            group.setAttribute("data-open", "true");
+            trigger.setAttribute("aria-expanded", "true");
           });
 
           group.addEventListener("mouseleave", () => {
             if (!desktopMedia.matches) return;
-            group.removeAttribute("open");
+            group.setAttribute("data-open", "false");
+            trigger.setAttribute("aria-expanded", "false");
           });
 
           group.addEventListener("focusin", () => {
             if (!desktopMedia.matches) return;
             closeDesktopGroups(group);
-            group.setAttribute("open", "");
+            group.setAttribute("data-open", "true");
+            trigger.setAttribute("aria-expanded", "true");
           });
 
           group.addEventListener("focusout", (event) => {
             if (!desktopMedia.matches) return;
             const nextTarget = event.relatedTarget;
             if (nextTarget instanceof Node && group.contains(nextTarget)) return;
-            group.removeAttribute("open");
+            group.setAttribute("data-open", "false");
+            trigger.setAttribute("aria-expanded", "false");
           });
 
-          summary.addEventListener("click", (event) => {
+          trigger.addEventListener("click", (event) => {
             if (!desktopMedia.matches) return;
             event.preventDefault();
+            const isOpen = group.getAttribute("data-open") === "true";
+            closeDesktopGroups(group);
+            group.setAttribute("data-open", isOpen ? "false" : "true");
+            trigger.setAttribute("aria-expanded", isOpen ? "false" : "true");
           });
         });
       })();

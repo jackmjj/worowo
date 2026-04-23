@@ -1,0 +1,56 @@
+---
+import "../styles/printable-template.css";
+import PrintablePreviewFrame from "../components/printable/PrintablePreviewFrame.astro";
+
+interface Props {
+  pageTitle: string;
+  description: string;
+  eyebrow?: string;
+  previewTitle: string;
+  previewDescription: string;
+  printHref: string;
+  backHref?: string;
+  canonical?: string;
+}
+
+const {
+  pageTitle,
+  description,
+  eyebrow = "Printable Template",
+  previewTitle,
+  previewDescription,
+  printHref,
+  backHref = "/printable-templates/",
+  canonical,
+} = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle} | Worowo</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+  </head>
+  <body style="background: var(--page-bg);">
+    <main class="page-wrap">
+      <section class="hero">
+        <span class="eyebrow">{eyebrow}</span>
+        <h1 class="page-title">{pageTitle}</h1>
+        <p class="page-description">{description}</p>
+      </section>
+
+      <div class="page-toolbar">
+        <a class="btn btn-primary" href={printHref}>Open Full Printable Page</a>
+        <a class="btn" href={backHref}>Back to Printable Templates</a>
+      </div>
+
+      <PrintablePreviewFrame title={previewTitle} description={previewDescription}>
+        <slot name="preview" />
+      </PrintablePreviewFrame>
+
+      <slot name="note" />
+    </main>
+  </body>
+</html>

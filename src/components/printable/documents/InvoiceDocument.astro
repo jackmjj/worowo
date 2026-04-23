@@ -1,0 +1,156 @@
+<div class="doc-header">
+  <div class="doc-title">Invoice</div>
+
+  <div class="doc-meta invoice-meta">
+    <div class="field-row">
+      <span class="field-label">Invoice No.</span>
+      <span class="field-line"></span>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Date</span>
+      <span class="field-line"></span>
+    </div>
+    <div class="field-row">
+      <span class="field-label">Due Date</span>
+      <span class="field-line"></span>
+    </div>
+  </div>
+</div>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div class="box">
+      <h2 class="section-title">From</h2>
+      <div class="field-row"><span class="field-label">Company Name:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Address:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Contact / Phone / Email:</span><span class="field-line"></span></div>
+    </div>
+
+    <div class="box">
+      <h2 class="section-title">Bill To</h2>
+      <div class="field-row"><span class="field-label">Customer Name:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Company:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Billing Address:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Contact / Phone / Email:</span><span class="field-line"></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section">
+  <h2 class="section-title">Invoice Details</h2>
+  <div class="box details-grid">
+    <div class="field-row"><span class="field-label">Reference No.:</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Currency:</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Payment Terms:</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Sales / Contact Person:</span><span class="field-line"></span></div>
+  </div>
+</section>
+
+<section class="doc-section">
+  <h2 class="section-title">Items</h2>
+
+  <table class="doc-table">
+    <thead>
+      <tr>
+        <th class="w-no">No.</th>
+        <th class="w-desc">Description</th>
+        <th class="w-qty">Qty</th>
+        <th class="w-price">Unit Price</th>
+        <th class="w-amount">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="blank-row"><td>1</td><td></td><td></td><td></td><td></td></tr>
+      <tr class="blank-row"><td>2</td><td></td><td></td><td></td><td></td></tr>
+      <tr class="blank-row"><td>3</td><td></td><td></td><td></td><td></td></tr>
+      <tr class="blank-row"><td>4</td><td></td><td></td><td></td><td></td></tr>
+      <tr class="blank-row"><td>5</td><td></td><td></td><td></td><td></td></tr>
+      <tr class="blank-row"><td>6</td><td></td><td></td><td></td><td></td></tr>
+      <tr class="blank-row"><td>7</td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="doc-section summary-row">
+  <div class="box">
+    <h2 class="section-title">Notes / Terms</h2>
+    <div class="notes-lines">
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+    </div>
+  </div>
+
+  <div class="box totals-box">
+    <table class="doc-table totals-table">
+      <tbody>
+        <tr><td class="totals-label">Subtotal</td><td></td></tr>
+        <tr><td class="totals-label">Tax</td><td></td></tr>
+        <tr><td class="totals-label">Shipping</td><td></td></tr>
+        <tr><td class="totals-label">Total</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div class="box">
+      <h2 class="section-title">Payment Information</h2>
+      <div class="field-row"><span class="field-label">Payment Method:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Account Name:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Bank / Payment Provider:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Account No. / Other Details:</span><span class="field-line"></span></div>
+    </div>
+
+    <div class="box">
+      <h2 class="section-title">Signature</h2>
+      <div class="field-row"><span class="field-label">Authorized Signature:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Name:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Date:</span><span class="field-line"></span></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .invoice-meta {
+    min-width: 250px;
+  }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 18px;
+  }
+
+  .w-no { width: 8%; }
+  .w-desc { width: 44%; }
+  .w-qty { width: 12%; }
+  .w-price { width: 18%; }
+  .w-amount { width: 18%; }
+
+  .blank-row td {
+    height: 38px;
+    vertical-align: top;
+  }
+
+  .summary-row {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 18px;
+    align-items: start;
+  }
+
+  .totals-box {
+    padding: 0;
+  }
+
+  .totals-table td {
+    padding: 9px 10px;
+  }
+
+  .totals-label {
+    width: 58%;
+    font-weight: 700;
+  }
+</style>

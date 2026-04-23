@@ -1,10 +1,10 @@
 ---
-import PackingListDocument from "../../components/printable/documents/PackingListDocument.astro";
+import EmployeeAvailabilityDocument from "../../components/printable/documents/EmployeeAvailabilityDocument.astro";
 import PrintableDocumentShell from "../../components/printable/PrintableDocumentShell.astro";
 import PrintableTemplatePageLayout from "../../layouts/PrintableTemplatePageLayout.astro";
 import { getPrintableTemplateConfig } from "../../lib/printable/config";
 
-const config = getPrintableTemplateConfig("simple-packing-list-template");
+const config = getPrintableTemplateConfig("simple-employee-availability-form");
 const previewPaper = config.previewPaper ?? config.defaultPaper;
 const previewOrientation = config.previewOrientation ?? config.defaultOrientation;
 ---
@@ -15,17 +15,17 @@ const previewOrientation = config.previewOrientation ?? config.defaultOrientatio
   eyebrow={config.pageEyebrow}
   previewTitle={config.previewTitle!}
   previewDescription={config.previewDescription!}
-  printHref="/printable-templates/simple-packing-list-template-print/"
+  printHref="/printable-templates/simple-employee-availability-form-print/"
   canonical={config.canonical}
 >
   <Fragment slot="preview">
     <PrintableDocumentShell paper={previewPaper} orientation={previewOrientation}>
-      <PackingListDocument />
+      <EmployeeAvailabilityDocument />
     </PrintableDocumentShell>
   </Fragment>
 
   <div slot="note" class="helper-note">
-    This packing list template supports both A4 and US Letter from the shared
-    print page, while keeping the document content itself consistent.
+    This form is designed for weekly availability collection and is now available
+    in both US Letter and A4 print formats.
   </div>
 </PrintableTemplatePageLayout>

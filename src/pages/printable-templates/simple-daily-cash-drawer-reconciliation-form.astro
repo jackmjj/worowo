@@ -1,0 +1,201 @@
+---
+import PrintableTemplatePageLayout from "../../layouts/PrintableTemplatePageLayout.astro";
+import { getPrintableTemplateConfig } from "../../lib/printable/config";
+
+const config = getPrintableTemplateConfig("simple-daily-cash-drawer-reconciliation-form");
+
+const tenderRows = [
+  "Starting Cash",
+  "Cash Sales",
+  "Card Payments",
+  "Checks",
+  "Gift Certificates / Gift Cards",
+  "Paid Outs / Petty Cash",
+  "Refunds",
+  "Expected Cash in Drawer",
+  "Actual Cash Counted",
+  "Over / Short",
+];
+---
+
+<PrintableTemplatePageLayout
+  pageTitle={config.pageTitle}
+  description={config.description}
+  eyebrow={config.pageEyebrow}
+  previewTitle={config.previewTitle!}
+  previewDescription={config.previewDescription!}
+  printHref={`/printable-templates/${config.slug}-print/`}
+  canonical={config.canonical}
+>
+  <Fragment slot="preview">
+    <div class="paper letter portrait" aria-label="Daily cash drawer reconciliation preview">
+      <div class="doc-header">
+        <div class="doc-title">DAILY CASH DRAWER RECONCILIATION</div>
+        <div class="doc-meta">
+          <div class="field-row">
+            <span class="field-label">Date:</span>
+            <span class="field-line"></span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Shift:</span>
+            <span class="field-line"></span>
+          </div>
+        </div>
+      </div>
+
+      <section class="doc-section">
+        <h3 class="section-title">Store Information</h3>
+        <div class="box">
+          <div class="two-col">
+            <div>
+              <div class="field-row">
+                <span class="field-label">Business Name:</span>
+                <span class="field-line"></span>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Store / Location:</span>
+                <span class="field-line"></span>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Register / Drawer No.:</span>
+                <span class="field-line"></span>
+              </div>
+            </div>
+
+            <div>
+              <div class="field-row">
+                <span class="field-label">Cashier / Employee:</span>
+                <span class="field-line"></span>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Manager / Supervisor:</span>
+                <span class="field-line"></span>
+              </div>
+              <div class="field-row">
+                <span class="field-label">Closing Time:</span>
+                <span class="field-line"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section">
+        <h3 class="section-title">Cash Drawer Reconciliation</h3>
+        <table class="doc-table cash-table">
+          <thead>
+            <tr>
+              <th style="width: 62%;">Description</th>
+              <th style="width: 38%;">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tenderRows.map((label) => (
+              <tr>
+                <td>{label}</td>
+                <td></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section">
+        <div class="two-col">
+          <div class="box">
+            <h3 class="section-title">Denomination Count</h3>
+            <table class="doc-table denom-table">
+              <thead>
+                <tr>
+                  <th style="width: 36%;">Denomination</th>
+                  <th style="width: 24%;">Qty</th>
+                  <th style="width: 40%;">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>$100</td><td></td><td></td></tr>
+                <tr><td>$50</td><td></td><td></td></tr>
+                <tr><td>$20</td><td></td><td></td></tr>
+                <tr><td>$10</td><td></td><td></td></tr>
+                <tr><td>$5</td><td></td><td></td></tr>
+                <tr><td>$1</td><td></td><td></td></tr>
+                <tr><td>Coins</td><td></td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="box">
+            <h3 class="section-title">Notes</h3>
+            <div class="notes-lines">
+              <div class="notes-line"></div>
+              <div class="notes-line"></div>
+              <div class="notes-line"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section">
+        <h3 class="section-title">Verification</h3>
+        <div class="signature-grid cash-signatures">
+          <div class="box">
+            <div class="field-row">
+              <span class="field-label">Prepared By:</span>
+              <span class="field-line"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Signature:</span>
+              <span class="field-line"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Date:</span>
+              <span class="field-line"></span>
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="field-row">
+              <span class="field-label">Verified By:</span>
+              <span class="field-line"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Signature:</span>
+              <span class="field-line"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Date:</span>
+              <span class="field-line"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </Fragment>
+
+  <div slot="note" class="helper-note">
+    This form is designed for daily register balancing and closing verification. It is
+    available in both US Letter and A4 print formats.
+  </div>
+</PrintableTemplatePageLayout>
+
+<style>
+  .cash-table td {
+    height: 34px;
+  }
+
+  .cash-table th,
+  .cash-table td,
+  .denom-table th,
+  .denom-table td {
+    font-size: 9.5pt;
+    padding: 7px 8px;
+  }
+
+  .denom-table td {
+    height: 30px;
+  }
+
+  .cash-signatures {
+    grid-template-columns: 1fr 1fr;
+  }
+</style>

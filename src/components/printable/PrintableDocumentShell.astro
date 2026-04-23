@@ -1,0 +1,23 @@
+---
+import type { OrientationType, PaperType } from "../../lib/printable/types";
+
+interface Props {
+  paper?: PaperType;
+  orientation: OrientationType;
+  dynamicPaper?: boolean;
+  className?: string;
+}
+
+const {
+  paper = "letter",
+  orientation,
+  dynamicPaper = false,
+  className = "",
+} = Astro.props;
+---
+
+<div
+  class={`paper ${dynamicPaper ? "paper-dynamic" : `paper-${paper}`} orientation-${orientation} ${className}`.trim()}
+>
+  <slot />
+</div>

@@ -1,0 +1,95 @@
+<div class="doc-header">
+  <div class="doc-title">Employee Availability Form</div>
+
+  <div class="doc-meta">
+    <div class="field-row"><span class="field-label">Week Of</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Department</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Submitted On</span><span class="field-line"></span></div>
+  </div>
+</div>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div class="box">
+      <h2 class="section-title">Employee Information</h2>
+      <div class="field-row"><span class="field-label">Employee Name:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Phone:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Email:</span><span class="field-line"></span></div>
+    </div>
+
+    <div class="box">
+      <h2 class="section-title">Position Information</h2>
+      <div class="field-row"><span class="field-label">Role / Position:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Preferred Location:</span><span class="field-line"></span></div>
+      <div class="field-row"><span class="field-label">Manager:</span><span class="field-line"></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section">
+  <h2 class="section-title">Weekly Availability</h2>
+  <table class="doc-table table-compact">
+    <thead>
+      <tr>
+        <th class="day-col">Day</th>
+        <th>Available</th>
+        <th>Unavailable</th>
+        <th>Preferred Shift</th>
+        <th>Available Hours</th>
+      </tr>
+    </thead>
+    <tbody>
+      {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => (
+        <tr>
+          <td class="day-col">{day}</td>
+          <td><span class="checkbox"></span></td>
+          <td><span class="checkbox"></span></td>
+          <td></td>
+          <td></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</section>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div class="box">
+      <h2 class="section-title">Shift Preference</h2>
+      <div class="choice-row">
+        <span class="choice-item"><span class="checkbox"></span> Morning</span>
+        <span class="choice-item"><span class="checkbox"></span> Afternoon</span>
+        <span class="choice-item"><span class="checkbox"></span> Evening</span>
+        <span class="choice-item"><span class="checkbox"></span> Flexible</span>
+      </div>
+      <div class="field-row"><span class="field-label">Maximum Hours / Week:</span><span class="field-line"></span></div>
+    </div>
+
+    <div class="box">
+      <h2 class="section-title">Unavailable Notes</h2>
+      <div class="notes-lines">
+        <div class="notes-line"></div>
+        <div class="notes-line"></div>
+        <div class="notes-line"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section">
+  <div class="two-col">
+    <div class="field-row"><span class="field-label">Employee Signature:</span><span class="field-line"></span></div>
+    <div class="field-row"><span class="field-label">Date:</span><span class="field-line"></span></div>
+  </div>
+</section>
+
+<style>
+  .day-col {
+    width: 22%;
+    font-weight: 700;
+  }
+
+  tbody td {
+    height: 34px;
+  }
+</style>

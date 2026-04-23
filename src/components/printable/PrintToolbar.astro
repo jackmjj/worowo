@@ -1,0 +1,37 @@
+---
+import { PAPER_LABELS } from "../../lib/printable/paper";
+import type { PaperType } from "../../lib/printable/types";
+
+interface Props {
+  currentPaper: PaperType;
+  supportedPapers: PaperType[];
+  backHref: string;
+}
+
+const { currentPaper, supportedPapers, backHref } = Astro.props;
+---
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-group">
+      <span class="topbar-label">Paper Size</span>
+
+      {supportedPapers.map((paper) => (
+        <button
+          type="button"
+          class={`btn paper-toggle ${paper === currentPaper ? "btn-active" : ""}`}
+          data-paper={paper}
+        >
+          {PAPER_LABELS[paper]}
+        </button>
+      ))}
+    </div>
+
+    <div class="topbar-actions">
+      <a class="btn" href={backHref}>Back to Template Page</a>
+      <button type="button" class="btn btn-primary" id="printBtn">
+        Print / Save as PDF
+      </button>
+    </div>
+  </div>
+</div>
