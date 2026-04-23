@@ -6,15 +6,22 @@ interface Props {
   currentPaper: PaperType;
   supportedPapers: PaperType[];
   backHref: string;
-  recommendedPaperNote?: string;
 }
 
-const { currentPaper, supportedPapers, backHref, recommendedPaperNote } = Astro.props;
+const { currentPaper, supportedPapers, backHref } = Astro.props;
 ---
 
 <div class="topbar">
   <div class="topbar-inner">
-    <div class="topbar-stack">
+    <div class="topbar-left">
+      <a class="brand-link" href="/">worowo</a>
+    </div>
+
+    <div class="topbar-center">
+      <a class="btn" href={backHref}>Back to Template Page</a>
+    </div>
+
+    <div class="topbar-right">
       <div class="topbar-group">
         <span class="topbar-label">Paper Size</span>
 
@@ -29,11 +36,6 @@ const { currentPaper, supportedPapers, backHref, recommendedPaperNote } = Astro.
         ))}
       </div>
 
-      {recommendedPaperNote && <div class="topbar-note">{recommendedPaperNote}</div>}
-    </div>
-
-    <div class="topbar-actions">
-      <a class="btn" href={backHref}>Back to Template Page</a>
       <button type="button" class="btn btn-primary" id="printBtn">
         Print / Save as PDF
       </button>
