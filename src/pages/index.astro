@@ -45,9 +45,11 @@ import { homeCategories } from "../data/homeCategories";
                         <h2>
                           <a href={category.href} class="category-link">{category.title}</a>
                         </h2>
+                      </div>
+                      <div class="card-meta-row">
+                        <p>{category.description}</p>
                         <span class="badge">{category.badge}</span>
                       </div>
-                      <p>{category.description}</p>
                     </div>
                   </div>
                 </header>
@@ -256,11 +258,7 @@ import { homeCategories } from "../data/homeCategories";
   }
 
   .card-title-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
   .card-title-row h2 {
@@ -270,12 +268,19 @@ import { homeCategories } from "../data/homeCategories";
     letter-spacing: -0.04em;
   }
 
+  .card-meta-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
   .card-header p {
     margin: 0;
     color: var(--text-soft);
     line-height: 1.62;
     font-size: 1.02rem;
-    max-width: 31ch;
+    max-width: 30ch;
   }
 
   .category-link:hover {
@@ -296,6 +301,7 @@ import { homeCategories } from "../data/homeCategories";
     letter-spacing: 0.08em;
     white-space: nowrap;
     flex-shrink: 0;
+    margin-top: 2px;
   }
 
   .tool-list {
@@ -505,14 +511,18 @@ import { homeCategories } from "../data/homeCategories";
       height: 24px;
     }
 
-    .card-title-row {
+    .card-meta-row {
       flex-direction: column;
       align-items: flex-start;
-      gap: 8px;
+      gap: 10px;
     }
 
     .card-title-row h2 {
       font-size: 1.6rem;
+    }
+
+    .badge {
+      margin-top: 0;
     }
 
     .tool-row,
