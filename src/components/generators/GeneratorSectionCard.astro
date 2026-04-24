@@ -1,0 +1,54 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "" } = Astro.props;
+---
+
+<section class="generator-section-card">
+  <div class="generator-section-card-head">
+    <h2 class="generator-section-card-title">{title}</h2>
+    {description && <p class="generator-section-card-description">{description}</p>}
+  </div>
+
+  <div class="generator-section-card-body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .generator-section-card {
+    background: #ffffff;
+    border: 1px solid #dbe3ee;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  }
+
+  .generator-section-card-head {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid #edf2f7;
+    background: linear-gradient(to bottom, #ffffff, #fbfdff);
+  }
+
+  .generator-section-card-title {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.3;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+  }
+
+  .generator-section-card-description {
+    margin: 8px 0 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #475569;
+  }
+
+  .generator-section-card-body {
+    padding: 16px 18px 18px;
+  }
+</style>

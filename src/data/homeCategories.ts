@@ -136,7 +136,7 @@ export const homeCategories: HomeCategory[] = [
       {
         name: "Packing List Generator",
         desc: "Detailed list for larger or multi-box shipments",
-        status: "Coming soon",
+        href: "/packing-list-generator/",
         icon: makeIcon("boxes"),
       },
       {

@@ -1,0 +1,237 @@
+---
+import { GENERATOR_PAPER_DIMENSIONS } from "../../lib/generators/paper";
+import type {
+  GeneratorPaperType,
+  PackingListFormState,
+} from "../../lib/generators/types";
+
+interface Props {
+  paper: GeneratorPaperType;
+  data: PackingListFormState;
+  className?: string;
+}
+
+const { paper, data, className = "" } = Astro.props;
+const dimensions = GENERATOR_PAPER_DIMENSIONS[paper];
+
+const items = data.items.length ? data.items : [];
+---
+
+<div
+  class={`generator-document-shell ${className}`}
+  style={`width:${dimensions.width}px;min-height:${dimensions.minHeight}px;`}
+>
+  <div class="generator-document-inner">
+    <div class="doc-header">
+      <div class="doc-title">PACKING LIST</div>
+      <div class="doc-meta">
+        <div class="field-row">
+          <span class="field-label">Packing List No.:</span>
+          <span>{data.packingListNo || " "}</span>
+        </div>
+        <div class="field-row">
+          <span class="field-label">Date:</span>
+          <span>{data.date || " "}</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="doc-section">
+      <div class="two-col">
+        <div class="box">
+          <h2 class="section-title">Shipper</h2>
+          <div class="field-row">
+            <span class="field-label">Company Name:</span>
+            <span>{data.shipperCompany || " "}</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Address:</span>
+            <span>{data.shipperAddress || " "}</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Contact:</span>
+            <span>{data.shipperContact || " "}</span>
+          </div>
+        </div>
+
+        <div class="box">
+          <h2 class="section-title">Consignee</h2>
+          <div class="field-row">
+            <span class="field-label">Customer Name:</span>
+            <span>{data.consigneeName || " "}</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Delivery Address:</span>
+            <span>{data.consigneeAddress || " "}</span>
+          </div>
+          <div class="field-row">
+            <span class="field-label">Contact:</span>
+            <span>{data.consigneeContact || " "}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="section-title">Shipment Details</h2>
+      <div class="box">
+        <div class="two-col">
+          <div>
+            <div class="field-row">
+              <span class="field-label">Reference No.:</span>
+              <span>{data.referenceNo || " "}</span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Shipment Date:</span>
+              <span>{data.shipmentDate || " "}</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="field-row">
+              <span class="field-label">Total Cartons:</span>
+              <span>{data.totalCartons || " "}</span>
+            </div>
+            <div class="field-row">
+              <span class="field-label">Total Weight:</span>
+              <span>{data.totalWeight || " "}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <h2 class="section-title">Items</h2>
+      <table class="doc-table packing-generator-table">
+        <thead>
+          <tr>
+            <th style="width: 8%;">No.</th>
+            <th style="width: 36%;">Description</th>
+            <th style="width: 12%;">Qty</th>
+            <th style="width: 12%;">Unit</th>
+            <th style="width: 14%;">Carton No.</th>
+            <th style="width: 18%;">Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map((item, index) => (
+            <tr>
+              <td>{index + 1}</td>
+              <td>{item.description || " "}</td>
+              <td>{item.qty || " "}</td>
+              <td>{item.unit || " "}</td>
+              <td>{item.cartonNo || " "}</td>
+              <td>{item.remarks || " "}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="doc-section">
+      <div class="box">
+        <h2 class="section-title">Remarks</h2>
+        <div class="generator-remarks-text">{data.generalRemarks || " "}</div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<style>
+  .generator-document-shell {
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+  }
+
+  .generator-document-inner {
+    padding: 54px 48px 48px;
+    color: #111827;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #cbd5e1;
+  }
+
+  .doc-title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .doc-meta {
+    min-width: 180px;
+  }
+
+  .doc-section {
+    margin-top: 16px;
+  }
+
+  .section-title {
+    margin: 0 0 10px;
+    font-size: 11pt;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .box {
+    border: 1px solid #cbd5e1;
+    padding: 12px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .field-row {
+    display: flex;
+    gap: 8px;
+    min-height: 26px;
+    font-size: 10pt;
+    line-height: 1.45;
+  }
+
+  .field-label {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .doc-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .doc-table th,
+  .doc-table td {
+    border: 1px solid #cbd5e1;
+    text-align: left;
+  }
+
+  .packing-generator-table td {
+    height: 34px;
+    vertical-align: top;
+  }
+
+  .packing-generator-table th,
+  .packing-generator-table td {
+    font-size: 9.5pt;
+    padding: 7px 8px;
+  }
+
+  .generator-remarks-text {
+    min-height: 40px;
+    font-size: 10pt;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+</style>

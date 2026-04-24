@@ -1,0 +1,729 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageTitle = "Packing List Generator";
+const pageDescription =
+  "Create a simple packing list online, fill in shipment details, and print or save a completed packing list as PDF. Ideal for small businesses, e-commerce orders, and everyday shipping use.";
+---
+
+<BaseLayout title={`${pageTitle} | Worowo`} description={pageDescription}>
+  <main class="packing-generator-page">
+    <div class="packing-generator-inner">
+      <section class="generator-hero">
+        <span class="generator-eyebrow">Packing & Shipping</span>
+        <h1 class="generator-title">{pageTitle}</h1>
+        <p class="generator-description">{pageDescription}</p>
+        <div class="generator-hero-links">
+          <a
+            href="/printable-templates/simple-packing-list-template/"
+            class="generator-inline-link"
+          >
+            Need a blank version for handwriting? View the Packing List Template.
+          </a>
+        </div>
+      </section>
+
+      <div class="document-toolbar">
+        <div class="document-toolbar-left">
+          <a href="/" class="brand-link">worowo</a>
+        </div>
+
+        <div class="document-toolbar-center">
+          <a href="/packing-shipping/" class="toolbar-link-btn">Back to Packing & Shipping</a>
+        </div>
+
+        <div class="document-toolbar-right">
+          <span class="toolbar-label">Paper Size</span>
+
+          <div class="paper-toggle-group">
+            <button type="button" class="toolbar-btn paper-toggle is-active" data-paper="letter">
+              US Letter
+            </button>
+            <button type="button" class="toolbar-btn paper-toggle" data-paper="a4">
+              A4
+            </button>
+          </div>
+
+          <button type="button" class="toolbar-btn" id="addItemBtn">Add Item</button>
+          <button type="button" class="toolbar-btn" id="resetBtn">Reset Form</button>
+          <button type="button" class="toolbar-btn toolbar-btn-primary" id="printBtn">
+            Print / Save as PDF
+          </button>
+        </div>
+      </div>
+
+      <section class="document-stage">
+        <div class="document-stage-inner">
+          <div id="packing-list-document" class="packing-document paper-letter">
+            <div class="packing-document-inner">
+              <div class="doc-header">
+                <div class="doc-title">PACKING LIST</div>
+                <div class="doc-meta">
+                  <div class="field-row">
+                    <span class="field-label">Packing List No.:</span>
+                    <input class="doc-input inline-input" type="text" placeholder="" />
+                  </div>
+                  <div class="field-row">
+                    <span class="field-label">Date:</span>
+                    <input class="doc-input inline-input" type="date" />
+                  </div>
+                </div>
+              </div>
+
+              <section class="doc-section">
+                <div class="two-col">
+                  <div class="box">
+                    <h2 class="section-title">Shipper</h2>
+                    <div class="field-stack">
+                      <label class="field-block">
+                        <span class="field-label">Company Name:</span>
+                        <input class="doc-input" type="text" />
+                      </label>
+                      <label class="field-block">
+                        <span class="field-label">Address:</span>
+                        <textarea class="doc-textarea" rows="3"></textarea>
+                      </label>
+                      <label class="field-block">
+                        <span class="field-label">Contact:</span>
+                        <input class="doc-input" type="text" />
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="box">
+                    <h2 class="section-title">Consignee</h2>
+                    <div class="field-stack">
+                      <label class="field-block">
+                        <span class="field-label">Customer Name:</span>
+                        <input class="doc-input" type="text" />
+                      </label>
+                      <label class="field-block">
+                        <span class="field-label">Delivery Address:</span>
+                        <textarea class="doc-textarea" rows="3"></textarea>
+                      </label>
+                      <label class="field-block">
+                        <span class="field-label">Contact:</span>
+                        <input class="doc-input" type="text" />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="doc-section">
+                <h2 class="section-title">Shipment Details</h2>
+                <div class="box">
+                  <div class="two-col">
+                    <div class="field-stack">
+                      <label class="field-block">
+                        <span class="field-label">Reference No.:</span>
+                        <input class="doc-input" type="text" />
+                      </label>
+                      <label class="field-block">
+                        <span class="field-label">Shipment Date:</span>
+                        <input class="doc-input" type="date" />
+                      </label>
+                    </div>
+
+                    <div class="field-stack">
+                      <label class="field-block">
+                        <span class="field-label">Total Cartons:</span>
+                        <input class="doc-input" type="text" />
+                      </label>
+                      <label class="field-block">
+                        <span class="field-label">Total Weight:</span>
+                        <input class="doc-input" type="text" />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="doc-section">
+                <h2 class="section-title">Items</h2>
+                <table class="doc-table packing-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 7%;">No.</th>
+                      <th style="width: 33%;">Description</th>
+                      <th style="width: 10%;">Qty</th>
+                      <th style="width: 12%;">Unit</th>
+                      <th style="width: 14%;">Carton No.</th>
+                      <th style="width: 18%;">Remarks</th>
+                      <th class="edit-only" style="width: 6%;"> </th>
+                    </tr>
+                  </thead>
+                  <tbody id="itemsTableBody">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <tr class="item-row">
+                        <td class="row-number">{i + 1}</td>
+                        <td><input class="doc-input table-input" type="text" /></td>
+                        <td><input class="doc-input table-input" type="text" /></td>
+                        <td><input class="doc-input table-input" type="text" /></td>
+                        <td><input class="doc-input table-input" type="text" /></td>
+                        <td><input class="doc-input table-input" type="text" /></td>
+                        <td class="edit-only action-cell">
+                          <button type="button" class="remove-row-btn">×</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </section>
+
+              <section class="doc-section">
+                <div class="box">
+                  <h2 class="section-title">Remarks</h2>
+                  <textarea class="doc-textarea remarks-area" rows="4"></textarea>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <style>
+    .packing-generator-page {
+      background: #f8fafc;
+    }
+
+    .packing-generator-inner {
+      width: min(1280px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 72px;
+    }
+
+    .generator-hero {
+      margin-bottom: 24px;
+    }
+
+    .generator-eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #16a34a;
+    }
+
+    .generator-title {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: #0f172a;
+    }
+
+    .generator-description {
+      max-width: 840px;
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.75;
+      color: #475569;
+    }
+
+    .generator-hero-links {
+      margin-top: 14px;
+    }
+
+    .generator-inline-link {
+      display: inline-flex;
+      align-items: center;
+      color: #2563eb;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .document-toolbar {
+      position: sticky;
+      top: 79px;
+      z-index: 30;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 16px;
+      margin-bottom: 22px;
+      border: 1px solid #dbe3ee;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    .document-toolbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .document-toolbar-center {
+      display: flex;
+      justify-content: center;
+    }
+
+    .document-toolbar-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brand-link {
+      color: #0f172a;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .brand-link:hover {
+      color: #2563eb;
+    }
+
+    .toolbar-link-btn,
+    .toolbar-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 10px;
+      border: 1px solid #dbe3ee;
+      background: #fff;
+      color: #0f172a;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .toolbar-link-btn:hover,
+    .toolbar-btn:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .toolbar-btn-primary {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #fff;
+    }
+
+    .toolbar-btn-primary:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    .toolbar-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #475569;
+      white-space: nowrap;
+    }
+
+    .paper-toggle-group {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .paper-toggle.is-active {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border-color: #93c5fd;
+    }
+
+    .document-stage {
+      display: flex;
+      justify-content: center;
+    }
+
+    .document-stage-inner {
+      width: 100%;
+      overflow: auto;
+      padding: 4px 0 0;
+    }
+
+    .packing-document {
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+    }
+
+    .packing-document.paper-letter {
+      width: 816px;
+      min-height: 1056px;
+    }
+
+    .packing-document.paper-a4 {
+      width: 794px;
+      min-height: 1123px;
+    }
+
+    .packing-document-inner {
+      padding: 54px 48px 48px;
+      color: #111827;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #cbd5e1;
+    }
+
+    .doc-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .doc-meta {
+      min-width: 220px;
+    }
+
+    .doc-section {
+      margin-top: 16px;
+    }
+
+    .section-title {
+      margin: 0 0 10px;
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .box {
+      border: 1px solid #cbd5e1;
+      padding: 12px;
+    }
+
+    .field-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 26px;
+      font-size: 10pt;
+      line-height: 1.45;
+    }
+
+    .field-label {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .field-block {
+      display: grid;
+      gap: 6px;
+    }
+
+    .doc-input,
+    .doc-textarea {
+      width: 100%;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      color: #0f172a;
+      font: inherit;
+      padding: 6px 8px;
+      outline: none;
+      transition: 0.18s ease;
+    }
+
+    .inline-input {
+      padding: 2px 6px;
+    }
+
+    .doc-input:hover,
+    .doc-textarea:hover {
+      border-color: #dbe3ee;
+      background: #f8fafc;
+    }
+
+    .doc-input:focus,
+    .doc-textarea:focus {
+      border-color: #93c5fd;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.22);
+    }
+
+    .doc-textarea {
+      resize: vertical;
+      min-height: 64px;
+    }
+
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .doc-table th,
+    .doc-table td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 8px;
+      font-size: 9.5pt;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .packing-table td {
+      height: 36px;
+    }
+
+    .table-input {
+      padding: 4px 6px;
+      min-height: 28px;
+      border-radius: 6px;
+    }
+
+    .row-number {
+      vertical-align: middle;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .action-cell {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .remove-row-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid #dbe3ee;
+      background: #fff;
+      color: #64748b;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .remove-row-btn:hover {
+      border-color: #fca5a5;
+      color: #dc2626;
+      background: #fef2f2;
+    }
+
+    .remarks-area {
+      min-height: 92px;
+    }
+
+    @media (max-width: 980px) {
+      .document-toolbar {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .document-toolbar-left,
+      .document-toolbar-center,
+      .document-toolbar-right {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .packing-generator-inner {
+        width: min(1280px, calc(100% - 24px));
+        padding: 28px 0 56px;
+      }
+
+      .generator-description {
+        font-size: 16px;
+      }
+
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <style is:global>
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+
+      #packing-list-document,
+      #packing-list-document * {
+        visibility: visible !important;
+      }
+
+      .site-header,
+      .site-footer,
+      .document-toolbar,
+      .remove-row-btn,
+      .edit-only {
+        display: none !important;
+      }
+
+      #packing-list-document {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        margin: 0 !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: #fff !important;
+      }
+
+      .packing-document.paper-letter,
+      .packing-document.paper-a4 {
+        width: auto !important;
+        min-height: auto !important;
+      }
+
+      .doc-input,
+      .doc-textarea {
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        resize: none !important;
+      }
+    }
+  </style>
+
+  <script>
+    const documentRoot = document.getElementById("packing-list-document");
+    const itemsTableBody = document.getElementById("itemsTableBody");
+    const addItemBtn = document.getElementById("addItemBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const printBtn = document.getElementById("printBtn");
+    const paperButtons = Array.from(document.querySelectorAll(".paper-toggle"));
+
+    function renumberRows() {
+      const rows = Array.from(itemsTableBody.querySelectorAll(".item-row"));
+      rows.forEach((row, index) => {
+        const num = row.querySelector(".row-number");
+        if (num) num.textContent = String(index + 1);
+      });
+    }
+
+    function attachRemoveHandlers(scope = document) {
+      scope.querySelectorAll(".remove-row-btn").forEach((btn) => {
+        if (btn.dataset.bound === "1") return;
+        btn.dataset.bound = "1";
+
+        btn.addEventListener("click", () => {
+          const rows = itemsTableBody.querySelectorAll(".item-row");
+          if (rows.length <= 1) return;
+          btn.closest(".item-row")?.remove();
+          renumberRows();
+        });
+      });
+    }
+
+    function createItemRow(index) {
+      const tr = document.createElement("tr");
+      tr.className = "item-row";
+      tr.innerHTML = `
+        <td class="row-number">${index}</td>
+        <td><input class="doc-input table-input" type="text" /></td>
+        <td><input class="doc-input table-input" type="text" /></td>
+        <td><input class="doc-input table-input" type="text" /></td>
+        <td><input class="doc-input table-input" type="text" /></td>
+        <td><input class="doc-input table-input" type="text" /></td>
+        <td class="edit-only action-cell">
+          <button type="button" class="remove-row-btn">×</button>
+        </td>
+      `;
+      return tr;
+    }
+
+    function resetForm() {
+      documentRoot.querySelectorAll("input").forEach((input) => {
+        input.value = "";
+      });
+
+      documentRoot.querySelectorAll("textarea").forEach((textarea) => {
+        textarea.value = "";
+      });
+
+      itemsTableBody.innerHTML = "";
+      for (let i = 1; i <= 5; i++) {
+        itemsTableBody.appendChild(createItemRow(i));
+      }
+      attachRemoveHandlers(itemsTableBody);
+      renumberRows();
+      applyPaper("letter");
+    }
+
+    function applyPaper(paper) {
+      documentRoot.classList.remove("paper-letter", "paper-a4");
+      documentRoot.classList.add(paper === "a4" ? "paper-a4" : "paper-letter");
+
+      paperButtons.forEach((btn) => {
+        btn.classList.toggle("is-active", btn.dataset.paper === paper);
+      });
+
+      const styleId = "generator-print-page-rule";
+      let styleTag = document.getElementById(styleId);
+
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+      }
+
+      if (paper === "a4") {
+        styleTag.textContent =
+          "@page { size: A4 portrait; margin: 18mm 16mm 18mm 16mm; }";
+      } else {
+        styleTag.textContent =
+          "@page { size: Letter portrait; margin: 0.7in 0.65in 0.7in 0.65in; }";
+      }
+    }
+
+    addItemBtn?.addEventListener("click", () => {
+      const nextIndex = itemsTableBody.querySelectorAll(".item-row").length + 1;
+      itemsTableBody.appendChild(createItemRow(nextIndex));
+      attachRemoveHandlers(itemsTableBody);
+      renumberRows();
+    });
+
+    resetBtn?.addEventListener("click", resetForm);
+
+    paperButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        applyPaper(btn.dataset.paper || "letter");
+      });
+    });
+
+    printBtn?.addEventListener("click", () => {
+      window.print();
+    });
+
+    attachRemoveHandlers(document);
+    applyPaper("letter");
+  </script>
+</BaseLayout>

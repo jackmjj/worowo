@@ -1,12 +1,17 @@
 ---
+import { siteNavigation } from "../data/siteNavigation";
+
 interface NavChild {
   label: string;
   href: string;
+  description?: string;
+  status?: "live" | "coming_soon";
 }
 
 interface NavGroup {
   label: string;
   href?: string;
+  theme?: "blue" | "green" | "purple" | "orange";
   children?: NavChild[];
 }
 
@@ -23,27 +28,26 @@ const {
   description = "Business tools, printable templates, and practical utilities for everyday work.",
   canonical,
   noindex = false,
-  navGroups = [
-    {
-      label: "Calculators",
-      href: "/business-calculators/",
-      children: [
-        { label: "Profit Margin Calculator", href: "/calculators/profit-margin-calculator/" },
-      ],
-    },
-    {
-      label: "Printable Templates",
-      href: "/printable-templates/",
-      children: [
-        { label: "Simple Packing List Template", href: "/printable-templates/simple-packing-list-template/" },
-        { label: "Simple Invoice Template", href: "/printable-templates/simple-invoice-template/" },
-        { label: "Employee Availability Form", href: "/printable-templates/simple-employee-availability-form/" },
-        { label: "Employee Timesheet", href: "/printable-templates/simple-employee-timesheet-template/" },
-      ],
-    },
-  ],
+  navGroups,
 } = Astro.props;
 
+const defaultNavGroups = siteNavigation
+  .filter((section) => section.showInHeader !== false)
+  .map((section) => ({
+    label: section.title,
+    href: section.href,
+    theme: section.theme,
+    children: section.children
+      .filter((child) => child.showInMenu !== false && child.featuredInMenu !== false)
+      .map((child) => ({
+        label: child.title,
+        href: child.href,
+        description: child.description,
+        status: child.status,
+      })),
+  }));
+
+const headerNavGroups = navGroups ?? defaultNavGroups;
 const canonicalUrl = canonical || Astro.url.href;
 ---
 
@@ -154,7 +158,8 @@ const canonicalUrl = canonical || Astro.url.href;
       }
 
       .desktop-nav > a,
-      .desktop-nav summary {
+      .desktop-nav summary,
+      .desktop-trigger {
         font-size: 0.95rem;
         font-weight: 700;
         color: var(--text);
@@ -179,6 +184,7 @@ const canonicalUrl = canonical || Astro.url.href;
         font: inherit;
         color: inherit;
         cursor: pointer;
+        min-height: 44px;
       }
 
       .desktop-group:hover .desktop-trigger,
@@ -187,18 +193,36 @@ const canonicalUrl = canonical || Astro.url.href;
         color: var(--primary);
       }
 
+      .desktop-group[data-theme="green"]:hover .desktop-trigger,
+      .desktop-group[data-theme="green"]:focus-within .desktop-trigger,
+      .desktop-group[data-theme="green"][data-open="true"] .desktop-trigger {
+        color: #16a34a;
+      }
+
+      .desktop-group[data-theme="purple"]:hover .desktop-trigger,
+      .desktop-group[data-theme="purple"]:focus-within .desktop-trigger,
+      .desktop-group[data-theme="purple"][data-open="true"] .desktop-trigger {
+        color: #7c3aed;
+      }
+
+      .desktop-group[data-theme="orange"]:hover .desktop-trigger,
+      .desktop-group[data-theme="orange"]:focus-within .desktop-trigger,
+      .desktop-group[data-theme="orange"][data-open="true"] .desktop-trigger {
+        color: #ea580c;
+      }
+
       .desktop-flyout {
         position: absolute;
         top: calc(100% - 10px);
         right: 0;
-        min-width: 260px;
+        width: 320px;
         padding: 10px;
         border: 1px solid var(--line);
-        border-radius: 14px;
+        border-radius: 16px;
         background: #fff;
-        box-shadow: 0 18px 40px -28px rgba(15, 23, 42, 0.25);
+        box-shadow: 0 24px 40px -30px rgba(15, 23, 42, 0.28);
         display: none;
-        gap: 4px;
+        gap: 6px;
       }
 
       .desktop-group:hover > .desktop-flyout,
@@ -207,16 +231,116 @@ const canonicalUrl = canonical || Astro.url.href;
         display: grid;
       }
 
-      .desktop-flyout a {
-        display: block;
-        padding: 10px 12px;
-        border-radius: 10px;
-        color: var(--text-soft);
+      .desktop-flyout-list {
+        display: grid;
+        gap: 4px;
       }
 
-      .desktop-flyout a:hover {
+      .desktop-flyout-row,
+      .desktop-flyout .nav-disabled {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 46px;
+        padding: 0 12px;
+        border: 0;
+        border-radius: 10px;
+        background: #fff;
+        color: var(--text);
+        transition: 0.18s ease;
+      }
+
+      .desktop-flyout-row:hover {
         background: var(--bg-soft);
+      }
+
+      .desktop-flyout .nav-disabled {
+        color: #64748b;
+        cursor: default;
+      }
+
+      .desktop-flyout-copy {
+        min-width: 0;
+      }
+
+      .desktop-flyout-item-title {
+        color: var(--text);
+        font-size: 0.95rem;
+        font-weight: 800;
+        line-height: 1.35;
+      }
+
+      .nav-arrow {
         color: var(--primary);
+        font-weight: 800;
+        flex-shrink: 0;
+      }
+
+      .desktop-group[data-theme="green"] .nav-arrow,
+      .desktop-group[data-theme="green"] .desktop-flyout-more {
+        color: #16a34a;
+      }
+
+      .desktop-group[data-theme="purple"] .nav-arrow,
+      .desktop-group[data-theme="purple"] .desktop-flyout-more {
+        color: #7c3aed;
+      }
+
+      .desktop-group[data-theme="orange"] .nav-arrow,
+      .desktop-group[data-theme="orange"] .desktop-flyout-more {
+        color: #ea580c;
+      }
+
+      .nav-status {
+        display: inline-flex;
+        align-items: center;
+        min-height: 24px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: #f3f4f6;
+        color: #6b7280;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .desktop-flyout-more {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 44px;
+        margin-top: 4px;
+        padding: 0 12px;
+        border-top: 1px solid var(--line);
+        color: var(--primary);
+        font-size: 0.9rem;
+        font-weight: 800;
+      }
+
+      .mobile-group-links .nav-disabled {
+        display: grid;
+        gap: 3px;
+        padding: 8px 0 8px 12px;
+        color: #94a3b8;
+        font-size: 0.92rem;
+        line-height: 1.45;
+        cursor: default;
+      }
+
+      .mobile-group-links .nav-disabled small {
+        color: #94a3b8;
+        font-size: 0.8rem;
+        line-height: 1.4;
+      }
+
+      .mobile-group-links .nav-disabled .nav-status {
+        justify-self: flex-start;
+        margin-top: 3px;
       }
 
       .mobile-menu-toggle {
@@ -349,11 +473,86 @@ const canonicalUrl = canonical || Astro.url.href;
       }
 
       .site-footer {
+        margin-top: 24px;
         border-top: 1px solid var(--line);
-        padding: 24px 0 42px;
+        padding: 40px 0 28px;
         color: var(--text-soft);
         font-size: 0.95rem;
-        background: #fff;
+        background: var(--bg-soft);
+      }
+
+      .footer-inner {
+        display: grid;
+        gap: 30px;
+      }
+
+      .footer-top {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .footer-brand {
+        display: inline-flex;
+        color: var(--text);
+        font-size: 1.28rem;
+        font-weight: 900;
+        letter-spacing: -0.05em;
+        line-height: 1;
+      }
+
+      .footer-brand:hover {
+        color: var(--primary);
+      }
+
+      .footer-tagline {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.94rem;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 28px;
+      }
+
+      .footer-col h2,
+      .footer-col h3 {
+        margin: 0 0 10px;
+        color: var(--text);
+        font-size: 0.82rem;
+        font-weight: 900;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .footer-col p {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.92rem;
+        line-height: 1.65;
+      }
+
+      .footer-col a {
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .footer-col a:hover {
+        color: var(--primary);
+      }
+
+      .footer-bottom {
+        padding-top: 8px;
+        border-top: 1px solid var(--line);
+      }
+
+      .footer-bottom p {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 0.86rem;
       }
 
       @media (max-width: 900px) {
@@ -392,6 +591,18 @@ const canonicalUrl = canonical || Astro.url.href;
         .site-logo {
           font-size: 1.6rem;
         }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .footer-top {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
       }
     </style>
   </head>
@@ -403,20 +614,37 @@ const canonicalUrl = canonical || Astro.url.href;
           <a href="/" class="site-logo">worowo</a>
 
           <nav class="desktop-nav" aria-label="Primary">
-            {navGroups.map((group) => (
+            {headerNavGroups.map((group) => (
               group.children && group.children.length > 0 ? (
-                <div class="desktop-group">
-                  <button
-                    class="desktop-trigger"
-                    type="button"
-                    aria-expanded="false"
-                  >
+                <div class="desktop-group" data-theme={group.theme ?? "blue"}>
+                  <a class="desktop-trigger" href={group.href || "/"}>
                     {group.label}
-                  </button>
+                  </a>
                   <div class="desktop-flyout">
-                    {group.children.map((child) => (
-                      <a href={child.href}>{child.label}</a>
-                    ))}
+                    <div class="desktop-flyout-list">
+                      {group.children.map((child) => (
+                        child.status === "coming_soon" ? (
+                          <span class="nav-disabled">
+                            <span class="desktop-flyout-copy">
+                              <span class="desktop-flyout-item-title">{child.label}</span>
+                            </span>
+                            <span class="nav-status">Coming soon</span>
+                          </span>
+                        ) : (
+                          <a href={child.href} class="desktop-flyout-row">
+                            <span class="desktop-flyout-copy">
+                              <span class="desktop-flyout-item-title">{child.label}</span>
+                            </span>
+                            <span class="nav-arrow">→</span>
+                          </a>
+                        )
+                      ))}
+                    </div>
+
+                    <a href={group.href || "/"} class="desktop-flyout-more">
+                      View all {group.label}
+                      <span>→</span>
+                    </a>
                   </div>
                 </div>
               ) : (
@@ -440,13 +668,21 @@ const canonicalUrl = canonical || Astro.url.href;
 
       <div class="mobile-nav-panel" id="mobileNavPanel" hidden>
         <div class="container mobile-nav-inner">
-          {navGroups.map((group) => (
+          {headerNavGroups.map((group) => (
             <details class="mobile-group">
               <summary>{group.label}</summary>
               <div class="mobile-group-links">
                 {group.href && <a href={group.href}>{group.label}</a>}
                 {group.children?.map((child) => (
-                  <a href={child.href}>{child.label}</a>
+                  child.status === "coming_soon" ? (
+                    <span class="nav-disabled">
+                      <span>{child.label}</span>
+                      {child.description && <small>{child.description}</small>}
+                      <span class="nav-status">Coming soon</span>
+                    </span>
+                  ) : (
+                    <a href={child.href}>{child.label}</a>
+                  )
                 ))}
               </div>
             </details>
@@ -458,8 +694,49 @@ const canonicalUrl = canonical || Astro.url.href;
     <slot />
 
     <footer class="site-footer">
-      <div class="container">
-        Practical business tools and printable templates for everyday work.
+      <div class="container footer-inner">
+        <div class="footer-top">
+          <a href="/" class="footer-brand">worowo</a>
+          <p class="footer-tagline">Skip the Software. Get the Result.</p>
+        </div>
+
+        <div class="footer-grid">
+          <section class="footer-col" aria-labelledby="footer-about-title">
+            <h2 id="footer-about-title">About</h2>
+            <p>
+              Lightweight tools for everyday business tasks, built for fast,
+              clean results without complex software.
+            </p>
+          </section>
+
+          <section class="footer-col" aria-labelledby="footer-contact-title">
+            <h2 id="footer-contact-title">Contact</h2>
+            <p>
+              Feedback or support:
+              <a href="mailto:hello@worowo.com">hello@worowo.com</a>
+            </p>
+          </section>
+
+          <section class="footer-col" aria-labelledby="footer-privacy-title">
+            <h2 id="footer-privacy-title">Privacy</h2>
+            <p>
+              Most tools are designed to run directly in your browser, with
+              minimal data collection.
+            </p>
+          </section>
+
+          <section class="footer-col" aria-labelledby="footer-terms-title">
+            <h2 id="footer-terms-title">Terms</h2>
+            <p>
+              Please review generated results before using them in real business
+              transactions.
+            </p>
+          </section>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© 2026 worowo</p>
+        </div>
       </div>
     </footer>
 
@@ -526,14 +803,6 @@ const canonicalUrl = canonical || Astro.url.href;
             trigger.setAttribute("aria-expanded", "false");
           });
 
-          trigger.addEventListener("click", (event) => {
-            if (!desktopMedia.matches) return;
-            event.preventDefault();
-            const isOpen = group.getAttribute("data-open") === "true";
-            closeDesktopGroups(group);
-            group.setAttribute("data-open", isOpen ? "false" : "true");
-            trigger.setAttribute("aria-expanded", isOpen ? "false" : "true");
-          });
         });
       })();
     </script>

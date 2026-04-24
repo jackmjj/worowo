@@ -1,0 +1,120 @@
+---
+import { GENERATOR_PAPER_LABELS } from "../../lib/generators/paper";
+import type { GeneratorPaperType } from "../../lib/generators/types";
+
+interface Props {
+  defaultPaper: GeneratorPaperType;
+  supportedPapers: GeneratorPaperType[];
+}
+
+const { defaultPaper, supportedPapers } = Astro.props;
+---
+
+<div class="generator-preview-toolbar">
+  <div class="generator-preview-toolbar-left">
+    <span class="generator-preview-toolbar-label">Paper Size</span>
+    <div class="generator-paper-toggle-group">
+      {supportedPapers.map((paper) => (
+        <button
+          type="button"
+          class={`generator-paper-toggle ${paper === defaultPaper ? "is-active" : ""}`}
+          data-generator-paper={paper}
+        >
+          {GENERATOR_PAPER_LABELS[paper]}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="generator-preview-toolbar-right">
+    <button type="button" class="generator-print-button" id="generatorPrintBtn">
+      Print / Save as PDF
+    </button>
+  </div>
+</div>
+
+<style>
+  .generator-preview-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    border-bottom: 1px solid #dbe3ee;
+    background: #ffffff;
+  }
+
+  .generator-preview-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .generator-preview-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .generator-preview-toolbar-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #475569;
+  }
+
+  .generator-paper-toggle-group {
+    display: inline-flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .generator-paper-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid #dbe3ee;
+    background: #fff;
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.18s ease;
+  }
+
+  .generator-paper-toggle:hover {
+    border-color: #94a3b8;
+    background: #f8fafc;
+  }
+
+  .generator-paper-toggle.is-active {
+    background: #dbeafe;
+    color: #1d4ed8;
+    border-color: #93c5fd;
+  }
+
+  .generator-print-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 16px;
+    border-radius: 10px;
+    border: 1px solid #2563eb;
+    background: #2563eb;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.18s ease;
+  }
+
+  .generator-print-button:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+  }
+</style>
