@@ -317,27 +317,6 @@ const canonicalUrl = canonical || Astro.url.href;
         font-weight: 800;
       }
 
-      .mobile-group-links .nav-disabled {
-        display: grid;
-        gap: 3px;
-        padding: 8px 0 8px 12px;
-        color: #94a3b8;
-        font-size: 0.92rem;
-        line-height: 1.45;
-        cursor: default;
-      }
-
-      .mobile-group-links .nav-disabled small {
-        color: #94a3b8;
-        font-size: 0.8rem;
-        line-height: 1.4;
-      }
-
-      .mobile-group-links .nav-disabled .nav-status {
-        justify-self: flex-start;
-        margin-top: 3px;
-      }
-
       .mobile-menu-toggle {
         display: none;
         width: 42px;
@@ -390,24 +369,37 @@ const canonicalUrl = canonical || Astro.url.href;
       }
 
       .mobile-nav-inner {
-        padding: 12px 0 16px;
+        display: grid;
+        gap: 10px;
+        padding: 14px 0 18px;
       }
 
       .mobile-group {
-        border-bottom: 1px solid var(--line);
-      }
-
-      .mobile-group:last-child {
-        border-bottom: none;
+        border: 0;
       }
 
       .mobile-group summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 52px;
+        padding: 0 14px;
+        border: 1px solid #dbe3ee;
+        border-radius: 12px;
+        background: #fff;
+        color: var(--text);
         list-style: none;
         cursor: pointer;
-        padding: 14px 0;
-        font-weight: 700;
+        font-weight: 800;
         font-size: 0.98rem;
         line-height: 1.4;
+        transition: 0.18s ease;
+      }
+
+      .mobile-group[open] summary {
+        border-color: var(--mobile-accent, var(--primary));
+        background: var(--mobile-soft, var(--primary-soft));
       }
 
       .mobile-group summary::marker,
@@ -415,25 +407,75 @@ const canonicalUrl = canonical || Astro.url.href;
         display: none;
       }
 
+      .mobile-group summary::after {
+        content: "+";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        background: var(--bg-soft);
+        color: var(--mobile-accent, var(--primary));
+        font-size: 1rem;
+        font-weight: 900;
+        line-height: 1;
+        flex-shrink: 0;
+      }
+
+      .mobile-group[open] summary::after {
+        content: "−";
+        background: #fff;
+      }
+
       .mobile-group-links {
         display: none;
-        gap: 4px;
-        padding: 0 0 14px 0;
+        gap: 8px;
+        padding: 10px 0 4px 14px;
       }
 
       .mobile-group[open] .mobile-group-links {
         display: grid;
       }
 
-      .mobile-group-links a {
-        padding: 8px 0 8px 12px;
-        color: var(--text-soft);
+      .mobile-group-links a,
+      .mobile-group-links .nav-disabled {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 44px;
+        padding: 0 12px;
+        border: 1px solid #edf2f7;
+        border-radius: 10px;
+        background: #fff;
+        color: var(--text);
         font-size: 0.92rem;
+        font-weight: 700;
         line-height: 1.45;
       }
 
       .mobile-group-links a:hover {
-        color: var(--primary);
+        border-color: #dbe3ee;
+        background: var(--bg-soft);
+        color: var(--mobile-accent, var(--primary));
+      }
+
+      .mobile-group-links .nav-disabled {
+        color: #64748b;
+        cursor: default;
+      }
+
+      .mobile-group-links a::after {
+        content: "→";
+        color: var(--mobile-accent, var(--primary));
+        font-weight: 900;
+        flex-shrink: 0;
+      }
+
+      .mobile-group-links .nav-status {
+        min-height: 22px;
+        font-size: 0.64rem;
       }
 
       .eyebrow {
@@ -664,15 +706,32 @@ const canonicalUrl = canonical || Astro.url.href;
       <div class="mobile-nav-panel" id="mobileNavPanel" hidden>
         <div class="container mobile-nav-inner">
           {headerNavGroups.map((group) => (
-            <details class="mobile-group">
+            <details
+              class="mobile-group"
+              style={`--mobile-accent:${
+                group.theme === "green"
+                  ? "#16a34a"
+                  : group.theme === "purple"
+                    ? "#7c3aed"
+                    : group.theme === "orange"
+                      ? "#ea580c"
+                      : "#2563eb"
+              };--mobile-soft:${
+                group.theme === "green"
+                  ? "#ecfdf3"
+                  : group.theme === "purple"
+                    ? "#f5f3ff"
+                    : group.theme === "orange"
+                      ? "#fff7ed"
+                      : "#eff6ff"
+              };`}
+            >
               <summary>{group.label}</summary>
               <div class="mobile-group-links">
-                {group.href && <a href={group.href}>{group.label}</a>}
                 {group.children?.map((child) => (
                   child.status === "coming_soon" ? (
                     <span class="nav-disabled">
                       <span>{child.label}</span>
-                      {child.description && <small>{child.description}</small>}
                       <span class="nav-status">Coming soon</span>
                     </span>
                   ) : (
