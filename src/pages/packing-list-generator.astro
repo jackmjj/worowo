@@ -6,7 +6,10 @@ const pageDescription =
   "Create a simple packing list online, fill in shipment details, and print or save a completed packing list as PDF. Ideal for small businesses, e-commerce orders, and everyday shipping use.";
 ---
 
-<BaseLayout title={`${pageTitle} | Worowo`} description={pageDescription}>
+<BaseLayout
+  title={`${pageTitle} | Worowo`}
+  description={pageDescription}
+>
   <main class="packing-generator-page">
     <div class="packing-generator-inner">
       <section class="generator-hero">
@@ -14,10 +17,7 @@ const pageDescription =
         <h1 class="generator-title">{pageTitle}</h1>
         <p class="generator-description">{pageDescription}</p>
         <div class="generator-hero-links">
-          <a
-            href="/printable-templates/simple-packing-list-template/"
-            class="generator-inline-link"
-          >
+          <a href="/printable-templates/simple-packing-list-template/" class="generator-inline-link">
             Need a blank version for handwriting? View the Packing List Template.
           </a>
         </div>
@@ -44,7 +44,6 @@ const pageDescription =
             </button>
           </div>
 
-          <button type="button" class="toolbar-btn" id="addItemBtn">Add Item</button>
           <button type="button" class="toolbar-btn" id="resetBtn">Reset Form</button>
           <button type="button" class="toolbar-btn toolbar-btn-primary" id="printBtn">
             Print / Save as PDF
@@ -61,7 +60,7 @@ const pageDescription =
                 <div class="doc-meta">
                   <div class="field-row">
                     <span class="field-label">Packing List No.:</span>
-                    <input class="doc-input inline-input" type="text" placeholder="" />
+                    <input class="doc-input inline-input" type="text" />
                   </div>
                   <div class="field-row">
                     <span class="field-label">Date:</span>
@@ -74,37 +73,33 @@ const pageDescription =
                 <div class="two-col">
                   <div class="box">
                     <h2 class="section-title">Shipper</h2>
-                    <div class="field-stack">
-                      <label class="field-block">
-                        <span class="field-label">Company Name:</span>
-                        <input class="doc-input" type="text" />
-                      </label>
-                      <label class="field-block">
-                        <span class="field-label">Address:</span>
-                        <textarea class="doc-textarea" rows="3"></textarea>
-                      </label>
-                      <label class="field-block">
-                        <span class="field-label">Contact:</span>
-                        <input class="doc-input" type="text" />
-                      </label>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Company Name:</span>
+                      <input class="doc-input" type="text" />
+                    </div>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Address:</span>
+                      <textarea class="doc-textarea compact-area" rows="2"></textarea>
+                    </div>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Contact:</span>
+                      <input class="doc-input" type="text" />
                     </div>
                   </div>
 
                   <div class="box">
                     <h2 class="section-title">Consignee</h2>
-                    <div class="field-stack">
-                      <label class="field-block">
-                        <span class="field-label">Customer Name:</span>
-                        <input class="doc-input" type="text" />
-                      </label>
-                      <label class="field-block">
-                        <span class="field-label">Delivery Address:</span>
-                        <textarea class="doc-textarea" rows="3"></textarea>
-                      </label>
-                      <label class="field-block">
-                        <span class="field-label">Contact:</span>
-                        <input class="doc-input" type="text" />
-                      </label>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Customer Name:</span>
+                      <input class="doc-input" type="text" />
+                    </div>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Delivery Address:</span>
+                      <textarea class="doc-textarea compact-area" rows="2"></textarea>
+                    </div>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Contact:</span>
+                      <input class="doc-input" type="text" />
                     </div>
                   </div>
                 </div>
@@ -114,43 +109,49 @@ const pageDescription =
                 <h2 class="section-title">Shipment Details</h2>
                 <div class="box">
                   <div class="two-col">
-                    <div class="field-stack">
-                      <label class="field-block">
+                    <div>
+                      <div class="field-row field-row-block">
                         <span class="field-label">Reference No.:</span>
                         <input class="doc-input" type="text" />
-                      </label>
-                      <label class="field-block">
+                      </div>
+                      <div class="field-row field-row-block">
                         <span class="field-label">Shipment Date:</span>
                         <input class="doc-input" type="date" />
-                      </label>
+                      </div>
                     </div>
 
-                    <div class="field-stack">
-                      <label class="field-block">
+                    <div>
+                      <div class="field-row field-row-block">
                         <span class="field-label">Total Cartons:</span>
                         <input class="doc-input" type="text" />
-                      </label>
-                      <label class="field-block">
+                      </div>
+                      <div class="field-row field-row-block">
                         <span class="field-label">Total Weight:</span>
                         <input class="doc-input" type="text" />
-                      </label>
+                      </div>
                     </div>
                   </div>
                 </div>
               </section>
 
               <section class="doc-section">
-                <h2 class="section-title">Items</h2>
+                <div class="section-title-row">
+                  <h2 class="section-title">Items</h2>
+                  <button type="button" class="toolbar-btn add-item-inline-btn edit-only" id="addItemBtn">
+                    Add Item
+                  </button>
+                </div>
+
                 <table class="doc-table packing-table">
                   <thead>
                     <tr>
-                      <th style="width: 7%;">No.</th>
-                      <th style="width: 33%;">Description</th>
-                      <th style="width: 10%;">Qty</th>
+                      <th style="width: 8%;">No.</th>
+                      <th style="width: 36%;">Description</th>
+                      <th style="width: 12%;">Qty</th>
                       <th style="width: 12%;">Unit</th>
                       <th style="width: 14%;">Carton No.</th>
                       <th style="width: 18%;">Remarks</th>
-                      <th class="edit-only" style="width: 6%;"> </th>
+                      <th class="edit-only" style="width: 6%;"></th>
                     </tr>
                   </thead>
                   <tbody id="itemsTableBody">
@@ -172,9 +173,27 @@ const pageDescription =
               </section>
 
               <section class="doc-section">
-                <div class="box">
-                  <h2 class="section-title">Remarks</h2>
-                  <textarea class="doc-textarea remarks-area" rows="4"></textarea>
+                <div class="two-col">
+                  <div class="box">
+                    <h2 class="section-title">Remarks</h2>
+                    <textarea class="doc-textarea compact-remarks" rows="2"></textarea>
+                  </div>
+
+                  <div class="box">
+                    <h2 class="section-title">Prepared By</h2>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Name:</span>
+                      <input class="doc-input" type="text" />
+                    </div>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Signature:</span>
+                      <input class="doc-input" type="text" />
+                    </div>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Date:</span>
+                      <input class="doc-input" type="date" />
+                    </div>
+                  </div>
                 </div>
               </section>
             </div>
@@ -398,8 +417,16 @@ const pageDescription =
       margin-top: 16px;
     }
 
+    .section-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
     .section-title {
-      margin: 0 0 10px;
+      margin: 0;
       font-size: 11pt;
       font-weight: 700;
       letter-spacing: 0.02em;
@@ -417,28 +444,31 @@ const pageDescription =
       padding: 12px;
     }
 
-    .field-stack {
-      display: grid;
-      gap: 10px;
-    }
-
     .field-row {
       display: flex;
-      align-items: center;
+      align-items: baseline;
       gap: 8px;
       min-height: 26px;
       font-size: 10pt;
       line-height: 1.45;
     }
 
+    .field-row-block {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      align-items: start;
+      min-height: auto;
+      margin-bottom: 10px;
+    }
+
+    .field-row-block:last-child {
+      margin-bottom: 0;
+    }
+
     .field-label {
       font-weight: 700;
       white-space: nowrap;
-    }
-
-    .field-block {
-      display: grid;
-      gap: 6px;
     }
 
     .doc-input,
@@ -473,6 +503,10 @@ const pageDescription =
 
     .doc-textarea {
       resize: vertical;
+    }
+
+    .compact-area,
+    .compact-remarks {
       min-height: 64px;
     }
 
@@ -528,13 +562,14 @@ const pageDescription =
     }
 
     .remove-row-btn:hover {
-      border-color: #fca5a5;
-      color: #dc2626;
-      background: #fef2f2;
+      border-color: #94a3b8;
+      background: #f8fafc;
     }
 
-    .remarks-area {
-      min-height: 92px;
+    .add-item-inline-btn {
+      min-height: 34px;
+      padding: 0 12px;
+      font-size: 13px;
     }
 
     @media (max-width: 980px) {
