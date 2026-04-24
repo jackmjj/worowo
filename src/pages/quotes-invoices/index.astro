@@ -1,46 +1,24 @@
 ---
 import ToolListSection from "../../components/tools/ToolListSection.astro";
+import { getCategoryPageData } from "../../data/categoryPageData";
 import ToolCategoryPageLayout from "../../layouts/ToolCategoryPageLayout.astro";
 
-const billingTools = [
-  {
-    title: "Invoice Generator",
-    description: "Create customer invoices with items, totals, and payment-ready billing details.",
-    icon: "invoice",
-    status: "Coming soon",
-  },
-  {
-    title: "Quote / Estimate Generator",
-    description: "Prepare quotes and estimates for products or services with customer info and totals.",
-    icon: "quote",
-    status: "Coming soon",
-  },
-  {
-    title: "Proforma Invoice Generator",
-    description: "Create proforma invoices for international trade and pre-sale confirmation.",
-    icon: "invoice",
-    status: "Coming soon",
-  },
-  {
-    title: "Receipt Generator",
-    description: "Generate simple receipts for payments received, cash sales, and record keeping.",
-    icon: "receipt",
-    status: "Coming soon",
-  },
-];
+const page = getCategoryPageData("quotes_invoices");
 ---
 
 <ToolCategoryPageLayout
-  title="Quotes & Invoices"
-  description="Create quotes, invoices, proforma invoices, and receipts with clean layouts built for small businesses, service providers, and trade use."
-  eyebrow="Category"
+  title={page.title}
+  description={page.description}
+  eyebrow={page.eyebrow}
   canonical="https://www.worowo.com/quotes-invoices/"
-  theme="blue"
+  theme={page.theme}
 >
-  <ToolListSection
-    title="Quote & Billing Tools"
-    description="Use these tools to prepare customer-facing billing documents quickly and generate clean quote and invoice workflows."
-    tools={billingTools}
-    theme="blue"
-  />
+  {page.sections.map((section) => (
+    <ToolListSection
+      title={section.title}
+      description={section.description}
+      tools={section.tools}
+      theme={page.theme}
+    />
+  ))}
 </ToolCategoryPageLayout>

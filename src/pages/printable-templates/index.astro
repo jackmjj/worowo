@@ -1,86 +1,24 @@
 ---
 import ToolListSection from "../../components/tools/ToolListSection.astro";
+import { getCategoryPageData } from "../../data/categoryPageData";
 import ToolCategoryPageLayout from "../../layouts/ToolCategoryPageLayout.astro";
 
-const quoteBillingTemplates = [
-  {
-    title: "Invoice Template",
-    href: "/printable-templates/simple-invoice-template/",
-    description: "Printable invoice template for billing customers, listing items, tax, and totals.",
-    icon: "invoice",
-    actionLabel: "View template",
-  },
-];
-
-const packingShippingTemplates = [
-  {
-    title: "Packing List Template",
-    href: "/printable-templates/simple-packing-list-template/",
-    description: "Printable packing list template for shipment contents, carton details, and notes.",
-    icon: "packing",
-    actionLabel: "View template",
-  },
-];
-
-const employeeTemplates = [
-  {
-    title: "Employee Availability Form",
-    href: "/printable-templates/simple-employee-availability-form/",
-    description: "Printable form for recording weekly availability, preferred shifts, and unavailable times.",
-    icon: "calendar",
-    actionLabel: "View template",
-  },
-  {
-    title: "Weekly Employee Schedule",
-    href: "/printable-templates/simple-weekly-employee-schedule-template/",
-    description: "Printable weekly staff schedule template for assigning shifts and organizing coverage.",
-    icon: "calendar",
-    actionLabel: "View template",
-  },
-  {
-    title: "Employee Timesheet",
-    href: "/printable-templates/simple-employee-timesheet-template/",
-    description: "Printable employee timesheet template for daily hours, breaks, overtime, and totals.",
-    icon: "timesheet",
-    actionLabel: "View template",
-  },
-];
-
-const storeOpsTemplates = [
-  {
-    title: "Daily Cash Drawer Reconciliation",
-    href: "/printable-templates/simple-daily-cash-drawer-reconciliation-form/",
-    description: "Printable form for starting cash, cash sales, card payments, payouts, and over/short totals.",
-    icon: "cash",
-    actionLabel: "View template",
-  },
-];
-
-const fieldServiceTemplates = [
-  {
-    title: "Field Service Work Order",
-    href: "/printable-templates/simple-field-service-work-order-template/",
-    description: "Printable work order template for job details, labor hours, materials used, and customer sign-off.",
-    icon: "work",
-    actionLabel: "View template",
-  },
-];
+const page = getCategoryPageData("printable_templates");
 ---
 
 <ToolCategoryPageLayout
-  title="Printable Templates"
-  description="Ready-to-print business templates for billing, shipping, employee scheduling, store operations, and field service documentation."
-  eyebrow="Category"
+  title={page.title}
+  description={page.description}
+  eyebrow={page.eyebrow}
   canonical="https://www.worowo.com/printable-templates/"
-  theme="orange"
+  theme={page.theme}
 >
-  <ToolListSection title="Quote & Billing" tools={quoteBillingTemplates} theme="orange" />
-
-  <ToolListSection title="Packing & Shipping" tools={packingShippingTemplates} theme="orange" />
-
-  <ToolListSection title="Employee Scheduling & HR" tools={employeeTemplates} theme="orange" />
-
-  <ToolListSection title="Retail Cash & Store Operations" tools={storeOpsTemplates} theme="orange" />
-
-  <ToolListSection title="Field Service & Job Forms" tools={fieldServiceTemplates} theme="orange" />
+  {page.sections.map((section) => (
+    <ToolListSection
+      title={section.title}
+      description={section.description}
+      tools={section.tools}
+      theme={page.theme}
+    />
+  ))}
 </ToolCategoryPageLayout>

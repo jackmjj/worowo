@@ -1,5 +1,5 @@
 ---
-import { siteNavigation } from "../data/siteNavigation";
+import { headerNavigation } from "../data/navigation";
 
 interface NavChild {
   label: string;
@@ -31,21 +31,16 @@ const {
   navGroups,
 } = Astro.props;
 
-const defaultNavGroups = siteNavigation
-  .filter((section) => section.showInHeader !== false)
-  .map((section) => ({
-    label: section.title,
-    href: section.href,
-    theme: section.theme,
-    children: section.children
-      .filter((child) => child.showInMenu !== false && child.featuredInMenu !== false)
-      .map((child) => ({
-        label: child.title,
-        href: child.href,
-        description: child.description,
-        status: child.status,
-      })),
-  }));
+const defaultNavGroups = headerNavigation.map((section) => ({
+  label: section.title,
+  href: section.href,
+  theme: section.theme,
+  children: section.children.map((child) => ({
+    label: child.title,
+    href: child.href,
+    status: child.status,
+  })),
+}));
 
 const headerNavGroups = navGroups ?? defaultNavGroups;
 const canonicalUrl = canonical || Astro.url.href;
@@ -213,16 +208,16 @@ const canonicalUrl = canonical || Astro.url.href;
 
       .desktop-flyout {
         position: absolute;
-        top: calc(100% - 10px);
-        right: 0;
-        width: 320px;
-        padding: 10px;
-        border: 1px solid var(--line);
-        border-radius: 16px;
+        top: calc(100% - 8px);
+        left: 0;
+        width: 360px;
+        padding: 14px;
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
         background: #fff;
-        box-shadow: 0 24px 40px -30px rgba(15, 23, 42, 0.28);
+        box-shadow: 0 24px 42px -30px rgba(15, 23, 42, 0.26);
         display: none;
-        gap: 6px;
+        gap: 8px;
       }
 
       .desktop-group:hover > .desktop-flyout,
@@ -233,7 +228,7 @@ const canonicalUrl = canonical || Astro.url.href;
 
       .desktop-flyout-list {
         display: grid;
-        gap: 4px;
+        gap: 6px;
       }
 
       .desktop-flyout-row,
@@ -242,10 +237,10 @@ const canonicalUrl = canonical || Astro.url.href;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        min-height: 46px;
-        padding: 0 12px;
+        min-height: 52px;
+        padding: 0 14px;
         border: 0;
-        border-radius: 10px;
+        border-radius: 14px;
         background: #fff;
         color: var(--text);
         transition: 0.18s ease;
@@ -314,8 +309,8 @@ const canonicalUrl = canonical || Astro.url.href;
         justify-content: space-between;
         gap: 12px;
         min-height: 44px;
-        margin-top: 4px;
-        padding: 0 12px;
+        margin-top: 6px;
+        padding: 0 14px;
         border-top: 1px solid var(--line);
         color: var(--primary);
         font-size: 0.9rem;

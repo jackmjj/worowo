@@ -1,54 +1,24 @@
 ---
 import ToolListSection from "../../components/tools/ToolListSection.astro";
+import { getCategoryPageData } from "../../data/categoryPageData";
 import ToolCategoryPageLayout from "../../layouts/ToolCategoryPageLayout.astro";
 
-const shippingTools = [
-  {
-    title: "Packing List Generator",
-    href: "/packing-list-generator/",
-    description: "Create a filled packing list online and print or save it as a shipping-ready PDF.",
-    icon: "packing",
-    actionLabel: "Open generator",
-  },
-  {
-    title: "Packing List Template",
-    href: "/printable-templates/simple-packing-list-template/",
-    description: "Printable blank packing list template for manual filling, printing, or PDF download.",
-    icon: "template",
-    actionLabel: "View template",
-  },
-  {
-    title: "Packing Slip Generator",
-    description: "List the items included in a shipment with a simple fulfillment document.",
-    icon: "packing",
-    status: "Coming soon",
-  },
-  {
-    title: "Delivery Receipt Template",
-    description: "Printable proof-of-delivery style receipt template for local delivery and customer acknowledgment.",
-    icon: "delivery",
-    status: "Coming soon",
-  },
-  {
-    title: "Commercial Invoice Generator",
-    description: "Prepare export and shipping-related invoice paperwork for cross-border orders.",
-    icon: "delivery",
-    status: "Coming soon",
-  },
-];
+const page = getCategoryPageData("packing_shipping");
 ---
 
 <ToolCategoryPageLayout
-  title="Packing & Shipping"
-  description="Use packing lists and delivery documents for ecommerce, wholesale, export shipments, and local delivery workflows."
-  eyebrow="Category"
+  title={page.title}
+  description={page.description}
+  eyebrow={page.eyebrow}
   canonical="https://www.worowo.com/packing-shipping/"
-  theme="green"
+  theme={page.theme}
 >
-  <ToolListSection
-    title="Shipping Documents"
-    description="A compact set of tools and printable templates for shipment records, delivery confirmation, and daily dispatch work."
-    tools={shippingTools}
-    theme="green"
-  />
+  {page.sections.map((section) => (
+    <ToolListSection
+      title={section.title}
+      description={section.description}
+      tools={section.tools}
+      theme={page.theme}
+    />
+  ))}
 </ToolCategoryPageLayout>

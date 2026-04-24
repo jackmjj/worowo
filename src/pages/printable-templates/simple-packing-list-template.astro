@@ -2,11 +2,13 @@
 import PackingListDocument from "../../components/printable/documents/PackingListDocument.astro";
 import PrintableDocumentShell from "../../components/printable/PrintableDocumentShell.astro";
 import PrintableTemplatePageLayout from "../../layouts/PrintableTemplatePageLayout.astro";
+import { getGeneratorForTool } from "../../data/toolRelations";
 import { getPrintableTemplateConfig } from "../../lib/printable/config";
 
 const config = getPrintableTemplateConfig("simple-packing-list-template");
 const previewPaper = config.previewPaper ?? config.defaultPaper;
 const previewOrientation = config.previewOrientation ?? config.defaultOrientation;
+const generator = getGeneratorForTool("packing_list_template");
 ---
 
 <PrintableTemplatePageLayout
@@ -27,5 +29,11 @@ const previewOrientation = config.previewOrientation ?? config.defaultOrientatio
   <div slot="note" class="helper-note">
     This packing list template supports both A4 and US Letter from the shared
     print page, while keeping the document content itself consistent.
+    {generator?.status === "live" && (
+      <>
+        {" "}
+        Need to fill it online? <a href={generator.href}>{generator.title}</a>.
+      </>
+    )}
   </div>
 </PrintableTemplatePageLayout>

@@ -1,9 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getBlankTemplateForTool } from "../data/toolRelations";
 
 const pageTitle = "Packing List Generator";
 const pageDescription =
   "Create a simple packing list online, fill in shipment details, and print or save a completed packing list as PDF. Ideal for small businesses, e-commerce orders, and everyday shipping use.";
+const blankTemplate = getBlankTemplateForTool("packing_list_generator");
 ---
 
 <BaseLayout
@@ -16,11 +18,13 @@ const pageDescription =
         <span class="generator-eyebrow">Packing & Shipping</span>
         <h1 class="generator-title">{pageTitle}</h1>
         <p class="generator-description">{pageDescription}</p>
-        <div class="generator-hero-links">
-          <a href="/printable-templates/simple-packing-list-template/" class="generator-inline-link">
-            Need a blank version for handwriting? View the Packing List Template.
-          </a>
-        </div>
+        {blankTemplate && (
+          <div class="generator-hero-links">
+            <a href={blankTemplate.href} class="generator-inline-link">
+              Need a blank version for handwriting? View the {blankTemplate.title}.
+            </a>
+          </div>
+        )}
       </section>
 
       <div class="document-toolbar">

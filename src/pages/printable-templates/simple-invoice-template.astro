@@ -2,11 +2,13 @@
 import InvoiceDocument from "../../components/printable/documents/InvoiceDocument.astro";
 import PrintableDocumentShell from "../../components/printable/PrintableDocumentShell.astro";
 import PrintableTemplatePageLayout from "../../layouts/PrintableTemplatePageLayout.astro";
+import { getGeneratorForTool } from "../../data/toolRelations";
 import { getPrintableTemplateConfig } from "../../lib/printable/config";
 
 const config = getPrintableTemplateConfig("simple-invoice-template");
 const previewPaper = config.previewPaper ?? config.defaultPaper;
 const previewOrientation = config.previewOrientation ?? config.defaultOrientation;
+const generator = getGeneratorForTool("invoice_template");
 ---
 
 <PrintableTemplatePageLayout
@@ -27,5 +29,17 @@ const previewOrientation = config.previewOrientation ?? config.defaultOrientatio
   <div slot="note" class="helper-note">
     This invoice template now uses the shared printable base system and supports
     both A4 and US Letter from the print page.
+    {generator?.status === "live" && (
+      <>
+        {" "}
+        Need to fill it online? <a href={generator.href}>{generator.title}</a>.
+      </>
+    )}
+    {generator?.status === "coming_soon" && (
+      <>
+        {" "}
+        The {generator.title} is coming soon.
+      </>
+    )}
   </div>
 </PrintableTemplatePageLayout>
