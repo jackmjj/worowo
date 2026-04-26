@@ -227,6 +227,24 @@ export const toolDictionary = {
     order: 310,
   },
 
+  break_even_point_calculator: {
+    key: "break_even_point_calculator",
+    categoryKey: "business_calculators",
+    title: "Break-Even Point Calculator",
+    shortTitle: "Break-Even Point Calculator",
+    href: "/calculators/break-even-point-calculator/",
+    type: "calculator",
+    status: "live",
+    description:
+      "Calculate break-even units, break-even sales, gross margin, and profit projection from fixed and variable costs.",
+    menuTitle: "Break-Even Point Calculator",
+    showInHeaderMenu: true,
+    featuredInHeaderMenu: true,
+    showOnHome: true,
+    featuredOnCategoryPage: true,
+    order: 315,
+  },
+
   sales_tax_calculator: {
     key: "sales_tax_calculator",
     categoryKey: "business_calculators",

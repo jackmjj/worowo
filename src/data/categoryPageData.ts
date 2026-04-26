@@ -52,6 +52,7 @@ function getToolIcon(tool: ToolDictionaryItem): string {
     delivery_receipt_template: "delivery",
     profit_margin_calculator: "profit",
     markup_calculator: "calculator",
+    break_even_point_calculator: "calculator",
     sales_tax_calculator: "tax",
     discount_calculator: "calculator",
     employee_availability_form: "calendar",

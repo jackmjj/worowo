@@ -1,0 +1,1265 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+
+const toolMeta = {
+  title: "Break-Even Point Calculator",
+  seoTitle: "Break-Even Point Calculator, Sales Volume & Profit Projection | worowo",
+  slug: "break-even-point-calculator",
+  category: "Business Calculators",
+  categoryHref: "/business-calculators/",
+  description:
+    "Free online break-even point calculator for small business, e-commerce, wholesale, and online store pricing. Calculate break-even units, sales volume, contribution margin ratio, and unit profit.",
+  intro:
+    "Find out exactly how many orders you need to pay your bills and start making a profit.",
+  canonical: "https://www.worowo.com/calculators/break-even-point-calculator/",
+};
+
+const faqItems = [
+  {
+    question: "What is a break-even point?",
+    answer:
+      "The break-even point is the sales level where total revenue equals total costs. For an online store, wholesale order, or small business product, it tells you how many units you need to sell before profit starts.",
+  },
+  {
+    question: "How do I calculate break-even units?",
+    answer:
+      "Break-even units are calculated as fixed costs divided by contribution margin per unit. Contribution margin per unit is selling price minus unit variable cost.",
+  },
+  {
+    question: "What is break-even sales?",
+    answer:
+      "Break-even sales are the total revenue needed to reach break-even. This calculator multiplies break-even units by selling price.",
+  },
+  {
+    question: "What should I do if my break-even point is too high?",
+    answer:
+      "Start by checking the biggest cost drivers. You can lower break-even units by reducing fixed costs, finding better supplier or freight rates, improving ad efficiency, increasing selling price, or bundling products to raise average order value.",
+  },
+  {
+    question: "Are fixed costs monthly or per order?",
+    answer:
+      "In this calculator, fixed costs are monthly or period costs such as rent, labor, software, insurance, and marketing overhead. Unit variable costs are per-unit costs such as materials, packaging, shipping, and commissions.",
+  },
+  {
+    question: "Why does selling price need to be higher than variable cost?",
+    answer:
+      "If selling price is equal to or lower than unit variable cost, each sale does not contribute toward fixed costs, so a valid break-even point cannot be reached.",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Profit Margin Calculator",
+    href: "/calculators/profit-margin-calculator/",
+    desc: "Calculate profit margin, markup, unit profit, and selling price decisions.",
+  },
+  {
+    name: "Business Calculators",
+    href: "/business-calculators/",
+    desc: "Browse pricing, profit margin, markup, discount, and business planning tools.",
+  },
+];
+---
+
+<ToolLayout
+  title={toolMeta.title}
+  pageTitle={toolMeta.seoTitle}
+  description={toolMeta.description}
+  canonical={toolMeta.canonical}
+  eyebrow="Business Calculator"
+  categoryLabel={toolMeta.category}
+  categoryHref={toolMeta.categoryHref}
+  intro={toolMeta.intro}
+  faqItems={faqItems}
+  relatedTools={relatedTools}
+>
+  <div slot="form" class="pm-card pm-form-card">
+    <div class="pm-form-top js-sync-top">
+      <h2 class="pm-title">Calculate Break-Even Point</h2>
+      <p class="pm-desc pm-desc-main">
+        Enter fixed costs, selling price, and unit variable cost to calculate your break-even point.
+      </p>
+
+      <div class="pm-mode-switch" role="presentation">
+        <button type="button" class="pm-mode-btn is-active">
+          Break-Even Point
+        </button>
+      </div>
+
+      <div class="pm-core-group">
+        <section class="pm-cost-section pm-cost-section-fixed" aria-labelledby="fixedCostsTitle">
+          <div class="pm-cost-section-header">
+            <h3 id="fixedCostsTitle">Fixed Costs</h3>
+            <strong id="totalFixedCostValue">$0.00</strong>
+          </div>
+
+          <div class="pm-cost-grid">
+            <label class="pm-field pm-field-compact">
+              <span>Rent</span>
+              <div class="pm-input-wrapper">
+                <span class="currency-symbol">$</span>
+                <input id="rent" data-fixed-cost type="number" min="0" step="0.01" placeholder="e.g. 1000" />
+              </div>
+            </label>
+
+            <label class="pm-field pm-field-compact">
+              <span>Labor Costs</span>
+              <div class="pm-input-wrapper">
+                <span class="currency-symbol">$</span>
+                <input id="laborCost" data-fixed-cost type="number" min="0" step="0.01" placeholder="e.g. 500" />
+              </div>
+            </label>
+
+            <label class="pm-field pm-field-compact">
+              <span>Utilities</span>
+              <div class="pm-input-wrapper">
+                <span class="currency-symbol">$</span>
+                <input id="utilitiesCost" data-fixed-cost type="number" min="0" step="0.01" placeholder="e.g. 200" />
+              </div>
+            </label>
+
+            <label class="pm-field pm-field-compact">
+              <span>Taxes</span>
+              <div class="pm-input-wrapper">
+                <span class="currency-symbol">$</span>
+                <input id="taxesCost" data-fixed-cost type="number" min="0" step="0.01" placeholder="e.g. 300" />
+              </div>
+            </label>
+
+            <label class="pm-field pm-field-compact">
+              <span>Marketing / Advertising</span>
+              <div class="pm-input-wrapper">
+                <span class="currency-symbol">$</span>
+                <input id="marketingCost" data-fixed-cost type="number" min="0" step="0.01" placeholder="e.g. 300" />
+              </div>
+            </label>
+
+            <label class="pm-field pm-field-compact">
+              <span>Other Monthly Fixed Costs</span>
+              <div class="pm-input-wrapper">
+                <span class="currency-symbol">$</span>
+                <input id="otherCost" data-fixed-cost type="number" min="0" step="0.01" placeholder="e.g. 100" />
+              </div>
+            </label>
+          </div>
+        </section>
+
+        <section class="pm-cost-section pm-cost-section-variable" aria-labelledby="variableCostsTitle">
+          <div class="pm-cost-section-header">
+            <h3 id="variableCostsTitle">Unit Variable Costs</h3>
+            <strong id="totalVariableCostValue">$0.00</strong>
+          </div>
+
+          <div class="pm-cost-grid">
+            <label class="pm-field pm-field-compact">
+              <span>Raw Materials</span>
+              <div class="pm-input-wrapper">
+                <span class="currency-symbol">$</span>
+                <input id="rawMaterialCost" data-variable-cost type="number" min="0" step="0.01" placeholder="e.g. 5" />
+              </div>
+            </label>
+
+            <label class="pm-field pm-field-compact">
+              <span>Sales Commissions</span>
+              <div class="pm-input-wrapper">
+                <span class="currency-symbol">$</span>
+                <input id="salesCommission" data-variable-cost type="number" min="0" step="0.01" placeholder="e.g. 2" />
+              </div>
+            </label>
+
+            <label class="pm-field pm-field-compact">
+              <span>Shipping & Freight</span>
+              <div class="pm-input-wrapper">
+                <span class="currency-symbol">$</span>
+                <input id="shippingCost" data-variable-cost type="number" min="0" step="0.01" placeholder="e.g. 1" />
+              </div>
+            </label>
+
+            <label class="pm-field pm-field-compact">
+              <span>Packaging Costs</span>
+              <div class="pm-input-wrapper">
+                <span class="currency-symbol">$</span>
+                <input id="packagingCost" data-variable-cost type="number" min="0" step="0.01" placeholder="e.g. 0.5" />
+              </div>
+            </label>
+          </div>
+        </section>
+
+        <label class="pm-field pm-highlight">
+          <span>Selling Price</span>
+          <div class="pm-input-wrapper">
+            <span class="currency-symbol">$</span>
+            <input id="sellingPrice" type="number" min="0" step="0.01" placeholder="e.g. 50" />
+          </div>
+        </label>
+
+        <p class="pm-help pm-help-field">
+          Fixed costs are period costs. Unit variable costs are per-unit costs used for the contribution margin.
+        </p>
+      </div>
+    </div>
+
+    <div class="pm-form-bottom js-sync-action">
+      <p class="pm-help pm-help-field">
+        Calculate the minimum sales volume needed to cover fixed costs at your current price and unit cost.
+      </p>
+
+      <p id="errorMessage" class="pm-error" aria-live="polite"></p>
+
+      <div class="pm-actions pm-actions-main">
+        <button id="resetButton" type="button" class="pm-btn pm-btn-secondary">Reset</button>
+        <button id="calculateButton" type="button" class="pm-btn pm-btn-primary">
+          Calculate
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div slot="results" class="pm-dashboard">
+    <div class="pm-results-top js-sync-top">
+      <div class="pm-hero-panel">
+        <div class="pm-hero-label">Break-Even Units</div>
+        <div id="headlineValue" class="pm-hero-value">0.00</div>
+        <div id="minimumUnitsNote" class="pm-hero-note">
+          Minimum <strong>0 units</strong> to reach break-even.
+        </div>
+        <p id="headlineText" class="pm-hero-text">
+          <span class="pm-hero-stat-label">Break-Even Sales:</span>
+          <strong id="headlineSales" class="pm-hero-stat-value">$0.00</strong>
+        </p>
+      </div>
+
+      <div class="pm-metrics-grid">
+        <div class="pm-metric-card">
+          <span class="pm-metric-label">
+            Contribution Margin Ratio
+            <span
+              class="tooltip"
+              tabindex="0"
+              data-tooltip="The share of each sales dollar left after unit variable costs. It helps cover fixed costs and then becomes profit."
+            >?</span>
+          </span>
+          <strong id="contributionRatio" class="pm-metric-value">0.00%</strong>
+        </div>
+
+        <div class="pm-metric-card">
+          <span class="pm-metric-label">Unit Margin</span>
+          <strong id="contributionMargin" class="pm-metric-value">0.00</strong>
+        </div>
+      </div>
+
+      <div class="pm-inline-results">
+        <div class="pm-inline-row pm-inline-row-profit">
+          <span>Profit per Unit</span>
+          <strong id="profitPerUnit">0.00</strong>
+        </div>
+      </div>
+
+      <div class="pm-target-panel">
+        <div class="pm-target-copy">
+          <span class="pm-target-label">Target Profit Analysis</span>
+          <p>
+            Want to make $
+            <label class="pm-target-input-wrap">
+              <span class="sr-only">Target profit</span>
+              <input id="targetProfit" type="number" min="0" step="100" value="1000" />
+            </label>
+            profit?
+          </p>
+          <strong id="targetUnitsText">Calculate first to see required units.</strong>
+        </div>
+
+        <div class="pm-chart-wrap" aria-label="Costs and revenue chart">
+          <canvas id="breakEvenChart" width="420" height="210"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="pm-results-action js-sync-action">
+      <p class="pm-help pm-help-field">
+        Export a PDF after reviewing the calculated break-even result.
+      </p>
+      <p class="pm-error pm-error-placeholder" aria-hidden="true"></p>
+      <button id="exportButton" type="button" class="pm-btn pm-btn-primary">Export PDF</button>
+    </div>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>What Is a Break-Even Point?</h2>
+    <p>
+      For e-commerce sellers, online store owners, wholesale traders, and small business teams,
+      knowing your break-even point is the first step toward sustainable profit. It shows the
+      sales volume where total revenue equals total costs, so you can see how many orders you need
+      before a product, service, or ad campaign starts making money.
+    </p>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>How to Calculate Break-Even Units</h2>
+    <p>
+      The calculator uses fixed costs, selling price, and unit variable cost to find how many units
+      you need to sell before your sales cover your costs. This is useful for pricing products,
+      checking profit margin, planning inventory, and deciding whether a sales target is realistic.
+    </p>
+    <div class="break-even-formula">
+      <strong>Break-even units = Fixed costs / (Selling price - Unit variable cost)</strong>
+    </div>
+    <ul>
+      <li><strong>Break-even units</strong> = fixed costs / (selling price - unit variable cost)</li>
+      <li><strong>Break-even sales</strong> = break-even units x selling price</li>
+      <li><strong>Profit per unit</strong> = selling price - unit variable cost</li>
+    </ul>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>How to Lower Your Break-Even Point</h2>
+    <p>
+      If your break-even point feels too high, start with the biggest levers: reduce monthly fixed
+      costs, negotiate better wholesale or supplier pricing, improve shipping and packaging costs,
+      raise your selling price, or improve your ad conversion rate so each marketing dollar creates
+      more orders.
+    </p>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>When to Use It</h2>
+    <p>
+      Use this tool before ordering inventory, changing prices, adding a new product, quoting a B2B
+      trading order, planning an automotive parts offer, or setting monthly sales targets. It gives
+      you a simple view of the minimum volume needed before a product or business line starts
+      contributing profit.
+    </p>
+  </div>
+
+  <script is:inline>
+    const fixedCostInputs = Array.from(document.querySelectorAll("[data-fixed-cost]"));
+    const variableCostInputs = Array.from(document.querySelectorAll("[data-variable-cost]"));
+    const sellingPriceInput = document.getElementById("sellingPrice");
+    const targetProfitInput = document.getElementById("targetProfit");
+    const chartCanvas = document.getElementById("breakEvenChart");
+    const calculateButton = document.getElementById("calculateButton");
+    const resetButton = document.getElementById("resetButton");
+    const exportButton = document.getElementById("exportButton");
+    const errorMessage = document.getElementById("errorMessage");
+    const totalFixedCostValue = document.getElementById("totalFixedCostValue");
+    const totalVariableCostValue = document.getElementById("totalVariableCostValue");
+    const syncedTopSections = Array.from(document.querySelectorAll(".js-sync-top"));
+    const syncedActionSections = Array.from(document.querySelectorAll(".js-sync-action"));
+
+    const resultNodes = {
+      headlineValue: document.getElementById("headlineValue"),
+      minimumUnitsNote: document.getElementById("minimumUnitsNote"),
+      headlineSales: document.getElementById("headlineSales"),
+      contributionRatio: document.getElementById("contributionRatio"),
+      contributionMargin: document.getElementById("contributionMargin"),
+      profitPerUnit: document.getElementById("profitPerUnit"),
+      targetUnitsText: document.getElementById("targetUnitsText"),
+    };
+
+    let lastResult = null;
+
+    function syncSectionHeights() {
+      const syncGroup = (sections) => {
+        sections.forEach((section) => {
+          section.style.minHeight = "";
+        });
+
+        if (window.matchMedia("(max-width: 700px)").matches) return;
+
+        const maxHeight = Math.max(...sections.map((section) => section.offsetHeight));
+        sections.forEach((section) => {
+          section.style.minHeight = `${maxHeight}px`;
+        });
+      };
+
+      syncGroup(syncedTopSections);
+      syncGroup(syncedActionSections);
+    }
+
+    function queueSyncSectionHeights() {
+      window.requestAnimationFrame(syncSectionHeights);
+    }
+
+    function toNumber(input) {
+      const value = Number.parseFloat(input?.value || "");
+      return Number.isFinite(value) ? value : 0;
+    }
+
+    function sumInputs(inputs) {
+      return inputs.reduce((sum, input) => sum + toNumber(input), 0);
+    }
+
+    function formatNumber(value) {
+      return value.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
+
+    function formatCurrency(value) {
+      return value.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
+
+    function formatPercent(value) {
+      return `${formatNumber(value)}%`;
+    }
+
+    function setError(message) {
+      if (errorMessage) errorMessage.textContent = message;
+      queueSyncSectionHeights();
+    }
+
+    function getTargetProfit() {
+      return Math.max(0, toNumber(targetProfitInput));
+    }
+
+    function updateCostTotals() {
+      const fixedCosts = sumInputs(fixedCostInputs);
+      const unitVariableCost = sumInputs(variableCostInputs);
+
+      if (totalFixedCostValue) totalFixedCostValue.textContent = formatCurrency(fixedCosts);
+      if (totalVariableCostValue) totalVariableCostValue.textContent = formatCurrency(unitVariableCost);
+
+      return { fixedCosts, unitVariableCost };
+    }
+
+    function setResults(result) {
+      const minimumUnits = Math.ceil(result.breakEvenUnits);
+      resultNodes.headlineValue.textContent = formatNumber(result.breakEvenUnits);
+      resultNodes.minimumUnitsNote.innerHTML = `Minimum <strong>${minimumUnits.toLocaleString("en-US")} units</strong> to reach break-even.`;
+      resultNodes.headlineSales.textContent = formatCurrency(result.breakEvenSales);
+      resultNodes.contributionRatio.textContent = formatPercent(result.contributionRatio);
+      resultNodes.contributionMargin.textContent = formatCurrency(result.contributionMargin);
+      resultNodes.profitPerUnit.textContent = formatCurrency(result.profitPerUnit);
+      updateTargetAnalysis(result);
+      drawBreakEvenChart(result);
+      queueSyncSectionHeights();
+    }
+
+    function updateTargetAnalysis(result = lastResult) {
+      if (!result) {
+        resultNodes.targetUnitsText.textContent = "Calculate first to see required units.";
+        return;
+      }
+
+      const targetProfit = getTargetProfit();
+      const targetUnits = Math.ceil((result.fixedCosts + targetProfit) / result.contributionMargin);
+      const targetSales = targetUnits * result.sellingPrice;
+
+      resultNodes.targetUnitsText.textContent =
+        `You need to sell at least ${targetUnits.toLocaleString("en-US")} units (${formatCurrency(targetSales)} sales).`;
+    }
+
+    function drawEmptyChart() {
+      const ctx = chartCanvas?.getContext("2d");
+      if (!ctx) return;
+
+      ctx.clearRect(0, 0, chartCanvas.width, chartCanvas.height);
+      ctx.fillStyle = "#f8fafc";
+      ctx.fillRect(0, 0, chartCanvas.width, chartCanvas.height);
+      ctx.fillStyle = "#64748b";
+      ctx.font = "700 14px Arial";
+      ctx.fillText("Chart appears after calculation", 92, 108);
+    }
+
+    function drawBreakEvenChart(result) {
+      const ctx = chartCanvas?.getContext("2d");
+      if (!ctx) return;
+
+      const width = chartCanvas.width;
+      const height = chartCanvas.height;
+      const padding = 34;
+      const targetProfit = getTargetProfit();
+      const targetUnits = (result.fixedCosts + targetProfit) / result.contributionMargin;
+      const xMax = Math.max(10, Math.ceil(Math.max(result.breakEvenUnits, targetUnits) * 1.45));
+      const yMax = Math.max(
+        result.fixedCosts + result.unitVariableCost * xMax,
+        result.sellingPrice * xMax,
+        result.breakEvenSales
+      ) * 1.12;
+
+      const mapX = (units) => padding + (units / xMax) * (width - padding * 1.55);
+      const mapY = (amount) => height - padding - (amount / yMax) * (height - padding * 1.6);
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = "#f8fbff";
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.strokeStyle = "#dbe3ef";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(padding, 18);
+      ctx.lineTo(padding, height - padding);
+      ctx.lineTo(width - 18, height - padding);
+      ctx.stroke();
+
+      ctx.strokeStyle = "#ef4444";
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(mapX(0), mapY(result.fixedCosts));
+      ctx.lineTo(mapX(xMax), mapY(result.fixedCosts + result.unitVariableCost * xMax));
+      ctx.stroke();
+
+      ctx.strokeStyle = "#2563eb";
+      ctx.beginPath();
+      ctx.moveTo(mapX(0), mapY(0));
+      ctx.lineTo(mapX(xMax), mapY(result.sellingPrice * xMax));
+      ctx.stroke();
+
+      const breakEvenX = mapX(result.breakEvenUnits);
+      const breakEvenY = mapY(result.breakEvenSales);
+      ctx.fillStyle = "#047857";
+      ctx.beginPath();
+      ctx.arc(breakEvenX, breakEvenY, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "700 11px Arial";
+      ctx.fillText("Revenue", width - 84, mapY(result.sellingPrice * xMax) + 12);
+      ctx.fillText("Costs", width - 70, mapY(result.fixedCosts + result.unitVariableCost * xMax) - 8);
+      ctx.fillText("Break-even", Math.min(width - 100, breakEvenX + 8), Math.max(22, breakEvenY - 8));
+    }
+
+    function calculateBreakEven({ quiet = false } = {}) {
+      const { fixedCosts, unitVariableCost } = updateCostTotals();
+      const sellingPrice = toNumber(sellingPriceInput);
+      const contributionMargin = sellingPrice - unitVariableCost;
+
+      if (fixedCosts < 0 || sellingPrice <= 0 || unitVariableCost < 0) {
+        if (!quiet) setError("Enter non-negative costs and a selling price greater than zero.");
+        return null;
+      }
+
+      if (fixedCosts === 0) {
+        if (!quiet) setError("Enter at least one fixed cost.");
+        return null;
+      }
+
+      if (contributionMargin <= 0) {
+        if (!quiet) setError("Selling price must be higher than total unit variable costs.");
+        return null;
+      }
+
+      const breakEvenUnits = fixedCosts / contributionMargin;
+      const breakEvenSales = breakEvenUnits * sellingPrice;
+      const contributionRatio = (contributionMargin / sellingPrice) * 100;
+
+      const result = {
+        fixedCosts,
+        sellingPrice,
+        unitVariableCost,
+        contributionMargin,
+        profitPerUnit: contributionMargin,
+        breakEvenUnits,
+        breakEvenSales,
+        contributionRatio,
+      };
+
+      lastResult = result;
+      setError("");
+      setResults(result);
+      return result;
+    }
+
+    function autoCalculateBreakEven() {
+      const result = calculateBreakEven({ quiet: true });
+      if (!result) setError("");
+    }
+
+    function resetCalculator() {
+      [...fixedCostInputs, ...variableCostInputs, sellingPriceInput].forEach((input) => {
+        if (input) input.value = "";
+      });
+
+      lastResult = null;
+      setError("");
+      updateCostTotals();
+      resultNodes.headlineValue.textContent = "0.00";
+      resultNodes.minimumUnitsNote.innerHTML = "Minimum <strong>0 units</strong> to reach break-even.";
+      resultNodes.headlineSales.textContent = "$0.00";
+      resultNodes.contributionRatio.textContent = "0.00%";
+      resultNodes.contributionMargin.textContent = "$0.00";
+      resultNodes.profitPerUnit.textContent = "$0.00";
+      updateTargetAnalysis(null);
+      drawEmptyChart();
+      queueSyncSectionHeights();
+    }
+
+    function escapePdfText(value) {
+      return String(value).replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
+    }
+
+    function createPdfBlob(lines) {
+      const pageWidth = 612;
+      const pageHeight = 792;
+      const content = [
+        "BT",
+        "/F1 24 Tf",
+        "72 736 Td",
+        `(${escapePdfText(lines[0])}) Tj`,
+        "/F1 10 Tf",
+        "0 -18 Td",
+        ...lines.slice(1).flatMap((line) => [
+          `(${escapePdfText(line)}) Tj`,
+          "0 -16 Td",
+        ]),
+        "ET",
+      ].join("\n");
+
+      const objects = [
+        "<< /Type /Catalog /Pages 2 0 R >>",
+        "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+        `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>`,
+        "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+        `<< /Length ${content.length} >>\nstream\n${content}\nendstream`,
+      ];
+
+      let pdf = "%PDF-1.4\n";
+      const offsets = [0];
+
+      objects.forEach((object, index) => {
+        offsets.push(pdf.length);
+        pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
+      });
+
+      const xrefOffset = pdf.length;
+      pdf += `xref\n0 ${objects.length + 1}\n`;
+      pdf += "0000000000 65535 f \n";
+      offsets.slice(1).forEach((offset) => {
+        pdf += `${String(offset).padStart(10, "0")} 00000 n \n`;
+      });
+      pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\n`;
+      pdf += `startxref\n${xrefOffset}\n%%EOF`;
+
+      return new Blob([pdf], { type: "application/pdf" });
+    }
+
+    function exportReport() {
+      const result = lastResult || calculateBreakEven({ quiet: true });
+
+      if (!result) {
+        setError("Calculate a valid break-even result before exporting a PDF.");
+        return;
+      }
+
+      const reportLines = [
+        "worowo",
+        "Break-Even Point Report",
+        "Skip the Software. Get the Result.",
+        "https://www.worowo.com",
+        "",
+        `Fixed Costs: ${formatCurrency(result.fixedCosts)}`,
+        `Selling Price: ${formatCurrency(result.sellingPrice)}`,
+        `Unit Variable Cost: ${formatCurrency(result.unitVariableCost)}`,
+        `Unit Margin: ${formatCurrency(result.contributionMargin)}`,
+        "",
+        `Break-Even Units: ${formatNumber(result.breakEvenUnits)}`,
+        `Minimum Units: ${Math.ceil(result.breakEvenUnits).toLocaleString("en-US")}`,
+        `Break-Even Sales: ${formatCurrency(result.breakEvenSales)}`,
+        `Contribution Margin Ratio: ${formatPercent(result.contributionRatio)}`,
+        `Profit per Unit: ${formatCurrency(result.profitPerUnit)}`,
+        "",
+        `Target Profit: ${formatCurrency(getTargetProfit())}`,
+        resultNodes.targetUnitsText.textContent,
+      ];
+
+      const blob = createPdfBlob(reportLines);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "break-even-point-report.pdf";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    [...fixedCostInputs, ...variableCostInputs, sellingPriceInput].forEach((input) => {
+      input.addEventListener("input", autoCalculateBreakEven);
+    });
+    targetProfitInput?.addEventListener("input", () => {
+      updateTargetAnalysis();
+      if (lastResult) drawBreakEvenChart(lastResult);
+    });
+    calculateButton?.addEventListener("click", () => calculateBreakEven());
+    resetButton?.addEventListener("click", resetCalculator);
+    exportButton?.addEventListener("click", exportReport);
+    window.addEventListener("resize", queueSyncSectionHeights);
+    updateCostTotals();
+    drawEmptyChart();
+    queueSyncSectionHeights();
+  </script>
+
+  <style>
+    .pm-card,
+    .pm-dashboard {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      padding: 28px 28px 30px;
+      border: 1px solid #d7dee8;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 18px 50px -30px rgba(15, 23, 42, 0.24);
+      box-sizing: border-box;
+    }
+
+    .pm-form-top,
+    .pm-results-top {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 24px;
+    }
+
+    .pm-form-bottom,
+    .pm-results-action {
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 auto;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 24px;
+    }
+
+    .pm-form-bottom {
+      justify-content: space-between;
+    }
+
+    .pm-title {
+      margin: 0 0 6px;
+      font-size: 1.8rem;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .pm-desc-main {
+      margin: 0 0 14px;
+      max-width: 52ch;
+      color: var(--text-soft);
+      font-size: 0.94rem;
+      line-height: 1.55;
+    }
+
+    .pm-mode-switch {
+      display: grid;
+      margin-bottom: 18px;
+      padding: 5px;
+      border: 1px solid #dbe3ef;
+      border-radius: 14px;
+      background: #f8fafc;
+    }
+
+    .pm-mode-btn {
+      min-height: 40px;
+      padding: 0 10px;
+      border: 1px solid #c7d7ee;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 0.9rem;
+      font-weight: 700;
+      line-height: 1.15;
+      box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.14), 0 6px 16px -12px rgba(15, 23, 42, 0.45);
+    }
+
+    .pm-core-group {
+      display: grid;
+      gap: 16px;
+    }
+
+    .pm-cost-section {
+      border: 1px solid #dbe3ef;
+      border-radius: 14px;
+      background: #fbfdff;
+      padding: 16px;
+    }
+
+    .pm-cost-section-fixed {
+      background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+      border-color: #bfdbfe;
+    }
+
+    .pm-cost-section-variable {
+      background: linear-gradient(180deg, #f8fffb 0%, #edfdf4 100%);
+      border-color: #bbf7d0;
+    }
+
+    .pm-cost-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .pm-cost-section-header h3 {
+      margin: 0;
+      color: #0f172a;
+      font-size: 0.92rem;
+      font-weight: 850;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .pm-cost-section-header strong {
+      color: #2563eb;
+      font-size: 1.1rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .pm-cost-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .pm-sub-head {
+      display: flex;
+      align-items: center;
+      height: 20px;
+      margin-bottom: 16px;
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .pm-field {
+      display: block;
+    }
+
+    .pm-field span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .pm-field input {
+      width: 100%;
+      height: 62px;
+      padding: 0 18px 0 34px;
+      border: 1px solid #9aa7b8;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+      font-size: 1.45rem;
+      outline: none;
+      transition: 0.2s ease;
+    }
+
+    .pm-input-wrapper {
+      position: relative;
+    }
+
+    .currency-symbol {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      z-index: 1;
+      transform: translateY(-50%);
+      color: #64748b;
+      font-size: 1rem;
+      font-weight: 850;
+      pointer-events: none;
+    }
+
+    .pm-field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .pm-highlight {
+      padding: 16px;
+      border: 1px solid #93c5fd;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #eff6ff 0%, #dbeafe 100%);
+    }
+
+    .pm-highlight input {
+      border: 2px solid #2563eb;
+      background: #ffffff;
+      box-shadow: 0 16px 34px -28px rgba(37, 99, 235, 0.55);
+    }
+
+    .pm-highlight .currency-symbol {
+      color: #1d4ed8;
+    }
+
+    .pm-field-compact input {
+      height: 50px;
+      font-size: 1.05rem;
+    }
+
+    .pm-help-field {
+      margin: 4px 0 0;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+
+    .pm-error {
+      min-height: 20px;
+      margin: 14px 0 0;
+      color: #dc2626;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .pm-error-placeholder {
+      visibility: hidden;
+    }
+
+    .pm-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: center;
+      gap: 14px;
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .pm-btn {
+      min-height: 52px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .pm-btn-secondary {
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--text);
+      text-decoration: none;
+      box-shadow: 0 10px 24px -20px rgba(15, 23, 42, 0.35);
+    }
+
+    .pm-btn-secondary:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .pm-btn-outline {
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .pm-btn-outline:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .pm-btn-primary {
+      min-width: 160px;
+      border: 1px solid #2563eb;
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 14px 30px -18px rgba(37, 99, 235, 0.7);
+    }
+
+    .pm-btn-primary:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    :global(.break-even-formula) {
+      margin: 18px 0 4px;
+      padding: 16px 18px;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid #2563eb;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #eff6ff 0%, #f8fbff 100%);
+      color: #0f172a;
+      font-size: 1.02rem;
+      line-height: 1.6;
+    }
+
+    :global(.related-card:hover .related-arrow) {
+      color: #1d4ed8;
+      transform: translateX(3px);
+    }
+
+    :global(.related-arrow) {
+      font-size: 1.2rem;
+      font-weight: 900;
+      transition: transform 0.18s ease, color 0.18s ease;
+    }
+
+    .pm-hero-panel {
+      border: 1px solid #cfe0f7;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #eef4fb 0%, #f7faff 100%);
+      padding: 18px 22px 16px;
+    }
+
+    .pm-hero-label {
+      margin-bottom: 10px;
+      color: #64748b;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .pm-hero-value {
+      color: #047857;
+      font-size: clamp(3rem, 7vw, 4.2rem);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 1;
+    }
+
+    .pm-hero-text {
+      margin: 12px 0 0;
+      color: #475569;
+      font-size: 0.95rem;
+    }
+
+    .pm-hero-note {
+      display: block;
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid #cfe8c5;
+      border-radius: 10px;
+      background: #f1f9f5;
+      color: #2d6a4f;
+      font-size: 0.96rem;
+      font-weight: 850;
+      line-height: 1.45;
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74), 0 8px 18px -16px rgba(45, 106, 79, 0.46);
+    }
+
+    .pm-hero-note strong {
+      color: #2d6a4f;
+      font-size: 1.08em;
+      font-weight: 950;
+    }
+
+    .pm-hero-stat-value {
+      color: #0f172a;
+      font-size: 1.08rem;
+      font-weight: 900;
+    }
+
+    .pm-metrics-grid,
+    .pm-inline-results {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .pm-metric-card,
+    .pm-inline-row {
+      border: 1px solid #d7dee8;
+      border-radius: 14px;
+      padding: 16px 18px 14px;
+      background: #fff;
+    }
+
+    .pm-inline-row {
+      border-color: #e2e8f0;
+      background: #f8fafc;
+    }
+
+    .pm-metric-label,
+    .pm-inline-row span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-soft);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .tooltip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      margin-left: 6px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 0.72rem;
+      font-weight: 900;
+      cursor: help;
+      vertical-align: middle;
+    }
+
+    .tooltip:hover::after,
+    .tooltip:focus::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 10px);
+      z-index: 20;
+      width: min(260px, 76vw);
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      background: #ffffff;
+      box-shadow: 0 18px 40px -28px rgba(15, 23, 42, 0.35);
+      color: #334155;
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1.45;
+      text-transform: none;
+      letter-spacing: 0;
+      transform: translateX(-50%);
+    }
+
+    .pm-metric-value,
+    .pm-inline-row strong {
+      color: #0f172a;
+      font-size: 1.8rem;
+      font-weight: 850;
+    }
+
+    .pm-inline-row-profit strong {
+      color: #047857;
+    }
+
+    .pm-target-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+      padding: 20px 18px 18px;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.1), transparent 36%),
+        #ffffff;
+    }
+
+    .pm-target-copy {
+      display: grid;
+      gap: 8px;
+    }
+
+    .pm-target-label {
+      color: #64748b;
+      font-size: 0.78rem;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .pm-target-copy p {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0;
+      color: #0f172a;
+      font-size: 1rem;
+      font-weight: 750;
+    }
+
+    .pm-target-copy strong {
+      color: #047857;
+      font-size: 1.05rem;
+      line-height: 1.45;
+    }
+
+    .pm-target-input-wrap input {
+      width: 118px;
+      height: 38px;
+      padding: 0 12px;
+      border: 1px solid #93c5fd;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 1rem;
+      font-weight: 850;
+      outline: none;
+    }
+
+    .pm-chart-wrap {
+      overflow: hidden;
+      border: 1px solid #dbe3ef;
+      border-radius: 14px;
+      background: #f8fbff;
+    }
+
+    .pm-chart-wrap canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .pm-results-action {
+      gap: 18px;
+      justify-content: space-between;
+      margin-top: 0;
+    }
+
+    .pm-results-action .pm-btn {
+      align-self: flex-end;
+      width: calc((100% - 14px) / 2);
+      min-width: 160px;
+    }
+
+    @media (max-width: 980px) {
+      .pm-metrics-grid,
+      .pm-inline-results {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .pm-card,
+      .pm-dashboard {
+        padding: 22px 20px 24px;
+      }
+
+      .pm-cost-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pm-metrics-grid,
+      .pm-inline-results {
+        grid-template-columns: 1fr;
+      }
+
+      .pm-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .pm-btn {
+        width: 100%;
+      }
+
+      .pm-results-action {
+        align-items: stretch;
+      }
+
+      .pm-results-action .pm-btn {
+        align-self: stretch;
+        width: 100%;
+      }
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</ToolLayout>
