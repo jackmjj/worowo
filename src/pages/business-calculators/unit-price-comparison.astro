@@ -1,0 +1,1129 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+
+const toolMeta = {
+  title: "Unit Price Comparison Calculator",
+  seoTitle: "Unit Price Comparison Calculator, Supplier Quote Comparison & Procurement Tool | worowo",
+  category: "Business Calculators",
+  categoryHref: "/business-calculators/",
+  description:
+    "Compare supplier quotes, unit prices, taxes, fees, and landed unit cost to find the most cost-effective option. Add multiple suppliers and export a PDF report.",
+  intro:
+    "Compare supplier quotes, landed unit prices, and fees to find the most cost-effective option for your business.",
+  canonical: "https://www.worowo.com/business-calculators/unit-price-comparison/",
+};
+
+const faqItems = [
+  {
+    question: "How does this unit price comparison calculator work?",
+    answer:
+      "It compares supplier quotes by converting each quote into a landed unit price. The landed unit price is calculated from total price plus tax or fees, divided by quantity.",
+  },
+  {
+    question: "Can I compare more than two suppliers?",
+    answer:
+      "Yes. The calculator starts with two supplier quote blocks by default, and you can add more suppliers up to five in total.",
+  },
+  {
+    question: "Should all suppliers use the same unit?",
+    answer:
+      "Yes. For an accurate comparison, all suppliers should be quoted using the same base unit, such as pcs, sets, cartons, or boxes. If units differ, review the result carefully.",
+  },
+  {
+    question: "Can I export the result as a PDF?",
+    answer:
+      "Yes. You can export a clean supplier comparison report with the best supplier, quote comparison table, report title, and decision notes.",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Discount Calculator",
+    href: "/business-calculators/discount-calculator/",
+    desc: "Calculate discounted price, savings, profit margin, and total profit.",
+  },
+  {
+    name: "Profit Margin Calculator",
+    href: "/business-calculators/profit-margin-calculator/",
+    desc: "Calculate margin, markup, selling price, and profit projection.",
+  },
+];
+---
+
+<ToolLayout
+  title={toolMeta.title}
+  pageTitle={toolMeta.seoTitle}
+  description={toolMeta.description}
+  canonical={toolMeta.canonical}
+  eyebrow="Business Calculator"
+  categoryLabel={toolMeta.category}
+  categoryHref={toolMeta.categoryHref}
+  intro={toolMeta.intro}
+  faqItems={faqItems}
+  relatedTools={relatedTools}
+>
+  <div slot="form" class="upc-form-card">
+    <div class="upc-form-header">
+      <h2>Compare Supplier Unit Prices</h2>
+      <p>Add supplier quotes, quantities, and fees to find the most cost-effective option.</p>
+    </div>
+
+    <div id="supplierCards" class="upc-supplier-list" aria-live="polite"></div>
+
+    <button id="addSupplierButton" type="button" class="upc-add-btn">
+      + Add Supplier
+    </button>
+
+    <div class="upc-export-settings">
+      <label class="upc-field">
+        <span class="upc-label">PDF Report Title</span>
+        <input
+          id="reportTitle"
+          type="text"
+          value="Supplier Unit Price Comparison"
+          placeholder="e.g. Supplier Unit Price Comparison"
+        />
+      </label>
+
+      <label class="upc-field">
+        <span class="upc-label">Decision Notes</span>
+        <textarea
+          id="decisionNotes"
+          rows="4"
+          placeholder="Optional: Supplier B has better samples, faster delivery, or lower MOQ."
+        ></textarea>
+      </label>
+    </div>
+
+    <div class="upc-form-divider"></div>
+
+    <p id="errorMessage" class="upc-error" aria-live="polite"></p>
+    <p class="upc-form-note">
+      Compare landed unit prices using total quote amount, tax or fees, and quantity.
+    </p>
+
+    <div class="upc-actions">
+      <button id="resetButton" type="button" class="upc-btn upc-btn-ghost">Reset</button>
+      <button id="compareButton" type="button" class="upc-btn upc-btn-primary">Compare Prices</button>
+    </div>
+  </div>
+
+  <div slot="results" class="upc-results-card">
+    <div class="upc-hero-panel">
+      <div class="upc-hero-label">Best Supplier</div>
+      <div id="bestSupplierName" class="upc-hero-name">—</div>
+      <div id="bestSupplierPrice" class="upc-hero-price">$0.00 / unit</div>
+
+      <div id="savingsBanner" class="upc-savings-banner">
+        Add at least two complete quotes to compare savings.
+      </div>
+    </div>
+
+    <div class="upc-results-summary">
+      <div class="upc-results-summary-head">
+        <h3>Supplier Comparison</h3>
+        <p>Each supplier is ranked by landed unit price.</p>
+      </div>
+
+      <div id="rankingList" class="upc-ranking-list">
+        <article class="upc-rank-card upc-rank-card-empty">
+          Add supplier data to compare quotes.
+        </article>
+      </div>
+
+      <div id="unitWarning" class="upc-warning" hidden>
+        Supplier units are different. Review carefully before making a final comparison.
+      </div>
+    </div>
+
+    <div class="upc-right-divider"></div>
+
+    <div class="upc-procurement-box">
+      <div class="upc-procurement-label">Procurement Summary</div>
+      <p id="procurementSummary">
+        Add at least two complete supplier quotes to see the most cost-effective option.
+      </p>
+    </div>
+
+    <div class="upc-right-divider"></div>
+
+    <div class="upc-export-row">
+      <p class="upc-export-note">
+        Export a PDF after reviewing the unit price comparison result.
+      </p>
+      <button id="exportPdfButton" type="button" class="upc-btn upc-btn-primary">
+        Export PDF
+      </button>
+    </div>
+  </div>
+
+  <template id="supplierCardTemplate">
+    <section class="upc-supplier-card" data-supplier-card>
+      <div class="upc-supplier-card-head">
+        <div class="upc-supplier-card-title">Quote 1</div>
+        <button type="button" class="upc-remove-btn" data-remove-btn>Remove</button>
+      </div>
+
+      <div class="upc-fields-grid">
+        <label class="upc-field upc-field-inline upc-field-vendor">
+          <span class="upc-label">Vendor Name</span>
+          <input type="text" data-field="name" placeholder="e.g. Supplier A" />
+        </label>
+
+        <label class="upc-field upc-field-inline upc-field-compact">
+          <span class="upc-label">Total Price</span>
+          <div class="upc-input-prefix">
+            <span>$</span>
+            <input type="number" min="0" step="0.01" data-field="price" placeholder="e.g. 500" />
+          </div>
+        </label>
+
+        <label class="upc-field upc-field-inline upc-field-compact">
+          <span class="upc-label">Tax / Fees</span>
+          <div class="upc-input-prefix">
+            <span>$</span>
+            <input type="number" min="0" step="0.01" data-field="fees" placeholder="e.g. 35" />
+          </div>
+        </label>
+
+        <label class="upc-field upc-field-inline upc-field-compact">
+          <span class="upc-label">Quantity</span>
+          <input type="number" min="0" step="1" data-field="qty" placeholder="e.g. 100" />
+        </label>
+
+        <label class="upc-field upc-field-inline upc-field-compact">
+          <span class="upc-label">Unit</span>
+          <select data-field="unit">
+            <option value="pcs">pcs</option>
+            <option value="units">units</option>
+            <option value="sets">sets</option>
+            <option value="boxes">boxes</option>
+            <option value="cartons">cartons</option>
+            <option value="kg">kg</option>
+            <option value="lb">lb</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="upc-supplier-preview">
+        <span>Unit Price</span>
+        <strong data-preview-price>$0.00 / unit</strong>
+      </div>
+    </section>
+  </template>
+
+  <div slot="content" class="content-card">
+    <h2>How This Unit Price Comparison Calculator Works</h2>
+    <p>
+      This calculator compares supplier quotes by converting each quote into a landed unit price.
+      It includes total price, tax or fees, and quantity, so you can compare offers more accurately.
+    </p>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>When to Use It</h2>
+    <p>
+      Use this tool before placing a purchase order, comparing supplier offers, reviewing landed cost,
+      or preparing a sourcing decision for your team.
+    </p>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>Who This Calculator Is For</h2>
+    <p>
+      It is useful for traders, importers, wholesalers, ecommerce sellers, sourcing teams,
+      and small businesses that buy from multiple suppliers.
+    </p>
+  </div>
+</ToolLayout>
+
+<script>
+  (() => {
+    const maxSuppliers = 5;
+    const minSuppliers = 2;
+    const supplierCardsEl = document.getElementById("supplierCards");
+    const template = document.getElementById("supplierCardTemplate");
+    const addSupplierButton = document.getElementById("addSupplierButton");
+    const resetButton = document.getElementById("resetButton");
+    const compareButton = document.getElementById("compareButton");
+    const exportPdfButton = document.getElementById("exportPdfButton");
+    const reportTitleInput = document.getElementById("reportTitle");
+    const decisionNotesInput = document.getElementById("decisionNotes");
+    const bestSupplierNameEl = document.getElementById("bestSupplierName");
+    const bestSupplierPriceEl = document.getElementById("bestSupplierPrice");
+    const savingsBannerEl = document.getElementById("savingsBanner");
+    const rankingListEl = document.getElementById("rankingList");
+    const procurementSummaryEl = document.getElementById("procurementSummary");
+    const unitWarningEl = document.getElementById("unitWarning");
+    const errorMessageEl = document.getElementById("errorMessage");
+
+    const tones = [
+      "upc-tone-blue",
+      "upc-tone-green",
+      "upc-tone-sand",
+      "upc-tone-purple",
+      "upc-tone-cyan",
+    ];
+
+    function numberValue(value) {
+      const number = Number.parseFloat(value);
+      return Number.isFinite(number) ? number : 0;
+    }
+
+    function money(value) {
+      return `$${numberValue(value).toFixed(2)}`;
+    }
+
+    function escapeHtml(value = "") {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function getCards() {
+      return Array.from(supplierCardsEl.querySelectorAll("[data-supplier-card]"));
+    }
+
+    function setError(message) {
+      errorMessageEl.textContent = message;
+    }
+
+    function createSupplierCard(index, preset = {}) {
+      const fragment = template.content.cloneNode(true);
+      const card = fragment.querySelector("[data-supplier-card]");
+      const removeBtn = card.querySelector("[data-remove-btn]");
+      const inputs = Array.from(card.querySelectorAll("input, select"));
+
+      card.classList.add(tones[(index - 1) % tones.length]);
+      card.dataset.index = String(index);
+      card.querySelector(".upc-supplier-card-title").textContent = `Quote ${index}`;
+
+      card.querySelector('[data-field="name"]').value = preset.name || `Supplier ${String.fromCharCode(64 + index)}`;
+      card.querySelector('[data-field="price"]').value = preset.price ?? "";
+      card.querySelector('[data-field="fees"]').value = preset.fees ?? "";
+      card.querySelector('[data-field="qty"]').value = preset.qty ?? "";
+      card.querySelector('[data-field="unit"]').value = preset.unit || "pcs";
+
+      inputs.forEach((input) => {
+        input.addEventListener("input", calculateAndRender);
+        input.addEventListener("change", calculateAndRender);
+      });
+
+      removeBtn.addEventListener("click", () => {
+        if (getCards().length <= minSuppliers) return;
+        card.remove();
+        updateCardLabels();
+        calculateAndRender();
+      });
+
+      supplierCardsEl.appendChild(fragment);
+      updateCardLabels();
+    }
+
+    function updateCardLabels() {
+      const cards = getCards();
+
+      cards.forEach((card, index) => {
+        card.dataset.index = String(index + 1);
+        card.querySelector(".upc-supplier-card-title").textContent = `Quote ${index + 1}`;
+        card.querySelector("[data-remove-btn]").hidden = cards.length <= minSuppliers;
+        card.classList.remove(...tones);
+        card.classList.add(tones[index % tones.length]);
+      });
+
+      addSupplierButton.disabled = cards.length >= maxSuppliers;
+      addSupplierButton.textContent = cards.length >= maxSuppliers
+        ? "Maximum 5 suppliers reached"
+        : "+ Add Supplier";
+    }
+
+    function collectSuppliers() {
+      return getCards().map((card, index) => {
+        const name = card.querySelector('[data-field="name"]').value.trim();
+        const price = numberValue(card.querySelector('[data-field="price"]').value);
+        const fees = numberValue(card.querySelector('[data-field="fees"]').value);
+        const qty = numberValue(card.querySelector('[data-field="qty"]').value);
+        const unit = card.querySelector('[data-field="unit"]').value || "pcs";
+        const landedTotal = price + fees;
+        const unitPrice = qty > 0 ? landedTotal / qty : 0;
+
+        return {
+          card,
+          name: name || `Supplier ${index + 1}`,
+          price,
+          fees,
+          qty,
+          unit,
+          landedTotal,
+          unitPrice,
+          hasMinimumData: landedTotal > 0 && qty > 0,
+        };
+      });
+    }
+
+    function renderEmptyState() {
+      const suppliers = collectSuppliers();
+      updateSupplierPreviews(suppliers);
+      bestSupplierNameEl.textContent = "—";
+      bestSupplierPriceEl.textContent = "$0.00 / unit";
+      savingsBannerEl.textContent = "Add at least two complete quotes to compare savings.";
+      procurementSummaryEl.textContent =
+        "Add at least two complete supplier quotes to see the most cost-effective option.";
+      renderQuoteResults(suppliers, []);
+      unitWarningEl.hidden = true;
+    }
+
+    function updateSupplierPreviews(suppliers) {
+      suppliers.forEach((supplier) => {
+        const preview = supplier.card.querySelector("[data-preview-price]");
+        if (!preview) return;
+
+        preview.textContent = supplier.hasMinimumData
+          ? `${money(supplier.unitPrice)} / ${supplier.unit}`
+          : "$0.00 / unit";
+      });
+    }
+
+    function syncQuoteRows() {
+      const supplierCards = getCards();
+      const resultCards = Array.from(rankingListEl.querySelectorAll("[data-result-card]"));
+
+      [...supplierCards, ...resultCards].forEach((card) => {
+        card.style.minHeight = "";
+      });
+
+      if (window.matchMedia("(max-width: 900px)").matches) return;
+
+      supplierCards.forEach((supplierCard, index) => {
+        const resultCard = resultCards[index];
+        if (!resultCard) return;
+
+        const height = Math.max(supplierCard.offsetHeight, resultCard.offsetHeight);
+        supplierCard.style.minHeight = `${height}px`;
+        resultCard.style.minHeight = `${height}px`;
+      });
+    }
+
+    function queueSyncQuoteRows() {
+      window.requestAnimationFrame(syncQuoteRows);
+    }
+
+    function renderQuoteResults(suppliers, sorted) {
+      rankingListEl.innerHTML = suppliers
+        .map((supplier, index) => {
+          const rankIndex = sorted.findIndex((item) => item.card === supplier.card);
+          const isBest = rankIndex === 0;
+          const rankLabel = supplier.hasMinimumData
+            ? (isBest ? "Best Value" : `Rank ${rankIndex + 1}`)
+            : "Incomplete";
+          const price = supplier.hasMinimumData ? money(supplier.unitPrice) : "$0.00";
+          const meta = supplier.hasMinimumData
+            ? `Landed total: ${money(supplier.landedTotal)} · Qty: ${supplier.qty} ${escapeHtml(supplier.unit)}`
+            : "Enter total price and quantity to calculate.";
+
+          return `
+            <article class="upc-rank-card ${isBest ? "is-best" : ""} ${supplier.hasMinimumData ? "" : "is-incomplete"}" data-result-card>
+              <div>
+                <span class="upc-rank-label">Quote ${index + 1} · ${rankLabel}</span>
+                <strong>${escapeHtml(supplier.name)}</strong>
+                <small>${meta}</small>
+              </div>
+              <div class="upc-rank-price">
+                <strong>${price}</strong>
+                <span>per ${escapeHtml(supplier.unit)}</span>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+
+      queueSyncQuoteRows();
+    }
+
+    function calculateAndRender() {
+      setError("");
+
+      const suppliers = collectSuppliers();
+      updateSupplierPreviews(suppliers);
+      const validSuppliers = suppliers.filter((supplier) => supplier.hasMinimumData);
+
+      if (validSuppliers.length === 0) {
+        renderEmptyState();
+        return validSuppliers;
+      }
+
+      const sorted = [...validSuppliers].sort((a, b) => a.unitPrice - b.unitPrice);
+      const best = sorted[0];
+      const second = sorted[1];
+      const unitSet = new Set(sorted.map((supplier) => supplier.unit));
+
+      unitWarningEl.hidden = unitSet.size <= 1;
+      bestSupplierNameEl.textContent = best.name;
+      bestSupplierPriceEl.textContent = `${money(best.unitPrice)} / ${best.unit}`;
+
+      if (second) {
+        const savingsPercent = second.unitPrice > 0
+          ? ((second.unitPrice - best.unitPrice) / second.unitPrice) * 100
+          : 0;
+        savingsBannerEl.textContent =
+          `Saves ${savingsPercent.toFixed(2)}% compared with the next cheapest quote.`;
+        procurementSummaryEl.textContent =
+          `${best.name} is currently the most cost-effective supplier at ${money(best.unitPrice)} per ${best.unit}.`;
+      } else {
+        savingsBannerEl.textContent = "Add one more complete quote to compare savings.";
+        procurementSummaryEl.textContent =
+          `${best.name} currently has the only complete quote at ${money(best.unitPrice)} per ${best.unit}.`;
+      }
+
+      renderQuoteResults(suppliers, sorted);
+
+      return sorted;
+    }
+
+    function resetCalculator() {
+      supplierCardsEl.innerHTML = "";
+      reportTitleInput.value = "Supplier Unit Price Comparison";
+      decisionNotesInput.value = "";
+      setError("");
+      createSupplierCard(1);
+      createSupplierCard(2);
+      renderEmptyState();
+    }
+
+    function exportPdf() {
+      const sorted = calculateAndRender();
+
+      if (sorted.length === 0) {
+        setError("Please enter at least one complete supplier quote before exporting.");
+        return;
+      }
+
+      const best = sorted[0];
+      const second = sorted[1];
+      const reportTitle = reportTitleInput.value.trim() || "Supplier Unit Price Comparison";
+      const decisionNotes = decisionNotesInput.value.trim();
+      const savingsText = second
+        ? `Saves ${(((second.unitPrice - best.unitPrice) / second.unitPrice) * 100).toFixed(2)}% compared with the next cheapest quote.`
+        : "Only one complete quote is currently available.";
+      const unitWarning = new Set(sorted.map((supplier) => supplier.unit)).size > 1
+        ? '<p class="warning">Warning: supplier units are different. Review carefully before making a final purchasing decision.</p>'
+        : "";
+      const rows = sorted.map((supplier, index) => `
+        <tr class="${index === 0 ? "best" : ""}">
+          <td>${index + 1}</td>
+          <td>${escapeHtml(supplier.name)}</td>
+          <td>${money(supplier.price)}</td>
+          <td>${money(supplier.fees)}</td>
+          <td>${money(supplier.landedTotal)}</td>
+          <td>${supplier.qty} ${escapeHtml(supplier.unit)}</td>
+          <td>${money(supplier.unitPrice)}</td>
+        </tr>
+      `).join("");
+      const summaryText = second
+        ? `${best.name} is currently the most cost-effective supplier at ${money(best.unitPrice)} per ${best.unit}.`
+        : `${best.name} currently has the only complete quote at ${money(best.unitPrice)} per ${best.unit}.`;
+
+      const reportHtml = `
+        <!doctype html>
+        <html>
+          <head>
+            <meta charset="utf-8" />
+            <title>${escapeHtml(reportTitle)}</title>
+            <style>
+              body { font-family: Arial, Helvetica, sans-serif; color: #0f172a; padding: 32px; line-height: 1.5; }
+              .brand { display: flex; justify-content: space-between; gap: 24px; border-bottom: 1px solid #dbe4f0; padding-bottom: 16px; margin-bottom: 24px; }
+              .brand h1 { margin: 0; font-size: 30px; font-weight: 800; }
+              .brand small, .meta, .footer { color: #64748b; }
+              .title { margin: 0 0 6px; font-size: 24px; font-weight: 800; text-align: right; }
+              .hero { background: #eff5fd; border: 1px solid #c7daf6; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+              .label { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 8px; }
+              .name { font-size: 42px; font-weight: 800; color: #0f7a55; line-height: 1.05; }
+              .price { font-size: 24px; font-weight: 700; margin-top: 8px; }
+              .banner { background: #eef7f0; border: 1px solid #bfddc3; color: #246b45; border-radius: 12px; padding: 12px 14px; font-weight: 700; margin-top: 16px; }
+              h2 { font-size: 18px; margin: 26px 0 12px; }
+              table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+              th, td { border: 1px solid #dbe4f0; padding: 10px 12px; text-align: left; font-size: 14px; }
+              th { background: #f8fbff; font-weight: 700; }
+              tr.best td { background: #f3faf6; font-weight: 700; }
+              .box { border: 1px solid #dbe4f0; border-radius: 14px; padding: 16px; margin-top: 18px; background: #fbfdff; }
+              .warning { margin: 10px 0 0; color: #a16207; font-size: 13px; }
+              .footer { margin-top: 28px; padding-top: 16px; border-top: 1px solid #dbe4f0; font-size: 13px; }
+              a { color: #2563eb; text-decoration: none; }
+            </style>
+          </head>
+          <body>
+            <div class="brand">
+              <div>
+                <h1>worowo</h1>
+                <small>Skip the Software. Get the Result.</small>
+              </div>
+              <div>
+                <div class="title">${escapeHtml(reportTitle)}</div>
+                <div class="meta">Generated on ${new Date().toLocaleString()}</div>
+              </div>
+            </div>
+            <div class="hero">
+              <div class="label">Best Supplier</div>
+              <div class="name">${escapeHtml(best.name)}</div>
+              <div class="price">${money(best.unitPrice)} / ${escapeHtml(best.unit)}</div>
+              <div class="banner">${escapeHtml(savingsText)}</div>
+            </div>
+            <h2>Supplier Comparison Table</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Supplier</th>
+                  <th>Total Price</th>
+                  <th>Tax / Fees</th>
+                  <th>Landed Total</th>
+                  <th>Quantity</th>
+                  <th>Unit Price</th>
+                </tr>
+              </thead>
+              <tbody>${rows}</tbody>
+            </table>
+            ${unitWarning}
+            <div class="box">
+              <strong>Procurement Summary</strong>
+              <p>${escapeHtml(summaryText)}</p>
+            </div>
+            ${decisionNotes ? `
+              <div class="box">
+                <strong>Decision Notes</strong>
+                <p style="white-space: pre-line;">${escapeHtml(decisionNotes)}</p>
+              </div>
+            ` : ""}
+            <div class="footer">
+              <div>worowo business calculators</div>
+              <div><a href="https://www.worowo.com">https://www.worowo.com</a></div>
+            </div>
+          </body>
+        </html>
+      `;
+
+      const printWindow = window.open("", "_blank", "width=1100,height=800");
+      if (!printWindow) {
+        setError("Unable to open the PDF export window. Please allow pop-ups and try again.");
+        return;
+      }
+
+      printWindow.document.open();
+      printWindow.document.write(reportHtml);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => printWindow.print(), 300);
+    }
+
+    addSupplierButton.addEventListener("click", () => {
+      const cards = getCards();
+      if (cards.length >= maxSuppliers) return;
+      createSupplierCard(cards.length + 1);
+      calculateAndRender();
+    });
+
+    resetButton.addEventListener("click", resetCalculator);
+    compareButton.addEventListener("click", calculateAndRender);
+    exportPdfButton.addEventListener("click", exportPdf);
+    window.addEventListener("resize", queueSyncQuoteRows);
+
+    resetCalculator();
+  })();
+</script>
+
+<style>
+  .upc-form-card,
+  .upc-results-card {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-height: 100%;
+    padding: 28px 28px 30px;
+    border: 1px solid #cfd9e7;
+    border-radius: 18px;
+    background: #ffffff;
+    box-sizing: border-box;
+    box-shadow: 0 18px 50px -30px rgba(15, 23, 42, 0.24);
+  }
+
+  .upc-form-header h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .upc-form-header p {
+    max-width: 38rem;
+    margin: 8px 0 0;
+    color: #475569;
+    font-size: 0.94rem;
+    line-height: 1.55;
+  }
+
+  .upc-supplier-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .upc-supplier-card {
+    padding: 12px;
+    border: 1px solid #d7e2ef;
+    border-radius: 14px;
+  }
+
+  .upc-tone-blue {
+    border-color: #bcd0f7;
+    background: #eef4fc;
+  }
+
+  .upc-tone-green {
+    border-color: #b8e7c9;
+    background: #eefbf4;
+  }
+
+  .upc-tone-sand {
+    border-color: #f0d7a4;
+    background: #fff8ee;
+  }
+
+  .upc-tone-purple {
+    border-color: #dacdfb;
+    background: #f5f2ff;
+  }
+
+  .upc-tone-cyan {
+    border-color: #bfe5ea;
+    background: #eff9fb;
+  }
+
+  .upc-supplier-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .upc-supplier-card-title {
+    color: #0f172a;
+    font-size: 0.92rem;
+    font-weight: 850;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .upc-remove-btn {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .upc-remove-btn:hover {
+    color: #2563eb;
+  }
+
+  .upc-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 10px;
+  }
+
+  .upc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .upc-field-inline {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+  }
+
+  .upc-field-vendor {
+    grid-column: 1 / -1;
+  }
+
+  .upc-field-compact {
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .upc-label {
+    color: #0f172a;
+    font-size: 0.8rem;
+    font-weight: 800;
+    line-height: 1.4;
+  }
+
+  .upc-field input,
+  .upc-field select,
+  .upc-field textarea {
+    width: 100%;
+    border: 1px solid #94a3b8;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 1rem;
+    line-height: 1.4;
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  .upc-field input,
+  .upc-field select {
+    min-height: 38px;
+    padding: 0 10px;
+  }
+
+  .upc-field textarea {
+    min-height: 112px;
+    padding: 12px 14px;
+    resize: vertical;
+  }
+
+  .upc-field input:focus,
+  .upc-field select:focus,
+  .upc-field textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  }
+
+  .upc-input-prefix {
+    position: relative;
+  }
+
+  .upc-input-prefix > span {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    color: #2563eb;
+    font-weight: 850;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .upc-input-prefix input {
+    padding-left: 26px;
+  }
+
+  .upc-add-btn {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #9fc0f6;
+    border-radius: 999px;
+    background: #eaf2ff;
+    color: #2563eb;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .upc-add-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+
+  .upc-export-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid #d7e2ef;
+    border-radius: 14px;
+    background: #f8fbff;
+  }
+
+  .upc-form-divider,
+  .upc-right-divider {
+    width: 100%;
+    height: 1px;
+    background: #d7e2ef;
+  }
+
+  .upc-error {
+    min-height: 20px;
+    margin: 0;
+    color: #dc2626;
+    font-size: 0.92rem;
+    font-weight: 800;
+  }
+
+  .upc-form-note,
+  .upc-export-note {
+    margin: 0;
+    color: #475569;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .upc-actions,
+  .upc-export-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .upc-btn {
+    min-width: 170px;
+    min-height: 52px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 850;
+    cursor: pointer;
+    transition: 0.18s ease;
+  }
+
+  .upc-btn-primary {
+    border: 1px solid #2563eb;
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.16);
+  }
+
+  .upc-btn-primary:hover {
+    border-color: #1d4ed8;
+    background: #1d4ed8;
+    transform: translateY(-1px);
+  }
+
+  .upc-btn-ghost {
+    border: 1px solid #b8c7db;
+    background: #ffffff;
+    color: #0f172a;
+  }
+
+  .upc-btn-ghost:hover {
+    border-color: #94a3b8;
+    background: #f8fbff;
+  }
+
+  .upc-hero-panel {
+    padding: 18px 22px 16px;
+    border: 1px solid #c7daf6;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #eef4fb 0%, #f7faff 100%);
+  }
+
+  .upc-hero-label,
+  .upc-procurement-label {
+    margin: 0 0 10px;
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 850;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .upc-hero-name {
+    color: #0f7a55;
+    font-size: clamp(2.45rem, 6vw, 3.65rem);
+    font-weight: 900;
+    letter-spacing: -0.055em;
+    line-height: 0.95;
+  }
+
+  .upc-hero-price {
+    margin-top: 12px;
+    color: #0f172a;
+    font-size: 1.32rem;
+    font-weight: 900;
+    line-height: 1.2;
+  }
+
+  .upc-savings-banner {
+    margin-top: 18px;
+    padding: 14px 16px;
+    border: 1px solid #bfddc3;
+    border-radius: 14px;
+    background: #eef7f0;
+    color: #246b45;
+    font-size: 1rem;
+    font-weight: 850;
+    line-height: 1.5;
+    text-align: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74), 0 8px 18px -16px rgba(45, 106, 79, 0.46);
+  }
+
+  .upc-results-summary-head h3 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 1.35rem;
+    font-weight: 850;
+  }
+
+  .upc-results-summary-head p {
+    margin: 8px 0 0;
+    color: #475569;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .upc-ranking-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .upc-rank-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid #d7dee8;
+    border-radius: 14px;
+    background: #ffffff;
+  }
+
+  .upc-rank-card.is-best {
+    border-color: #bbf7d0;
+    background: linear-gradient(180deg, #f8fffb 0%, #edfdf4 100%);
+  }
+
+  .upc-rank-card.is-incomplete {
+    background: #f8fafc;
+  }
+
+  .upc-rank-card-empty {
+    color: #64748b;
+    font-weight: 750;
+  }
+
+  .upc-rank-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .upc-rank-card strong {
+    display: block;
+    color: #0f172a;
+    font-size: 1rem;
+    font-weight: 900;
+  }
+
+  .upc-rank-card small {
+    display: block;
+    margin-top: 5px;
+    color: #64748b;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .upc-rank-price {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .upc-rank-price strong {
+    color: #047857;
+    font-size: 1.1rem;
+  }
+
+  .upc-rank-price span {
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .upc-warning {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border: 1px solid #efd8a2;
+    border-radius: 14px;
+    background: #fff8eb;
+    color: #a16207;
+    font-size: 0.95rem;
+    font-weight: 800;
+    line-height: 1.6;
+  }
+
+  .upc-procurement-box {
+    padding: 16px;
+    border: 1px solid #d7e2ef;
+    border-radius: 14px;
+    background: #f8fbff;
+  }
+
+  .upc-procurement-box p {
+    margin: 0;
+    color: #475569;
+    font-size: 1.04rem;
+    line-height: 1.8;
+  }
+
+  .upc-supplier-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 10px;
+    padding: 8px 10px;
+    border: 1px solid rgba(148, 163, 184, 0.36);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .upc-supplier-preview span {
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .upc-supplier-preview strong {
+    color: #047857;
+    font-size: 0.98rem;
+    font-weight: 900;
+  }
+
+  @media (max-width: 900px) {
+    .upc-fields-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .upc-field-inline {
+      grid-template-columns: 1fr;
+      gap: 5px;
+    }
+
+    .upc-actions,
+    .upc-export-row {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .upc-btn {
+      width: 100%;
+    }
+
+    .upc-rank-card {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .upc-rank-price {
+      text-align: left;
+    }
+  }
+</style>

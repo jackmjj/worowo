@@ -1,0 +1,880 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+
+const toolMeta = {
+  title: "Discount Calculator",
+  seoTitle: "Discount Calculator, Final Price, Savings & Profit Margin | worowo",
+  slug: "discount-calculator",
+  category: "Business Calculators",
+  categoryHref: "/business-calculators/",
+  description:
+    "Free online discount calculator for retail, ecommerce, wholesale, and small business pricing. Calculate discounted price, savings, profit margin, profit per unit, and total profit.",
+  intro:
+    "Calculate final price, savings, and profit after discount before you run a promotion.",
+  canonical: "https://www.worowo.com/business-calculators/discount-calculator/",
+};
+
+const faqItems = [
+  {
+    question: "What does this discount calculator calculate?",
+    answer:
+      "It calculates the discounted price, amount saved, profit per unit, profit margin after discount, and total profit based on sales quantity.",
+  },
+  {
+    question: "How do I calculate profit after a discount?",
+    answer:
+      "Enter the original selling price, discount rate, cost price, and optional sales quantity. The calculator subtracts the discount from the original price, then compares the discounted price with your cost.",
+  },
+  {
+    question: "Why can a discount hurt profit margin?",
+    answer:
+      "A discount lowers the selling price. If your cost stays the same, every discount reduces profit per unit and can quickly push margin below a safe level.",
+  },
+  {
+    question: "What is a good discount margin?",
+    answer:
+      "It depends on your business, but many sellers use warning thresholds such as 10% or 20% margin to avoid promotions that create sales volume without enough profit.",
+  },
+  {
+    question: "Can I export the discount result?",
+    answer:
+      "Yes. After calculating a valid result, you can export a simple PDF report for records, promotions, or pricing review.",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Profit Margin Calculator",
+    href: "/business-calculators/profit-margin-calculator/",
+    desc: "Calculate profit margin, selling price, cost price, and projected earnings.",
+  },
+  {
+    name: "Break-Even Point Calculator",
+    href: "/business-calculators/break-even-point-calculator/",
+    desc: "Find the sales volume needed to cover costs and start making profit.",
+  },
+];
+---
+
+<ToolLayout
+  title={toolMeta.title}
+  pageTitle={toolMeta.seoTitle}
+  description={toolMeta.description}
+  canonical={toolMeta.canonical}
+  eyebrow="Business Calculator"
+  categoryLabel={toolMeta.category}
+  categoryHref={toolMeta.categoryHref}
+  intro={toolMeta.intro}
+  faqItems={faqItems}
+  relatedTools={relatedTools}
+>
+  <div slot="form" class="dc-card dc-form-card">
+    <div class="dc-form-top js-sync-top">
+      <h2 class="dc-title">Calculate Discount Price</h2>
+      <p class="dc-desc">
+        Enter the original price, discount rate, and cost to check final price and profit after discount.
+      </p>
+
+      <div class="dc-input-section dc-input-section-primary">
+        <label class="dc-field">
+          <span>Original Price</span>
+          <div class="dc-input-wrap">
+            <span class="dc-prefix">$</span>
+            <input id="originalPrice" type="number" min="0" step="0.01" placeholder="e.g. 100" />
+          </div>
+        </label>
+
+        <label class="dc-field">
+          <span>Discount Rate</span>
+          <div class="dc-input-wrap">
+            <input id="discountRate" type="number" min="0" max="100" step="0.01" placeholder="e.g. 20" />
+            <span class="dc-suffix">%</span>
+          </div>
+        </label>
+
+        <label class="dc-field">
+          <span>Cost Price</span>
+          <div class="dc-input-wrap">
+            <span class="dc-prefix">$</span>
+            <input id="costPrice" type="number" min="0" step="0.01" placeholder="e.g. 50" />
+          </div>
+        </label>
+
+        <p class="dc-help">
+          Use your real product cost, including supplier cost or other direct per-unit cost.
+        </p>
+      </div>
+    </div>
+
+    <div class="dc-form-bottom js-sync-bottom">
+      <div class="dc-input-section dc-input-section-secondary">
+        <div class="dc-sub-head">Optional Quantity</div>
+
+        <label class="dc-field dc-field-secondary">
+          <span>Sales Quantity</span>
+          <input id="salesQuantity" type="number" min="0" step="1" placeholder="e.g. 100" />
+        </label>
+
+        <p class="dc-help">
+          Add quantity to estimate total revenue, total savings, and total profit.
+        </p>
+      </div>
+
+      <p id="errorMessage" class="dc-error" aria-live="polite"></p>
+
+      <div class="dc-actions">
+        <button id="resetButton" type="button" class="dc-btn dc-btn-secondary">Reset</button>
+        <button id="calculateButton" type="button" class="dc-btn dc-btn-primary">
+          Calculate Discount
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div slot="results" class="dc-card dc-dashboard">
+    <div class="dc-results-top js-sync-top">
+      <div class="dc-hero-panel">
+        <div class="dc-hero-label">Discounted Price</div>
+        <div id="discountedPrice" class="dc-hero-value">$0.00</div>
+        <div id="heroNote" class="dc-hero-note">
+          You save <strong>$0.00</strong> per unit after discount.
+        </div>
+      </div>
+
+      <div class="dc-metrics-grid">
+        <div class="dc-metric-card">
+          <span class="dc-metric-label">Profit Margin</span>
+          <strong id="profitMargin" class="dc-metric-value">0.00%</strong>
+        </div>
+
+        <div class="dc-metric-card dc-metric-card-profit">
+          <span class="dc-metric-label">Profit per Unit</span>
+          <strong id="profitPerUnit" class="dc-metric-value">$0.00</strong>
+        </div>
+
+        <div class="dc-metric-card">
+          <span class="dc-metric-label">Savings per Unit</span>
+          <strong id="savingsPerUnit" class="dc-metric-value">$0.00</strong>
+        </div>
+
+        <div class="dc-metric-card dc-metric-card-profit">
+          <span class="dc-metric-label">Total Profit</span>
+          <strong id="totalProfit" class="dc-metric-value">$0.00</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="dc-results-bottom js-sync-bottom">
+      <div class="dc-warning-panel">
+        <div class="dc-sub-head">Profit Warning</div>
+        <p id="profitWarning" class="dc-warning-text">
+          Enter your numbers to see whether this discount still leaves enough profit.
+        </p>
+      </div>
+
+      <div class="dc-total-grid">
+        <div class="dc-total-item">
+          <span>Total Revenue</span>
+          <strong id="totalRevenue">$0.00</strong>
+        </div>
+        <div class="dc-total-item">
+          <span>Total Savings</span>
+          <strong id="totalSavings">$0.00</strong>
+        </div>
+      </div>
+
+      <div class="dc-export-block">
+        <p class="dc-help">Export a PDF after reviewing the calculated discount result.</p>
+        <button id="exportButton" type="button" class="dc-btn dc-btn-primary">Export PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>How This Discount Calculator Works</h2>
+    <p>
+      Use this calculator to calculate the final price after a discount and understand whether
+      the promotion still protects your profit. It is useful for retail sales, ecommerce discounts,
+      wholesale deals, seasonal campaigns, and markdown planning.
+    </p>
+    <ul>
+      <li><strong>Discounted price</strong> = original price x (1 - discount rate)</li>
+      <li><strong>Savings</strong> = original price - discounted price</li>
+      <li><strong>Profit per unit</strong> = discounted price - cost price</li>
+      <li><strong>Profit margin</strong> = profit per unit / discounted price</li>
+    </ul>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>When to Use It</h2>
+    <p>
+      Use this tool before launching a coupon, running a sale, matching a competitor's price,
+      or approving a wholesale discount. It helps you see whether the new price creates enough
+      margin after cost.
+    </p>
+  </div>
+
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const $ = (id) => document.getElementById(id);
+
+      const els = {
+        originalPrice: $("originalPrice"),
+        discountRate: $("discountRate"),
+        costPrice: $("costPrice"),
+        salesQuantity: $("salesQuantity"),
+        calculateButton: $("calculateButton"),
+        resetButton: $("resetButton"),
+        exportButton: $("exportButton"),
+        errorMessage: $("errorMessage"),
+        discountedPrice: $("discountedPrice"),
+        heroNote: $("heroNote"),
+        profitMargin: $("profitMargin"),
+        profitPerUnit: $("profitPerUnit"),
+        savingsPerUnit: $("savingsPerUnit"),
+        totalProfit: $("totalProfit"),
+        totalRevenue: $("totalRevenue"),
+        totalSavings: $("totalSavings"),
+        profitWarning: $("profitWarning"),
+      };
+
+      const syncedTopSections = Array.from(document.querySelectorAll(".js-sync-top"));
+      const syncedBottomSections = Array.from(document.querySelectorAll(".js-sync-bottom"));
+      let lastResult = null;
+
+      function toNumber(input) {
+        const value = Number.parseFloat(input?.value || "");
+        return Number.isFinite(value) ? value : 0;
+      }
+
+      function formatCurrency(value) {
+        return value.toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD",
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function formatPercent(value) {
+        return `${value.toLocaleString("en-US", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}%`;
+      }
+
+      function syncSectionHeights() {
+        const syncGroup = (sections) => {
+          sections.forEach((section) => {
+            section.style.minHeight = "";
+          });
+
+          if (window.matchMedia("(max-width: 700px)").matches) return;
+
+          const maxHeight = Math.max(...sections.map((section) => section.offsetHeight));
+          sections.forEach((section) => {
+            section.style.minHeight = `${maxHeight}px`;
+          });
+        };
+
+        syncGroup(syncedTopSections);
+        syncGroup(syncedBottomSections);
+      }
+
+      function queueSyncSectionHeights() {
+        window.requestAnimationFrame(syncSectionHeights);
+      }
+
+      function setError(message) {
+        if (els.errorMessage) els.errorMessage.textContent = message;
+        queueSyncSectionHeights();
+      }
+
+      function setText(node, value) {
+        if (node) node.textContent = value;
+      }
+
+      function setWarning(result) {
+        els.profitWarning.classList.remove("is-good", "is-caution", "is-danger");
+
+        if (!result || result.discountedPrice <= 0) {
+          els.profitWarning.textContent =
+            "Enter your numbers to see whether this discount still leaves enough profit.";
+          return;
+        }
+
+        if (result.profitPerUnit < 0) {
+          els.profitWarning.textContent =
+            "Warning: this discount creates a loss per unit. Raise price, lower discount, or reduce cost.";
+          els.profitWarning.classList.add("is-danger");
+          return;
+        }
+
+        if (result.profitMargin < 10) {
+          els.profitWarning.textContent =
+            "Caution: profit margin is below 10%. Check whether the promotion is worth the volume.";
+          els.profitWarning.classList.add("is-caution");
+          return;
+        }
+
+        els.profitWarning.textContent =
+          "Healthy discount: this promotion still leaves a positive margin after cost.";
+        els.profitWarning.classList.add("is-good");
+      }
+
+      function setResults(result) {
+        setText(els.discountedPrice, formatCurrency(result.discountedPrice));
+        els.discountedPrice.classList.toggle("is-negative", result.discountedPrice < 0);
+        els.heroNote.innerHTML =
+          `You save <strong>${formatCurrency(result.savingsPerUnit)}</strong> per unit after discount.`;
+        setText(els.profitMargin, formatPercent(result.profitMargin));
+        setText(els.profitPerUnit, formatCurrency(result.profitPerUnit));
+        setText(els.savingsPerUnit, formatCurrency(result.savingsPerUnit));
+        setText(els.totalProfit, formatCurrency(result.totalProfit));
+        setText(els.totalRevenue, formatCurrency(result.totalRevenue));
+        setText(els.totalSavings, formatCurrency(result.totalSavings));
+
+        [els.profitPerUnit, els.totalProfit].forEach((node) => {
+          node.classList.toggle("is-negative", result.profitPerUnit < 0);
+        });
+
+        setWarning(result);
+        queueSyncSectionHeights();
+      }
+
+      function calculate({ quiet = false } = {}) {
+        const originalPrice = toNumber(els.originalPrice);
+        const rawDiscountRate = toNumber(els.discountRate);
+        const discountRate = Math.min(Math.max(rawDiscountRate, 0), 100);
+        const costPrice = toNumber(els.costPrice);
+        const salesQuantity = Math.max(0, Math.floor(toNumber(els.salesQuantity)));
+
+        if (originalPrice <= 0 || costPrice < 0) {
+          if (!quiet) setError("Enter an original price greater than zero and a non-negative cost.");
+          return null;
+        }
+
+        if (rawDiscountRate < 0 || rawDiscountRate > 100) {
+          if (!quiet) setError("Discount rate must be between 0 and 100.");
+          return null;
+        }
+
+        const discountedPrice = originalPrice * (1 - discountRate / 100);
+        const savingsPerUnit = originalPrice - discountedPrice;
+        const profitPerUnit = discountedPrice - costPrice;
+        const profitMargin = discountedPrice > 0 ? (profitPerUnit / discountedPrice) * 100 : 0;
+        const totalRevenue = discountedPrice * salesQuantity;
+        const totalSavings = savingsPerUnit * salesQuantity;
+        const totalProfit = profitPerUnit * salesQuantity;
+
+        const result = {
+          originalPrice,
+          discountRate,
+          costPrice,
+          salesQuantity,
+          discountedPrice,
+          savingsPerUnit,
+          profitPerUnit,
+          profitMargin,
+          totalRevenue,
+          totalSavings,
+          totalProfit,
+        };
+
+        lastResult = result;
+        setError("");
+        setResults(result);
+        return result;
+      }
+
+      function autoCalculate() {
+        const result = calculate({ quiet: true });
+        if (!result) {
+          setError("");
+          setWarning(null);
+        }
+      }
+
+      function resetCalculator() {
+        [els.originalPrice, els.discountRate, els.costPrice, els.salesQuantity].forEach((input) => {
+          if (input) input.value = "";
+        });
+
+        lastResult = null;
+        setError("");
+        setText(els.discountedPrice, "$0.00");
+        els.heroNote.innerHTML = "You save <strong>$0.00</strong> per unit after discount.";
+        setText(els.profitMargin, "0.00%");
+        setText(els.profitPerUnit, "$0.00");
+        setText(els.savingsPerUnit, "$0.00");
+        setText(els.totalProfit, "$0.00");
+        setText(els.totalRevenue, "$0.00");
+        setText(els.totalSavings, "$0.00");
+        setWarning(null);
+        queueSyncSectionHeights();
+      }
+
+      function escapePdfText(value) {
+        return String(value).replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
+      }
+
+      function createPdfBlob(lines) {
+        const content = [
+          "BT",
+          "/F1 24 Tf",
+          "72 736 Td",
+          `(${escapePdfText(lines[0])}) Tj`,
+          "/F1 10 Tf",
+          "0 -18 Td",
+          ...lines.slice(1).flatMap((line) => [
+            `(${escapePdfText(line)}) Tj`,
+            "0 -16 Td",
+          ]),
+          "ET",
+        ].join("\n");
+
+        const objects = [
+          "<< /Type /Catalog /Pages 2 0 R >>",
+          "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+          "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>",
+          "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+          `<< /Length ${content.length} >>\nstream\n${content}\nendstream`,
+        ];
+
+        let pdf = "%PDF-1.4\n";
+        const offsets = [0];
+
+        objects.forEach((object, index) => {
+          offsets.push(pdf.length);
+          pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
+        });
+
+        const xrefOffset = pdf.length;
+        pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+        offsets.slice(1).forEach((offset) => {
+          pdf += `${String(offset).padStart(10, "0")} 00000 n \n`;
+        });
+        pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+
+        return new Blob([pdf], { type: "application/pdf" });
+      }
+
+      function exportReport() {
+        const result = lastResult || calculate({ quiet: true });
+
+        if (!result) {
+          setError("Calculate a valid discount result before exporting a PDF.");
+          return;
+        }
+
+        const lines = [
+          "worowo",
+          "Discount Calculator Report",
+          "Skip the Software. Get the Result.",
+          "https://www.worowo.com",
+          "",
+          `Original Price: ${formatCurrency(result.originalPrice)}`,
+          `Discount Rate: ${formatPercent(result.discountRate)}`,
+          `Discounted Price: ${formatCurrency(result.discountedPrice)}`,
+          `Cost Price: ${formatCurrency(result.costPrice)}`,
+          `Savings per Unit: ${formatCurrency(result.savingsPerUnit)}`,
+          `Profit per Unit: ${formatCurrency(result.profitPerUnit)}`,
+          `Profit Margin: ${formatPercent(result.profitMargin)}`,
+          `Sales Quantity: ${result.salesQuantity.toLocaleString("en-US")}`,
+          `Total Revenue: ${formatCurrency(result.totalRevenue)}`,
+          `Total Savings: ${formatCurrency(result.totalSavings)}`,
+          `Total Profit: ${formatCurrency(result.totalProfit)}`,
+        ];
+
+        const blob = createPdfBlob(lines);
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "discount-calculator-report.pdf";
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      [els.originalPrice, els.discountRate, els.costPrice, els.salesQuantity].forEach((input) => {
+        input?.addEventListener("input", autoCalculate);
+      });
+      els.calculateButton?.addEventListener("click", () => calculate());
+      els.resetButton?.addEventListener("click", resetCalculator);
+      els.exportButton?.addEventListener("click", exportReport);
+      window.addEventListener("resize", queueSyncSectionHeights);
+      resetCalculator();
+    });
+  </script>
+
+  <style>
+    .dc-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      padding: 28px 28px 30px;
+      border: 1px solid #d7dee8;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 18px 50px -30px rgba(15, 23, 42, 0.24);
+      box-sizing: border-box;
+    }
+
+    .dc-form-top,
+    .dc-results-top {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 24px;
+    }
+
+    .dc-form-bottom,
+    .dc-results-bottom {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 24px;
+    }
+
+    .dc-title {
+      margin: 0 0 6px;
+      font-size: 1.8rem;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .dc-desc {
+      margin: 0 0 18px;
+      max-width: 52ch;
+      color: var(--text-soft);
+      font-size: 0.94rem;
+      line-height: 1.55;
+    }
+
+    .dc-input-section {
+      display: grid;
+      gap: 16px;
+      padding: 16px;
+      border-radius: 14px;
+    }
+
+    .dc-input-section-primary {
+      border: 1px solid #bfdbfe;
+      background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+    }
+
+    .dc-input-section-secondary {
+      border: 1px solid #bbf7d0;
+      background: linear-gradient(180deg, #f8fffb 0%, #edfdf4 100%);
+    }
+
+    .dc-field {
+      display: block;
+    }
+
+    .dc-field span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .dc-input-wrap {
+      position: relative;
+    }
+
+    .dc-field input {
+      width: 100%;
+      height: 58px;
+      padding: 0 40px 0 34px;
+      border: 1px solid #9aa7b8;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+      font-size: 1.28rem;
+      outline: none;
+      transition: 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .dc-field-secondary input {
+      padding: 0 18px;
+    }
+
+    .dc-field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .dc-prefix,
+    .dc-suffix {
+      position: absolute;
+      top: 50%;
+      z-index: 1;
+      transform: translateY(-50%);
+      color: #64748b;
+      font-size: 1rem;
+      font-weight: 850;
+      pointer-events: none;
+    }
+
+    .dc-prefix {
+      left: 14px;
+    }
+
+    .dc-suffix {
+      right: 14px;
+    }
+
+    .dc-help {
+      margin: 4px 0 0;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .dc-sub-head {
+      display: flex;
+      align-items: center;
+      height: 20px;
+      margin-bottom: 0;
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dc-error {
+      min-height: 20px;
+      margin: 14px 0 0;
+      color: #dc2626;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .dc-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: center;
+      gap: 14px;
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .dc-btn {
+      min-height: 52px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .dc-btn-secondary {
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--text);
+      box-shadow: 0 10px 24px -20px rgba(15, 23, 42, 0.35);
+    }
+
+    .dc-btn-primary {
+      border: 1px solid #2563eb;
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 14px 30px -18px rgba(37, 99, 235, 0.7);
+    }
+
+    .dc-btn-primary:hover,
+    .dc-btn-secondary:hover {
+      transform: translateY(-1px);
+    }
+
+    .dc-hero-panel {
+      border: 1px solid #cfe0f7;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #eef4fb 0%, #f7faff 100%);
+      padding: 18px 22px 16px;
+    }
+
+    .dc-hero-label {
+      margin-bottom: 10px;
+      color: #64748b;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .dc-hero-value {
+      color: #047857;
+      font-size: clamp(3rem, 7vw, 4.2rem);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 1;
+    }
+
+    .dc-hero-value.is-negative {
+      color: #dc2626;
+    }
+
+    .dc-hero-note {
+      display: block;
+      margin-top: 14px;
+      padding: 12px 14px;
+      border: 1px solid #cfe8c5;
+      border-radius: 10px;
+      background: #f1f9f5;
+      color: #2d6a4f;
+      font-size: 0.96rem;
+      font-weight: 850;
+      line-height: 1.45;
+      text-align: center;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74), 0 8px 18px -16px rgba(45, 106, 79, 0.46);
+    }
+
+    .dc-hero-note strong {
+      color: #2d6a4f;
+      font-size: 1.08em;
+      font-weight: 950;
+    }
+
+    .dc-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .dc-metric-card {
+      border: 1px solid #d7dee8;
+      border-radius: 14px;
+      padding: 16px 18px 14px;
+      background: #fff;
+    }
+
+    .dc-metric-card-profit {
+      border-color: #e2e8f0;
+      background: #f8fafc;
+    }
+
+    .dc-metric-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-soft);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .dc-metric-value {
+      color: #0f172a;
+      font-size: 1.62rem;
+      font-weight: 850;
+    }
+
+    .dc-metric-card-profit .dc-metric-value {
+      color: #047857;
+    }
+
+    .dc-metric-value.is-negative {
+      color: #dc2626;
+    }
+
+    .dc-warning-panel {
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      background: #f8fafc;
+    }
+
+    .dc-warning-text {
+      margin: 12px 0 0;
+      color: #475569;
+      font-size: 0.96rem;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .dc-warning-text.is-good {
+      color: #047857;
+    }
+
+    .dc-warning-text.is-caution {
+      color: #b45309;
+    }
+
+    .dc-warning-text.is-danger {
+      color: #dc2626;
+    }
+
+    .dc-total-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .dc-total-item {
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      background: #ffffff;
+    }
+
+    .dc-total-item span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .dc-total-item strong {
+      color: #0f172a;
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .dc-export-block {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: auto;
+      padding-top: 20px;
+    }
+
+    .dc-export-block .dc-btn {
+      min-width: 160px;
+    }
+
+    @media (max-width: 980px) {
+      .dc-metrics-grid,
+      .dc-total-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .dc-card {
+        padding: 22px 20px 24px;
+      }
+
+      .dc-metrics-grid,
+      .dc-total-grid,
+      .dc-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .dc-export-block {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .dc-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</ToolLayout>

@@ -1,0 +1,1003 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+
+const toolMeta = {
+  title: "Delivery Receipt Generator",
+  seoTitle: "Delivery Receipt Generator, Proof of Delivery PDF | worowo",
+  category: "Packing & Shipping",
+  categoryHref: "/packing-shipping/",
+  description:
+    "Generate delivery receipts with store name, sender and receiver details, item rows, quantities, values, and PDF export for shipment records.",
+  intro:
+    "Create a clean delivery receipt with your store name, delivery details, and item totals.",
+  canonical: "https://www.worowo.com/packing-shipping/delivery-receipt-generator/",
+};
+
+const faqItems = [
+  {
+    question: "How does the delivery receipt generator work?",
+    answer:
+      "Enter your store name, sender, receiver, delivery date, and item details. The tool creates a delivery receipt preview that you can export as a PDF.",
+  },
+  {
+    question: "Can I add multiple items?",
+    answer:
+      "Yes. You can add or remove item rows and the receipt will calculate line totals and receipt total automatically.",
+  },
+  {
+    question: "Can I upload a logo?",
+    answer:
+      "No. This generator keeps the receipt simple and uses your custom store name as the personalized header.",
+  },
+  {
+    question: "Can I export the receipt to PDF?",
+    answer:
+      "Yes. After generating the receipt, you can export a PDF for printing, customer confirmation, or delivery records.",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Packing List Generator",
+    href: "/packing-list-generator/",
+    desc: "Create packing lists with shipment details, carton information, and item rows.",
+  },
+  {
+    name: "Packing & Shipping",
+    href: "/packing-shipping/",
+    desc: "Browse shipping documents, delivery forms, and packing tools.",
+  },
+];
+---
+
+<ToolLayout
+  title={toolMeta.title}
+  pageTitle={toolMeta.seoTitle}
+  description={toolMeta.description}
+  canonical={toolMeta.canonical}
+  eyebrow="Packing & Shipping"
+  categoryLabel={toolMeta.category}
+  categoryHref={toolMeta.categoryHref}
+  intro={toolMeta.intro}
+  faqItems={faqItems}
+  relatedTools={relatedTools}
+>
+  <div slot="form" class="dr-card dr-form-card">
+    <div class="dr-form-top js-sync-top">
+      <h2 class="dr-title">Generate Delivery Receipt</h2>
+      <p class="dr-desc">
+        Enter delivery information and item details. Your store name appears at the top of the receipt.
+      </p>
+
+      <div class="dr-input-section dr-input-section-primary">
+        <label class="dr-field">
+          <span>Store Name</span>
+          <input id="storeName" type="text" placeholder="e.g. Borari Parts" />
+        </label>
+
+        <div class="dr-field-grid">
+          <label class="dr-field">
+            <span>Receipt No.</span>
+            <input id="receiptNo" type="text" placeholder="e.g. DR-0001" />
+          </label>
+
+          <label class="dr-field">
+            <span>Delivery Date</span>
+            <input id="deliveryDate" type="date" />
+          </label>
+        </div>
+
+        <div class="dr-field-grid">
+          <label class="dr-field">
+            <span>Sender Name</span>
+            <input id="senderName" type="text" placeholder="e.g. Borari Parts" />
+          </label>
+
+          <label class="dr-field">
+            <span>Receiver Name</span>
+            <input id="receiverName" type="text" placeholder="e.g. John Doe" />
+          </label>
+        </div>
+
+        <label class="dr-field">
+          <span>Delivery Address</span>
+          <textarea id="deliveryAddress" rows="3" placeholder="Street, city, state, ZIP"></textarea>
+        </label>
+      </div>
+
+      <div class="dr-input-section dr-input-section-secondary">
+        <div class="dr-section-head">
+          <span>Items</span>
+          <button id="addItemButton" type="button" class="dr-small-btn">Add Item</button>
+        </div>
+
+        <div id="itemsList" class="dr-items-list" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="dr-form-bottom js-sync-bottom">
+      <p id="errorMessage" class="dr-error" aria-live="polite"></p>
+
+      <div class="dr-actions">
+        <button id="resetButton" type="button" class="dr-btn dr-btn-secondary">Reset</button>
+        <button id="generateButton" type="button" class="dr-btn dr-btn-primary">
+          Generate Receipt
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div slot="results" class="dr-card dr-dashboard">
+    <div class="dr-results-top js-sync-top">
+      <div class="dr-preview">
+        <div class="dr-preview-header">
+          <div>
+            <div id="previewStoreName" class="dr-preview-store">Your Store Name</div>
+            <div class="dr-preview-subtitle">Delivery Receipt</div>
+          </div>
+          <div class="dr-preview-meta">
+            <strong id="previewReceiptNo">DR-0001</strong>
+            <span id="previewDate">Date not set</span>
+          </div>
+        </div>
+
+        <div class="dr-preview-parties">
+          <div>
+            <span>Sender</span>
+            <strong id="previewSender">Sender name</strong>
+          </div>
+          <div>
+            <span>Receiver</span>
+            <strong id="previewReceiver">Receiver name</strong>
+          </div>
+        </div>
+
+        <div class="dr-preview-address">
+          <span>Delivery Address</span>
+          <p id="previewAddress">Address will appear here.</p>
+        </div>
+
+        <div class="dr-preview-table-wrap">
+          <table class="dr-preview-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="previewItems"></tbody>
+          </table>
+        </div>
+
+        <div class="dr-preview-total">
+          <span>Receipt Total</span>
+          <strong id="previewTotal">$0.00</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="dr-results-bottom js-sync-bottom">
+      <div class="dr-ready-panel">
+        <div class="dr-sub-head">Receipt Status</div>
+        <p id="receiptNote" class="dr-help">Fill in receipt details, then export a PDF for delivery records.</p>
+      </div>
+
+      <div class="dr-export-block">
+        <p class="dr-help">Export a PDF after reviewing the generated delivery receipt.</p>
+        <button id="exportButton" type="button" class="dr-btn dr-btn-primary">Export PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>How This Delivery Receipt Generator Works</h2>
+    <p>
+      Use this generator to create a delivery receipt for shipped or delivered goods. Add your
+      store name, delivery parties, address, and item rows, then export a simple PDF receipt for
+      customers, drivers, warehouse teams, or internal records.
+    </p>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>Why Store Name Instead of Logo Upload?</h2>
+    <p>
+      This tool keeps the workflow fast and reliable. Your custom store name appears in the receipt
+      header without requiring image upload, file handling, or extra setup.
+    </p>
+  </div>
+
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const $ = (id) => document.getElementById(id);
+      const maxItems = 12;
+      const itemsList = $("itemsList");
+      const addItemButton = $("addItemButton");
+      const generateButton = $("generateButton");
+      const resetButton = $("resetButton");
+      const exportButton = $("exportButton");
+      const errorMessage = $("errorMessage");
+      const syncedTopSections = Array.from(document.querySelectorAll(".js-sync-top"));
+      const syncedBottomSections = Array.from(document.querySelectorAll(".js-sync-bottom"));
+
+      const fields = {
+        storeName: $("storeName"),
+        receiptNo: $("receiptNo"),
+        deliveryDate: $("deliveryDate"),
+        senderName: $("senderName"),
+        receiverName: $("receiverName"),
+        deliveryAddress: $("deliveryAddress"),
+      };
+
+      const preview = {
+        storeName: $("previewStoreName"),
+        receiptNo: $("previewReceiptNo"),
+        date: $("previewDate"),
+        sender: $("previewSender"),
+        receiver: $("previewReceiver"),
+        address: $("previewAddress"),
+        items: $("previewItems"),
+        total: $("previewTotal"),
+        note: $("receiptNote"),
+      };
+
+      let items = [];
+      let lastReceipt = null;
+
+      function createItem(index = items.length) {
+        return {
+          id: globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+          name: index === 0 ? "Product A" : "",
+          quantity: "",
+          unitPrice: "",
+        };
+      }
+
+      function escapeAttribute(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/"/g, "&quot;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      function toNumber(value) {
+        const number = Number.parseFloat(value);
+        return Number.isFinite(number) ? number : 0;
+      }
+
+      function formatCurrency(value) {
+        return value.toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD",
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
+      }
+
+      function formatDate(value) {
+        if (!value) return "Date not set";
+        const date = new Date(`${value}T00:00:00`);
+        if (Number.isNaN(date.getTime())) return value;
+        return date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        });
+      }
+
+      function syncSectionHeights() {
+        const syncGroup = (sections) => {
+          sections.forEach((section) => {
+            section.style.minHeight = "";
+          });
+
+          if (window.matchMedia("(max-width: 700px)").matches) return;
+
+          const maxHeight = Math.max(...sections.map((section) => section.offsetHeight));
+          sections.forEach((section) => {
+            section.style.minHeight = `${maxHeight}px`;
+          });
+        };
+
+        syncGroup(syncedTopSections);
+        syncGroup(syncedBottomSections);
+      }
+
+      function queueSyncSectionHeights() {
+        window.requestAnimationFrame(syncSectionHeights);
+      }
+
+      function setError(message) {
+        errorMessage.textContent = message;
+        queueSyncSectionHeights();
+      }
+
+      function updateItemFromInput(input) {
+        const item = items.find((entry) => entry.id === input.dataset.id);
+        if (!item) return;
+        item[input.dataset.field] = input.value;
+      }
+
+      function renderItems() {
+        itemsList.innerHTML = items.map((item, index) => `
+          <section class="dr-item-card" data-id="${item.id}">
+            <div class="dr-item-header">
+              <strong>Item ${index + 1}</strong>
+              <button
+                type="button"
+                class="dr-remove-btn"
+                data-remove-id="${item.id}"
+                ${items.length <= 1 ? "disabled" : ""}
+              >Remove</button>
+            </div>
+
+            <label class="dr-field">
+              <span>Item Name</span>
+              <input data-id="${item.id}" data-field="name" type="text" value="${escapeAttribute(item.name)}" placeholder="e.g. Product A" />
+            </label>
+
+            <div class="dr-field-grid">
+              <label class="dr-field">
+                <span>Quantity</span>
+                <input data-id="${item.id}" data-field="quantity" type="number" min="0" step="1" value="${escapeAttribute(item.quantity)}" placeholder="e.g. 100" />
+              </label>
+
+              <label class="dr-field">
+                <span>Unit Price</span>
+                <div class="dr-input-wrap">
+                  <span class="dr-prefix">$</span>
+                  <input data-id="${item.id}" data-field="unitPrice" type="number" min="0" step="0.01" value="${escapeAttribute(item.unitPrice)}" placeholder="e.g. 20" />
+                </div>
+              </label>
+            </div>
+          </section>
+        `).join("");
+
+        itemsList.querySelectorAll("input").forEach((input) => {
+          input.addEventListener("input", () => {
+            updateItemFromInput(input);
+            generateReceipt({ quiet: true });
+          });
+        });
+
+        itemsList.querySelectorAll("[data-remove-id]").forEach((button) => {
+          button.addEventListener("click", () => {
+            items = items.filter((item) => item.id !== button.dataset.removeId);
+            renderItems();
+            generateReceipt({ quiet: true });
+          });
+        });
+
+        addItemButton.disabled = items.length >= maxItems;
+        queueSyncSectionHeights();
+      }
+
+      function getReceipt() {
+        const receiptItems = items.map((item) => {
+          const quantity = toNumber(item.quantity);
+          const unitPrice = toNumber(item.unitPrice);
+          return {
+            name: item.name.trim() || "Unnamed item",
+            quantity,
+            unitPrice,
+            lineTotal: quantity * unitPrice,
+            isValid: item.name.trim() || quantity > 0 || unitPrice > 0,
+          };
+        }).filter((item) => item.isValid);
+
+        const total = receiptItems.reduce((sum, item) => sum + item.lineTotal, 0);
+
+        return {
+          storeName: fields.storeName.value.trim() || "Your Store Name",
+          receiptNo: fields.receiptNo.value.trim() || "DR-0001",
+          date: fields.deliveryDate.value,
+          sender: fields.senderName.value.trim() || "Sender name",
+          receiver: fields.receiverName.value.trim() || "Receiver name",
+          address: fields.deliveryAddress.value.trim() || "Address will appear here.",
+          items: receiptItems,
+          total,
+        };
+      }
+
+      function renderPreview(receipt) {
+        preview.storeName.textContent = receipt.storeName;
+        preview.receiptNo.textContent = receipt.receiptNo;
+        preview.date.textContent = formatDate(receipt.date);
+        preview.sender.textContent = receipt.sender;
+        preview.receiver.textContent = receipt.receiver;
+        preview.address.textContent = receipt.address;
+        preview.total.textContent = formatCurrency(receipt.total);
+        preview.items.innerHTML = receipt.items.length
+          ? receipt.items.map((item) => `
+              <tr>
+                <td>${escapeHtml(item.name)}</td>
+                <td>${item.quantity.toLocaleString("en-US")}</td>
+                <td>${formatCurrency(item.unitPrice)}</td>
+                <td>${formatCurrency(item.lineTotal)}</td>
+              </tr>
+            `).join("")
+          : `<tr><td colspan="4">No items added yet.</td></tr>`;
+        preview.note.textContent = receipt.items.length
+          ? "Delivery receipt ready for export or printing."
+          : "Add at least one item to complete the receipt.";
+        queueSyncSectionHeights();
+      }
+
+      function generateReceipt({ quiet = false } = {}) {
+        const receipt = getReceipt();
+
+        if (!receipt.items.length && !quiet) {
+          setError("Add at least one item before generating the receipt.");
+          renderPreview(receipt);
+          return null;
+        }
+
+        setError("");
+        lastReceipt = receipt;
+        renderPreview(receipt);
+        return receipt;
+      }
+
+      function resetGenerator() {
+        fields.storeName.value = "";
+        fields.receiptNo.value = `DR-${new Date().toISOString().slice(0, 10).replaceAll("-", "")}-001`;
+        fields.deliveryDate.value = new Date().toISOString().slice(0, 10);
+        fields.senderName.value = "";
+        fields.receiverName.value = "";
+        fields.deliveryAddress.value = "";
+        items = [createItem(0)];
+        lastReceipt = null;
+        setError("");
+        renderItems();
+        renderPreview(getReceipt());
+      }
+
+      function escapePdfText(value) {
+        return String(value).replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
+      }
+
+      function createPdfBlob(lines) {
+        const content = [
+          "BT",
+          "/F1 22 Tf",
+          "72 736 Td",
+          `(${escapePdfText(lines[0])}) Tj`,
+          "/F1 10 Tf",
+          "0 -18 Td",
+          ...lines.slice(1).flatMap((line) => [
+            `(${escapePdfText(line)}) Tj`,
+            "0 -15 Td",
+          ]),
+          "ET",
+        ].join("\n");
+
+        const objects = [
+          "<< /Type /Catalog /Pages 2 0 R >>",
+          "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+          "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>",
+          "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+          `<< /Length ${content.length} >>\nstream\n${content}\nendstream`,
+        ];
+
+        let pdf = "%PDF-1.4\n";
+        const offsets = [0];
+
+        objects.forEach((object, index) => {
+          offsets.push(pdf.length);
+          pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
+        });
+
+        const xrefOffset = pdf.length;
+        pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+        offsets.slice(1).forEach((offset) => {
+          pdf += `${String(offset).padStart(10, "0")} 00000 n \n`;
+        });
+        pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+
+        return new Blob([pdf], { type: "application/pdf" });
+      }
+
+      function exportReceipt() {
+        const receipt = lastReceipt || generateReceipt({ quiet: true });
+
+        if (!receipt?.items.length) {
+          setError("Add at least one item before exporting a PDF.");
+          return;
+        }
+
+        const lines = [
+          receipt.storeName,
+          "Delivery Receipt",
+          `Receipt No.: ${receipt.receiptNo}`,
+          `Date: ${formatDate(receipt.date)}`,
+          `Sender: ${receipt.sender}`,
+          `Receiver: ${receipt.receiver}`,
+          `Address: ${receipt.address}`,
+          "",
+          "Items:",
+          ...receipt.items.map((item, index) =>
+            `${index + 1}. ${item.name} | Qty: ${item.quantity.toLocaleString("en-US")} | Unit: ${formatCurrency(item.unitPrice)} | Total: ${formatCurrency(item.lineTotal)}`
+          ),
+          "",
+          `Receipt Total: ${formatCurrency(receipt.total)}`,
+          "",
+          "Generated by worowo - https://www.worowo.com",
+        ];
+
+        const blob = createPdfBlob(lines);
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "delivery-receipt.pdf";
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      Object.values(fields).forEach((field) => {
+        field.addEventListener("input", () => generateReceipt({ quiet: true }));
+      });
+      addItemButton.addEventListener("click", () => {
+        if (items.length >= maxItems) return;
+        items.push(createItem(items.length));
+        renderItems();
+      });
+      generateButton.addEventListener("click", () => generateReceipt());
+      resetButton.addEventListener("click", resetGenerator);
+      exportButton.addEventListener("click", exportReceipt);
+      window.addEventListener("resize", queueSyncSectionHeights);
+
+      resetGenerator();
+    });
+  </script>
+
+  <style>
+    .dr-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      padding: 28px 28px 30px;
+      border: 1px solid #d7dee8;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 18px 50px -30px rgba(15, 23, 42, 0.24);
+      box-sizing: border-box;
+    }
+
+    .dr-form-top,
+    .dr-results-top {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 24px;
+    }
+
+    .dr-form-bottom,
+    .dr-results-bottom {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 24px;
+    }
+
+    .dr-title {
+      margin: 0 0 6px;
+      font-size: 1.8rem;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .dr-desc {
+      margin: 0 0 18px;
+      max-width: 54ch;
+      color: var(--text-soft);
+      font-size: 0.94rem;
+      line-height: 1.55;
+    }
+
+    .dr-input-section {
+      display: grid;
+      gap: 16px;
+      padding: 16px;
+      border-radius: 14px;
+    }
+
+    .dr-input-section-primary {
+      border: 1px solid #bfdbfe;
+      background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+    }
+
+    .dr-input-section-secondary {
+      margin-top: 16px;
+      border: 1px solid #bbf7d0;
+      background: linear-gradient(180deg, #f8fffb 0%, #edfdf4 100%);
+    }
+
+    .dr-field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .dr-field {
+      display: block;
+    }
+
+    .dr-field span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .dr-field input,
+    .dr-field textarea {
+      width: 100%;
+      border: 1px solid #9aa7b8;
+      border-radius: 10px;
+      background: #ffffff;
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .dr-field input {
+      height: 50px;
+      padding: 0 14px;
+    }
+
+    .dr-field textarea {
+      min-height: 82px;
+      padding: 12px 14px;
+      resize: vertical;
+    }
+
+    .dr-field input:focus,
+    .dr-field textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .dr-input-wrap {
+      position: relative;
+    }
+
+    .dr-input-wrap input {
+      padding-left: 34px;
+    }
+
+    .dr-prefix {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      z-index: 1;
+      transform: translateY(-50%);
+      color: #64748b;
+      font-weight: 850;
+      pointer-events: none;
+    }
+
+    .dr-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dr-small-btn,
+    .dr-remove-btn {
+      min-height: 30px;
+      padding: 0 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .dr-small-btn {
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+      background: #eff6ff;
+    }
+
+    .dr-small-btn:disabled,
+    .dr-remove-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.42;
+    }
+
+    .dr-items-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .dr-item-card {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid #dbe3ef;
+      border-radius: 14px;
+      background: #ffffff;
+    }
+
+    .dr-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .dr-item-header strong {
+      color: #0f172a;
+      font-size: 0.84rem;
+      font-weight: 850;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .dr-error {
+      min-height: 20px;
+      margin: 0 0 14px;
+      color: #dc2626;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .dr-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: auto;
+    }
+
+    .dr-btn {
+      min-height: 52px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .dr-btn-secondary {
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--text);
+      box-shadow: 0 10px 24px -20px rgba(15, 23, 42, 0.35);
+    }
+
+    .dr-btn-primary {
+      border: 1px solid #2563eb;
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 14px 30px -18px rgba(37, 99, 235, 0.7);
+    }
+
+    .dr-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .dr-preview {
+      border: 1px solid #d7dee8;
+      border-radius: 18px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .dr-preview-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 22px;
+      background: linear-gradient(180deg, #eef4fb 0%, #f7faff 100%);
+      border-bottom: 1px solid #cfe0f7;
+    }
+
+    .dr-preview-store {
+      color: #047857;
+      font-size: clamp(1.9rem, 4vw, 2.65rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+
+    .dr-preview-subtitle,
+    .dr-preview-meta span {
+      margin-top: 8px;
+      color: #64748b;
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dr-preview-meta {
+      display: grid;
+      align-content: start;
+      justify-items: end;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .dr-preview-meta strong {
+      color: #0f172a;
+      font-size: 1rem;
+      font-weight: 900;
+    }
+
+    .dr-preview-parties {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding: 18px 22px 0;
+    }
+
+    .dr-preview-parties div,
+    .dr-preview-address {
+      padding: 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      background: #f8fafc;
+    }
+
+    .dr-preview-parties span,
+    .dr-preview-address span {
+      display: block;
+      margin-bottom: 8px;
+      color: #64748b;
+      font-size: 0.78rem;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dr-preview-parties strong {
+      color: #0f172a;
+      font-size: 1rem;
+      font-weight: 900;
+    }
+
+    .dr-preview-address {
+      margin: 14px 22px 0;
+    }
+
+    .dr-preview-address p {
+      margin: 0;
+      color: #334155;
+      line-height: 1.55;
+    }
+
+    .dr-preview-table-wrap {
+      padding: 18px 22px 0;
+      overflow-x: auto;
+    }
+
+    .dr-preview-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .dr-preview-table th,
+    .dr-preview-table td {
+      padding: 10px 9px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+    }
+
+    .dr-preview-table th {
+      color: #64748b;
+      font-size: 0.72rem;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dr-preview-total {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 16px;
+      padding: 18px 22px 22px;
+    }
+
+    .dr-preview-total span {
+      color: #64748b;
+      font-size: 0.82rem;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dr-preview-total strong {
+      color: #047857;
+      font-size: 1.7rem;
+      font-weight: 950;
+    }
+
+    .dr-ready-panel {
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      background: #f8fafc;
+    }
+
+    .dr-sub-head {
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dr-help {
+      margin: 12px 0 0;
+      color: var(--text-soft);
+      font-size: 0.94rem;
+      line-height: 1.6;
+    }
+
+    .dr-export-block {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: auto;
+      padding-top: 20px;
+    }
+
+    .dr-export-block .dr-help {
+      margin: 0;
+    }
+
+    .dr-export-block .dr-btn {
+      min-width: 160px;
+    }
+
+    @media (max-width: 700px) {
+      .dr-card {
+        padding: 22px 20px 24px;
+      }
+
+      .dr-field-grid,
+      .dr-preview-parties,
+      .dr-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .dr-preview-header,
+      .dr-export-block {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .dr-preview-meta {
+        justify-items: start;
+      }
+
+      .dr-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</ToolLayout>

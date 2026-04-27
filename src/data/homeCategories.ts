@@ -139,6 +139,8 @@ function getToolIcon(toolKey: string, toolType: ToolType): string {
     profit_margin_calculator: makeIcon("chartPie"),
     markup_calculator: makeIcon("badgePercent"),
     break_even_point_calculator: makeIcon("calculator"),
+    discount_calculator: makeIcon("badgePercent"),
+    unit_price_comparison_calculator: makeIcon("calculator"),
     invoice_template: makeIcon("fileText"),
     employee_availability_form: makeIcon("clipboardCheck"),
     employee_timesheet_template: makeIcon("receipt"),

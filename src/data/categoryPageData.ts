@@ -55,6 +55,7 @@ function getToolIcon(tool: ToolDictionaryItem): string {
     break_even_point_calculator: "calculator",
     sales_tax_calculator: "tax",
     discount_calculator: "calculator",
+    unit_price_comparison_calculator: "calculator",
     employee_availability_form: "calendar",
     weekly_employee_schedule_template: "calendar",
     employee_timesheet_template: "timesheet",
