@@ -7,9 +7,9 @@ const toolMeta = {
   category: "Business Calculators",
   categoryHref: "/business-calculators/",
   description:
-    "Compare supplier quotes, unit prices, taxes, fees, and landed unit cost to find the most cost-effective option. Add multiple suppliers and export a PDF report.",
+    "Compare supplier quotes, unit prices, shipping, taxes, fees, and landed unit cost to find the most cost-effective option. Add multiple suppliers and export a PDF report.",
   intro:
-    "Compare supplier quotes, landed unit prices, and fees to find the most cost-effective option for your business.",
+    "Compare supplier quotes, shipping, fees, and landed unit prices to find the most cost-effective option for your business.",
   canonical: "https://www.worowo.com/business-calculators/unit-price-comparison/",
 };
 
@@ -17,7 +17,7 @@ const faqItems = [
   {
     question: "How does this unit price comparison calculator work?",
     answer:
-      "It compares supplier quotes by converting each quote into a landed unit price. The landed unit price is calculated from total price plus tax or fees, divided by quantity.",
+      "It compares supplier quotes by converting each quote into a landed unit price. The landed unit price is calculated from total price plus shipping, tax, or fees, divided by quantity.",
   },
   {
     question: "Can I compare more than two suppliers?",
@@ -27,7 +27,7 @@ const faqItems = [
   {
     question: "Should all suppliers use the same unit?",
     answer:
-      "Yes. For an accurate comparison, all suppliers should be quoted using the same base unit, such as pcs, sets, cartons, or boxes. If units differ, review the result carefully.",
+      "Yes. For an accurate comparison, all suppliers should be quoted using the same base unit, such as pcs, sets, or boxes. If units differ, review the result carefully.",
   },
   {
     question: "Can I export the result as a PDF?",
@@ -65,7 +65,7 @@ const relatedTools = [
   <div slot="form" class="upc-form-card">
     <div class="upc-form-header">
       <h2>Compare Supplier Unit Prices</h2>
-      <p>Add supplier quotes, quantities, and fees to find the most cost-effective option.</p>
+      <p>Add supplier quotes, shipping, quantities, and fees to find the most cost-effective option.</p>
     </div>
 
     <div id="supplierCards" class="upc-supplier-list" aria-live="polite"></div>
@@ -97,10 +97,10 @@ const relatedTools = [
 
     <div class="upc-form-divider"></div>
 
-    <p id="errorMessage" class="upc-error" aria-live="polite"></p>
     <p class="upc-form-note">
-      Compare landed unit prices using total quote amount, tax or fees, and quantity.
+      Compare landed unit prices using total quote amount, shipping, tax or fees, and quantity.
     </p>
+    <p id="errorMessage" class="upc-error" aria-live="polite"></p>
 
     <div class="upc-actions">
       <button id="resetButton" type="button" class="upc-btn upc-btn-ghost">Reset</button>
@@ -145,15 +145,18 @@ const relatedTools = [
       </p>
     </div>
 
-    <div class="upc-right-divider"></div>
+    <div class="upc-right-divider upc-action-divider"></div>
 
     <div class="upc-export-row">
       <p class="upc-export-note">
         Export a PDF after reviewing the unit price comparison result.
       </p>
-      <button id="exportPdfButton" type="button" class="upc-btn upc-btn-primary">
-        Export PDF
-      </button>
+      <p class="upc-error upc-error-placeholder" aria-hidden="true"></p>
+      <div class="upc-export-actions">
+        <button id="exportPdfButton" type="button" class="upc-btn upc-btn-primary">
+          Export PDF
+        </button>
+      </div>
     </div>
   </div>
 
@@ -170,7 +173,7 @@ const relatedTools = [
           <input type="text" data-field="name" placeholder="e.g. Supplier A" />
         </label>
 
-        <label class="upc-field upc-field-inline upc-field-compact">
+        <label class="upc-field upc-field-card upc-field-total">
           <span class="upc-label">Total Price</span>
           <div class="upc-input-prefix">
             <span>$</span>
@@ -178,7 +181,7 @@ const relatedTools = [
           </div>
         </label>
 
-        <label class="upc-field upc-field-inline upc-field-compact">
+        <label class="upc-field upc-field-card upc-field-fees">
           <span class="upc-label">Tax / Fees</span>
           <div class="upc-input-prefix">
             <span>$</span>
@@ -186,28 +189,39 @@ const relatedTools = [
           </div>
         </label>
 
-        <label class="upc-field upc-field-inline upc-field-compact">
-          <span class="upc-label">Quantity</span>
-          <input type="number" min="0" step="1" data-field="qty" placeholder="e.g. 100" />
+        <label class="upc-field upc-field-card upc-field-shipping">
+          <span class="upc-label">Shipping</span>
+          <div class="upc-input-prefix">
+            <span>$</span>
+            <input type="number" min="0" step="0.01" data-field="shipping" placeholder="e.g. 10" />
+          </div>
         </label>
 
-        <label class="upc-field upc-field-inline upc-field-compact">
-          <span class="upc-label">Unit</span>
-          <select data-field="unit">
-            <option value="pcs">pcs</option>
-            <option value="units">units</option>
-            <option value="sets">sets</option>
-            <option value="boxes">boxes</option>
-            <option value="cartons">cartons</option>
-            <option value="kg">kg</option>
-            <option value="lb">lb</option>
-          </select>
-        </label>
+        <div class="upc-field upc-field-card upc-field-quantity-unit">
+          <span class="upc-label">Quantity / Unit</span>
+          <div class="upc-combo-input">
+            <input type="number" min="0" step="1" data-field="qty" placeholder="e.g. 100" />
+            <select data-field="unit" aria-label="Unit">
+              <option value="pcs">pcs</option>
+              <option value="units">units</option>
+              <option value="sets">sets</option>
+              <option value="boxes">boxes</option>
+              <option value="kg">kg</option>
+              <option value="lb">lb</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <div class="upc-supplier-preview">
-        <span>Unit Price</span>
-        <strong data-preview-price>$0.00 / unit</strong>
+        <div>
+          <span>Landed Total</span>
+          <strong data-preview-landed>$0.00</strong>
+        </div>
+        <div>
+          <span>Unit Price</span>
+          <strong data-preview-price>$0.00 / unit</strong>
+        </div>
       </div>
     </section>
   </template>
@@ -216,7 +230,7 @@ const relatedTools = [
     <h2>How This Unit Price Comparison Calculator Works</h2>
     <p>
       This calculator compares supplier quotes by converting each quote into a landed unit price.
-      It includes total price, tax or fees, and quantity, so you can compare offers more accurately.
+      It includes total price, shipping, tax or fees, and quantity, so you can compare offers more accurately.
     </p>
   </div>
 
@@ -304,6 +318,7 @@ const relatedTools = [
       card.querySelector('[data-field="name"]').value = preset.name || `Supplier ${String.fromCharCode(64 + index)}`;
       card.querySelector('[data-field="price"]').value = preset.price ?? "";
       card.querySelector('[data-field="fees"]').value = preset.fees ?? "";
+      card.querySelector('[data-field="shipping"]').value = preset.shipping ?? "";
       card.querySelector('[data-field="qty"]').value = preset.qty ?? "";
       card.querySelector('[data-field="unit"]').value = preset.unit || "pcs";
 
@@ -345,9 +360,10 @@ const relatedTools = [
         const name = card.querySelector('[data-field="name"]').value.trim();
         const price = numberValue(card.querySelector('[data-field="price"]').value);
         const fees = numberValue(card.querySelector('[data-field="fees"]').value);
+        const shipping = numberValue(card.querySelector('[data-field="shipping"]').value);
         const qty = numberValue(card.querySelector('[data-field="qty"]').value);
         const unit = card.querySelector('[data-field="unit"]').value || "pcs";
-        const landedTotal = price + fees;
+        const landedTotal = price + fees + shipping;
         const unitPrice = qty > 0 ? landedTotal / qty : 0;
 
         return {
@@ -355,6 +371,7 @@ const relatedTools = [
           name: name || `Supplier ${index + 1}`,
           price,
           fees,
+          shipping,
           qty,
           unit,
           landedTotal,
@@ -379,8 +396,12 @@ const relatedTools = [
     function updateSupplierPreviews(suppliers) {
       suppliers.forEach((supplier) => {
         const preview = supplier.card.querySelector("[data-preview-price]");
-        if (!preview) return;
+        const landedPreview = supplier.card.querySelector("[data-preview-landed]");
+        if (!preview || !landedPreview) return;
 
+        landedPreview.textContent = supplier.hasMinimumData
+          ? money(supplier.landedTotal)
+          : "$0.00";
         preview.textContent = supplier.hasMinimumData
           ? `${money(supplier.unitPrice)} / ${supplier.unit}`
           : "$0.00 / unit";
@@ -408,7 +429,10 @@ const relatedTools = [
     }
 
     function queueSyncQuoteRows() {
-      window.requestAnimationFrame(syncQuoteRows);
+      window.requestAnimationFrame(() => {
+        syncQuoteRows();
+        window.requestAnimationFrame(syncQuoteRows);
+      });
     }
 
     function renderQuoteResults(suppliers, sorted) {
@@ -416,24 +440,26 @@ const relatedTools = [
         .map((supplier, index) => {
           const rankIndex = sorted.findIndex((item) => item.card === supplier.card);
           const isBest = rankIndex === 0;
+          const toneClass = tones[index % tones.length];
+          const supplierName = escapeHtml(supplier.name);
           const rankLabel = supplier.hasMinimumData
             ? (isBest ? "Best Value" : `Rank ${rankIndex + 1}`)
             : "Incomplete";
           const price = supplier.hasMinimumData ? money(supplier.unitPrice) : "$0.00";
           const meta = supplier.hasMinimumData
-            ? `Landed total: ${money(supplier.landedTotal)} · Qty: ${supplier.qty} ${escapeHtml(supplier.unit)}`
+            ? `Landed total: ${money(supplier.landedTotal)} · Shipping: ${money(supplier.shipping)} · Qty: ${supplier.qty} ${escapeHtml(supplier.unit)}`
             : "Enter total price and quantity to calculate.";
 
           return `
-            <article class="upc-rank-card ${isBest ? "is-best" : ""} ${supplier.hasMinimumData ? "" : "is-incomplete"}" data-result-card>
-              <div>
+            <article class="upc-rank-card ${toneClass} ${isBest ? "is-best" : ""} ${supplier.hasMinimumData ? "" : "is-incomplete"}" data-result-card>
+              <div class="upc-rank-main">
                 <span class="upc-rank-label">Quote ${index + 1} · ${rankLabel}</span>
-                <strong>${escapeHtml(supplier.name)}</strong>
-                <small>${meta}</small>
+                <strong>${price} / ${escapeHtml(supplier.unit)}</strong>
+                <small><b>${supplierName}</b> · ${meta}</small>
               </div>
               <div class="upc-rank-price">
-                <strong>${price}</strong>
-                <span>per ${escapeHtml(supplier.unit)}</span>
+                <strong>${isBest ? "Best Price" : `#${rankIndex + 1}`}</strong>
+                <span>${supplier.hasMinimumData ? "current quote" : "needs data"}</span>
               </div>
             </article>
           `;
@@ -517,6 +543,7 @@ const relatedTools = [
           <td>${escapeHtml(supplier.name)}</td>
           <td>${money(supplier.price)}</td>
           <td>${money(supplier.fees)}</td>
+          <td>${money(supplier.shipping)}</td>
           <td>${money(supplier.landedTotal)}</td>
           <td>${supplier.qty} ${escapeHtml(supplier.unit)}</td>
           <td>${money(supplier.unitPrice)}</td>
@@ -545,7 +572,7 @@ const relatedTools = [
               .banner { background: #eef7f0; border: 1px solid #bfddc3; color: #246b45; border-radius: 12px; padding: 12px 14px; font-weight: 700; margin-top: 16px; }
               h2 { font-size: 18px; margin: 26px 0 12px; }
               table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-              th, td { border: 1px solid #dbe4f0; padding: 10px 12px; text-align: left; font-size: 14px; }
+              th, td { border: 1px solid #dbe4f0; padding: 8px 9px; text-align: left; font-size: 12px; }
               th { background: #f8fbff; font-weight: 700; }
               tr.best td { background: #f3faf6; font-weight: 700; }
               .box { border: 1px solid #dbe4f0; border-radius: 14px; padding: 16px; margin-top: 18px; background: #fbfdff; }
@@ -579,6 +606,7 @@ const relatedTools = [
                   <th>Supplier</th>
                   <th>Total Price</th>
                   <th>Tax / Fees</th>
+                  <th>Shipping</th>
                   <th>Landed Total</th>
                   <th>Quantity</th>
                   <th>Unit Price</th>
@@ -673,9 +701,10 @@ const relatedTools = [
   }
 
   .upc-supplier-card {
-    padding: 12px;
+    position: relative;
+    padding: 22px 16px 16px;
     border: 1px solid #d7e2ef;
-    border-radius: 14px;
+    border-radius: 16px;
   }
 
   .upc-tone-blue {
@@ -704,22 +733,29 @@ const relatedTools = [
   }
 
   .upc-supplier-card-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 10px;
+    margin: 0;
   }
 
   .upc-supplier-card-title {
+    position: absolute;
+    top: -9px;
+    left: 16px;
+    z-index: 1;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: inherit;
     color: #0f172a;
-    font-size: 0.92rem;
+    font-size: 0.74rem;
     font-weight: 850;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
     text-transform: uppercase;
   }
 
   .upc-remove-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
     padding: 0;
     border: 0;
     background: transparent;
@@ -735,14 +771,14 @@ const relatedTools = [
 
   .upc-fields-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px 10px;
+    grid-template-columns: repeat(20, minmax(0, 1fr));
+    gap: 14px 14px;
   }
 
   .upc-field {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
   }
 
   .upc-field-inline {
@@ -756,16 +792,31 @@ const relatedTools = [
     grid-column: 1 / -1;
   }
 
-  .upc-field-compact {
-    grid-template-columns: 76px minmax(0, 1fr);
-    gap: 8px;
+  .upc-field-card {
+    min-width: 0;
+  }
+
+  .upc-field-total {
+    grid-column: 1 / 11;
+  }
+
+  .upc-field-fees {
+    grid-column: 11 / 21;
+  }
+
+  .upc-field-shipping {
+    grid-column: 1 / 11;
+  }
+
+  .upc-field-quantity-unit {
+    grid-column: 11 / 21;
   }
 
   .upc-label {
     color: #0f172a;
-    font-size: 0.8rem;
+    font-size: 0.92rem;
     font-weight: 800;
-    line-height: 1.4;
+    line-height: 1.25;
   }
 
   .upc-field input,
@@ -784,8 +835,8 @@ const relatedTools = [
 
   .upc-field input,
   .upc-field select {
-    min-height: 38px;
-    padding: 0 10px;
+    min-height: 52px;
+    padding: 0 16px;
   }
 
   .upc-field textarea {
@@ -807,7 +858,7 @@ const relatedTools = [
 
   .upc-input-prefix > span {
     position: absolute;
-    left: 10px;
+    left: 16px;
     top: 50%;
     color: #2563eb;
     font-weight: 850;
@@ -816,7 +867,52 @@ const relatedTools = [
   }
 
   .upc-input-prefix input {
-    padding-left: 26px;
+    padding-left: 38px;
+  }
+
+  .upc-combo-input {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 72px;
+    overflow: hidden;
+    border: 1px solid #94a3b8;
+    border-radius: 10px;
+    background: #ffffff;
+    box-sizing: border-box;
+  }
+
+  .upc-combo-input:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  }
+
+  .upc-combo-input input,
+  .upc-combo-input select {
+    min-height: 52px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .upc-combo-input input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+
+  .upc-combo-input input[type="number"]::-webkit-outer-spin-button,
+  .upc-combo-input input[type="number"]::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+  }
+
+  .upc-combo-input input:focus,
+  .upc-combo-input select:focus {
+    box-shadow: none;
+  }
+
+  .upc-combo-input select {
+    border-left: 1px solid #d7e2ef;
+    padding-left: 10px;
+    padding-right: 24px;
   }
 
   .upc-add-btn {
@@ -853,6 +949,11 @@ const relatedTools = [
     background: #d7e2ef;
   }
 
+  .upc-form-divider,
+  .upc-action-divider {
+    margin-top: auto;
+  }
+
   .upc-error {
     min-height: 20px;
     margin: 0;
@@ -870,11 +971,21 @@ const relatedTools = [
   }
 
   .upc-actions,
-  .upc-export-row {
+  .upc-export-actions {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
+  }
+
+  .upc-export-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .upc-export-actions {
+    justify-content: flex-end;
   }
 
   .upc-btn {
@@ -975,73 +1086,128 @@ const relatedTools = [
 
   .upc-ranking-list {
     display: grid;
-    gap: 12px;
+    gap: 14px;
     margin-top: 16px;
   }
 
-  .upc-rank-card {
+  :global(.upc-rank-card) {
+    position: relative;
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-between;
-    gap: 14px;
-    padding: 14px 16px;
-    border: 1px solid #d7dee8;
-    border-radius: 14px;
+    gap: 16px;
+    padding: 22px 16px 16px;
+    border: 1px solid #d7e2ef;
+    border-radius: 16px;
     background: #ffffff;
+    box-sizing: border-box;
   }
 
-  .upc-rank-card.is-best {
-    border-color: #bbf7d0;
-    background: linear-gradient(180deg, #f8fffb 0%, #edfdf4 100%);
+  :global(.upc-rank-card.upc-tone-blue) {
+    border-color: #bcd0f7;
+    background: #eef4fc;
   }
 
-  .upc-rank-card.is-incomplete {
-    background: #f8fafc;
+  :global(.upc-rank-card.upc-tone-green) {
+    border-color: #b8e7c9;
+    background: #eefbf4;
   }
 
-  .upc-rank-card-empty {
+  :global(.upc-rank-card.upc-tone-sand) {
+    border-color: #f0d7a4;
+    background: #fff8ee;
+  }
+
+  :global(.upc-rank-card.upc-tone-purple) {
+    border-color: #dacdfb;
+    background: #f5f2ff;
+  }
+
+  :global(.upc-rank-card.upc-tone-cyan) {
+    border-color: #bfe5ea;
+    background: #eff9fb;
+  }
+
+  :global(.upc-rank-card.is-best) {
+    border-color: #86efac;
+    box-shadow:
+      inset 0 0 0 1px rgba(4, 120, 87, 0.18),
+      0 14px 28px -24px rgba(4, 120, 87, 0.45);
+  }
+
+  :global(.upc-rank-card.is-incomplete) {
+    opacity: 0.78;
+  }
+
+  :global(.upc-rank-card-empty) {
     color: #64748b;
     font-weight: 750;
   }
 
-  .upc-rank-label {
-    display: block;
-    margin-bottom: 5px;
+  :global(.upc-rank-main) {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  :global(.upc-rank-label) {
+    position: absolute;
+    top: -9px;
+    left: 16px;
+    display: inline-flex;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: inherit;
     color: #64748b;
-    font-size: 0.75rem;
+    font-size: 0.74rem;
     font-weight: 850;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
     text-transform: uppercase;
   }
 
-  .upc-rank-card strong {
+  :global(.upc-rank-card strong) {
     display: block;
-    color: #0f172a;
-    font-size: 1rem;
+    color: #0f7a55;
+    font-size: 1.34rem;
     font-weight: 900;
+    line-height: 1.05;
   }
 
-  .upc-rank-card small {
+  :global(.upc-rank-card small) {
     display: block;
-    margin-top: 5px;
+    margin-top: 10px;
     color: #64748b;
-    font-size: 0.82rem;
-    line-height: 1.45;
+    font-size: 0.84rem;
+    line-height: 1.55;
   }
 
-  .upc-rank-price {
+  :global(.upc-rank-card small b) {
+    color: #0f172a;
+    font-weight: 850;
+  }
+
+  :global(.upc-rank-price) {
+    display: flex;
+    min-width: 124px;
+    padding-left: 14px;
+    border-left: 1px solid rgba(148, 163, 184, 0.32);
+    flex-direction: column;
+    justify-content: center;
     text-align: right;
-    white-space: nowrap;
   }
 
-  .upc-rank-price strong {
+  :global(.upc-rank-price strong) {
     color: #047857;
-    font-size: 1.1rem;
+    font-size: 0.84rem;
+    letter-spacing: -0.02em;
   }
 
-  .upc-rank-price span {
+  :global(.upc-rank-price span) {
     color: #64748b;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 700;
   }
 
@@ -1072,29 +1238,37 @@ const relatedTools = [
   }
 
   .upc-supplier-preview {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
     padding: 8px 10px;
     border: 1px solid rgba(148, 163, 184, 0.36);
-    border-radius: 12px;
+    border-radius: 10px;
     background: rgba(255, 255, 255, 0.7);
+  }
+
+  .upc-supplier-preview div {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
   }
 
   .upc-supplier-preview span {
     color: #64748b;
-    font-size: 0.82rem;
+    font-size: 0.66rem;
     font-weight: 850;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .upc-supplier-preview strong {
     color: #047857;
-    font-size: 0.98rem;
+    font-size: 0.9rem;
     font-weight: 900;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
   }
 
   @media (max-width: 900px) {
@@ -1107,8 +1281,13 @@ const relatedTools = [
       gap: 5px;
     }
 
+    .upc-supplier-preview {
+      grid-template-columns: 1fr;
+    }
+
     .upc-actions,
-    .upc-export-row {
+    .upc-export-row,
+    .upc-export-actions {
       align-items: stretch;
       flex-direction: column;
     }
@@ -1117,12 +1296,17 @@ const relatedTools = [
       width: 100%;
     }
 
-    .upc-rank-card {
+    :global(.upc-rank-card) {
       align-items: stretch;
       flex-direction: column;
     }
 
-    .upc-rank-price {
+    :global(.upc-rank-price) {
+      min-width: 0;
+      padding-top: 12px;
+      padding-left: 0;
+      border-top: 1px solid rgba(148, 163, 184, 0.32);
+      border-left: 0;
       text-align: left;
     }
   }
