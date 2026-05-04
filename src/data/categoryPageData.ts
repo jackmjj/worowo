@@ -55,10 +55,8 @@ function getToolIcon(tool: ToolDictionaryItem): string {
     break_even_point_calculator: "calculator",
     discount_calculator: "calculator",
     unit_price_comparison_calculator: "calculator",
-    employee_availability_form: "calendar",
     weekly_employee_schedule_template: "calendar",
     employee_timesheet_template: "timesheet",
-    daily_cash_drawer_reconciliation_form: "cash",
     field_service_work_order_template: "work",
   };
 
@@ -154,17 +152,9 @@ function getCategorySections(categoryKey: CategoryKey): CategoryPageSection[] {
         title: "Employee Scheduling & HR",
         tools: templateTools.filter((tool) =>
           [
-            "employee_availability_form",
             "weekly_employee_schedule_template",
             "employee_timesheet_template",
           ].includes(tool.key)
-        ),
-      },
-      {
-        key: "store-ops",
-        title: "Retail Cash & Store Operations",
-        tools: templateTools.filter((tool) =>
-          ["daily_cash_drawer_reconciliation_form"].includes(tool.key)
         ),
       },
       {

@@ -46,29 +46,6 @@ export const printableTemplateConfigs: PrintableTemplateConfig[] = [
     recommendedPaperNote: "Recommended paper size: A4",
   },
   {
-    slug: "simple-employee-availability-form",
-    pageTitle: "Simple Employee Availability Form",
-    printTitle: "EMPLOYEE AVAILABILITY FORM",
-    description:
-      "Printable employee availability form for recording weekly work availability, preferred shifts, and unavailable times. Great for part-time staff, retail stores, restaurants, and service businesses.",
-    category: "Employee Scheduling & HR",
-    seoTitle:
-      "Simple Employee Availability Form Template | Printable Weekly Work Availability",
-    canonical:
-      "https://www.worowo.com/printable-templates/simple-employee-availability-form/",
-    pageEyebrow: "Printable Template",
-    defaultPaper: "letter",
-    defaultOrientation: "portrait",
-    supportedPapers: ["letter", "a4"],
-    supportedOrientations: ["portrait"],
-    previewPaper: "letter",
-    previewOrientation: "portrait",
-    previewTitle: getPreviewTitle("letter", "portrait"),
-    previewDescription:
-      "Preview the full printable page below. This template is available in both US Letter and A4 print formats.",
-    recommendedPaperNote: "Recommended paper size: US Letter",
-  },
-  {
     slug: "simple-weekly-employee-schedule-template",
     pageTitle: "Simple Weekly Employee Schedule Template",
     printTitle: "WEEKLY EMPLOYEE SCHEDULE",
@@ -102,29 +79,6 @@ export const printableTemplateConfigs: PrintableTemplateConfig[] = [
       "Simple Employee Timesheet Template | Printable Weekly Time Sheet",
     canonical:
       "https://www.worowo.com/printable-templates/simple-employee-timesheet-template/",
-    pageEyebrow: "Printable Template",
-    defaultPaper: "letter",
-    defaultOrientation: "portrait",
-    supportedPapers: ["letter", "a4"],
-    supportedOrientations: ["portrait"],
-    previewPaper: "letter",
-    previewOrientation: "portrait",
-    previewTitle: getPreviewTitle("letter", "portrait"),
-    previewDescription:
-      "Preview the full printable page below. This template is available in both US Letter and A4 print formats.",
-    recommendedPaperNote: "Recommended paper size: US Letter",
-  },
-  {
-    slug: "simple-daily-cash-drawer-reconciliation-form",
-    pageTitle: "Simple Daily Cash Drawer Reconciliation Form",
-    printTitle: "DAILY CASH DRAWER RECONCILIATION",
-    description:
-      "Printable daily cash drawer reconciliation form for recording starting cash, cash sales, card payments, checks, payouts, and over or short totals at closing.",
-    category: "Retail Cash & Store Operations",
-    seoTitle:
-      "Simple Daily Cash Drawer Reconciliation Form | Printable Cash Count Sheet",
-    canonical:
-      "https://www.worowo.com/printable-templates/simple-daily-cash-drawer-reconciliation-form/",
     pageEyebrow: "Printable Template",
     defaultPaper: "letter",
     defaultOrientation: "portrait",

@@ -296,24 +296,6 @@ export const toolDictionary = {
     order: 335,
   },
 
-  employee_availability_form: {
-    key: "employee_availability_form",
-    categoryKey: "printable_templates",
-    title: "Simple Employee Availability Form",
-    shortTitle: "Employee Availability Form",
-    href: "/printable-templates/simple-employee-availability-form/",
-    type: "template",
-    status: "live",
-    description:
-      "Printable employee availability form for recording weekly work availability, preferred shifts, and unavailable times.",
-    menuTitle: "Employee Availability Form",
-    showInHeaderMenu: true,
-    featuredInHeaderMenu: true,
-    showOnHome: true,
-    featuredOnCategoryPage: true,
-    order: 400,
-  },
-
   weekly_employee_schedule_template: {
     key: "weekly_employee_schedule_template",
     categoryKey: "printable_templates",
@@ -348,24 +330,6 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 420,
-  },
-
-  daily_cash_drawer_reconciliation_form: {
-    key: "daily_cash_drawer_reconciliation_form",
-    categoryKey: "printable_templates",
-    title: "Simple Daily Cash Drawer Reconciliation Form",
-    shortTitle: "Daily Cash Drawer Reconciliation",
-    href: "/printable-templates/simple-daily-cash-drawer-reconciliation-form/",
-    type: "template",
-    status: "live",
-    description:
-      "Printable form for starting cash, cash sales, card payments, payouts, and over/short totals.",
-    menuTitle: "Daily Cash Drawer Reconciliation",
-    showInHeaderMenu: true,
-    featuredInHeaderMenu: true,
-    showOnHome: false,
-    featuredOnCategoryPage: true,
-    order: 430,
   },
 
   field_service_work_order_template: {
