@@ -103,6 +103,7 @@ function getCategorySections(categoryKey: CategoryKey): CategoryPageSection[] {
   if (categoryKey === "packing_shipping") {
     const toolKeys = [
       "packing_list_generator",
+      "export_packing_list_generator",
       "packing_list_template",
       "delivery_receipt_generator",
       "delivery_receipt_template",

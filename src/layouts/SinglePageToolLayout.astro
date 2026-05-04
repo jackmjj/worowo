@@ -1,0 +1,67 @@
+---
+import ToolLayout from "./ToolLayout.astro";
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface RelatedTool {
+  name: string;
+  href: string;
+  desc: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  pageTitle?: string;
+  canonical?: string;
+  eyebrow?: string;
+  categoryLabel?: string;
+  categoryHref?: string;
+  intro: string;
+  faqItems?: FaqItem[];
+  relatedTools?: RelatedTool[];
+}
+
+const {
+  title,
+  description,
+  pageTitle,
+  canonical,
+  eyebrow,
+  categoryLabel,
+  categoryHref,
+  intro,
+  faqItems = [],
+  relatedTools = [],
+} = Astro.props;
+---
+
+<ToolLayout
+  title={title}
+  pageTitle={pageTitle}
+  description={description}
+  canonical={canonical}
+  eyebrow={eyebrow}
+  categoryLabel={categoryLabel}
+  categoryHref={categoryHref}
+  intro={intro}
+  faqItems={faqItems}
+  relatedTools={relatedTools}
+>
+  <section slot="form" class="single-page-tool-layout-shell">
+    <slot />
+  </section>
+
+  <slot name="content" slot="content" />
+  <slot name="faq" slot="faq" />
+</ToolLayout>
+
+<style>
+  .single-page-tool-layout-shell {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+</style>

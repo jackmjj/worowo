@@ -1,0 +1,814 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getBlankTemplateForTool } from "../../data/toolRelations";
+
+const seo = {
+  title: "Packing List Generator | Create, Print or Save as PDF | worowo",
+  description:
+    "Create a professional packing list online. Fill in shipper, consignee, shipment details, items, and remarks, then print or save as PDF.",
+  canonical: "https://www.worowo.com/packing-shipping/packing-list-generator/",
+};
+
+const blankTemplate = getBlankTemplateForTool("packing_list_generator");
+---
+
+<BaseLayout title={seo.title} description={seo.description} canonical={seo.canonical}>
+  <main class="plg-page">
+    <div class="plg-container">
+      <section class="plg-hero">
+        <span class="plg-eyebrow">Packing & Shipping</span>
+        <h1 class="plg-title">Packing List Generator</h1>
+        <p class="plg-summary">
+          Fill in shipment details, item lines, and remarks to generate a professional packing
+          list you can print or save as PDF.
+        </p>
+      </section>
+
+      <section class="plg-page-shell">
+        <div class="plg-top-row">
+          <div class="plg-top-note">
+            Fill in the highlighted fields below, then print or save as PDF.
+            {blankTemplate && (
+              <>
+                {" "}
+                Need a blank version for handwriting?
+                <a href={blankTemplate.href}>View the {blankTemplate.title}</a>.
+              </>
+            )}
+          </div>
+        </div>
+
+        <div id="packingListSheet" class="plg-sheet">
+          <header class="plg-sheet-header">
+            <div class="plg-sheet-title-wrap">
+              <h2>PACKING LIST</h2>
+            </div>
+
+            <div class="plg-sheet-meta">
+              <label class="plg-meta-field">
+                <span>Packing List No.</span>
+                <input id="packingListNo" type="text" placeholder="e.g. PL-2026-001" />
+              </label>
+
+              <label class="plg-meta-field">
+                <span>Date</span>
+                <input id="packingListDate" type="date" />
+              </label>
+            </div>
+          </header>
+
+          <div class="plg-divider"></div>
+
+          <section class="plg-grid-2">
+            <div class="plg-card">
+              <div class="plg-card-title">Shipper</div>
+
+              <label class="plg-field">
+                <span>Company Name</span>
+                <input id="shipperCompany" type="text" placeholder="Enter company name" />
+              </label>
+
+              <label class="plg-field">
+                <span>Address</span>
+                <textarea
+                  id="shipperAddress"
+                  rows="4"
+                  placeholder="Enter full shipper address"></textarea>
+              </label>
+
+              <label class="plg-field">
+                <span>Contact</span>
+                <input
+                  id="shipperContact"
+                  type="text"
+                  placeholder="Phone, email, or contact person"
+                />
+              </label>
+            </div>
+
+            <div class="plg-card">
+              <div class="plg-card-title">Consignee</div>
+
+              <label class="plg-field">
+                <span>Customer Name</span>
+                <input id="consigneeName" type="text" placeholder="Enter customer or consignee name" />
+              </label>
+
+              <label class="plg-field">
+                <span>Delivery Address</span>
+                <textarea
+                  id="consigneeAddress"
+                  rows="4"
+                  placeholder="Enter full delivery address"></textarea>
+              </label>
+
+              <label class="plg-field">
+                <span>Contact</span>
+                <input
+                  id="consigneeContact"
+                  type="text"
+                  placeholder="Phone, email, or contact person"
+                />
+              </label>
+            </div>
+          </section>
+
+          <section class="plg-section">
+            <div class="plg-section-title">Shipment Details</div>
+
+            <div class="plg-card plg-details-card">
+              <div class="plg-details-grid">
+                <label class="plg-field">
+                  <span>Reference No.</span>
+                  <input id="referenceNo" type="text" placeholder="e.g. PO-2026-001" />
+                </label>
+
+                <label class="plg-field">
+                  <span>Total Cartons</span>
+                  <input id="totalCartons" type="text" placeholder="e.g. 12" />
+                </label>
+
+                <label class="plg-field">
+                  <span>Shipment Date</span>
+                  <input id="shipmentDate" type="date" />
+                </label>
+
+                <label class="plg-field">
+                  <span>Total Weight</span>
+                  <input id="totalWeight" type="text" placeholder="e.g. 185 kg" />
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="plg-section">
+            <div class="plg-section-head">
+              <div class="plg-section-title">Items</div>
+              <button id="addItemButton" type="button" class="plg-add-item-btn">+ Add Item</button>
+            </div>
+
+            <div class="plg-items-wrap">
+              <table class="plg-items-table">
+                <thead>
+                  <tr>
+                    <th class="plg-col-no">No.</th>
+                    <th>Description</th>
+                    <th class="plg-col-qty">Qty</th>
+                    <th class="plg-col-unit">Unit</th>
+                    <th class="plg-col-carton">Carton No.</th>
+                    <th>Remarks</th>
+                    <th class="plg-col-action"></th>
+                  </tr>
+                </thead>
+                <tbody id="itemsTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="plg-grid-2">
+            <div class="plg-card">
+              <div class="plg-card-title">Remarks</div>
+
+              <label class="plg-field">
+                <textarea
+                  id="remarks"
+                  rows="9"
+                  placeholder="Add additional shipment notes if needed"></textarea>
+              </label>
+            </div>
+
+            <div class="plg-card">
+              <div class="plg-card-title">Prepared By</div>
+
+              <label class="plg-field">
+                <span>Name</span>
+                <input id="preparedByName" type="text" placeholder="Enter preparer name" />
+              </label>
+
+              <div class="plg-signature-wrap">
+                <span>Signature</span>
+                <div class="plg-signature-box">Sign here</div>
+              </div>
+
+              <label class="plg-field">
+                <span>Date</span>
+                <input id="preparedByDate" type="date" />
+              </label>
+            </div>
+          </section>
+        </div>
+
+        <div class="plg-actions">
+          <button id="resetPackingListButton" type="button" class="plg-btn plg-btn-ghost">Reset</button>
+          <button id="printPackingListButton" type="button" class="plg-btn plg-btn-primary">
+            Print / Save as PDF
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      const itemsTableBody = document.getElementById("itemsTableBody");
+      const addItemButton = document.getElementById("addItemButton");
+      const resetButton = document.getElementById("resetPackingListButton");
+      const printButton = document.getElementById("printPackingListButton");
+
+      const fieldsToReset = [
+        "packingListNo",
+        "packingListDate",
+        "shipperCompany",
+        "shipperAddress",
+        "shipperContact",
+        "consigneeName",
+        "consigneeAddress",
+        "consigneeContact",
+        "referenceNo",
+        "totalCartons",
+        "shipmentDate",
+        "totalWeight",
+        "remarks",
+        "preparedByName",
+        "preparedByDate",
+      ];
+
+      let rowCount = 0;
+
+      function createCellInput(type, placeholder = "", value = "") {
+        const input = document.createElement(type === "textarea" ? "textarea" : "input");
+
+        if (type !== "textarea") {
+          input.type = "text";
+        } else {
+          input.rows = 2;
+        }
+
+        input.className = "plg-table-input";
+        input.placeholder = placeholder;
+        input.value = value;
+        return input;
+      }
+
+      function createItemRow(prefill = {}) {
+        rowCount += 1;
+
+        const tr = document.createElement("tr");
+        tr.className = "plg-item-row";
+
+        const noTd = document.createElement("td");
+        noTd.className = "plg-row-no";
+        noTd.textContent = String(rowCount);
+
+        const descTd = document.createElement("td");
+        descTd.appendChild(createCellInput("text", "Item description", prefill.description || ""));
+
+        const qtyTd = document.createElement("td");
+        qtyTd.appendChild(createCellInput("text", "Qty", prefill.qty || ""));
+
+        const unitTd = document.createElement("td");
+        unitTd.appendChild(createCellInput("text", "pcs", prefill.unit || ""));
+
+        const cartonTd = document.createElement("td");
+        cartonTd.appendChild(createCellInput("text", "e.g. 1/12", prefill.carton || ""));
+
+        const remarksTd = document.createElement("td");
+        remarksTd.appendChild(createCellInput("text", "Remarks", prefill.remarks || ""));
+
+        const actionTd = document.createElement("td");
+        actionTd.className = "plg-row-action";
+
+        const removeButton = document.createElement("button");
+        removeButton.type = "button";
+        removeButton.className = "plg-delete-row-btn";
+        removeButton.setAttribute("aria-label", "Delete item");
+        removeButton.textContent = "×";
+        removeButton.addEventListener("click", () => {
+          tr.remove();
+          renumberRows();
+        });
+
+        actionTd.appendChild(removeButton);
+
+        tr.appendChild(noTd);
+        tr.appendChild(descTd);
+        tr.appendChild(qtyTd);
+        tr.appendChild(unitTd);
+        tr.appendChild(cartonTd);
+        tr.appendChild(remarksTd);
+        tr.appendChild(actionTd);
+
+        itemsTableBody.appendChild(tr);
+      }
+
+      function renumberRows() {
+        const rows = [...itemsTableBody.querySelectorAll("tr")];
+        rowCount = rows.length;
+        rows.forEach((row, index) => {
+          const noCell = row.querySelector(".plg-row-no");
+          if (noCell) noCell.textContent = String(index + 1);
+        });
+      }
+
+      function resetForm() {
+        fieldsToReset.forEach((id) => {
+          const field = document.getElementById(id);
+          if (field) field.value = "";
+        });
+
+        itemsTableBody.innerHTML = "";
+        rowCount = 0;
+
+        for (let i = 0; i < 5; i += 1) {
+          createItemRow();
+        }
+      }
+
+      addItemButton?.addEventListener("click", () => createItemRow());
+      resetButton?.addEventListener("click", resetForm);
+      printButton?.addEventListener("click", () => window.print());
+
+      resetForm();
+    })();
+  </script>
+
+  <style>
+    .plg-page {
+      background:
+        radial-gradient(circle at top right, rgba(148, 163, 184, 0.12), transparent 22%),
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+
+    .plg-container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 30px 0 64px;
+    }
+
+    .plg-hero {
+      margin-bottom: 22px;
+    }
+
+    .plg-eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      color: #0f766e;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .plg-title {
+      margin: 0 0 12px;
+      color: #0f172a;
+      font-size: clamp(2rem, 4vw, 3.35rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+
+    .plg-summary {
+      max-width: 860px;
+      margin: 0;
+      color: #475569;
+      font-size: 1.08rem;
+      line-height: 1.75;
+    }
+
+    .plg-page-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .plg-top-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .plg-top-note {
+      border: 1px solid #dbe4f0;
+      background: linear-gradient(180deg, #fcfdff 0%, #f8fbff 100%);
+      color: #475569;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      box-shadow: 0 12px 32px -28px rgba(15, 23, 42, 0.24);
+    }
+
+    .plg-top-note a {
+      color: #2563eb;
+      font-weight: 700;
+    }
+
+    .plg-sheet {
+      border: 1px solid #cbd5e1;
+      border-radius: 22px;
+      background: #ffffff;
+      padding: 34px;
+      box-shadow: 0 22px 54px -34px rgba(15, 23, 42, 0.22);
+    }
+
+    .plg-sheet-header {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .plg-sheet-title-wrap h2 {
+      margin: 0;
+      color: #0f172a;
+      font-size: 2rem;
+      line-height: 1.05;
+      letter-spacing: 0.08em;
+      font-weight: 900;
+    }
+
+    .plg-sheet-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .plg-meta-field,
+    .plg-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .plg-meta-field span,
+    .plg-field span,
+    .plg-signature-wrap span {
+      color: #0f172a;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .plg-divider {
+      height: 1px;
+      background: #dbe4f0;
+      margin: 22px 0 16px;
+    }
+
+    .plg-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .plg-card {
+      border: 1px solid #dbe4f0;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+      padding: 16px;
+      box-shadow: 0 12px 24px -24px rgba(15, 23, 42, 0.2);
+    }
+
+    .plg-card-title,
+    .plg-section-title {
+      margin: 0 0 12px;
+      color: #0f172a;
+      font-size: 1rem;
+      line-height: 1.25;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .plg-section {
+      margin-bottom: 16px;
+    }
+
+    .plg-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .plg-details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .plg-field input,
+    .plg-field textarea,
+    .plg-meta-field input {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #cbd5e1;
+      background: #f8fbff;
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-size: 0.98rem;
+      line-height: 1.5;
+      color: #0f172a;
+      outline: none;
+      transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .plg-field textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .plg-field input::placeholder,
+    .plg-field textarea::placeholder,
+    .plg-meta-field input::placeholder {
+      color: #7b8798;
+    }
+
+    .plg-field input:focus,
+    .plg-field textarea:focus,
+    .plg-meta-field input:focus {
+      border-color: #2563eb;
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .plg-items-wrap {
+      overflow: hidden;
+      border: 1px solid #dbe4f0;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 12px 24px -24px rgba(15, 23, 42, 0.2);
+    }
+
+    .plg-items-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .plg-items-table th,
+    .plg-items-table td {
+      border-right: 1px solid #dbe4f0;
+      border-bottom: 1px solid #dbe4f0;
+      vertical-align: top;
+    }
+
+    .plg-items-table th:last-child,
+    .plg-items-table td:last-child {
+      border-right: none;
+    }
+
+    .plg-items-table thead th {
+      background: #f3f6fb;
+      color: #0f172a;
+      font-size: 0.88rem;
+      line-height: 1.3;
+      font-weight: 800;
+      text-align: left;
+      padding: 10px 8px;
+    }
+
+    .plg-items-table tbody tr:hover td {
+      background: #fafcff;
+    }
+
+    .plg-col-no {
+      width: 54px;
+    }
+
+    .plg-col-qty,
+    .plg-col-unit,
+    .plg-col-carton,
+    .plg-col-action {
+      width: 92px;
+    }
+
+    .plg-row-no {
+      text-align: center;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #0f172a;
+      padding: 12px 6px;
+      background: #fcfdff;
+    }
+
+    .plg-row-action {
+      text-align: center;
+      background: #fcfdff;
+    }
+
+    .plg-table-input {
+      width: 100%;
+      box-sizing: border-box;
+      border: none;
+      background: #fcfdff;
+      padding: 12px 10px;
+      font-size: 0.96rem;
+      line-height: 1.5;
+      color: #0f172a;
+      outline: none;
+    }
+
+    .plg-table-input::placeholder {
+      color: #7b8798;
+    }
+
+    .plg-table-input:focus {
+      background: #ffffff;
+      box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.12);
+    }
+
+    .plg-add-item-btn {
+      border: 1px solid #bfdbfe;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.92rem;
+      line-height: 1.2;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .plg-add-item-btn:hover {
+      background: #dbeafe;
+      transform: translateY(-1px);
+    }
+
+    .plg-delete-row-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid #d7e0eb;
+      background: #ffffff;
+      color: #64748b;
+      font-size: 1.1rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .plg-delete-row-btn:hover {
+      border-color: #f0b2b2;
+      color: #dc2626;
+      background: #fff5f5;
+    }
+
+    .plg-signature-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 6px 0 10px;
+    }
+
+    .plg-signature-box {
+      min-height: 68px;
+      border: 1px dashed #cbd5e1;
+      background: #f8fbff;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      border-radius: 10px;
+    }
+
+    .plg-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .plg-btn {
+      border-radius: 999px;
+      min-width: 190px;
+      padding: 14px 20px;
+      font-size: 1rem;
+      line-height: 1.2;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .plg-btn-ghost {
+      border: 1px solid #b8c7db;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .plg-btn-ghost:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    .plg-btn-primary {
+      border: 1px solid #2563eb;
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.16);
+    }
+
+    .plg-btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 900px) {
+      .plg-container {
+        width: min(100%, calc(100% - 24px));
+        padding: 24px 0 48px;
+      }
+
+      .plg-sheet {
+        padding: 20px;
+        border-radius: 18px;
+      }
+
+      .plg-sheet-header,
+      .plg-grid-2,
+      .plg-details-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .plg-actions,
+      .plg-section-head,
+      .plg-top-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .plg-btn,
+      .plg-add-item-btn {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .plg-items-wrap {
+        overflow-x: auto;
+      }
+
+      .plg-items-table {
+        min-width: 760px;
+      }
+    }
+
+    @media print {
+      .plg-hero,
+      .plg-top-row,
+      .plg-actions,
+      .plg-add-item-btn,
+      .plg-delete-row-btn,
+      .site-header,
+      .site-footer {
+        display: none !important;
+      }
+
+      .plg-page,
+      .plg-sheet,
+      .plg-card,
+      .plg-items-wrap {
+        background: #ffffff !important;
+      }
+
+      .plg-container {
+        width: 100%;
+        padding: 0;
+      }
+
+      .plg-sheet {
+        border: 1px solid #bfc9d8;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 20px;
+      }
+
+      .plg-card,
+      .plg-items-wrap {
+        border-color: #c9d3df;
+        box-shadow: none;
+      }
+
+      .plg-field input,
+      .plg-field textarea,
+      .plg-meta-field input,
+      .plg-table-input,
+      .plg-signature-box {
+        background: #ffffff !important;
+        box-shadow: none !important;
+        border-color: transparent !important;
+      }
+
+      .plg-items-table thead th {
+        background: #ffffff !important;
+      }
+
+      .plg-items-table tbody tr:hover td {
+        background: #ffffff !important;
+      }
+    }
+  </style>
+</BaseLayout>

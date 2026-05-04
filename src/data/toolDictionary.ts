@@ -120,7 +120,7 @@ export const toolDictionary = {
     categoryKey: "packing_shipping",
     title: "Packing List Generator",
     shortTitle: "Packing List Generator",
-    href: "/packing-list-generator/",
+    href: "/packing-shipping/packing-list-generator/",
     type: "generator",
     status: "live",
     description:
@@ -132,6 +132,24 @@ export const toolDictionary = {
     featuredOnCategoryPage: true,
     order: 200,
     blankTemplateKey: "packing_list_template",
+  },
+
+  export_packing_list_generator: {
+    key: "export_packing_list_generator",
+    categoryKey: "packing_shipping",
+    title: "Export Packing List Generator",
+    shortTitle: "Export Packing List Generator",
+    href: "/packing-shipping/export-packing-list-generator/",
+    type: "generator",
+    status: "live",
+    description:
+      "Create a professional export packing list with exporter, consignee, shipment details, item totals, and print-ready PDF output.",
+    menuTitle: "Export Packing List Generator",
+    showInHeaderMenu: false,
+    featuredInHeaderMenu: false,
+    showOnHome: false,
+    featuredOnCategoryPage: true,
+    order: 205,
   },
 
   packing_list_template: {

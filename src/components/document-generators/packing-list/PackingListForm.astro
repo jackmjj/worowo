@@ -1,0 +1,473 @@
+---
+import PackingListItemsTable from "./PackingListItemsTable.astro";
+---
+
+<div class="epl-form-card">
+  <div class="epl-notice">
+    Fill in the details below. Your export packing list preview updates automatically as you type.
+  </div>
+
+  <section class="epl-section">
+    <div class="epl-section-head">
+      <h2 class="epl-section-title">Document Header</h2>
+    </div>
+
+    <div class="epl-grid epl-grid-3">
+      <label class="epl-field">
+        <span>Packing List No.</span>
+        <input id="packingListNo" type="text" placeholder="e.g. PL-2026-001" />
+      </label>
+
+      <label class="epl-field">
+        <span>Invoice No.</span>
+        <input id="invoiceNo" type="text" placeholder="e.g. INV-2026-001" />
+      </label>
+
+      <label class="epl-field">
+        <span>Date</span>
+        <input id="docDate" type="date" />
+      </label>
+    </div>
+  </section>
+
+  <section class="epl-section">
+    <div class="epl-section-head">
+      <h2 class="epl-section-title">Parties</h2>
+    </div>
+
+    <div class="epl-subcards">
+      <div class="epl-subcard">
+        <div class="epl-subcard-title">Exporter / Seller</div>
+
+        <label class="epl-field">
+          <span>Name</span>
+          <input id="exporterName" type="text" placeholder="Enter exporter name" />
+        </label>
+
+        <label class="epl-field">
+          <span>Address</span>
+          <textarea id="exporterAddress" rows="5" placeholder="Enter exporter address"></textarea>
+        </label>
+
+        <label class="epl-field">
+          <span>Contact</span>
+          <input
+            id="exporterContact"
+            type="text"
+            placeholder="Phone, email, or contact person" />
+        </label>
+      </div>
+
+      <div class="epl-subcard">
+        <div class="epl-subcard-title">Consignee</div>
+
+        <label class="epl-field">
+          <span>Name</span>
+          <input id="consigneeName" type="text" placeholder="Enter consignee name" />
+        </label>
+
+        <label class="epl-field">
+          <span>Address</span>
+          <textarea
+            id="consigneeAddress"
+            rows="5"
+            placeholder="Enter consignee address"></textarea>
+        </label>
+
+        <label class="epl-field">
+          <span>Contact</span>
+          <input
+            id="consigneeContact"
+            type="text"
+            placeholder="Phone, email, or contact person" />
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section class="epl-section">
+    <div class="epl-section-head">
+      <h2 class="epl-section-title">Shipment Details</h2>
+    </div>
+
+    <div class="epl-grid epl-grid-3">
+      <label class="epl-field">
+        <span>From</span>
+        <input id="shipmentFrom" type="text" placeholder="e.g. Shenzhen, China" />
+      </label>
+
+      <label class="epl-field">
+        <span>To</span>
+        <input id="shipmentTo" type="text" placeholder="e.g. Los Angeles, USA" />
+      </label>
+
+      <label class="epl-field">
+        <span>Shipment Method</span>
+        <select id="shipmentMethod">
+          <option value="">Select method</option>
+          <option value="Sea">Sea</option>
+          <option value="Air">Air</option>
+          <option value="Courier">Courier</option>
+          <option value="Truck">Truck</option>
+          <option value="Rail">Rail</option>
+          <option value="Other">Other</option>
+        </select>
+      </label>
+
+      <label class="epl-field">
+        <span>Port of Loading</span>
+        <input id="portOfLoading" type="text" placeholder="e.g. Yantian" />
+      </label>
+
+      <label class="epl-field">
+        <span>Port of Discharge</span>
+        <input id="portOfDischarge" type="text" placeholder="e.g. Los Angeles" />
+      </label>
+
+      <label class="epl-field">
+        <span>ETD</span>
+        <input id="etd" type="date" />
+      </label>
+
+      <label class="epl-field">
+        <span>ETA</span>
+        <input id="eta" type="date" />
+      </label>
+    </div>
+  </section>
+
+  <section class="epl-section">
+    <div class="epl-section-head">
+      <h2 class="epl-section-title">Shipping Marks & Remarks</h2>
+    </div>
+
+    <div class="epl-grid epl-grid-2">
+      <label class="epl-field">
+        <span>Shipping Marks</span>
+        <textarea id="shippingMarks" rows="5" placeholder="Enter shipping marks"></textarea>
+      </label>
+
+      <label class="epl-field">
+        <span>Remarks</span>
+        <textarea id="remarks" rows="5" placeholder="Additional notes if needed"></textarea>
+      </label>
+    </div>
+  </section>
+
+  <PackingListItemsTable />
+
+  <section class="epl-section">
+    <div class="epl-section-head">
+      <h2 class="epl-section-title">Footer</h2>
+    </div>
+
+    <div class="epl-grid epl-grid-2">
+      <label class="epl-field">
+        <span>Prepared By</span>
+        <input id="preparedBy" type="text" placeholder="Enter preparer name" />
+      </label>
+
+      <label class="epl-field">
+        <span>Authorized Signature</span>
+        <input
+          id="authorizedSignature"
+          type="text"
+          placeholder="Enter signatory name if needed" />
+      </label>
+    </div>
+  </section>
+
+  <div class="epl-actions">
+    <div class="epl-paper-size-control" aria-label="Paper size">
+      <span>Paper Size</span>
+      <button id="a4Button" class="epl-paper-size-btn active" type="button" data-size="a4">
+        A4
+      </button>
+      <button id="letterButton" class="epl-paper-size-btn" type="button" data-size="letter">
+        US Letter
+      </button>
+    </div>
+
+    <div class="epl-action-buttons">
+      <button id="resetButton" type="button" class="epl-btn epl-btn-ghost">Reset</button>
+      <button id="printButton" type="button" class="epl-btn epl-btn-primary">
+        Print / Save as PDF
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .epl-form-card {
+    border: 1px solid #cbd5e1;
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 22px 54px -34px rgba(15, 23, 42, 0.22);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .epl-notice {
+    border: 1px solid #dbe4f0;
+    background: linear-gradient(180deg, #fcfdff 0%, #f8fbff 100%);
+    color: #475569;
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-size: 0.98rem;
+    line-height: 1.6;
+    box-shadow: 0 12px 32px -28px rgba(15, 23, 42, 0.24);
+  }
+
+  .epl-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #edf2f7;
+  }
+
+  .epl-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .epl-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .epl-section-title {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.25;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+    color: #0f172a;
+    text-transform: uppercase;
+  }
+
+  .epl-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .epl-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .epl-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .epl-subcards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .epl-subcard {
+    border: 1px solid #dbe4f0;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border-radius: 16px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 12px 24px -24px rgba(15, 23, 42, 0.2);
+  }
+
+  .epl-subcard-title {
+    font-size: 1rem;
+    line-height: 1.25;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+    color: #0f172a;
+    text-transform: uppercase;
+  }
+
+  .epl-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .epl-field span {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .epl-field input,
+  .epl-field textarea,
+  .epl-field select {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background: #f8fbff;
+    padding: 10px 12px;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    font-family: inherit;
+    color: #0f172a;
+    transition:
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      background-color 0.18s ease,
+      background 0.18s ease;
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  .epl-field textarea {
+    min-height: 104px;
+    padding: 11px 12px;
+    resize: vertical;
+  }
+
+  .epl-field input::placeholder,
+  .epl-field textarea::placeholder {
+    color: #94a3b8;
+  }
+
+  .epl-field input:hover,
+  .epl-field textarea:hover,
+  .epl-field select:hover {
+    border-color: #94a3b8;
+  }
+
+  .epl-field input:focus,
+  .epl-field textarea:focus,
+  .epl-field select:focus {
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  .epl-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: nowrap;
+    margin-top: 2px;
+    padding: 12px 14px;
+    border: 1px solid #dbe4f0;
+    border-radius: 20px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    box-shadow: 0 16px 34px -30px rgba(15, 23, 42, 0.22);
+  }
+
+  .epl-action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .epl-paper-size-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+  }
+
+  .epl-paper-size-control span {
+    padding: 0 8px;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .epl-paper-size-btn {
+    border: 1px solid #dbe4f0;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #0f172a;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .epl-paper-size-btn.active {
+    border-color: #93c5fd;
+    background: #dbeafe;
+    color: #1d4ed8;
+    box-shadow: none;
+  }
+
+  .epl-paper-size-btn:hover {
+    background: #f8fafc;
+  }
+
+  .epl-paper-size-btn.active:hover {
+    background: #dbeafe;
+  }
+
+  .epl-btn {
+    border-radius: 999px;
+    padding: 12px 18px;
+    font-size: 15px;
+    line-height: 1.2;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .epl-btn-ghost {
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid #dbe4f0;
+  }
+
+  .epl-btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+    border: 1px solid #2563eb;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.14);
+  }
+
+  @media (max-width: 900px) {
+    .epl-form-card {
+      padding: 20px;
+    }
+
+    .epl-grid-2,
+    .epl-grid-3,
+    .epl-subcards {
+      grid-template-columns: 1fr;
+    }
+
+    .epl-actions,
+    .epl-inline-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .epl-actions {
+      flex-wrap: wrap;
+    }
+
+    .epl-paper-size-control {
+      justify-content: center;
+    }
+
+    .epl-action-buttons {
+      flex-direction: column-reverse;
+    }
+
+    .epl-btn {
+      width: 100%;
+    }
+  }
+</style>

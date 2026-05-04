@@ -1,0 +1,79 @@
+---
+import ToolLayout from "./ToolLayout.astro";
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface RelatedTool {
+  name: string;
+  href: string;
+  desc: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  pageTitle?: string;
+  canonical?: string;
+  eyebrow?: string;
+  categoryLabel?: string;
+  categoryHref?: string;
+  intro: string;
+  faqItems?: FaqItem[];
+  relatedTools?: RelatedTool[];
+}
+
+const {
+  title,
+  description,
+  pageTitle,
+  canonical,
+  eyebrow,
+  categoryLabel,
+  categoryHref,
+  intro,
+  faqItems = [],
+  relatedTools = [],
+} = Astro.props;
+---
+
+<ToolLayout
+  title={title}
+  pageTitle={pageTitle}
+  description={description}
+  canonical={canonical}
+  eyebrow={eyebrow}
+  categoryLabel={categoryLabel}
+  categoryHref={categoryHref}
+  intro={intro}
+  faqItems={faqItems}
+  relatedTools={relatedTools}
+>
+  <section slot="form" class="document-generator-layout-shell">
+    <div class="document-generator-layout-page">
+      <slot name="editor" />
+      <slot name="preview" />
+    </div>
+  </section>
+
+  <slot name="content" slot="content" />
+  <slot name="faq" slot="faq" />
+  <slot />
+</ToolLayout>
+
+<style>
+  .document-generator-layout-shell {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+
+  .document-generator-layout-page {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: min(1180px, 100%);
+    margin: 0 auto;
+  }
+</style>

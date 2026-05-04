@@ -1,0 +1,1112 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const pageTitle = "Export Packing List Generator";
+const pageDescription =
+  "Create a professional export packing list online with exporter, consignee, shipment details, item lines, weights, and CBM. Print or save the final packing list as PDF.";
+const canonical = "https://www.worowo.com/packing-shipping/export-packing-list-generator/";
+
+const faqItems = [
+  {
+    question: "What is an export packing list?",
+    answer:
+      "An export packing list is a shipping document used in international trade. It typically includes exporter and consignee details, shipment routing, item lines, cartons, weights, and total measurement.",
+  },
+  {
+    question: "Can this export packing list be printed or saved as PDF?",
+    answer:
+      "Yes. You can fill in the document directly on the page, choose A4 or US Letter, then print it or save it as PDF for logistics, customs support, or customer documentation.",
+  },
+  {
+    question: "Does the generator calculate totals automatically?",
+    answer:
+      "Yes. Total quantity, cartons, net weight, gross weight, and CBM are calculated from the item rows automatically as you edit the packing list.",
+  },
+];
+
+const relatedTools = [
+  {
+    title: "Packing List Generator",
+    href: "/packing-shipping/packing-list-generator/",
+    description: "Create a simpler packing list for general shipping, order packing, and day-to-day warehouse use.",
+  },
+  {
+    title: "Delivery Receipt Generator",
+    href: "/packing-shipping/delivery-receipt-generator/",
+    description: "Generate a delivery receipt for handover confirmation, signatures, and receiving records.",
+  },
+  {
+    title: "Simple Packing List Template",
+    href: "/printable-templates/simple-packing-list-template/",
+    description: "Use a printable blank template when you need a handwritten or manually completed packing list.",
+  },
+];
+---
+
+<BaseLayout title={`${pageTitle} | Worowo`} description={pageDescription} canonical={canonical}>
+  <main class="xplg-page">
+    <div class="xplg-container">
+      <nav class="xplg-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span>></span>
+        <a href="/packing-shipping/">Packing & Shipping</a>
+        <span>></span>
+        <span aria-current="page">Export Packing List Generator</span>
+      </nav>
+
+      <section class="xplg-hero">
+        <span class="xplg-eyebrow">Packing & Shipping</span>
+        <h1 class="xplg-title">{pageTitle}</h1>
+        <p class="xplg-description">{pageDescription}</p>
+      </section>
+
+      <div class="xplg-toolbar">
+        <div class="xplg-toolbar-left">
+          <a href="/" class="xplg-brand-link">worowo</a>
+        </div>
+
+        <div class="xplg-toolbar-center">
+          <a href="/packing-shipping/" class="xplg-toolbar-link-btn">Back to Packing & Shipping</a>
+        </div>
+
+        <div class="xplg-toolbar-right">
+          <span class="xplg-toolbar-label">Paper Size</span>
+
+          <div class="xplg-paper-toggle-group">
+            <button type="button" class="xplg-toolbar-btn xplg-paper-toggle is-active" data-paper="letter">
+              US Letter
+            </button>
+            <button type="button" class="xplg-toolbar-btn xplg-paper-toggle" data-paper="a4">
+              A4
+            </button>
+          </div>
+
+          <button type="button" class="xplg-toolbar-btn" id="resetBtn">Reset Form</button>
+          <button type="button" class="xplg-toolbar-btn xplg-toolbar-btn-primary" id="printBtn">
+            Print / Save as PDF
+          </button>
+        </div>
+      </div>
+
+      <section class="xplg-document-stage">
+        <div class="xplg-document-stage-inner">
+          <div id="export-packing-list-document" class="xplg-document xplg-paper-letter">
+            <div class="xplg-document-inner">
+              <div class="xplg-doc-header">
+                <div class="xplg-doc-title">PACKING LIST</div>
+                <div class="xplg-doc-meta">
+                  <div class="xplg-field-row">
+                    <span class="xplg-field-label">Packing List No.:</span>
+                    <input id="packingListNo" class="xplg-doc-input xplg-inline-input" type="text" />
+                  </div>
+                  <div class="xplg-field-row">
+                    <span class="xplg-field-label">Invoice No.:</span>
+                    <input id="invoiceNo" class="xplg-doc-input xplg-inline-input" type="text" />
+                  </div>
+                  <div class="xplg-field-row">
+                    <span class="xplg-field-label">Date:</span>
+                    <input id="docDate" class="xplg-doc-input xplg-inline-input" type="date" />
+                  </div>
+                </div>
+              </div>
+
+              <section class="xplg-doc-section">
+                <div class="xplg-two-col">
+                  <div class="xplg-box">
+                    <h2 class="xplg-section-title">Exporter / Seller</h2>
+                    <div class="xplg-field-row xplg-field-row-block">
+                      <span class="xplg-field-label">Name:</span>
+                      <input id="exporterName" class="xplg-doc-input" type="text" />
+                    </div>
+                    <div class="xplg-field-row xplg-field-row-block">
+                      <span class="xplg-field-label">Address:</span>
+                      <textarea id="exporterAddress" class="xplg-doc-textarea xplg-compact-area" rows="2"></textarea>
+                    </div>
+                    <div class="xplg-field-row xplg-field-row-block">
+                      <span class="xplg-field-label">Contact:</span>
+                      <input id="exporterContact" class="xplg-doc-input" type="text" />
+                    </div>
+                  </div>
+
+                  <div class="xplg-box">
+                    <h2 class="xplg-section-title">Consignee</h2>
+                    <div class="xplg-field-row xplg-field-row-block">
+                      <span class="xplg-field-label">Name:</span>
+                      <input id="consigneeName" class="xplg-doc-input" type="text" />
+                    </div>
+                    <div class="xplg-field-row xplg-field-row-block">
+                      <span class="xplg-field-label">Address:</span>
+                      <textarea id="consigneeAddress" class="xplg-doc-textarea xplg-compact-area" rows="2"></textarea>
+                    </div>
+                    <div class="xplg-field-row xplg-field-row-block">
+                      <span class="xplg-field-label">Contact:</span>
+                      <input id="consigneeContact" class="xplg-doc-input" type="text" />
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="xplg-doc-section">
+                <h2 class="xplg-section-title">Shipment Details</h2>
+                <div class="xplg-box">
+                  <div class="xplg-three-col">
+                    <div>
+                      <div class="xplg-field-row xplg-field-row-block">
+                        <span class="xplg-field-label">From:</span>
+                        <input id="shipmentFrom" class="xplg-doc-input" type="text" />
+                      </div>
+                      <div class="xplg-field-row xplg-field-row-block">
+                        <span class="xplg-field-label">Port of Loading:</span>
+                        <input id="portOfLoading" class="xplg-doc-input" type="text" />
+                      </div>
+                      <div class="xplg-field-row xplg-field-row-block">
+                        <span class="xplg-field-label">ETD:</span>
+                        <input id="etd" class="xplg-doc-input" type="date" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="xplg-field-row xplg-field-row-block">
+                        <span class="xplg-field-label">To:</span>
+                        <input id="shipmentTo" class="xplg-doc-input" type="text" />
+                      </div>
+                      <div class="xplg-field-row xplg-field-row-block">
+                        <span class="xplg-field-label">Port of Discharge:</span>
+                        <input id="portOfDischarge" class="xplg-doc-input" type="text" />
+                      </div>
+                      <div class="xplg-field-row xplg-field-row-block">
+                        <span class="xplg-field-label">ETA:</span>
+                        <input id="eta" class="xplg-doc-input" type="date" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="xplg-field-row xplg-field-row-block">
+                        <span class="xplg-field-label">Shipment Method:</span>
+                        <select id="shipmentMethod" class="xplg-doc-input xplg-doc-select">
+                          <option value=""></option>
+                          <option value="Sea">Sea</option>
+                          <option value="Air">Air</option>
+                          <option value="Courier">Courier</option>
+                          <option value="Truck">Truck</option>
+                          <option value="Rail">Rail</option>
+                          <option value="Other">Other</option>
+                        </select>
+                      </div>
+                      <div class="xplg-field-row xplg-field-row-block">
+                        <span class="xplg-field-label">Shipping Marks:</span>
+                        <textarea id="shippingMarks" class="xplg-doc-textarea xplg-compact-area" rows="2"></textarea>
+                      </div>
+                      <div class="xplg-field-row xplg-field-row-block">
+                        <span class="xplg-field-label">Remarks:</span>
+                        <textarea id="remarks" class="xplg-doc-textarea xplg-compact-area" rows="2"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="xplg-doc-section">
+                <div class="xplg-section-title-row">
+                  <h2 class="xplg-section-title">Items</h2>
+                  <button type="button" class="xplg-toolbar-btn xplg-add-item-inline-btn xplg-edit-only" id="addItemBtn">
+                    Add Item
+                  </button>
+                </div>
+
+                <table class="xplg-doc-table xplg-packing-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 6%;">No.</th>
+                      <th style="width: 31%;">Description</th>
+                      <th style="width: 8%;">Qty</th>
+                      <th style="width: 8%;">Unit</th>
+                      <th style="width: 11%;">Cartons</th>
+                      <th style="width: 12%;">Net Wt</th>
+                      <th style="width: 12%;">Gross Wt</th>
+                      <th style="width: 8%;">CBM</th>
+                      <th class="xplg-edit-only" style="width: 4%;"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="itemsTableBody">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <tr class="xplg-item-row">
+                        <td class="xplg-row-number">{i + 1}</td>
+                        <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+                        <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+                        <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+                        <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+                        <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+                        <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+                        <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+                        <td class="xplg-edit-only xplg-action-cell">
+                          <button type="button" class="xplg-remove-row-btn">×</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                <div class="xplg-totals-box">
+                  <div class="xplg-totals-row">
+                    <span>Total Qty</span>
+                    <strong id="totalQty">0</strong>
+                  </div>
+                  <div class="xplg-totals-row">
+                    <span>Total Cartons</span>
+                    <strong id="totalCartons">0</strong>
+                  </div>
+                  <div class="xplg-totals-row">
+                    <span>Total Net Wt</span>
+                    <strong><span id="totalNetWeight">0.00</span> kg</strong>
+                  </div>
+                  <div class="xplg-totals-row">
+                    <span>Total Gross Wt</span>
+                    <strong><span id="totalGrossWeight">0.00</span> kg</strong>
+                  </div>
+                  <div class="xplg-totals-row">
+                    <span>Total CBM</span>
+                    <strong id="totalCbm">0.000</strong>
+                  </div>
+                </div>
+              </section>
+
+              <section class="xplg-doc-section">
+                <div class="xplg-two-col">
+                  <div class="xplg-box">
+                    <h2 class="xplg-section-title">Remarks</h2>
+                    <textarea id="finalRemarks" class="xplg-doc-textarea xplg-compact-remarks" rows="2"></textarea>
+                  </div>
+
+                  <div class="xplg-box">
+                    <h2 class="xplg-section-title">Prepared By</h2>
+                    <div class="xplg-field-row xplg-field-row-block">
+                      <span class="xplg-field-label">Name:</span>
+                      <input id="preparedBy" class="xplg-doc-input" type="text" />
+                    </div>
+                    <div class="xplg-field-row xplg-field-row-block">
+                      <span class="xplg-field-label">Authorized Signature:</span>
+                      <input id="authorizedSignature" class="xplg-doc-input" type="text" />
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="xplg-seo-block">
+        <div class="xplg-seo-grid">
+          <article class="xplg-seo-card">
+            <h2>How This Export Packing List Generator Works</h2>
+            <p>
+              Enter exporter, consignee, shipment, and item details directly on the document. The page keeps the final
+              export packing list in a print-ready layout while totals update automatically from the item rows.
+            </p>
+          </article>
+
+          <article class="xplg-seo-card">
+            <h2>When to Use It</h2>
+            <p>
+              Use this export packing list generator for international shipments, factory dispatch paperwork, B2B order
+              support, freight coordination, and customer document preparation.
+            </p>
+          </article>
+
+          <article class="xplg-seo-card">
+            <h2>Why It Helps</h2>
+            <p>
+              A structured export packing list improves shipment clarity, reduces manual calculation errors, and makes
+              it easier to produce a professional document for logistics teams and overseas buyers.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="xplg-faq-block" aria-labelledby="export-packing-faq-title">
+        <div class="xplg-section-head">
+          <h2 id="export-packing-faq-title">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="xplg-faq-list">
+          {faqItems.map((item) => (
+            <details class="xplg-faq-item">
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section class="xplg-related-block" aria-labelledby="export-packing-related-title">
+        <div class="xplg-section-head">
+          <h2 id="export-packing-related-title">Related Tools</h2>
+        </div>
+
+        <div class="xplg-related-grid">
+          {relatedTools.map((tool) => (
+            <a class="xplg-related-card" href={tool.href}>
+              <h3>{tool.title}</h3>
+              <p>{tool.description}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const documentRoot = document.getElementById("export-packing-list-document");
+      const itemsTableBody = document.getElementById("itemsTableBody");
+      const addItemBtn = document.getElementById("addItemBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const printBtn = document.getElementById("printBtn");
+      const paperButtons = Array.from(document.querySelectorAll(".xplg-paper-toggle"));
+
+      const totalQty = document.getElementById("totalQty");
+      const totalCartons = document.getElementById("totalCartons");
+      const totalNetWeight = document.getElementById("totalNetWeight");
+      const totalGrossWeight = document.getElementById("totalGrossWeight");
+      const totalCbm = document.getElementById("totalCbm");
+
+      function toNumber(value) {
+        const parsed = Number.parseFloat(value);
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+
+      function renumberRows() {
+        const rows = Array.from(itemsTableBody.querySelectorAll(".xplg-item-row"));
+        rows.forEach((row, index) => {
+          const num = row.querySelector(".xplg-row-number");
+          if (num) num.textContent = String(index + 1);
+        });
+      }
+
+      function updateTotals() {
+        let qty = 0;
+        let cartons = 0;
+        let net = 0;
+        let gross = 0;
+        let cbm = 0;
+
+        itemsTableBody.querySelectorAll(".xplg-item-row").forEach((row) => {
+          const inputs = row.querySelectorAll(".xplg-table-input");
+          qty += toNumber(inputs[1]?.value);
+          cartons += toNumber(inputs[3]?.value);
+          net += toNumber(inputs[4]?.value);
+          gross += toNumber(inputs[5]?.value);
+          cbm += toNumber(inputs[6]?.value);
+        });
+
+        totalQty.textContent = String(qty);
+        totalCartons.textContent = String(cartons);
+        totalNetWeight.textContent = net.toFixed(2);
+        totalGrossWeight.textContent = gross.toFixed(2);
+        totalCbm.textContent = cbm.toFixed(3);
+      }
+
+      function attachRowHandlers(scope = document) {
+        scope.querySelectorAll(".xplg-remove-row-btn").forEach((btn) => {
+          if (btn.dataset.bound === "1") return;
+          btn.dataset.bound = "1";
+
+          btn.addEventListener("click", () => {
+            const rows = itemsTableBody.querySelectorAll(".xplg-item-row");
+            if (rows.length <= 1) return;
+            btn.closest(".xplg-item-row")?.remove();
+            renumberRows();
+            updateTotals();
+          });
+        });
+
+        scope.querySelectorAll(".xplg-table-input").forEach((input) => {
+          if (input.dataset.bound === "1") return;
+          input.dataset.bound = "1";
+          input.addEventListener("input", updateTotals);
+        });
+      }
+
+      function createItemRow(index) {
+        const tr = document.createElement("tr");
+        tr.className = "xplg-item-row";
+        tr.innerHTML = `
+          <td class="xplg-row-number">${index}</td>
+          <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+          <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+          <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+          <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+          <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+          <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+          <td><input class="xplg-doc-input xplg-table-input" type="text" /></td>
+          <td class="xplg-edit-only xplg-action-cell">
+            <button type="button" class="xplg-remove-row-btn">×</button>
+          </td>
+        `;
+        return tr;
+      }
+
+      function resetForm() {
+        documentRoot.querySelectorAll("input").forEach((input) => {
+          input.value = "";
+        });
+
+        documentRoot.querySelectorAll("textarea").forEach((textarea) => {
+          textarea.value = "";
+        });
+
+        documentRoot.querySelectorAll("select").forEach((select) => {
+          select.value = "";
+        });
+
+        itemsTableBody.innerHTML = "";
+        for (let i = 1; i <= 5; i += 1) {
+          itemsTableBody.appendChild(createItemRow(i));
+        }
+
+        attachRowHandlers(itemsTableBody);
+        renumberRows();
+        updateTotals();
+        applyPaper("letter");
+      }
+
+      function applyPaper(paper) {
+        documentRoot.classList.remove("xplg-paper-letter", "xplg-paper-a4");
+        documentRoot.classList.add(paper === "a4" ? "xplg-paper-a4" : "xplg-paper-letter");
+
+        paperButtons.forEach((btn) => {
+          btn.classList.toggle("is-active", btn.dataset.paper === paper);
+        });
+
+        const styleId = "export-packing-print-page-rule";
+        let styleTag = document.getElementById(styleId);
+
+        if (!styleTag) {
+          styleTag = document.createElement("style");
+          styleTag.id = styleId;
+          document.head.appendChild(styleTag);
+        }
+
+        if (paper === "a4") {
+          styleTag.textContent =
+            "@page { size: A4 portrait; margin: 18mm 16mm 18mm 16mm; }";
+        } else {
+          styleTag.textContent =
+            "@page { size: Letter portrait; margin: 0.7in 0.65in 0.7in 0.65in; }";
+        }
+      }
+
+      addItemBtn?.addEventListener("click", () => {
+        const nextIndex = itemsTableBody.querySelectorAll(".xplg-item-row").length + 1;
+        itemsTableBody.appendChild(createItemRow(nextIndex));
+        attachRowHandlers(itemsTableBody);
+        renumberRows();
+        updateTotals();
+      });
+
+      resetBtn?.addEventListener("click", resetForm);
+
+      paperButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          applyPaper(btn.dataset.paper || "letter");
+        });
+      });
+
+      printBtn?.addEventListener("click", () => {
+        window.print();
+      });
+
+      attachRowHandlers(document);
+      updateTotals();
+      applyPaper("letter");
+    });
+  </script>
+
+  <style is:global>
+    .xplg-page {
+      background: #f8fafc;
+    }
+
+    .xplg-container {
+      width: min(1280px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 72px;
+    }
+
+    .xplg-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 600;
+    }
+
+    .xplg-breadcrumb a {
+      color: #64748b;
+      text-decoration: none;
+    }
+
+    .xplg-breadcrumb a:hover {
+      color: #2563eb;
+    }
+
+    .xplg-hero {
+      margin-bottom: 24px;
+    }
+
+    .xplg-eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #16a34a;
+    }
+
+    .xplg-title {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: #0f172a;
+    }
+
+    .xplg-description {
+      max-width: 900px;
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.75;
+      color: #475569;
+    }
+
+    .xplg-toolbar {
+      position: sticky;
+      top: 79px;
+      z-index: 30;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 16px;
+      margin-bottom: 22px;
+      border: 1px solid #dbe3ee;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    .xplg-toolbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .xplg-toolbar-center {
+      display: flex;
+      justify-content: center;
+    }
+
+    .xplg-toolbar-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .xplg-brand-link {
+      color: #0f172a;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .xplg-brand-link:hover {
+      color: #2563eb;
+    }
+
+    .xplg-toolbar-link-btn,
+    .xplg-toolbar-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 10px;
+      border: 1px solid #dbe3ee;
+      background: #fff;
+      color: #0f172a;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .xplg-toolbar-link-btn:hover,
+    .xplg-toolbar-btn:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .xplg-toolbar-btn-primary {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #fff;
+    }
+
+    .xplg-toolbar-btn-primary:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    .xplg-toolbar-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #475569;
+      white-space: nowrap;
+    }
+
+    .xplg-paper-toggle-group {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .xplg-paper-toggle.is-active {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border-color: #93c5fd;
+    }
+
+    .xplg-document-stage {
+      display: flex;
+      justify-content: center;
+    }
+
+    .xplg-document-stage-inner {
+      width: 100%;
+      overflow: auto;
+      padding: 4px 0 0;
+    }
+
+    .xplg-seo-block,
+    .xplg-faq-block,
+    .xplg-related-block {
+      margin-top: 28px;
+    }
+
+    .xplg-seo-grid,
+    .xplg-related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .xplg-seo-card,
+    .xplg-related-card,
+    .xplg-faq-item {
+      border: 1px solid #dbe3ee;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .xplg-seo-card,
+    .xplg-related-card {
+      padding: 20px;
+    }
+
+    .xplg-seo-card h2,
+    .xplg-section-head h2,
+    .xplg-related-card h3 {
+      margin: 0 0 10px;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+
+    .xplg-seo-card h2,
+    .xplg-section-head h2 {
+      font-size: 1.2rem;
+      line-height: 1.3;
+    }
+
+    .xplg-related-card h3 {
+      font-size: 1.05rem;
+      line-height: 1.35;
+    }
+
+    .xplg-seo-card p,
+    .xplg-related-card p,
+    .xplg-faq-item p {
+      margin: 0;
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .xplg-section-head {
+      margin-bottom: 14px;
+    }
+
+    .xplg-faq-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .xplg-faq-item {
+      padding: 18px 20px;
+    }
+
+    .xplg-faq-item summary {
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f172a;
+      list-style: none;
+    }
+
+    .xplg-faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .xplg-faq-item p {
+      margin-top: 10px;
+    }
+
+    .xplg-related-card {
+      display: block;
+      text-decoration: none;
+      transition: 0.18s ease;
+    }
+
+    .xplg-related-card:hover {
+      border-color: #93c5fd;
+      box-shadow: 0 10px 28px rgba(37, 99, 235, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .xplg-document {
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+    }
+
+    .xplg-document.xplg-paper-letter {
+      width: 816px;
+      min-height: 1056px;
+    }
+
+    .xplg-document.xplg-paper-a4 {
+      width: 794px;
+      min-height: 1123px;
+    }
+
+    .xplg-document-inner {
+      padding: 54px 48px 48px;
+      color: #111827;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .xplg-doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #cbd5e1;
+    }
+
+    .xplg-doc-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .xplg-doc-meta {
+      min-width: 280px;
+    }
+
+    .xplg-doc-section {
+      margin-top: 16px;
+    }
+
+    .xplg-section-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .xplg-section-title {
+      margin: 0;
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .xplg-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .xplg-three-col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .xplg-box {
+      border: 1px solid #cbd5e1;
+      padding: 12px;
+    }
+
+    .xplg-field-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      min-height: 26px;
+      font-size: 10pt;
+      line-height: 1.45;
+    }
+
+    .xplg-field-row-block {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      align-items: start;
+      min-height: auto;
+      margin-bottom: 10px;
+    }
+
+    .xplg-field-row-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .xplg-field-label {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .xplg-doc-input,
+    .xplg-doc-textarea,
+    .xplg-doc-select {
+      width: 100%;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      color: #0f172a;
+      font: inherit;
+      padding: 6px 8px;
+      outline: none;
+      transition: 0.18s ease;
+    }
+
+    .xplg-inline-input {
+      padding: 2px 6px;
+    }
+
+    .xplg-doc-input:hover,
+    .xplg-doc-textarea:hover,
+    .xplg-doc-select:hover {
+      border-color: #dbe3ee;
+      background: #f8fafc;
+    }
+
+    .xplg-doc-input:focus,
+    .xplg-doc-textarea:focus,
+    .xplg-doc-select:focus {
+      border-color: #93c5fd;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.22);
+    }
+
+    .xplg-doc-textarea {
+      resize: vertical;
+    }
+
+    .xplg-compact-area,
+    .xplg-compact-remarks {
+      min-height: 64px;
+    }
+
+    .xplg-doc-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .xplg-doc-table th,
+    .xplg-doc-table td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 8px;
+      font-size: 9.5pt;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .xplg-packing-table td {
+      height: 36px;
+    }
+
+    .xplg-table-input {
+      padding: 4px 6px;
+      min-height: 28px;
+      border-radius: 6px;
+    }
+
+    .xplg-row-number {
+      vertical-align: middle;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .xplg-action-cell {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .xplg-remove-row-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid #dbe3ee;
+      background: #fff;
+      color: #64748b;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .xplg-remove-row-btn:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .xplg-add-item-inline-btn {
+      min-height: 34px;
+      padding: 0 12px;
+      font-size: 13px;
+    }
+
+    .xplg-totals-box {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0;
+      margin-top: 14px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .xplg-totals-row {
+      padding: 10px 12px;
+      border-right: 1px solid #cbd5e1;
+      font-size: 9.5pt;
+    }
+
+    .xplg-totals-row:last-child {
+      border-right: 0;
+    }
+
+    .xplg-totals-row span {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .xplg-totals-row strong {
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .xplg-toolbar {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .xplg-toolbar-left,
+      .xplg-toolbar-center,
+      .xplg-toolbar-right {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .xplg-container {
+        width: min(1280px, calc(100% - 24px));
+        padding: 28px 0 56px;
+      }
+
+      .xplg-breadcrumb {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .xplg-description {
+        font-size: 16px;
+      }
+
+      .xplg-two-col,
+      .xplg-three-col,
+      .xplg-totals-box {
+        grid-template-columns: 1fr;
+      }
+
+      .xplg-seo-grid,
+      .xplg-related-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+
+      #export-packing-list-document,
+      #export-packing-list-document * {
+        visibility: visible !important;
+      }
+
+      .site-header,
+      .site-footer,
+      .xplg-breadcrumb,
+      .xplg-hero,
+      .xplg-toolbar,
+      .xplg-edit-only {
+        display: none !important;
+      }
+
+      .xplg-page,
+      .xplg-container,
+      .xplg-document-stage,
+      .xplg-document-stage-inner {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+      }
+
+      #export-packing-list-document {
+        margin: 0 auto !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+    }
+  </style>
+</BaseLayout>

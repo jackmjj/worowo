@@ -1,0 +1,53 @@
+---
+interface Props {
+  paperId?: string;
+  defaultSize?: "a4" | "letter";
+}
+
+const { paperId = "documentPaper", defaultSize = "a4" } = Astro.props;
+const sizeClass = defaultSize === "letter" ? "document-paper-letter" : "document-paper-a4";
+---
+
+<div class="document-paper-shell">
+  <div id={paperId} class:list={["document-paper", sizeClass]}>
+    <slot />
+  </div>
+</div>
+
+<style>
+  .document-paper-shell {
+    background: linear-gradient(180deg, #f3f6fb 0%, #eef3f9 100%);
+    border: 1px solid #dbe4f0;
+    border-radius: 22px;
+    padding: 28px 26px;
+    overflow: auto;
+  }
+
+  .document-paper {
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    box-shadow: 0 28px 60px -38px rgba(15, 23, 42, 0.24);
+    box-sizing: border-box;
+    color: #0f172a;
+    overflow: hidden;
+  }
+
+  .document-paper-a4 {
+    width: 794px;
+    min-height: 1123px;
+    padding: 44px;
+  }
+
+  .document-paper-letter {
+    width: 816px;
+    min-height: 1056px;
+    padding: 44px;
+  }
+
+  @media (max-width: 900px) {
+    .document-paper-shell {
+      padding: 12px;
+    }
+  }
+</style>

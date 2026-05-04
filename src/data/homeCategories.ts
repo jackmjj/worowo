@@ -133,6 +133,7 @@ function getToolIcon(toolKey: string, toolType: ToolType): string {
     proforma_invoice_generator: makeIcon("fileCheck"),
     receipt_generator: makeIcon("receipt"),
     packing_list_generator: makeIcon("boxes"),
+    export_packing_list_generator: makeIcon("packageCheck"),
     packing_list_template: makeIcon("clipboardList"),
     delivery_receipt_generator: makeIcon("truck"),
     delivery_receipt_template: makeIcon("truck"),

@@ -1,0 +1,391 @@
+---
+import DocumentPaper from "../shared/DocumentPaper.astro";
+---
+
+<section class="epl-preview-card">
+  <div class="epl-preview-head">
+    <h2 class="epl-preview-title">Export Packing List Preview</h2>
+  </div>
+
+  <DocumentPaper paperId="packingListPaper" defaultSize="a4">
+    <div class="epl-doc-top">
+      <div class="epl-doc-title">PACKING LIST</div>
+
+      <div class="epl-doc-meta">
+        <div><strong>Packing List No.</strong><span id="previewPackingListNo">PL-XXXX</span></div>
+        <div><strong>Invoice No.</strong><span id="previewInvoiceNo">INV-XXXX</span></div>
+        <div><strong>Date</strong><span id="previewDate">YYYY-MM-DD</span></div>
+      </div>
+    </div>
+
+    <div class="epl-doc-rule"></div>
+
+    <div class="epl-doc-grid-2">
+      <div class="epl-doc-box">
+        <div class="epl-doc-box-title">Exporter / Seller</div>
+        <div id="previewExporter" class="epl-doc-content">Enter exporter details</div>
+      </div>
+
+      <div class="epl-doc-box">
+        <div class="epl-doc-box-title">Consignee</div>
+        <div id="previewConsignee" class="epl-doc-content">Enter consignee details</div>
+      </div>
+    </div>
+
+    <div class="epl-doc-grid-2">
+      <div class="epl-doc-box">
+        <div class="epl-doc-box-title">Shipment Details</div>
+        <div id="previewShipment" class="epl-doc-content">Enter shipment details</div>
+      </div>
+
+      <div class="epl-doc-box">
+        <div class="epl-doc-box-title">Shipping Marks / Remarks</div>
+        <div id="previewMarks" class="epl-doc-content">Enter shipping marks or remarks</div>
+      </div>
+    </div>
+
+    <table class="epl-doc-table">
+      <thead>
+        <tr>
+          <th style="width: 7%;">No.</th>
+          <th style="width: 33%;">Description</th>
+          <th style="width: 10%;">Qty</th>
+          <th style="width: 10%;">Unit</th>
+          <th style="width: 10%;">Cartons</th>
+          <th style="width: 12%;">Net Wt (kg)</th>
+          <th style="width: 12%;">Gross Wt (kg)</th>
+          <th style="width: 10%;">CBM</th>
+        </tr>
+      </thead>
+      <tbody id="previewItemsBody"></tbody>
+    </table>
+
+    <div class="epl-doc-totals">
+      <div class="epl-doc-totals-title">Totals</div>
+      <div class="epl-doc-total-row">
+        <span>Total Quantity</span><strong id="previewTotalQty">0</strong>
+      </div>
+      <div class="epl-doc-total-row">
+        <span>Total Cartons</span><strong id="previewTotalCartons">0</strong>
+      </div>
+      <div class="epl-doc-total-row">
+        <span>Total Net Weight</span><strong id="previewTotalNetWeight">0.00 kg</strong>
+      </div>
+      <div class="epl-doc-total-row">
+        <span>Total Gross Weight</span><strong id="previewTotalGrossWeight">0.00 kg</strong>
+      </div>
+      <div class="epl-doc-total-row">
+        <span>Total CBM</span><strong id="previewTotalCbm">0.000</strong>
+      </div>
+    </div>
+
+    <div class="epl-doc-sign">
+      <div>
+        <div class="epl-doc-sign-title">Prepared By</div>
+        <div class="epl-sign-line"></div>
+        <div id="previewPreparedBy" class="epl-sign-name"></div>
+      </div>
+
+      <div>
+        <div class="epl-doc-sign-title">Authorized Signature</div>
+        <div class="epl-sign-line"></div>
+        <div id="previewAuthorizedSignature" class="epl-sign-name"></div>
+      </div>
+    </div>
+  </DocumentPaper>
+</section>
+
+<style>
+  .epl-preview-card {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .epl-preview-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .epl-preview-title {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+    color: #475569;
+    text-transform: uppercase;
+  }
+
+  .epl-doc-top {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .epl-doc-title {
+    text-align: left;
+    font-size: 28px;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+    color: #0f172a;
+  }
+
+  .epl-doc-meta {
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #0f172a;
+  }
+
+  .epl-doc-meta div {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 12px;
+  }
+
+  .epl-doc-meta strong {
+    font-weight: 800;
+  }
+
+  .epl-doc-rule {
+    height: 2px;
+    background: #dbe4f0;
+    margin: 18px 0 16px;
+  }
+
+  .epl-doc-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .epl-doc-box {
+    border: 1px solid #dbe4f0;
+    min-height: 136px;
+    padding: 12px 12px 14px;
+    background: #ffffff;
+    box-shadow: none;
+  }
+
+  .epl-doc-box-title,
+  .epl-doc-totals-title,
+  .epl-doc-sign-title {
+    font-size: 11px;
+    line-height: 1.25;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+
+  .epl-doc-content {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #0f172a;
+    white-space: pre-line;
+  }
+
+  .epl-doc-placeholder {
+    color: #94a3b8;
+  }
+
+  .epl-doc-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 12px;
+  }
+
+  .epl-doc-table th,
+  .epl-doc-table td {
+    border: 1px solid #dbe4f0;
+    padding: 7px 8px;
+    font-size: 10.5px;
+    line-height: 1.42;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .epl-doc-table th {
+    background: #ffffff;
+    color: #0f172a;
+    font-weight: 800;
+  }
+
+  .epl-doc-totals {
+    width: 300px;
+    margin-left: auto;
+    margin-top: 18px;
+    border: 1px solid #dbe4f0;
+    padding: 12px 12px 10px;
+    background: #ffffff;
+  }
+
+  .epl-doc-total-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    font-size: 11.5px;
+    color: #475569;
+    padding: 4px 0;
+  }
+
+  .epl-doc-sign {
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .epl-sign-line {
+    border-top: 1px solid #cbd5e1;
+    width: 100%;
+    height: 1px;
+  }
+
+  .epl-sign-name {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #0f172a;
+    min-height: 18px;
+  }
+
+  @media (max-width: 900px) {
+    .epl-preview-card {
+      padding: 0;
+    }
+
+    .epl-doc-grid-2,
+    .epl-doc-sign {
+      grid-template-columns: 1fr;
+    }
+
+    .epl-doc-top {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media print {
+    @page {
+      margin: 0;
+    }
+
+    :global(body.print-a4) {
+      width: 210mm;
+    }
+
+    :global(body.print-letter) {
+      width: 8.5in;
+    }
+
+    :global(html),
+    :global(body) {
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #ffffff !important;
+    }
+
+    :global(body *) {
+      visibility: hidden !important;
+    }
+
+    :global(#packingListPaper),
+    :global(#packingListPaper *) {
+      visibility: visible !important;
+    }
+
+    :global(#packingListPaper) {
+      position: absolute;
+      left: 0;
+      top: 0;
+      margin: 0 !important;
+      box-shadow: none !important;
+      background: #ffffff !important;
+      overflow: hidden !important;
+      border: none !important;
+    }
+
+    :global(#packingListPaper.document-paper-a4) {
+      width: 210mm !important;
+      min-height: 297mm !important;
+      padding: 12mm !important;
+    }
+
+    :global(#packingListPaper.document-paper-letter) {
+      width: 8.5in !important;
+      min-height: 11in !important;
+      padding: 0.45in !important;
+    }
+
+    :global(.document-paper-shell),
+    .epl-preview-card,
+    :global(.document-generator-layout-page),
+    :global(.document-generator-layout-shell),
+    :global(.tool-main),
+    :global(.tool-grid),
+    :global(main) {
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      background: #ffffff !important;
+    }
+
+    .epl-preview-head {
+      display: none !important;
+    }
+
+    .epl-doc-top {
+      margin-bottom: 14px !important;
+      padding-bottom: 14px !important;
+    }
+
+    .epl-doc-title {
+      font-size: 22px !important;
+    }
+
+    .epl-doc-box {
+      min-height: auto !important;
+      padding: 10px !important;
+    }
+
+    .epl-doc-grid-2 {
+      gap: 10px !important;
+      margin-bottom: 10px !important;
+    }
+
+    .epl-doc-table {
+      margin-top: 12px !important;
+      font-size: 9.5px !important;
+    }
+
+    .epl-doc-table th,
+    .epl-doc-table td {
+      padding: 5px !important;
+    }
+
+    .epl-doc-totals {
+      margin-top: 18px !important;
+      margin-bottom: 24px !important;
+      padding: 10px !important;
+      font-size: 10px !important;
+    }
+
+    .epl-doc-sign {
+      margin-top: 34px !important;
+    }
+  }
+</style>

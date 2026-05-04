@@ -1,0 +1,328 @@
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const itemsTableBody = document.getElementById("itemsTableBody");
+    const addItemButton = document.getElementById("addItemButton");
+    const resetButton = document.getElementById("resetButton");
+    const printButton = document.getElementById("printButton");
+    const packingListPaper = document.getElementById("packingListPaper");
+    const a4Button = document.getElementById("a4Button");
+    const letterButton = document.getElementById("letterButton");
+
+    const fields = {
+      packingListNo: document.getElementById("packingListNo"),
+      invoiceNo: document.getElementById("invoiceNo"),
+      docDate: document.getElementById("docDate"),
+      exporterName: document.getElementById("exporterName"),
+      exporterAddress: document.getElementById("exporterAddress"),
+      exporterContact: document.getElementById("exporterContact"),
+      consigneeName: document.getElementById("consigneeName"),
+      consigneeAddress: document.getElementById("consigneeAddress"),
+      consigneeContact: document.getElementById("consigneeContact"),
+      shipmentFrom: document.getElementById("shipmentFrom"),
+      shipmentTo: document.getElementById("shipmentTo"),
+      shipmentMethod: document.getElementById("shipmentMethod"),
+      portOfLoading: document.getElementById("portOfLoading"),
+      portOfDischarge: document.getElementById("portOfDischarge"),
+      etd: document.getElementById("etd"),
+      eta: document.getElementById("eta"),
+      shippingMarks: document.getElementById("shippingMarks"),
+      remarks: document.getElementById("remarks"),
+      preparedBy: document.getElementById("preparedBy"),
+      authorizedSignature: document.getElementById("authorizedSignature"),
+    };
+
+    const preview = {
+      packingListNo: document.getElementById("previewPackingListNo"),
+      invoiceNo: document.getElementById("previewInvoiceNo"),
+      date: document.getElementById("previewDate"),
+      exporter: document.getElementById("previewExporter"),
+      consignee: document.getElementById("previewConsignee"),
+      shipment: document.getElementById("previewShipment"),
+      marks: document.getElementById("previewMarks"),
+      itemsBody: document.getElementById("previewItemsBody"),
+      totalQty: document.getElementById("previewTotalQty"),
+      totalCartons: document.getElementById("previewTotalCartons"),
+      totalNetWeight: document.getElementById("previewTotalNetWeight"),
+      totalGrossWeight: document.getElementById("previewTotalGrossWeight"),
+      totalCbm: document.getElementById("previewTotalCbm"),
+      preparedBy: document.getElementById("previewPreparedBy"),
+      authorizedSignature: document.getElementById("previewAuthorizedSignature"),
+    };
+
+    const totalsBox = {
+      totalQty: document.getElementById("totalQty"),
+      totalCartons: document.getElementById("totalCartons"),
+      totalNetWeight: document.getElementById("totalNetWeight"),
+      totalGrossWeight: document.getElementById("totalGrossWeight"),
+      totalCbm: document.getElementById("totalCbm"),
+    };
+
+    let items = [createItem(), createItem()];
+    let currentPaperSize = "a4";
+
+    function createItem(data = {}) {
+      return {
+        description: data.description || "",
+        qty: data.qty || "",
+        unit: data.unit || "",
+        cartons: data.cartons || "",
+        netWeight: data.netWeight || "",
+        grossWeight: data.grossWeight || "",
+        cbm: data.cbm || "",
+      };
+    }
+
+    function escapeHtml(str = "") {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function numberValue(value) {
+      const n = Number.parseFloat(value);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function formatDate(value) {
+      return value || "YYYY-MM-DD";
+    }
+
+    function renderItems() {
+      itemsTableBody.innerHTML = "";
+
+      items.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>
+            <input type="text" class="epl-item-desc item-desc" data-field="description" data-index="${index}" placeholder="Enter item description" value="${escapeHtml(item.description)}" />
+          </td>
+          <td>
+            <input type="number" data-field="qty" data-index="${index}" placeholder="0" value="${escapeHtml(item.qty || "0")}" min="0" step="1" />
+          </td>
+          <td>
+            <input type="text" data-field="unit" data-index="${index}" placeholder="pcs" value="${escapeHtml(item.unit)}" />
+          </td>
+          <td>
+            <input type="number" data-field="cartons" data-index="${index}" placeholder="0" value="${escapeHtml(item.cartons || "0")}" min="0" step="1" />
+          </td>
+          <td>
+            <input type="number" data-field="netWeight" data-index="${index}" placeholder="0.00" value="${escapeHtml(item.netWeight || "0")}" min="0" step="0.01" />
+          </td>
+          <td>
+            <input type="number" data-field="grossWeight" data-index="${index}" placeholder="0.00" value="${escapeHtml(item.grossWeight || "0")}" min="0" step="0.01" />
+          </td>
+          <td>
+            <input type="number" data-field="cbm" data-index="${index}" placeholder="0.000" value="${escapeHtml(item.cbm || "0")}" min="0" step="0.001" />
+          </td>
+          <td>
+            <button type="button" class="epl-item-remove remove-item-btn" data-remove="${index}" aria-label="Remove item">
+              ×
+            </button>
+          </td>
+        `;
+
+        itemsTableBody.appendChild(row);
+      });
+
+      itemsTableBody.querySelectorAll("[data-field]").forEach((input) => {
+        input.addEventListener("input", (event) => {
+          const index = Number(event.target.dataset.index);
+          const field = event.target.dataset.field;
+          items[index][field] = event.target.value;
+          renderPreview();
+          syncItemRowFocus();
+        });
+
+        input.addEventListener("focus", syncItemRowFocus);
+        input.addEventListener("blur", () => {
+          setTimeout(syncItemRowFocus, 10);
+        });
+      });
+
+      itemsTableBody.querySelectorAll("[data-remove]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          if (items.length <= 1) return;
+          const index = Number(btn.dataset.remove);
+          items.splice(index, 1);
+          renderItems();
+          renderPreview();
+        });
+      });
+
+      syncItemRowFocus();
+    }
+
+    function syncItemRowFocus() {
+      const focused = document.activeElement;
+      itemsTableBody.querySelectorAll("tr").forEach((row) => {
+        row.classList.remove("is-focused");
+      });
+
+      if (focused && focused.closest("tr")) {
+        focused.closest("tr").classList.add("is-focused");
+      }
+    }
+
+    function calculateTotals() {
+      return items.reduce(
+        (acc, item) => {
+          acc.qty += numberValue(item.qty);
+          acc.cartons += numberValue(item.cartons);
+          acc.netWeight += numberValue(item.netWeight);
+          acc.grossWeight += numberValue(item.grossWeight);
+          acc.cbm += numberValue(item.cbm);
+          return acc;
+        },
+        { qty: 0, cartons: 0, netWeight: 0, grossWeight: 0, cbm: 0 }
+      );
+    }
+
+    function setPaperSize(size) {
+      currentPaperSize = size;
+
+      packingListPaper.classList.remove("document-paper-a4", "document-paper-letter");
+      document.body.classList.remove("print-a4", "print-letter");
+
+      if (size === "letter") {
+        packingListPaper.classList.add("document-paper-letter");
+        document.body.classList.add("print-letter");
+        letterButton.classList.add("active");
+        a4Button.classList.remove("active");
+      } else {
+        packingListPaper.classList.add("document-paper-a4");
+        document.body.classList.add("print-a4");
+        a4Button.classList.add("active");
+        letterButton.classList.remove("active");
+      }
+    }
+
+    function renderPreview() {
+      preview.packingListNo.textContent = fields.packingListNo.value.trim() || "PL-XXXX";
+      preview.invoiceNo.textContent = fields.invoiceNo.value.trim() || "INV-XXXX";
+      preview.date.textContent = formatDate(fields.docDate.value);
+
+      const exporterLines = [
+        fields.exporterName.value.trim(),
+        fields.exporterAddress.value.trim(),
+        fields.exporterContact.value.trim(),
+      ].filter(Boolean);
+
+      preview.exporter.innerHTML = exporterLines.length
+        ? exporterLines.map((line) => escapeHtml(line)).join("<br>")
+        : '<span class="epl-doc-placeholder">Enter exporter details</span>';
+
+      const consigneeLines = [
+        fields.consigneeName.value.trim(),
+        fields.consigneeAddress.value.trim(),
+        fields.consigneeContact.value.trim(),
+      ].filter(Boolean);
+
+      preview.consignee.innerHTML = consigneeLines.length
+        ? consigneeLines.map((line) => escapeHtml(line)).join("<br>")
+        : '<span class="epl-doc-placeholder">Enter consignee details</span>';
+
+      const shipmentRows = [
+        ["From", fields.shipmentFrom.value.trim()],
+        ["To", fields.shipmentTo.value.trim()],
+        ["Shipment Method", fields.shipmentMethod.value.trim()],
+        ["Port of Loading", fields.portOfLoading.value.trim()],
+        ["Port of Discharge", fields.portOfDischarge.value.trim()],
+        ["ETD", fields.etd.value],
+        ["ETA", fields.eta.value],
+      ];
+
+      preview.shipment.innerHTML = shipmentRows
+        .map(([label, value]) => `${escapeHtml(label)}: ${escapeHtml(value || "—")}`)
+        .join("<br>");
+
+      const marksParts = [];
+      if (fields.shippingMarks.value.trim()) marksParts.push(fields.shippingMarks.value.trim());
+      if (fields.remarks.value.trim()) marksParts.push(fields.remarks.value.trim());
+
+      preview.marks.innerHTML = marksParts.length
+        ? marksParts.map((part) => escapeHtml(part)).join("<br><br>")
+        : '<span class="epl-doc-placeholder">Enter shipping marks or remarks</span>';
+
+      preview.itemsBody.innerHTML =
+        items
+          .map(
+            (item, index) => `
+              <tr>
+                <td>${index + 1}</td>
+                <td>${escapeHtml(item.description)}</td>
+                <td>${escapeHtml(item.qty)}</td>
+                <td>${escapeHtml(item.unit)}</td>
+                <td>${escapeHtml(item.cartons)}</td>
+                <td>${escapeHtml(item.netWeight)}</td>
+                <td>${escapeHtml(item.grossWeight)}</td>
+                <td>${escapeHtml(item.cbm)}</td>
+              </tr>
+            `
+          )
+          .join("") +
+        `
+          <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        `;
+
+      const totals = calculateTotals();
+
+      totalsBox.totalQty.textContent = String(totals.qty || 0);
+      totalsBox.totalCartons.textContent = String(totals.cartons || 0);
+      totalsBox.totalNetWeight.textContent = totals.netWeight.toFixed(2);
+      totalsBox.totalGrossWeight.textContent = totals.grossWeight.toFixed(2);
+      totalsBox.totalCbm.textContent = totals.cbm.toFixed(3);
+
+      preview.totalQty.textContent = String(totals.qty || 0);
+      preview.totalCartons.textContent = String(totals.cartons || 0);
+      preview.totalNetWeight.textContent = `${totals.netWeight.toFixed(2)} kg`;
+      preview.totalGrossWeight.textContent = `${totals.grossWeight.toFixed(2)} kg`;
+      preview.totalCbm.textContent = totals.cbm.toFixed(3);
+
+      preview.preparedBy.textContent = fields.preparedBy.value.trim();
+      preview.authorizedSignature.textContent = fields.authorizedSignature.value.trim();
+    }
+
+    function resetAll() {
+      Object.values(fields).forEach((field) => {
+        field.value = "";
+      });
+
+      items = [createItem(), createItem()];
+      renderItems();
+      renderPreview();
+    }
+
+    Object.values(fields).forEach((field) => {
+      field.addEventListener("input", renderPreview);
+      field.addEventListener("change", renderPreview);
+    });
+
+    addItemButton.addEventListener("click", () => {
+      items.push(createItem());
+      renderItems();
+      renderPreview();
+    });
+
+    a4Button.addEventListener("click", () => {
+      setPaperSize("a4");
+    });
+
+    letterButton.addEventListener("click", () => {
+      setPaperSize("letter");
+    });
+
+    resetButton.addEventListener("click", resetAll);
+    printButton.addEventListener("click", () => {
+      renderPreview();
+      window.print();
+    });
+
+    renderItems();
+    renderPreview();
+    setPaperSize(currentPaperSize);
+  });
+</script>
