@@ -46,7 +46,6 @@ function getToolIcon(tool: ToolDictionaryItem): string {
     commercial_invoice_generator: "invoice",
     proforma_invoice_generator: "invoice",
     purchase_order_generator: "invoice",
-    receipt_generator: "receipt",
     invoice_template: "invoice",
     packing_list_generator: "packing",
     packing_list_template: "packing",
@@ -104,7 +103,6 @@ function getCategorySections(categoryKey: CategoryKey): CategoryPageSection[] {
     const toolKeys = [
       "packing_list_generator",
       "export_packing_list_generator",
-      "packing_list_template",
       "delivery_receipt_generator",
     ];
 

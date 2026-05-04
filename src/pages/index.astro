@@ -269,9 +269,9 @@ import { homeCategories } from "../data/homeCategories";
   }
 
   .card-meta-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
     gap: 14px;
   }
 
@@ -281,6 +281,7 @@ import { homeCategories } from "../data/homeCategories";
     line-height: 1.62;
     font-size: 1.02rem;
     max-width: 30ch;
+    min-height: calc(1.62em * 5);
   }
 
   .category-link:hover {
@@ -302,6 +303,7 @@ import { homeCategories } from "../data/homeCategories";
     white-space: nowrap;
     flex-shrink: 0;
     margin-top: 2px;
+    align-self: start;
   }
 
   .tool-list {
@@ -376,6 +378,7 @@ import { homeCategories } from "../data/homeCategories";
     color: var(--text-soft);
     font-size: 0.92rem;
     line-height: 1.58;
+    min-height: calc(1.58em * 3);
   }
 
   .tool-trailing {
@@ -512,8 +515,7 @@ import { homeCategories } from "../data/homeCategories";
     }
 
     .card-meta-row {
-      flex-direction: column;
-      align-items: flex-start;
+      grid-template-columns: 1fr;
       gap: 10px;
     }
 

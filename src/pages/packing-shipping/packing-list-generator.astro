@@ -1,11 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getBlankTemplateForTool } from "../../data/toolRelations";
 
 const pageTitle = "Packing List Generator";
 const pageDescription =
   "Create a simple packing list online, fill in shipment details, and print or save a completed packing list as PDF. Ideal for small businesses, e-commerce orders, and everyday shipping use.";
-const blankTemplate = getBlankTemplateForTool("packing_list_generator");
 const canonical = "https://www.worowo.com/packing-shipping/packing-list-generator/";
 
 const faqItems = [
@@ -34,11 +32,6 @@ const relatedTools = [
       "Create an export-style packing list with exporter, consignee, shipment details, weights, and CBM.",
   },
   {
-    title: blankTemplate?.title || "Packing List Template",
-    href: blankTemplate?.href || "/printable-templates/simple-packing-list-template/",
-    description: "Use a printable blank packing list template when you need a handwritten version.",
-  },
-  {
     title: "Delivery Receipt Generator",
     href: "/packing-shipping/delivery-receipt-generator/",
     description: "Generate a delivery receipt for proof of handover and signature collection.",
@@ -65,13 +58,6 @@ const relatedTools = [
         <span class="generator-eyebrow">Packing & Shipping</span>
         <h1 class="generator-title">{pageTitle}</h1>
         <p class="generator-description">{pageDescription}</p>
-        {blankTemplate && (
-          <div class="generator-hero-links">
-            <a href={blankTemplate.href} class="generator-inline-link">
-              Need a blank version for handwriting? View the {blankTemplate.title}.
-            </a>
-          </div>
-        )}
       </section>
 
       <div class="document-toolbar">

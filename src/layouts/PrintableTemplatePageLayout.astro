@@ -3,6 +3,17 @@ import BaseLayout from "./BaseLayout.astro";
 import "../styles/printable-template.css";
 import PrintablePreviewFrame from "../components/printable/PrintablePreviewFrame.astro";
 
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface RelatedTool {
+  name: string;
+  href: string;
+  desc: string;
+}
+
 interface Props {
   pageTitle: string;
   description: string;
@@ -12,6 +23,10 @@ interface Props {
   printHref: string;
   backHref?: string;
   canonical?: string;
+  categoryLabel?: string;
+  categoryHref?: string;
+  faqItems?: FaqItem[];
+  relatedTools?: RelatedTool[];
 }
 
 const {
@@ -23,6 +38,10 @@ const {
   printHref,
   backHref = "/printable-templates/",
   canonical,
+  categoryLabel = "Printable Templates",
+  categoryHref = "/printable-templates/",
+  faqItems = [],
+  relatedTools = [],
 } = Astro.props;
 ---
 
@@ -30,6 +49,14 @@ const {
   <main class="printable-page-shell">
     <div class="page-wrap">
       <section class="hero">
+        <nav class="template-breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <span>&gt;</span>
+          <a href={categoryHref}>{categoryLabel}</a>
+          <span>&gt;</span>
+          <span>{pageTitle}</span>
+        </nav>
+
         <span class="eyebrow">{eyebrow}</span>
         <h1 class="page-title">{pageTitle}</h1>
         <p class="page-description">{description}</p>
@@ -45,6 +72,49 @@ const {
       </PrintablePreviewFrame>
 
       <slot name="note" />
+
+      {Astro.slots.has("content") && (
+        <section class="template-content">
+          <div class="template-content-grid">
+            <slot name="content" />
+          </div>
+        </section>
+      )}
+
+      {(faqItems.length > 0 || Astro.slots.has("faq")) && (
+        <section class="template-faq">
+          <h2 class="template-section-title">FAQ</h2>
+
+          {faqItems.length > 0 && (
+            <div class="template-faq-list">
+              {faqItems.map((item) => (
+                <details>
+                  <summary>{item.question}</summary>
+                  <p>{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          )}
+
+          <slot name="faq" />
+        </section>
+      )}
+
+      {relatedTools.length > 0 && (
+        <section class="template-related">
+          <h2 class="template-section-title">Related Tools</h2>
+
+          <div class="template-related-grid">
+            {relatedTools.map((tool) => (
+              <a href={tool.href} class="template-related-card">
+                <span class="template-related-name">{tool.name}</span>
+                <span class="template-related-desc">{tool.desc}</span>
+                <span class="template-related-arrow">→</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   </main>
 
@@ -52,6 +122,129 @@ const {
     .printable-page-shell {
       min-height: calc(100vh - 79px);
       background: var(--page-bg);
+    }
+
+    .template-breadcrumb {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .template-breadcrumb a:hover {
+      color: var(--primary);
+    }
+
+    .template-content,
+    .template-faq,
+    .template-related {
+      margin-top: 28px;
+    }
+
+    .template-content-grid,
+    .template-related-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .template-section-title,
+    .template-content-grid :global(.content-card h2) {
+      margin: 0 0 10px;
+      font-size: 1.5rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .template-content-grid :global(.content-card),
+    .template-related-card,
+    .template-faq-list details {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 16px 40px -28px rgba(15, 23, 42, 0.25);
+    }
+
+    .template-content-grid :global(.content-card) {
+      padding: 24px;
+    }
+
+    .template-content-grid :global(.content-card p),
+    .template-content-grid :global(.content-card li) {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .template-content-grid :global(.content-card ul) {
+      margin: 14px 0 0;
+      padding-left: 18px;
+    }
+
+    .template-faq-list {
+      display: grid;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .template-faq-list details {
+      padding: 18px 20px;
+    }
+
+    .template-faq-list summary {
+      cursor: pointer;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .template-faq-list p {
+      margin: 14px 0 0;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .template-related-card {
+      position: relative;
+      display: block;
+      padding: 22px;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .template-related-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--text);
+    }
+
+    .template-related-name {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .template-related-desc {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 90%;
+    }
+
+    .template-related-arrow {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 1.1rem;
+      color: var(--primary);
+    }
+
+    @media (max-width: 900px) {
+      .template-content-grid,
+      .template-related-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </BaseLayout>

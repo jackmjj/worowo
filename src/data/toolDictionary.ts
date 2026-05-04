@@ -114,24 +114,6 @@ export const toolDictionary = {
     order: 125,
   },
 
-  receipt_generator: {
-    key: "receipt_generator",
-    categoryKey: "quotes_invoices",
-    title: "Receipt Generator",
-    shortTitle: "Receipt Generator",
-    href: "/receipt-generator/",
-    type: "generator",
-    status: "coming_soon",
-    description:
-      "Generate simple receipts for payments received, cash sales, and record keeping.",
-    menuTitle: "Receipt Generator",
-    showInHeaderMenu: true,
-    featuredInHeaderMenu: true,
-    showOnHome: true,
-    featuredOnCategoryPage: true,
-    order: 130,
-  },
-
   invoice_template: {
     key: "invoice_template",
     categoryKey: "printable_templates",
@@ -167,7 +149,6 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 200,
-    blankTemplateKey: "packing_list_template",
   },
 
   export_packing_list_generator: {
@@ -181,8 +162,8 @@ export const toolDictionary = {
     description:
       "Create a professional export packing list with exporter, consignee, shipment details, item totals, and print-ready PDF output.",
     menuTitle: "Export Packing List Generator",
-    showInHeaderMenu: false,
-    featuredInHeaderMenu: false,
+    showInHeaderMenu: true,
+    featuredInHeaderMenu: true,
     showOnHome: false,
     featuredOnCategoryPage: true,
     order: 205,
@@ -424,7 +405,6 @@ export function getHeaderMenuToolsByCategory(categoryKey: CategoryKey) {
   return toolList.filter(
     (tool) =>
       tool.categoryKey === categoryKey &&
-      tool.showInHeaderMenu &&
-      tool.featuredInHeaderMenu
+      tool.showInHeaderMenu
   );
 }

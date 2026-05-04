@@ -13,12 +13,123 @@ const page = getCategoryPageData("printable_templates");
   canonical="https://www.worowo.com/printable-templates/"
   theme={page.theme}
 >
-  {page.sections.map((section) => (
-    <ToolListSection
-      title={section.title}
-      description={section.description}
-      tools={section.tools}
-      theme={page.theme}
-    />
-  ))}
+  <div class="printable-sections-grid">
+    {page.sections.map((section) => (
+      <div class="printable-section-item">
+        <ToolListSection
+          title={section.title}
+          description={section.description}
+          tools={section.tools}
+          theme={page.theme}
+        />
+      </div>
+    ))}
+  </div>
 </ToolCategoryPageLayout>
+
+<style>
+  .printable-sections-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 20px;
+    align-items: start;
+  }
+
+  .printable-section-item {
+    min-width: 0;
+  }
+
+  .printable-section-item :global(.tool-section) {
+    margin-top: 0;
+  }
+
+  .printable-section-item :global(.tool-section-head) {
+    margin-bottom: 12px;
+  }
+
+  .printable-section-item :global(.tool-section-eyebrow) {
+    margin-bottom: 5px;
+    font-size: 11px;
+  }
+
+  .printable-section-item :global(.tool-section-title) {
+    font-size: clamp(20px, 2vw, 28px);
+    line-height: 1.15;
+  }
+
+  .printable-section-item :global(.tool-section-description) {
+    margin-top: 6px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .printable-section-item :global(.tool-list-grid) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .printable-section-item :global(.tool-list-item) {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .printable-section-item :global(.tool-item-icon) {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  .printable-section-item :global(.tool-item-title) {
+    font-size: 18px;
+  }
+
+  .printable-section-item :global(.tool-item-description) {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  :global(.category-page-inner) {
+    padding-top: 36px;
+  }
+
+  :global(.category-hero) {
+    margin-bottom: 24px;
+    padding-top: 0;
+  }
+
+  :global(.category-eyebrow) {
+    margin-bottom: 8px;
+  }
+
+  :global(.category-title) {
+    margin-bottom: 10px;
+    font-size: clamp(32px, 4vw, 48px);
+  }
+
+  :global(.category-description) {
+    max-width: 780px;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  :global(.category-content) {
+    gap: 18px;
+  }
+
+  @media (max-width: 900px) {
+    .printable-sections-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    :global(.category-page-inner) {
+      padding-top: 28px;
+    }
+
+    :global(.category-hero) {
+      margin-bottom: 18px;
+    }
+  }
+</style>
