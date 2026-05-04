@@ -1,0 +1,1117 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const pageTitle = "Commercial Invoice Generator";
+const pageDescription =
+  "Create a professional commercial invoice online for international shipments with buyer, seller, shipping details, HS codes, item values, and print-ready totals.";
+const canonical = "https://www.worowo.com/quotes-invoices/commercial-invoice-generator/";
+
+const faqItems = [
+  {
+    question: "What is a commercial invoice used for?",
+    answer:
+      "A commercial invoice is used in international trade to describe goods, declare shipment value, and support customs, freight, and buyer documentation requirements.",
+  },
+  {
+    question: "Can I print the commercial invoice or save it as PDF?",
+    answer:
+      "Yes. You can fill in the commercial invoice directly in the document view, then print it or save it as PDF for shipping, customs support, and overseas customers.",
+  },
+  {
+    question: "Does this generator calculate totals automatically?",
+    answer:
+      "Yes. Line values, freight, insurance, subtotal, and grand total are calculated automatically as you edit the commercial invoice.",
+  },
+];
+
+const relatedTools = [
+  {
+    title: "Invoice Generator",
+    href: "/quotes-invoices/invoice-generator/",
+    description: "Create a standard invoice for billing customers, service work, and local business use.",
+  },
+  {
+    title: "Export Packing List Generator",
+    href: "/packing-shipping/export-packing-list-generator/",
+    description: "Prepare an export packing list with cartons, weights, CBM, shipment details, and document totals.",
+  },
+  {
+    title: "Packing List Generator",
+    href: "/packing-shipping/packing-list-generator/",
+    description: "Create a simple packing list for order packing, dispatch records, and shipping paperwork.",
+  },
+];
+---
+
+<BaseLayout
+  title={`${pageTitle} | Worowo`}
+  description={pageDescription}
+  canonical={canonical}
+>
+  <main class="commercial-invoice-page">
+    <div class="commercial-invoice-inner">
+      <nav class="generator-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span>></span>
+        <a href="/quotes-invoices/">Quotes & Invoices</a>
+        <span>></span>
+        <span aria-current="page">Commercial Invoice Generator</span>
+      </nav>
+
+      <section class="generator-hero">
+        <span class="generator-eyebrow">Quotes & Invoices</span>
+        <h1 class="generator-title">{pageTitle}</h1>
+        <p class="generator-description">{pageDescription}</p>
+      </section>
+
+      <div class="document-toolbar">
+        <div class="document-toolbar-left">
+          <a href="/" class="brand-link">worowo</a>
+        </div>
+
+        <div class="document-toolbar-center">
+          <a href="/quotes-invoices/" class="toolbar-link-btn">Back to Quotes & Invoices</a>
+        </div>
+
+        <div class="document-toolbar-right">
+          <span class="toolbar-label">Paper Size</span>
+
+          <div class="paper-toggle-group">
+            <button type="button" class="toolbar-btn paper-toggle" data-paper="letter">
+              US Letter
+            </button>
+            <button type="button" class="toolbar-btn paper-toggle is-active" data-paper="a4">
+              A4
+            </button>
+          </div>
+
+          <button type="button" class="toolbar-btn" id="resetBtn">Reset Form</button>
+          <button type="button" class="toolbar-btn toolbar-btn-primary" id="printBtn">
+            Print / Save as PDF
+          </button>
+        </div>
+      </div>
+
+      <section class="document-stage">
+        <div class="document-stage-inner">
+          <div id="commercial-invoice-document" class="commercial-document paper-a4">
+            <div class="commercial-document-inner">
+              <div class="doc-header">
+                <div>
+                  <div class="doc-title">COMMERCIAL INVOICE</div>
+                  <div class="doc-subtitle">International trade document for customs and shipment valuation</div>
+                </div>
+
+                <div class="doc-meta">
+                  <div class="field-row">
+                    <span class="field-label">Invoice No.:</span>
+                    <input id="invoiceNumber" class="doc-input inline-input" type="text" />
+                  </div>
+                  <div class="field-row">
+                    <span class="field-label">Date:</span>
+                    <input id="invoiceDate" class="doc-input inline-input" type="date" />
+                  </div>
+                  <div class="field-row">
+                    <span class="field-label">Currency:</span>
+                    <input id="currencyCode" class="doc-input inline-input short-inline-input" type="text" value="USD" maxlength="8" />
+                  </div>
+                </div>
+              </div>
+
+              <section class="doc-section">
+                <div class="two-col">
+                  <div class="box">
+                    <h2 class="section-title">Exporter / Seller</h2>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Company Name:</span>
+                      <input id="sellerName" class="doc-input" type="text" />
+                    </div>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Address:</span>
+                      <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2"></textarea>
+                    </div>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Contact:</span>
+                      <input id="sellerContact" class="doc-input" type="text" />
+                    </div>
+                  </div>
+
+                  <div class="box">
+                    <h2 class="section-title">Consignee / Buyer</h2>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Company Name:</span>
+                      <input id="buyerName" class="doc-input" type="text" />
+                    </div>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Address:</span>
+                      <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2"></textarea>
+                    </div>
+                    <div class="field-row field-row-block">
+                      <span class="field-label">Contact:</span>
+                      <input id="buyerContact" class="doc-input" type="text" />
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="doc-section">
+                <h2 class="section-title">Shipment Details</h2>
+                <div class="box">
+                  <div class="three-col">
+                    <div>
+                      <div class="field-row field-row-block">
+                        <span class="field-label">Ship From:</span>
+                        <input id="shipFrom" class="doc-input" type="text" />
+                      </div>
+                      <div class="field-row field-row-block">
+                        <span class="field-label">Port of Loading:</span>
+                        <input id="portOfLoading" class="doc-input" type="text" />
+                      </div>
+                      <div class="field-row field-row-block">
+                        <span class="field-label">Country of Origin:</span>
+                        <input id="countryOfOrigin" class="doc-input" type="text" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="field-row field-row-block">
+                        <span class="field-label">Ship To:</span>
+                        <input id="shipTo" class="doc-input" type="text" />
+                      </div>
+                      <div class="field-row field-row-block">
+                        <span class="field-label">Port of Discharge:</span>
+                        <input id="portOfDischarge" class="doc-input" type="text" />
+                      </div>
+                      <div class="field-row field-row-block">
+                        <span class="field-label">Incoterms:</span>
+                        <input id="incoterms" class="doc-input" type="text" placeholder="e.g. FOB, CIF, EXW" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="field-row field-row-block">
+                        <span class="field-label">Shipment Method:</span>
+                        <input id="shipmentMethod" class="doc-input" type="text" placeholder="Sea, Air, Courier..." />
+                      </div>
+                      <div class="field-row field-row-block">
+                        <span class="field-label">Reference No.:</span>
+                        <input id="referenceNumber" class="doc-input" type="text" />
+                      </div>
+                      <div class="field-row field-row-block">
+                        <span class="field-label">Freight / Insurance:</span>
+                        <input id="freightInsurance" class="doc-input" type="number" min="0" step="0.01" value="0" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="doc-section">
+                <div class="section-title-row">
+                  <h2 class="section-title">Items</h2>
+                  <button type="button" class="toolbar-btn add-item-inline-btn edit-only" id="addItemBtn">
+                    Add Item
+                  </button>
+                </div>
+
+                <table class="doc-table commercial-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 27%;">Description</th>
+                      <th style="width: 14%;">HS Code</th>
+                      <th style="width: 9%;">Qty</th>
+                      <th style="width: 11%;">Unit</th>
+                      <th style="width: 15%;">Unit Value</th>
+                      <th style="width: 16%;">Amount</th>
+                      <th class="edit-only" style="width: 8%;"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="itemsTableBody">
+                    {Array.from({ length: 2 }, () => (
+                      <tr class="item-row">
+                        <td><input class="doc-input table-input item-description" type="text" /></td>
+                        <td><input class="doc-input table-input item-hs-code" type="text" /></td>
+                        <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
+                        <td><input class="doc-input table-input item-unit" type="text" placeholder="pcs" /></td>
+                        <td><input class="doc-input table-input item-unit-value" type="number" min="0" step="0.01" value="0" /></td>
+                        <td class="amount-cell"><span class="line-amount">USD 0.00</span></td>
+                        <td class="edit-only action-cell">
+                          <button type="button" class="remove-row-btn">×</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </section>
+
+              <section class="doc-section">
+                <div class="two-col notes-totals-row">
+                  <div class="box">
+                    <h2 class="section-title">Remarks</h2>
+                    <textarea id="invoiceRemarks" class="doc-textarea compact-remarks" rows="2"></textarea>
+                  </div>
+
+                  <div class="box totals-box">
+                    <div class="totals-panel">
+                      <div class="total-row"><span>Subtotal</span><strong id="subtotalValue">USD 0.00</strong></div>
+                      <div class="total-row"><span>Freight / Insurance</span><strong id="freightValue">USD 0.00</strong></div>
+                      <div class="total-row total-row-grand"><span>Total Invoice Value</span><strong id="grandTotalValue">USD 0.00</strong></div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="generator-seo-block">
+        <div class="generator-seo-grid">
+          <article class="generator-seo-card">
+            <h2>How This Commercial Invoice Generator Works</h2>
+            <p>
+              Fill in exporter, consignee, shipment details, and item values directly on the document. The commercial
+              invoice stays print-ready while line totals and final invoice value update automatically.
+            </p>
+          </article>
+
+          <article class="generator-seo-card">
+            <h2>When to Use It</h2>
+            <p>
+              Use this commercial invoice generator for international shipments, customs support, B2B exports, and trade
+              documentation whenever you need a formal declaration of goods and values.
+            </p>
+          </article>
+
+          <article class="generator-seo-card">
+            <h2>Why It Helps</h2>
+            <p>
+              A structured commercial invoice improves shipment clarity, supports customs workflows, and makes it easier
+              to print or save a professional trade document without extra formatting work.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="generator-faq-block" aria-labelledby="commercial-invoice-faq-title">
+        <div class="generator-section-head">
+          <h2 id="commercial-invoice-faq-title">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="generator-faq-list">
+          {faqItems.map((item) => (
+            <details class="generator-faq-item">
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section class="generator-related-block" aria-labelledby="commercial-invoice-related-title">
+        <div class="generator-section-head">
+          <h2 id="commercial-invoice-related-title">Related Tools</h2>
+        </div>
+
+        <div class="generator-related-grid">
+          {relatedTools.map((tool) => (
+            <a class="generator-related-card" href={tool.href}>
+              <h3>{tool.title}</h3>
+              <p>{tool.description}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <style is:global>
+    .commercial-invoice-page {
+      background: #f8fafc;
+    }
+
+    .commercial-invoice-inner {
+      width: min(1280px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 72px;
+    }
+
+    .generator-hero {
+      margin-bottom: 24px;
+    }
+
+    .generator-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 600;
+    }
+
+    .generator-breadcrumb a {
+      color: #64748b;
+      text-decoration: none;
+    }
+
+    .generator-breadcrumb a:hover {
+      color: #2563eb;
+    }
+
+    .generator-eyebrow {
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #2563eb;
+    }
+
+    .generator-title {
+      margin: 0 0 14px;
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: #0f172a;
+    }
+
+    .generator-description {
+      max-width: 900px;
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.75;
+      color: #475569;
+    }
+
+    .document-toolbar {
+      position: sticky;
+      top: 79px;
+      z-index: 30;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 16px;
+      margin-bottom: 22px;
+      border: 1px solid #dbe3ee;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    .document-toolbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .document-toolbar-center {
+      display: flex;
+      justify-content: center;
+    }
+
+    .document-toolbar-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brand-link {
+      color: #0f172a;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .brand-link:hover {
+      color: #2563eb;
+    }
+
+    .toolbar-link-btn,
+    .toolbar-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 10px;
+      border: 1px solid #dbe3ee;
+      background: #fff;
+      color: #0f172a;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .toolbar-link-btn:hover,
+    .toolbar-btn:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .toolbar-btn-primary {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #fff;
+    }
+
+    .toolbar-btn-primary:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    .toolbar-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: #475569;
+      white-space: nowrap;
+    }
+
+    .paper-toggle-group {
+      display: inline-flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .paper-toggle.is-active {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border-color: #93c5fd;
+    }
+
+    .document-stage {
+      display: flex;
+      justify-content: center;
+    }
+
+    .document-stage-inner {
+      width: 100%;
+      overflow: auto;
+      padding: 4px 0 0;
+    }
+
+    .commercial-document {
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+    }
+
+    .commercial-document.paper-letter {
+      width: 816px;
+      min-height: 1056px;
+    }
+
+    .commercial-document.paper-a4 {
+      width: 794px;
+      min-height: 1123px;
+    }
+
+    .commercial-document-inner {
+      padding: 54px 48px 48px;
+      color: #111827;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #cbd5e1;
+    }
+
+    .doc-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .doc-subtitle {
+      margin-top: 8px;
+      color: #64748b;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .doc-meta {
+      min-width: 250px;
+    }
+
+    .doc-section {
+      margin-top: 16px;
+    }
+
+    .section-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .box {
+      border: 1px solid #cbd5e1;
+      padding: 12px;
+    }
+
+    .field-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      min-height: 26px;
+      font-size: 10pt;
+      line-height: 1.45;
+    }
+
+    .field-row-block {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      align-items: start;
+      min-height: auto;
+      margin-bottom: 10px;
+    }
+
+    .field-row-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .field-label {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .doc-input,
+    .doc-textarea {
+      width: 100%;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      color: #0f172a;
+      font: inherit;
+      padding: 6px 8px;
+      outline: none;
+      transition: 0.18s ease;
+    }
+
+    .inline-input {
+      padding: 2px 6px;
+    }
+
+    .short-inline-input {
+      max-width: 96px;
+    }
+
+    .doc-input:hover,
+    .doc-textarea:hover {
+      border-color: #dbe3ee;
+      background: #f8fafc;
+    }
+
+    .doc-input:focus,
+    .doc-textarea:focus {
+      border-color: #93c5fd;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.22);
+    }
+
+    .doc-textarea {
+      resize: vertical;
+    }
+
+    .compact-area,
+    .compact-remarks {
+      min-height: 64px;
+    }
+
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .doc-table th,
+    .doc-table td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 8px;
+      font-size: 9.5pt;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .commercial-table td {
+      height: 36px;
+    }
+
+    .table-input {
+      padding: 4px 6px;
+      min-height: 28px;
+      border-radius: 6px;
+    }
+
+    .amount-cell {
+      vertical-align: middle;
+    }
+
+    .line-amount {
+      display: inline-block;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .action-cell {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .remove-row-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: 1px solid #dbe3ee;
+      background: #fff;
+      color: #64748b;
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .remove-row-btn:hover {
+      border-color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .add-item-inline-btn {
+      min-height: 34px;
+      padding: 0 12px;
+      font-size: 13px;
+    }
+
+    .notes-totals-row {
+      align-items: start;
+    }
+
+    .totals-box {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .totals-panel {
+      border: 1px solid #dbe3ee;
+      padding: 12px;
+    }
+
+    .total-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 4px 0;
+      font-size: 9.5pt;
+      color: #475569;
+    }
+
+    .total-row-grand {
+      margin-top: 4px;
+      padding-top: 8px;
+      border-top: 1px solid #dbe3ee;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    .generator-seo-block,
+    .generator-faq-block,
+    .generator-related-block {
+      margin-top: 28px;
+    }
+
+    .generator-seo-grid,
+    .generator-related-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .generator-seo-card,
+    .generator-related-card,
+    .generator-faq-item {
+      border: 1px solid #dbe3ee;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .generator-seo-card,
+    .generator-related-card {
+      padding: 20px;
+    }
+
+    .generator-seo-card h2,
+    .generator-section-head h2,
+    .generator-related-card h3 {
+      margin: 0 0 10px;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+
+    .generator-seo-card h2,
+    .generator-section-head h2 {
+      font-size: 1.2rem;
+      line-height: 1.3;
+    }
+
+    .generator-related-card h3 {
+      font-size: 1.05rem;
+      line-height: 1.35;
+    }
+
+    .generator-seo-card p,
+    .generator-related-card p,
+    .generator-faq-item p {
+      margin: 0;
+      color: #475569;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .generator-section-head {
+      margin-bottom: 14px;
+    }
+
+    .generator-faq-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .generator-faq-item {
+      padding: 18px 20px;
+    }
+
+    .generator-faq-item summary {
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f172a;
+      list-style: none;
+    }
+
+    .generator-faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .generator-faq-item p {
+      margin-top: 10px;
+    }
+
+    .generator-related-card {
+      display: block;
+      text-decoration: none;
+      transition: 0.18s ease;
+    }
+
+    .generator-related-card:hover {
+      border-color: #93c5fd;
+      box-shadow: 0 10px 28px rgba(37, 99, 235, 0.08);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 980px) {
+      .document-toolbar {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .document-toolbar-left,
+      .document-toolbar-center,
+      .document-toolbar-right {
+        justify-content: flex-start;
+      }
+
+      .generator-seo-grid,
+      .generator-related-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .commercial-invoice-inner {
+        width: min(1280px, calc(100% - 24px));
+        padding: 28px 0 56px;
+      }
+
+      .generator-breadcrumb {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .generator-description {
+        font-size: 16px;
+      }
+
+      .two-col,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <style is:global>
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+
+      #commercial-invoice-document,
+      #commercial-invoice-document * {
+        visibility: visible !important;
+      }
+
+      .site-header,
+      .site-footer,
+      .document-toolbar,
+      .remove-row-btn,
+      .edit-only {
+        display: none !important;
+      }
+
+      #commercial-invoice-document {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        margin: 0 !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: #fff !important;
+      }
+
+      .commercial-document.paper-letter,
+      .commercial-document.paper-a4 {
+        width: auto !important;
+        min-height: auto !important;
+      }
+
+      .doc-input,
+      .doc-textarea {
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        resize: none !important;
+      }
+    }
+  </style>
+
+  <script>
+    const documentRoot = document.getElementById("commercial-invoice-document");
+    const itemsTableBody = document.getElementById("itemsTableBody");
+    const addItemBtn = document.getElementById("addItemBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const printBtn = document.getElementById("printBtn");
+    const paperButtons = Array.from(document.querySelectorAll(".paper-toggle"));
+    const currencyInput = document.getElementById("currencyCode");
+    const freightInput = document.getElementById("freightInsurance");
+
+    function currencyCode() {
+      return currencyInput?.value?.trim() || "USD";
+    }
+
+    function formatMoney(value) {
+      return `${currencyCode()} ${value.toFixed(2)}`;
+    }
+
+    function toNumber(value) {
+      const parsed = Number.parseFloat(value);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function recalcRowsAndTotals() {
+      const rows = Array.from(itemsTableBody.querySelectorAll(".item-row"));
+      let subtotal = 0;
+
+      rows.forEach((row) => {
+        const qty = toNumber(row.querySelector(".item-qty")?.value);
+        const unitValue = toNumber(row.querySelector(".item-unit-value")?.value);
+        const lineValue = qty * unitValue;
+        subtotal += lineValue;
+        const amount = row.querySelector(".line-amount");
+        if (amount) amount.textContent = formatMoney(lineValue);
+      });
+
+      const freight = toNumber(freightInput?.value);
+      const grandTotal = subtotal + freight;
+
+      const subtotalValue = document.getElementById("subtotalValue");
+      const freightValue = document.getElementById("freightValue");
+      const grandTotalValue = document.getElementById("grandTotalValue");
+
+      if (subtotalValue) subtotalValue.textContent = formatMoney(subtotal);
+      if (freightValue) freightValue.textContent = formatMoney(freight);
+      if (grandTotalValue) grandTotalValue.textContent = formatMoney(grandTotal);
+    }
+
+    function attachInputHandlers(scope = document) {
+      scope.querySelectorAll(".item-qty, .item-unit-value").forEach((input) => {
+        if (input.dataset.bound === "1") return;
+        input.dataset.bound = "1";
+        input.addEventListener("input", recalcRowsAndTotals);
+      });
+
+      if (currencyInput && currencyInput.dataset.bound !== "1") {
+        currencyInput.dataset.bound = "1";
+        currencyInput.addEventListener("input", recalcRowsAndTotals);
+      }
+
+      if (freightInput && freightInput.dataset.bound !== "1") {
+        freightInput.dataset.bound = "1";
+        freightInput.addEventListener("input", recalcRowsAndTotals);
+      }
+    }
+
+    function attachRemoveHandlers(scope = document) {
+      scope.querySelectorAll(".remove-row-btn").forEach((btn) => {
+        if (btn.dataset.bound === "1") return;
+        btn.dataset.bound = "1";
+
+        btn.addEventListener("click", () => {
+          const rows = itemsTableBody.querySelectorAll(".item-row");
+          if (rows.length <= 1) return;
+          btn.closest(".item-row")?.remove();
+          recalcRowsAndTotals();
+        });
+      });
+    }
+
+    function createItemRow() {
+      const tr = document.createElement("tr");
+      tr.className = "item-row";
+      tr.innerHTML = `
+        <td><input class="doc-input table-input item-description" type="text" /></td>
+        <td><input class="doc-input table-input item-hs-code" type="text" /></td>
+        <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
+        <td><input class="doc-input table-input item-unit" type="text" placeholder="pcs" /></td>
+        <td><input class="doc-input table-input item-unit-value" type="number" min="0" step="0.01" value="0" /></td>
+        <td class="amount-cell"><span class="line-amount">${formatMoney(0)}</span></td>
+        <td class="edit-only action-cell">
+          <button type="button" class="remove-row-btn">×</button>
+        </td>
+      `;
+      return tr;
+    }
+
+    function resetForm() {
+      documentRoot.querySelectorAll("input").forEach((input) => {
+        if (input.id === "currencyCode") {
+          input.value = "USD";
+        } else if (input.id === "freightInsurance") {
+          input.value = "0";
+        } else if (input.type === "number") {
+          if (input.classList.contains("item-qty")) {
+            input.value = "1";
+          } else {
+            input.value = "0";
+          }
+        } else {
+          input.value = "";
+        }
+      });
+
+      documentRoot.querySelectorAll("textarea").forEach((textarea) => {
+        textarea.value = "";
+      });
+
+      itemsTableBody.innerHTML = "";
+      itemsTableBody.appendChild(createItemRow());
+      itemsTableBody.appendChild(createItemRow());
+      attachRemoveHandlers(itemsTableBody);
+      attachInputHandlers(itemsTableBody);
+      applyPaper("a4");
+      recalcRowsAndTotals();
+    }
+
+    function applyPaper(paper) {
+      documentRoot.classList.remove("paper-letter", "paper-a4");
+      documentRoot.classList.add(paper === "letter" ? "paper-letter" : "paper-a4");
+
+      paperButtons.forEach((btn) => {
+        btn.classList.toggle("is-active", btn.dataset.paper === paper);
+      });
+
+      const styleId = "commercial-invoice-print-page-rule";
+      let styleTag = document.getElementById(styleId);
+
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+      }
+
+      if (paper === "letter") {
+        styleTag.textContent =
+          "@page { size: Letter portrait; margin: 0.7in 0.65in 0.7in 0.65in; }";
+      } else {
+        styleTag.textContent =
+          "@page { size: A4 portrait; margin: 18mm 16mm 18mm 16mm; }";
+      }
+    }
+
+    addItemBtn?.addEventListener("click", () => {
+      itemsTableBody.appendChild(createItemRow());
+      attachRemoveHandlers(itemsTableBody);
+      attachInputHandlers(itemsTableBody);
+      recalcRowsAndTotals();
+    });
+
+    resetBtn?.addEventListener("click", resetForm);
+
+    paperButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        applyPaper(btn.dataset.paper || "a4");
+      });
+    });
+
+    printBtn?.addEventListener("click", () => {
+      window.print();
+    });
+
+    attachRemoveHandlers(document);
+    attachInputHandlers(document);
+    applyPaper("a4");
+    recalcRowsAndTotals();
+  </script>
+</BaseLayout>

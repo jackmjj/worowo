@@ -130,6 +130,7 @@ function getToolIcon(toolKey: string, toolType: ToolType): string {
   const icons: Record<string, string> = {
     quotation_estimate_generator: makeIcon("filePen"),
     invoice_generator: makeIcon("fileText"),
+    commercial_invoice_generator: makeIcon("fileCheck"),
     proforma_invoice_generator: makeIcon("fileCheck"),
     receipt_generator: makeIcon("receipt"),
     packing_list_generator: makeIcon("boxes"),

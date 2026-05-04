@@ -28,9 +28,9 @@ export const toolDictionary = {
     categoryKey: "quotes_invoices",
     title: "Invoice Generator",
     shortTitle: "Invoice Generator",
-    href: "/invoice-generator/",
+    href: "/quotes-invoices/invoice-generator/",
     type: "generator",
-    status: "coming_soon",
+    status: "live",
     description:
       "Create invoices online for customers, products, tax, totals, and PDF export.",
     menuTitle: "Invoice Generator",
@@ -60,14 +60,32 @@ export const toolDictionary = {
     order: 110,
   },
 
+  commercial_invoice_generator: {
+    key: "commercial_invoice_generator",
+    categoryKey: "quotes_invoices",
+    title: "Commercial Invoice Generator",
+    shortTitle: "Commercial Invoice Generator",
+    href: "/quotes-invoices/commercial-invoice-generator/",
+    type: "generator",
+    status: "live",
+    description:
+      "Create commercial invoices for international shipments with buyer, seller, shipping details, HS codes, item values, and print-ready totals.",
+    menuTitle: "Commercial Invoice Generator",
+    showInHeaderMenu: true,
+    featuredInHeaderMenu: true,
+    showOnHome: true,
+    featuredOnCategoryPage: true,
+    order: 115,
+  },
+
   proforma_invoice_generator: {
     key: "proforma_invoice_generator",
     categoryKey: "quotes_invoices",
     title: "Proforma Invoice Generator",
     shortTitle: "Proforma Invoice Generator",
-    href: "/proforma-invoice-generator/",
+    href: "/quotes-invoices/proforma-invoice-generator/",
     type: "generator",
-    status: "coming_soon",
+    status: "live",
     description:
       "Create proforma invoices for international trade, customs preparation, and pre-sale confirmation.",
     menuTitle: "Proforma Invoice Generator",

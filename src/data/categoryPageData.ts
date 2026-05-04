@@ -43,6 +43,7 @@ function getToolIcon(tool: ToolDictionaryItem): string {
   const iconMap: Record<string, string> = {
     invoice_generator: "invoice",
     quotation_estimate_generator: "quote",
+    commercial_invoice_generator: "invoice",
     proforma_invoice_generator: "invoice",
     receipt_generator: "receipt",
     invoice_template: "invoice",

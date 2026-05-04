@@ -1,0 +1,836 @@
+<div class="inv-form-card">
+  <div class="inv-notice">
+    Fill in the invoice details below. The preview updates automatically and stays ready for printing or saving as PDF.
+  </div>
+
+  <section class="inv-section">
+    <div class="inv-section-head">
+      <h2 class="inv-section-title">Invoice Header</h2>
+    </div>
+
+    <div class="inv-grid inv-grid-3">
+      <label class="inv-field">
+        <span>Invoice No.</span>
+        <input id="invoiceNumber" type="text" placeholder="e.g. INV-2026-001" />
+      </label>
+
+      <label class="inv-field">
+        <span>Issue Date</span>
+        <input id="invoiceDate" type="date" />
+      </label>
+
+      <label class="inv-field">
+        <span>Due Date</span>
+        <input id="dueDate" type="date" />
+      </label>
+    </div>
+  </section>
+
+  <section class="inv-section">
+    <div class="inv-section-head">
+      <h2 class="inv-section-title">Business & Customer</h2>
+    </div>
+
+    <div class="inv-subcards">
+      <div class="inv-subcard">
+        <div class="inv-subcard-title">From</div>
+
+        <label class="inv-field">
+          <span>Business Name</span>
+          <input id="sellerName" type="text" placeholder="Your business name" />
+        </label>
+
+        <label class="inv-field">
+          <span>Address</span>
+          <textarea id="sellerAddress" rows="4" placeholder="Your business address"></textarea>
+        </label>
+
+        <label class="inv-field">
+          <span>Email or Phone</span>
+          <input id="sellerContact" type="text" placeholder="Email, phone, or contact person" />
+        </label>
+      </div>
+
+      <div class="inv-subcard">
+        <div class="inv-subcard-title">Bill To</div>
+
+        <label class="inv-field">
+          <span>Client Name</span>
+          <input id="buyerName" type="text" placeholder="Client or company name" />
+        </label>
+
+        <label class="inv-field">
+          <span>Address</span>
+          <textarea id="buyerAddress" rows="4" placeholder="Client billing address"></textarea>
+        </label>
+
+        <label class="inv-field">
+          <span>Email or Phone</span>
+          <input id="buyerContact" type="text" placeholder="Client email, phone, or contact" />
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section class="inv-section">
+    <div class="inv-section-head inv-inline-actions">
+      <div>
+        <h2 class="inv-section-title">Items</h2>
+        <p class="inv-section-note">Add products or services below. Totals update automatically.</p>
+      </div>
+
+      <button id="invoiceAddItemButton" type="button" class="inv-add-item-btn">+ Add Item</button>
+    </div>
+
+    <div class="inv-items-shell">
+      <table class="inv-items-table">
+        <thead>
+          <tr>
+            <th class="inv-col-desc">Description</th>
+            <th class="inv-col-small">Qty</th>
+            <th class="inv-col-medium">Unit Price</th>
+            <th class="inv-col-small">Tax %</th>
+            <th class="inv-col-medium">Amount</th>
+            <th class="inv-col-action"></th>
+          </tr>
+        </thead>
+        <tbody id="invoiceItemsBody"></tbody>
+      </table>
+    </div>
+
+    <div class="inv-totals-strip">
+      <div>
+        <span>Subtotal</span>
+        <strong id="invoiceSubtotalValue">$0.00</strong>
+      </div>
+      <div>
+        <span>Tax</span>
+        <strong id="invoiceTaxValue">$0.00</strong>
+      </div>
+      <div>
+        <span>Discount</span>
+        <strong id="invoiceDiscountValue">$0.00</strong>
+      </div>
+      <div>
+        <span>Grand Total</span>
+        <strong id="invoiceGrandTotalValue">$0.00</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="inv-section">
+    <div class="inv-section-head">
+      <h2 class="inv-section-title">Notes & Totals</h2>
+    </div>
+
+    <div class="inv-grid inv-grid-2">
+      <label class="inv-field">
+        <span>Invoice Notes</span>
+        <textarea id="invoiceNotes" rows="5" placeholder="Payment terms, project notes, or thank-you message"></textarea>
+      </label>
+
+      <div class="inv-side-fields">
+        <label class="inv-field">
+          <span>Discount</span>
+          <input id="invoiceDiscount" type="number" min="0" step="0.01" value="0" placeholder="0.00" />
+        </label>
+
+        <label class="inv-field">
+          <span>Currency Symbol</span>
+          <input id="invoiceCurrency" type="text" value="$" maxlength="4" placeholder="$" />
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <div class="inv-actions">
+    <div class="inv-paper-size-control" aria-label="Paper size">
+      <span>Paper Size</span>
+      <button id="invoiceA4Button" class="inv-paper-size-btn active" type="button" data-size="a4">A4</button>
+      <button id="invoiceLetterButton" class="inv-paper-size-btn" type="button" data-size="letter">US Letter</button>
+    </div>
+
+    <div class="inv-action-buttons">
+      <button id="invoiceResetButton" type="button" class="inv-btn inv-btn-ghost">Reset</button>
+      <button id="invoicePrintButton" type="button" class="inv-btn inv-btn-primary">Print / Save as PDF</button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", () => {
+    const itemsBody = document.getElementById("invoiceItemsBody");
+    const addItemButton = document.getElementById("invoiceAddItemButton");
+    const resetButton = document.getElementById("invoiceResetButton");
+    const printButton = document.getElementById("invoicePrintButton");
+    const paper = document.getElementById("invoicePaper");
+    const a4Button = document.getElementById("invoiceA4Button");
+    const letterButton = document.getElementById("invoiceLetterButton");
+
+    const fields = {
+      invoiceNumber: document.getElementById("invoiceNumber"),
+      invoiceDate: document.getElementById("invoiceDate"),
+      dueDate: document.getElementById("dueDate"),
+      sellerName: document.getElementById("sellerName"),
+      sellerAddress: document.getElementById("sellerAddress"),
+      sellerContact: document.getElementById("sellerContact"),
+      buyerName: document.getElementById("buyerName"),
+      buyerAddress: document.getElementById("buyerAddress"),
+      buyerContact: document.getElementById("buyerContact"),
+      invoiceNotes: document.getElementById("invoiceNotes"),
+      invoiceDiscount: document.getElementById("invoiceDiscount"),
+      invoiceCurrency: document.getElementById("invoiceCurrency"),
+    };
+
+    const preview = {
+      invoiceNumber: document.getElementById("previewInvoiceNumber"),
+      invoiceDate: document.getElementById("previewInvoiceDate"),
+      dueDate: document.getElementById("previewDueDate"),
+      seller: document.getElementById("previewSeller"),
+      buyer: document.getElementById("previewBuyer"),
+      notes: document.getElementById("previewNotes"),
+      itemsBody: document.getElementById("previewInvoiceItemsBody"),
+      subtotal: document.getElementById("previewSubtotal"),
+      tax: document.getElementById("previewTax"),
+      discount: document.getElementById("previewDiscount"),
+      grandTotal: document.getElementById("previewGrandTotal"),
+    };
+
+    const totals = {
+      subtotal: document.getElementById("invoiceSubtotalValue"),
+      tax: document.getElementById("invoiceTaxValue"),
+      discount: document.getElementById("invoiceDiscountValue"),
+      grandTotal: document.getElementById("invoiceGrandTotalValue"),
+    };
+
+    let items = [createItem(), createItem()];
+
+    function createItem(data = {}) {
+      return {
+        description: data.description || "",
+        qty: data.qty || "1",
+        unitPrice: data.unitPrice || "0",
+        taxRate: data.taxRate || "0",
+      };
+    }
+
+    function escapeHtml(str = "") {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function numberValue(value) {
+      const n = Number.parseFloat(value);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function formatDate(value) {
+      return value || "YYYY-MM-DD";
+    }
+
+    function currencySymbol() {
+      return fields.invoiceCurrency.value.trim() || "$";
+    }
+
+    function formatMoney(value) {
+      return `${currencySymbol()}${value.toFixed(2)}`;
+    }
+
+    function lineAmount(item) {
+      return numberValue(item.qty) * numberValue(item.unitPrice);
+    }
+
+    function renderItems() {
+      itemsBody.innerHTML = "";
+
+      items.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td><input type="text" data-field="description" data-index="${index}" placeholder="Service or product description" value="${escapeHtml(item.description)}" /></td>
+          <td><input type="number" data-field="qty" data-index="${index}" min="0" step="1" value="${escapeHtml(item.qty)}" /></td>
+          <td><input type="number" data-field="unitPrice" data-index="${index}" min="0" step="0.01" value="${escapeHtml(item.unitPrice)}" /></td>
+          <td><input type="number" data-field="taxRate" data-index="${index}" min="0" step="0.01" value="${escapeHtml(item.taxRate)}" /></td>
+          <td><div class="inv-item-amount">${formatMoney(lineAmount(item))}</div></td>
+          <td><button type="button" class="inv-item-remove" data-remove="${index}" aria-label="Remove item">×</button></td>
+        `;
+
+        itemsBody.appendChild(row);
+      });
+
+      itemsBody.querySelectorAll("[data-field]").forEach((input) => {
+        input.addEventListener("input", (event) => {
+          const index = Number(event.target.dataset.index);
+          const field = event.target.dataset.field;
+          items[index][field] = event.target.value;
+          renderItems();
+          renderPreview();
+        });
+      });
+
+      itemsBody.querySelectorAll("[data-remove]").forEach((button) => {
+        button.addEventListener("click", () => {
+          if (items.length <= 1) return;
+          const index = Number(button.dataset.remove);
+          items.splice(index, 1);
+          renderItems();
+          renderPreview();
+        });
+      });
+    }
+
+    function calculateTotals() {
+      const subtotal = items.reduce((sum, item) => sum + lineAmount(item), 0);
+      const tax = items.reduce((sum, item) => {
+        const line = lineAmount(item);
+        return sum + (line * numberValue(item.taxRate)) / 100;
+      }, 0);
+      const discount = numberValue(fields.invoiceDiscount.value);
+      const grandTotal = Math.max(0, subtotal + tax - discount);
+      return { subtotal, tax, discount, grandTotal };
+    }
+
+    function renderPreview() {
+      preview.invoiceNumber.textContent = fields.invoiceNumber.value.trim() || "INV-0001";
+      preview.invoiceDate.textContent = formatDate(fields.invoiceDate.value);
+      preview.dueDate.textContent = formatDate(fields.dueDate.value);
+
+      const sellerLines = [
+        fields.sellerName.value.trim(),
+        fields.sellerAddress.value.trim(),
+        fields.sellerContact.value.trim(),
+      ].filter(Boolean);
+
+      const buyerLines = [
+        fields.buyerName.value.trim(),
+        fields.buyerAddress.value.trim(),
+        fields.buyerContact.value.trim(),
+      ].filter(Boolean);
+
+      preview.seller.innerHTML = sellerLines.length
+        ? sellerLines.map((line) => escapeHtml(line)).join("<br>")
+        : '<span class="inv-doc-placeholder">Enter your business details</span>';
+
+      preview.buyer.innerHTML = buyerLines.length
+        ? buyerLines.map((line) => escapeHtml(line)).join("<br>")
+        : '<span class="inv-doc-placeholder">Enter customer details</span>';
+
+      preview.notes.innerHTML = fields.invoiceNotes.value.trim()
+        ? escapeHtml(fields.invoiceNotes.value.trim()).replaceAll("\n", "<br>")
+        : '<span class="inv-doc-placeholder">Payment terms, project notes, or invoice remarks</span>';
+
+      preview.itemsBody.innerHTML = items.map((item) => {
+        const amount = lineAmount(item);
+        return `
+          <tr>
+            <td>${escapeHtml(item.description || "")}</td>
+            <td>${escapeHtml(item.qty || "0")}</td>
+            <td>${formatMoney(numberValue(item.unitPrice))}</td>
+            <td>${escapeHtml(item.taxRate || "0")}%</td>
+            <td>${formatMoney(amount)}</td>
+          </tr>
+        `;
+      }).join("");
+
+      const totalsValue = calculateTotals();
+      totals.subtotal.textContent = formatMoney(totalsValue.subtotal);
+      totals.tax.textContent = formatMoney(totalsValue.tax);
+      totals.discount.textContent = formatMoney(totalsValue.discount);
+      totals.grandTotal.textContent = formatMoney(totalsValue.grandTotal);
+
+      preview.subtotal.textContent = formatMoney(totalsValue.subtotal);
+      preview.tax.textContent = formatMoney(totalsValue.tax);
+      preview.discount.textContent = formatMoney(totalsValue.discount);
+      preview.grandTotal.textContent = formatMoney(totalsValue.grandTotal);
+    }
+
+    function setPaperSize(size) {
+      paper.classList.remove("document-paper-a4", "document-paper-letter");
+      document.body.classList.remove("print-a4", "print-letter");
+
+      if (size === "letter") {
+        paper.classList.add("document-paper-letter");
+        document.body.classList.add("print-letter");
+        letterButton.classList.add("active");
+        a4Button.classList.remove("active");
+      } else {
+        paper.classList.add("document-paper-a4");
+        document.body.classList.add("print-a4");
+        a4Button.classList.add("active");
+        letterButton.classList.remove("active");
+      }
+    }
+
+    function resetAll() {
+      Object.values(fields).forEach((field) => {
+        if (field) field.value = "";
+      });
+      fields.invoiceDiscount.value = "0";
+      fields.invoiceCurrency.value = "$";
+      items = [createItem(), createItem()];
+      renderItems();
+      renderPreview();
+      setPaperSize("a4");
+    }
+
+    Object.values(fields).forEach((field) => {
+      field.addEventListener("input", renderPreview);
+      field.addEventListener("change", renderPreview);
+    });
+
+    addItemButton.addEventListener("click", () => {
+      items.push(createItem());
+      renderItems();
+      renderPreview();
+    });
+
+    a4Button.addEventListener("click", () => setPaperSize("a4"));
+    letterButton.addEventListener("click", () => setPaperSize("letter"));
+    resetButton.addEventListener("click", resetAll);
+    printButton.addEventListener("click", () => window.print());
+
+    renderItems();
+    renderPreview();
+    setPaperSize("a4");
+  });
+</script>
+
+<style>
+  .inv-form-card {
+    border: 1px solid #cbd5e1;
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 22px 54px -34px rgba(15, 23, 42, 0.22);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .inv-notice {
+    border: 1px solid #dbe4f0;
+    background: linear-gradient(180deg, #fcfdff 0%, #f8fbff 100%);
+    color: #475569;
+    border-radius: 14px;
+    padding: 12px 14px;
+    font-size: 0.98rem;
+    line-height: 1.6;
+    box-shadow: 0 12px 32px -28px rgba(15, 23, 42, 0.24);
+  }
+
+  .inv-section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid #edf2f7;
+  }
+
+  .inv-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .inv-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .inv-inline-actions {
+    align-items: flex-start;
+  }
+
+  .inv-section-title {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+    color: #475569;
+    text-transform: uppercase;
+  }
+
+  .inv-section-note {
+    margin: 6px 0 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #64748b;
+  }
+
+  .inv-grid {
+    display: grid;
+    gap: 14px;
+  }
+
+  .inv-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .inv-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .inv-subcards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .inv-subcard {
+    border: 1px solid #e6edf6;
+    background: #fbfdff;
+    border-radius: 18px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .inv-subcard-title {
+    font-size: 0.85rem;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+    color: #475569;
+    text-transform: uppercase;
+  }
+
+  .inv-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  .inv-field span {
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 700;
+    color: #334155;
+  }
+
+  .inv-field input,
+  .inv-field textarea {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: #ffffff;
+    padding: 0 14px;
+    font: inherit;
+    color: #0f172a;
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  }
+
+  .inv-field textarea {
+    min-height: 110px;
+    padding: 12px 14px;
+    resize: vertical;
+  }
+
+  .inv-field input::placeholder,
+  .inv-field textarea::placeholder {
+    color: #94a3b8;
+  }
+
+  .inv-field input:hover,
+  .inv-field textarea:hover {
+    border-color: #b6c4d6;
+  }
+
+  .inv-field input:focus,
+  .inv-field textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  .inv-add-item-btn {
+    border: 1px solid #bfdbfe;
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-size: 0.92rem;
+    line-height: 1.2;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .inv-add-item-btn:hover {
+    background: #dbeafe;
+    border-color: #93c5fd;
+  }
+
+  .inv-items-shell {
+    overflow-x: auto;
+  }
+
+  .inv-items-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    table-layout: fixed;
+  }
+
+  .inv-items-table thead th {
+    padding: 0 8px 8px;
+    color: #64748b;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 900;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border: 0;
+  }
+
+  .inv-items-table tbody td {
+    padding: 0 8px;
+    border: 0;
+    vertical-align: middle;
+  }
+
+  .inv-items-table input {
+    width: 100%;
+    height: 46px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #0f172a;
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .inv-items-table input:hover {
+    border-color: #cbd5e1;
+    background: #ffffff;
+  }
+
+  .inv-items-table input:focus {
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  }
+
+  .inv-item-amount {
+    height: 46px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #0f172a;
+    padding: 10px 12px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-weight: 700;
+  }
+
+  .inv-col-desc { width: 40%; }
+  .inv-col-small { width: 12%; }
+  .inv-col-medium { width: 16%; }
+  .inv-col-action { width: 48px; }
+
+  .inv-item-remove {
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 999px;
+    background: #fff1f2;
+    color: #e11d48;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.7;
+  }
+
+  .inv-item-remove:hover {
+    opacity: 1;
+    background: #ffe4e6;
+  }
+
+  .inv-totals-strip {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border: 1px solid #dbeafe;
+    border-radius: 20px;
+    background: linear-gradient(180deg, #f8fbff, #ffffff);
+    overflow: hidden;
+  }
+
+  .inv-totals-strip div {
+    padding: 20px 18px;
+    border-right: 1px solid #dbe3ef;
+  }
+
+  .inv-totals-strip div:last-child {
+    border-right: 0;
+  }
+
+  .inv-totals-strip span {
+    display: block;
+    margin-bottom: 8px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .inv-totals-strip strong {
+    display: block;
+    color: #0f172a;
+    font-size: 22px;
+    line-height: 1.1;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+  }
+
+  .inv-side-fields {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+  }
+
+  .inv-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    padding-top: 8px;
+    flex-wrap: wrap;
+  }
+
+  .inv-action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .inv-paper-size-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    background: #f8fafc;
+  }
+
+  .inv-paper-size-control span {
+    padding: 0 8px;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .inv-paper-size-btn {
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #475569;
+    padding: 8px 13px;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .inv-paper-size-btn.active {
+    background: #0f172a;
+    color: #ffffff;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.16);
+  }
+
+  .inv-btn {
+    border-radius: 999px;
+    padding: 13px 18px;
+    font-size: 15px;
+    line-height: 1.2;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .inv-btn-ghost {
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid #cbd5e1;
+  }
+
+  .inv-btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+    border: 1px solid #2563eb;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.16);
+  }
+
+  @media (max-width: 900px) {
+    .inv-grid-2,
+    .inv-grid-3,
+    .inv-subcards,
+    .inv-totals-strip {
+      grid-template-columns: 1fr;
+    }
+
+    .inv-actions,
+    .inv-inline-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .inv-paper-size-control {
+      justify-content: center;
+    }
+
+    .inv-action-buttons {
+      flex-direction: column-reverse;
+    }
+
+    .inv-btn,
+    .inv-add-item-btn {
+      width: 100%;
+    }
+  }
+
+  @media print {
+    body * {
+      visibility: hidden !important;
+    }
+
+    #invoicePaper,
+    #invoicePaper * {
+      visibility: visible !important;
+    }
+
+    #invoicePaper {
+      position: absolute;
+      left: 0;
+      top: 0;
+      margin: 0 !important;
+      box-shadow: none !important;
+      background: #ffffff !important;
+      overflow: hidden !important;
+    }
+
+    body.print-a4 #invoicePaper {
+      width: 210mm !important;
+      min-height: 297mm !important;
+      padding: 12mm !important;
+    }
+
+    body.print-letter #invoicePaper {
+      width: 8.5in !important;
+      min-height: 11in !important;
+      padding: 0.45in !important;
+    }
+  }
+</style>
