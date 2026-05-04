@@ -1,0 +1,237 @@
+---
+import DocumentPaper from "../shared/DocumentPaper.astro";
+---
+
+<DocumentPaper paperId="salesCommissionPaper" title="Sales Commission Statement" className="sc-paper">
+  <div class="sc-paper-head">
+    <div>
+      <h3>Sales Commission Statement</h3>
+      <p class="sc-paper-subtitle">Commission payout preview for review and records</p>
+    </div>
+
+    <div class="sc-paper-meta">
+      <p><strong>Salesperson</strong> <span data-preview="salespersonName">—</span></p>
+      <p><strong>Period</strong> <span data-preview="statementPeriod">—</span></p>
+      <p><strong>Payout Date</strong> <span data-preview="payoutDate">—</span></p>
+    </div>
+  </div>
+
+  <div class="sc-summary-grid">
+    <div class="sc-summary-card">
+      <span>Total Sales</span>
+      <strong id="previewSalesAmount">0.00</strong>
+    </div>
+    <div class="sc-summary-card">
+      <span>Commission Rate</span>
+      <strong id="previewCommissionRate">0.00%</strong>
+    </div>
+    <div class="sc-summary-card">
+      <span>Base Commission</span>
+      <strong id="previewBaseCommission">0.00</strong>
+    </div>
+  </div>
+
+  <table class="sc-paper-table">
+    <tbody>
+      <tr>
+        <th>Bonus Threshold</th>
+        <td id="previewBonusThreshold">0.00</td>
+      </tr>
+      <tr>
+        <th>Bonus Amount</th>
+        <td id="previewBonusAmount">0.00</td>
+      </tr>
+      <tr>
+        <th>Other Deductions</th>
+        <td id="previewDeductions">0.00</td>
+      </tr>
+      <tr>
+        <th>Gross Commission</th>
+        <td id="previewGrossCommission">0.00</td>
+      </tr>
+      <tr>
+        <th>Net Payout</th>
+        <td id="previewNetPayout">0.00</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="sc-paper-box">
+    <h4>Notes</h4>
+    <p data-preview="commissionNotes">—</p>
+  </div>
+
+  <div class="sc-paper-signature">
+    <div>
+      <span>Prepared Statement</span>
+      <strong>Worowo Sales Commission Calculator</strong>
+    </div>
+  </div>
+</DocumentPaper>
+
+<style>
+  .sc-paper {
+    font-size: 12px;
+  }
+
+  .sc-paper-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 28px;
+    border-bottom: 2px solid #0f172a;
+    padding-bottom: 22px;
+    margin-bottom: 24px;
+  }
+
+  .sc-paper-head h3 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .sc-paper-subtitle {
+    margin: 8px 0 0;
+    color: #64748b;
+  }
+
+  .sc-paper-meta {
+    min-width: 240px;
+  }
+
+  .sc-paper-meta p {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    margin: 0 0 7px;
+  }
+
+  .sc-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+
+  .sc-summary-card {
+    border: 1px solid #dbe3ef;
+    padding: 14px;
+  }
+
+  .sc-summary-card span {
+    display: block;
+    margin-bottom: 8px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .sc-summary-card strong {
+    color: #0f172a;
+    font-size: 22px;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+  }
+
+  .sc-paper-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 18px;
+    font-size: 11px;
+  }
+
+  .sc-paper-table th,
+  .sc-paper-table td {
+    border: 1px solid #dbe3ef;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .sc-paper-table th {
+    width: 46%;
+    background: #f8fafc;
+    color: #0f172a;
+    font-weight: 900;
+  }
+
+  .sc-paper-box {
+    min-height: 124px;
+    border: 1px solid #dbe3ef;
+    padding: 14px;
+    margin-top: 18px;
+    color: #334155;
+  }
+
+  .sc-paper-box h4 {
+    margin: 0 0 10px;
+    color: #0f172a;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .sc-paper-box p {
+    margin: 0;
+    white-space: pre-line;
+  }
+
+  .sc-paper-signature {
+    margin-top: 56px;
+  }
+
+  .sc-paper-signature div {
+    border-top: 1px solid #94a3b8;
+    padding-top: 10px;
+  }
+
+  .sc-paper-signature span {
+    display: block;
+    color: #64748b;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .sc-paper-signature strong {
+    display: block;
+    margin-top: 8px;
+    color: #0f172a;
+    font-size: 12px;
+  }
+
+  @media (max-width: 900px) {
+    .sc-summary-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media print {
+    .sc-paper-head {
+      margin-bottom: 14px !important;
+      padding-bottom: 14px !important;
+    }
+
+    .sc-paper-head h3 {
+      font-size: 22px !important;
+    }
+
+    .sc-summary-card,
+    .sc-paper-box {
+      padding: 10px !important;
+    }
+
+    .sc-paper-table {
+      margin-top: 12px !important;
+      font-size: 9.5px !important;
+    }
+
+    .sc-paper-table th,
+    .sc-paper-table td {
+      padding: 5px !important;
+    }
+  }
+</style>

@@ -10,6 +10,8 @@ interface RelatedTool {
   name: string;
   href: string;
   desc: string;
+  title?: string;
+  description?: string;
 }
 
 interface Props {
@@ -22,6 +24,7 @@ interface Props {
   categoryHref?: string;
   intro: string;
   faqItems?: FaqItem[];
+  faq?: FaqItem[];
   relatedTools?: RelatedTool[];
 }
 
@@ -35,8 +38,16 @@ const {
   categoryHref,
   intro,
   faqItems = [],
+  faq = [],
   relatedTools = [],
 } = Astro.props;
+
+const normalizedFaqItems = faqItems.length > 0 ? faqItems : faq;
+const normalizedRelatedTools = relatedTools.map((tool) => ({
+  name: tool.name || tool.title || "",
+  href: tool.href,
+  desc: tool.desc || tool.description || "",
+}));
 ---
 
 <ToolLayout
@@ -48,12 +59,12 @@ const {
   categoryLabel={categoryLabel}
   categoryHref={categoryHref}
   intro={intro}
-  faqItems={faqItems}
-  relatedTools={relatedTools}
+  faqItems={normalizedFaqItems}
+  relatedTools={normalizedRelatedTools}
 >
   <section slot="form" class="document-generator-layout-shell">
     <div class="document-generator-layout-page">
-      <slot name="editor" />
+      {Astro.slots.has("editor") ? <slot name="editor" /> : <slot name="form" />}
       <slot name="preview" />
     </div>
   </section>

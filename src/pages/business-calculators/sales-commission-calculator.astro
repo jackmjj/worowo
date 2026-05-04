@@ -1,0 +1,129 @@
+---
+import SalesCommissionForm from "../../components/document-generators/sales-commission/SalesCommissionForm.astro";
+import SalesCommissionPreview from "../../components/document-generators/sales-commission/SalesCommissionPreview.astro";
+import GeneratorActions from "../../components/document-generators/shared/GeneratorActions.astro";
+import DocumentGeneratorLayout from "../../layouts/DocumentGeneratorLayout.astro";
+
+const title = "Sales Commission Calculator";
+const description =
+  "Calculate sales commission, bonus, deductions, and net payout online. Review the results in a printable statement and save as PDF in A4 or US Letter format.";
+const canonical = "https://www.worowo.com/business-calculators/sales-commission-calculator/";
+
+const breadcrumbs = [
+  { label: "Home", href: "/" },
+  { label: "Business Calculators", href: "/business-calculators/" },
+  { label: "Sales Commission Calculator" },
+];
+
+const faq = [
+  {
+    question: "What does this sales commission calculator do?",
+    answer:
+      "It calculates base commission, optional bonus, deductions, gross commission, and final net payout from your sales inputs.",
+  },
+  {
+    question: "Can I print or save the commission statement as PDF?",
+    answer:
+      "Yes. Use the Print / Save as PDF button to print only the preview statement and save it as PDF from your browser.",
+  },
+  {
+    question: "Can I switch between A4 and US Letter?",
+    answer:
+      "Yes. The preview supports both A4 and US Letter so you can prepare a printout that matches your preferred paper size.",
+  },
+  {
+    question: "Who can use this calculator?",
+    answer:
+      "It is useful for sales staff, managers, agencies, distributors, and small businesses that pay commission-based earnings.",
+  },
+];
+
+const relatedTools = [
+  {
+    title: "Profit Margin Calculator",
+    href: "/business-calculators/profit-margin-calculator/",
+    description: "Calculate price, margin, markup, and projected profit from your costs and selling price.",
+  },
+  {
+    title: "Break-even Point Calculator",
+    href: "/business-calculators/break-even-point-calculator/",
+    description: "Work out how many units or how much revenue you need to cover your fixed and variable costs.",
+  },
+  {
+    title: "Quote / Estimate Generator",
+    href: "/quotes-invoices/quote-estimate-generator/",
+    description: "Create a client-facing quote or estimate after working out your sales incentives and pricing.",
+  },
+  {
+    title: "Invoice Generator",
+    href: "/quotes-invoices/invoice-generator/",
+    description: "Create a professional invoice and print or save it as PDF once the sale is confirmed.",
+  },
+];
+---
+
+<DocumentGeneratorLayout
+  title={title}
+  pageTitle={`${title} | Worowo`}
+  description={description}
+  canonical={canonical}
+  eyebrow="Business Calculators"
+  categoryLabel="Business Calculators"
+  categoryHref="/business-calculators/"
+  intro="Calculate commission, bonus, deductions, and net payout, then print or save a commission statement as PDF."
+  breadcrumbs={breadcrumbs}
+  faq={faq}
+  relatedTools={relatedTools}
+>
+  <div slot="form" class="generator-split">
+    <div class="generator-form">
+      <SalesCommissionForm />
+    </div>
+
+    <div class="generator-preview">
+      <SalesCommissionPreview />
+      <div class="paper-actions">
+        <GeneratorActions />
+      </div>
+    </div>
+  </div>
+</DocumentGeneratorLayout>
+
+<style>
+  .generator-split {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    margin-top: 8px;
+  }
+
+  .generator-form,
+  .generator-preview {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .generator-preview {
+    position: sticky;
+    top: 16px;
+  }
+
+  .paper-actions {
+    margin-top: 12px;
+  }
+
+  .paper-actions :global(.generator-actions) {
+    padding-top: 0;
+  }
+
+  @media (max-width: 1100px) {
+    .generator-split {
+      flex-direction: column;
+    }
+
+    .generator-preview {
+      position: static;
+      width: 100%;
+    }
+  }
+</style>

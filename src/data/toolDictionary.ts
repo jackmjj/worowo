@@ -47,9 +47,9 @@ export const toolDictionary = {
     categoryKey: "quotes_invoices",
     title: "Quotation / Estimate Generator",
     shortTitle: "Quote / Estimate Generator",
-    href: "/quote-estimate-generator/",
+    href: "/quotes-invoices/quote-estimate-generator/",
     type: "generator",
-    status: "coming_soon",
+    status: "live",
     description:
       "Create quotes and estimates for products or services with customer info and totals.",
     menuTitle: "Quotation / Estimate Generator",
@@ -94,6 +94,24 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 120,
+  },
+
+  purchase_order_generator: {
+    key: "purchase_order_generator",
+    categoryKey: "quotes_invoices",
+    title: "Purchase Order Generator",
+    shortTitle: "Purchase Order Generator",
+    href: "/quotes-invoices/purchase-order-generator/",
+    type: "generator",
+    status: "live",
+    description:
+      "Create purchase orders for suppliers and vendors with buyer details, item lines, totals, and print-ready PDF output.",
+    menuTitle: "Purchase Order Generator",
+    showInHeaderMenu: true,
+    featuredInHeaderMenu: true,
+    showOnHome: true,
+    featuredOnCategoryPage: true,
+    order: 125,
   },
 
   receipt_generator: {
@@ -205,26 +223,6 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 220,
-    blankTemplateKey: "delivery_receipt_template",
-  },
-
-  delivery_receipt_template: {
-    key: "delivery_receipt_template",
-    categoryKey: "printable_templates",
-    title: "Simple Delivery Receipt Template",
-    shortTitle: "Delivery Receipt Template",
-    href: "/printable-templates/simple-delivery-receipt-template/",
-    type: "template",
-    status: "coming_soon",
-    description:
-      "Printable delivery receipt template for proof of delivery and signature confirmation.",
-    menuTitle: "Delivery Receipt Template",
-    showInHeaderMenu: true,
-    featuredInHeaderMenu: true,
-    showOnHome: false,
-    featuredOnCategoryPage: true,
-    order: 230,
-    generatorKey: "delivery_receipt_generator",
   },
 
   profit_margin_calculator: {
@@ -245,22 +243,22 @@ export const toolDictionary = {
     order: 300,
   },
 
-  markup_calculator: {
-    key: "markup_calculator",
+  sales_commission_calculator: {
+    key: "sales_commission_calculator",
     categoryKey: "business_calculators",
-    title: "Markup Calculator",
-    shortTitle: "Markup Calculator",
-    href: "/markup-calculator/",
+    title: "Sales Commission Calculator",
+    shortTitle: "Sales Commission Calculator",
+    href: "/business-calculators/sales-commission-calculator/",
     type: "calculator",
-    status: "coming_soon",
+    status: "live",
     description:
-      "Work out markup percentages and recommended selling prices from cost inputs.",
-    menuTitle: "Markup Calculator",
+      "Calculate sales commission, bonus, deductions, and net payout, then print or save a commission statement as PDF.",
+    menuTitle: "Sales Commission Calculator",
     showInHeaderMenu: true,
     featuredInHeaderMenu: true,
-    showOnHome: false,
+    showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 310,
+    order: 305,
   },
 
   break_even_point_calculator: {
@@ -279,24 +277,6 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 315,
-  },
-
-  sales_tax_calculator: {
-    key: "sales_tax_calculator",
-    categoryKey: "business_calculators",
-    title: "Sales Tax Calculator",
-    shortTitle: "Sales Tax Calculator",
-    href: "/sales-tax-calculator/",
-    type: "calculator",
-    status: "coming_soon",
-    description:
-      "Calculate pre-tax, tax amount, and final total for U.S. sales tax scenarios.",
-    menuTitle: "Sales Tax Calculator",
-    showInHeaderMenu: true,
-    featuredInHeaderMenu: true,
-    showOnHome: false,
-    featuredOnCategoryPage: true,
-    order: 320,
   },
 
   discount_calculator: {

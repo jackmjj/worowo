@@ -1,0 +1,79 @@
+---
+import DocumentGeneratorLayout from "../../layouts/DocumentGeneratorLayout.astro";
+import PurchaseOrderForm from "../../components/document-generators/purchase-order/PurchaseOrderForm.astro";
+import PurchaseOrderPreview from "../../components/document-generators/purchase-order/PurchaseOrderPreview.astro";
+
+const title = "Free Purchase Order Generator";
+const description =
+  "Create a professional purchase order online for free. Add buyer, vendor, shipping details, items, totals, and print or save as PDF. No sign-up required.";
+const canonical = "https://www.worowo.com/quotes-invoices/purchase-order-generator/";
+
+const breadcrumbs = [
+  { label: "Home", href: "/" },
+  { label: "Quotes & Invoices", href: "/quotes-invoices/" },
+  { label: "Free Purchase Order Generator" },
+];
+
+const faq = [
+  {
+    question: "Is this purchase order generator free?",
+    answer:
+      "Yes. You can create, preview, print, or save your purchase order as PDF for free. No sign-up required.",
+  },
+  {
+    question: "Can I customize the purchase order?",
+    answer:
+      "Yes. You can fill in buyer, vendor, shipping details, items, totals, and notes before generating the PO.",
+  },
+  {
+    question: "Can I download the PO as a PDF?",
+    answer:
+      "Yes. Use the Print / Save as PDF button and choose your browser PDF option.",
+  },
+  {
+    question: "Who can use this tool?",
+    answer:
+      "Small businesses, procurement teams, wholesalers, importers, and trading companies.",
+  },
+];
+
+const relatedTools = [
+  {
+    title: "Invoice Generator",
+    href: "/quotes-invoices/invoice-generator/",
+    description: "Create a professional invoice online and save it as PDF.",
+  },
+  {
+    title: "Quote / Estimate Generator",
+    href: "/quotes-invoices/quote-estimate-generator/",
+    description: "Prepare a customer quote or estimate with item lines, discounts, taxes, and approval details.",
+  },
+  {
+    title: "Commercial Invoice Generator",
+    href: "/quotes-invoices/commercial-invoice-generator/",
+    description: "Create a commercial invoice for international trade and customs documents.",
+  },
+  {
+    title: "Proforma Invoice Generator",
+    href: "/quotes-invoices/proforma-invoice-generator/",
+    description: "Create a proforma invoice for quotations, advance payment, and international orders.",
+  },
+];
+---
+
+<DocumentGeneratorLayout
+  title={title}
+  pageTitle={`${title} | Worowo`}
+  description={description}
+  canonical={canonical}
+  eyebrow="Quotes & Invoices"
+  categoryLabel="Quotes & Invoices"
+  categoryHref="/quotes-invoices/"
+  intro={description}
+  breadcrumbs={breadcrumbs}
+  faq={faq}
+  relatedTools={relatedTools}
+>
+  <PurchaseOrderForm slot="form" />
+  <PurchaseOrderPreview slot="preview" />
+</DocumentGeneratorLayout>

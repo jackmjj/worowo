@@ -132,14 +132,14 @@ function getToolIcon(toolKey: string, toolType: ToolType): string {
     invoice_generator: makeIcon("fileText"),
     commercial_invoice_generator: makeIcon("fileCheck"),
     proforma_invoice_generator: makeIcon("fileCheck"),
+    purchase_order_generator: makeIcon("clipboardList"),
     receipt_generator: makeIcon("receipt"),
     packing_list_generator: makeIcon("boxes"),
     export_packing_list_generator: makeIcon("packageCheck"),
     packing_list_template: makeIcon("clipboardList"),
     delivery_receipt_generator: makeIcon("truck"),
-    delivery_receipt_template: makeIcon("truck"),
     profit_margin_calculator: makeIcon("chartPie"),
-    markup_calculator: makeIcon("badgePercent"),
+    sales_commission_calculator: makeIcon("calculator"),
     break_even_point_calculator: makeIcon("calculator"),
     discount_calculator: makeIcon("badgePercent"),
     unit_price_comparison_calculator: makeIcon("calculator"),
@@ -167,7 +167,6 @@ function getHomeTools(categoryKey: CategoryKey) {
       ? [
           ...baseTools,
           toolDictionary.packing_list_template,
-          toolDictionary.delivery_receipt_template,
         ]
       : baseTools;
 

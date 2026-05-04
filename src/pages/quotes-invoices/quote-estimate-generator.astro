@@ -1,0 +1,81 @@
+---
+import DocumentGeneratorLayout from "../../layouts/DocumentGeneratorLayout.astro";
+import QuoteEstimateForm from "../../components/document-generators/quote-estimate/QuoteEstimateForm.astro";
+import QuoteEstimatePreview from "../../components/document-generators/quote-estimate/QuoteEstimatePreview.astro";
+
+const title = "Free Quote / Estimate Generator";
+const description =
+  "Create a professional quote or estimate online for free. Add client details, item lines, discounts, taxes, terms, and print or save as PDF. No sign-up required.";
+const canonical = "https://www.worowo.com/quotes-invoices/quote-estimate-generator/";
+
+const breadcrumbs = [
+  { label: "Home", href: "/" },
+  { label: "Quotes & Invoices", href: "/quotes-invoices/" },
+  { label: "Free Quote / Estimate Generator" },
+];
+
+const faq = [
+  {
+    question: "Is this quote generator free?",
+    answer:
+      "Yes. You can create, preview, print, or save your quote as PDF for free. No sign-up required.",
+  },
+  {
+    question: "What is the difference between a quote and an estimate?",
+    answer:
+      "A quote is usually a fixed offer, while an estimate is an approximate price that may change after the final work scope is confirmed.",
+  },
+  {
+    question: "Can I save the quote as a PDF?",
+    answer:
+      "Yes. Use the Print / Save as PDF button and choose your browser PDF option.",
+  },
+  {
+    question: "Can I use this for service quotes and product quotes?",
+    answer:
+      "Yes. You can use it for services, products, freelance work, contractors, small business sales, and B2B quotes.",
+  },
+];
+
+const relatedTools = [
+  {
+    title: "Invoice Generator",
+    description: "Create a professional invoice online and save it as PDF.",
+    href: "/quotes-invoices/invoice-generator/",
+  },
+  {
+    title: "Proforma Invoice Generator",
+    description:
+      "Create a proforma invoice for quotations, advance payment, and international orders.",
+    href: "/quotes-invoices/proforma-invoice-generator/",
+  },
+  {
+    title: "Commercial Invoice Generator",
+    description:
+      "Create a commercial invoice for international trade and customs documents.",
+    href: "/quotes-invoices/commercial-invoice-generator/",
+  },
+  {
+    title: "Purchase Order Generator",
+    description: "Create a purchase order for suppliers and vendors.",
+    href: "/quotes-invoices/purchase-order-generator/",
+  },
+];
+---
+
+<DocumentGeneratorLayout
+  title={title}
+  pageTitle={`${title} | Worowo`}
+  description={description}
+  canonical={canonical}
+  eyebrow="Quotes & Invoices"
+  categoryLabel="Quotes & Invoices"
+  categoryHref="/quotes-invoices/"
+  intro={description}
+  breadcrumbs={breadcrumbs}
+  faq={faq}
+  relatedTools={relatedTools}
+>
+  <QuoteEstimateForm slot="form" />
+  <QuoteEstimatePreview slot="preview" />
+</DocumentGeneratorLayout>

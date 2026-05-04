@@ -45,16 +45,15 @@ function getToolIcon(tool: ToolDictionaryItem): string {
     quotation_estimate_generator: "quote",
     commercial_invoice_generator: "invoice",
     proforma_invoice_generator: "invoice",
+    purchase_order_generator: "invoice",
     receipt_generator: "receipt",
     invoice_template: "invoice",
     packing_list_generator: "packing",
     packing_list_template: "packing",
     delivery_receipt_generator: "delivery",
-    delivery_receipt_template: "delivery",
     profit_margin_calculator: "profit",
-    markup_calculator: "calculator",
+    sales_commission_calculator: "calculator",
     break_even_point_calculator: "calculator",
-    sales_tax_calculator: "tax",
     discount_calculator: "calculator",
     unit_price_comparison_calculator: "calculator",
     employee_availability_form: "calendar",
@@ -107,7 +106,6 @@ function getCategorySections(categoryKey: CategoryKey): CategoryPageSection[] {
       "export_packing_list_generator",
       "packing_list_template",
       "delivery_receipt_generator",
-      "delivery_receipt_template",
     ];
 
     return [
@@ -150,7 +148,7 @@ function getCategorySections(categoryKey: CategoryKey): CategoryPageSection[] {
         key: "packing-shipping",
         title: "Packing & Shipping",
         tools: templateTools.filter((tool) =>
-          ["packing_list_template", "delivery_receipt_template"].includes(tool.key)
+          ["packing_list_template"].includes(tool.key)
         ),
       },
       {

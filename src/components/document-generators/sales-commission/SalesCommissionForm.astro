@@ -1,0 +1,197 @@
+<form id="salesCommissionForm" class="sc-form">
+  <p class="sc-notice">
+    Fill in the commission details below. The printable payout statement updates automatically as you type.
+  </p>
+
+  <section class="sc-section">
+    <h2>Statement Details</h2>
+
+    <div class="sc-grid sc-grid-3">
+      <label>
+        Salesperson Name
+        <input id="salespersonName" type="text" placeholder="Enter salesperson name" data-preview-field="salespersonName" />
+      </label>
+
+      <label>
+        Period / Reference
+        <input id="statementPeriod" type="text" placeholder="Example: May 2026" data-preview-field="statementPeriod" />
+      </label>
+
+      <label>
+        Payout Date
+        <input id="payoutDate" type="date" data-preview-field="payoutDate" />
+      </label>
+    </div>
+  </section>
+
+  <section class="sc-section">
+    <h2>Commission Inputs</h2>
+
+    <div class="sc-grid sc-grid-2">
+      <div class="sc-mini-card">
+        <h3>Sales</h3>
+
+        <label>
+          Total Sales Amount
+          <input id="salesAmount" type="number" min="0" step="0.01" placeholder="0.00" />
+        </label>
+
+        <label>
+          Commission Rate (%)
+          <input id="commissionRate" type="number" min="0" step="0.01" placeholder="Example: 5" />
+        </label>
+      </div>
+
+      <div class="sc-mini-card">
+        <h3>Bonus & Deductions</h3>
+
+        <label>
+          Bonus Threshold
+          <input id="bonusThreshold" type="number" min="0" step="0.01" placeholder="0.00" />
+        </label>
+
+        <label>
+          Bonus Amount
+          <input id="bonusAmount" type="number" min="0" step="0.01" placeholder="0.00" />
+        </label>
+
+        <label>
+          Other Deductions
+          <input id="deductions" type="number" min="0" step="0.01" placeholder="0.00" />
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section class="sc-section">
+    <h2>Notes</h2>
+
+    <label>
+      Notes
+      <textarea
+        id="commissionNotes"
+        rows="4"
+        placeholder="Optional notes about targets, adjustments, or payment details"
+        data-preview-field="commissionNotes"
+      ></textarea>
+    </label>
+  </section>
+
+  <script type="module" src="/scripts/sales-commission.js"></script>
+</form>
+
+<style>
+  .sc-form {
+    width: 100%;
+    border: 1px solid #dbe4f0;
+    border-radius: 24px;
+    background: #ffffff;
+    padding: 24px;
+    box-shadow: 0 18px 44px -34px rgba(15, 23, 42, 0.18);
+  }
+
+  .sc-notice {
+    margin: 0 0 22px;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .sc-section + .sc-section {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .sc-section h2 {
+    margin: 0 0 16px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .sc-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .sc-grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sc-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sc-mini-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 18px;
+    background: #ffffff;
+  }
+
+  .sc-mini-card h3 {
+    margin: 0 0 14px;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  label + label {
+    margin-top: 14px;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #0f172a;
+    padding: 12px 13px;
+    outline: none;
+    transition:
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      background 0.18s ease;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #94a3b8;
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  }
+
+  @media (max-width: 900px) {
+    .sc-grid-2,
+    .sc-grid-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

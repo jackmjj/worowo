@@ -2,14 +2,16 @@
 interface Props {
   paperId?: string;
   defaultSize?: "a4" | "letter";
+  className?: string;
+  title?: string;
 }
 
-const { paperId = "documentPaper", defaultSize = "a4" } = Astro.props;
+const { paperId = "documentPaper", defaultSize = "a4", className = "" } = Astro.props;
 const sizeClass = defaultSize === "letter" ? "document-paper-letter" : "document-paper-a4";
 ---
 
 <div class="document-paper-shell">
-  <div id={paperId} class:list={["document-paper", sizeClass]}>
+  <div id={paperId} class:list={["document-paper", sizeClass, className]}>
     <slot />
   </div>
 </div>

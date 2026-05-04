@@ -1,0 +1,533 @@
+---
+import GeneratorActions from "../shared/GeneratorActions.astro";
+---
+
+<form id="purchaseOrderForm" class="po-form">
+  <p class="notice">
+    Fill in the purchase order details. Preview updates automatically as you type.
+  </p>
+
+  <section class="form-section">
+    <h2>PO Details</h2>
+
+    <div class="grid four">
+      <label>
+        PO Number
+        <input id="poNumber" type="text" placeholder="PO-2026-001" data-preview-field="poNumber" />
+      </label>
+
+      <label>
+        PO Date
+        <input id="poDate" type="date" data-preview-field="poDate" />
+      </label>
+
+      <label>
+        Expected Delivery
+        <input id="deliveryDate" type="date" data-preview-field="deliveryDate" />
+      </label>
+
+      <label>
+        Payment Terms
+        <input
+          id="paymentTerms"
+          type="text"
+          placeholder="Net 30 / Prepaid"
+          data-preview-field="paymentTerms"
+        />
+      </label>
+
+      <label>
+        Shipping Method
+        <input
+          id="shippingMethod"
+          type="text"
+          placeholder="Air / Sea / Courier"
+          data-preview-field="shippingMethod"
+        />
+      </label>
+    </div>
+  </section>
+
+  <section class="form-section">
+    <h2>Buyer & Vendor</h2>
+
+    <div class="grid two">
+      <div class="mini-card">
+        <h3>Buyer</h3>
+        <label>
+          Name
+          <input id="buyerName" type="text" placeholder="Buyer company" data-preview-field="buyerName" />
+        </label>
+        <label>
+          Address
+          <textarea
+            id="buyerAddress"
+            rows="4"
+            placeholder="Buyer address"
+            data-preview-field="buyerAddress"
+          ></textarea>
+        </label>
+      </div>
+
+      <div class="mini-card">
+        <h3>Vendor / Supplier</h3>
+        <label>
+          Name
+          <input id="vendorName" type="text" placeholder="Vendor company" data-preview-field="vendorName" />
+        </label>
+        <label>
+          Address
+          <textarea
+            id="vendorAddress"
+            rows="4"
+            placeholder="Vendor address"
+            data-preview-field="vendorAddress"
+          ></textarea>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section class="items-section">
+    <div class="items-header">
+      <div>
+        <h2>Items</h2>
+        <p>Add products or services. Amounts calculated automatically.</p>
+      </div>
+
+      <button id="addPOItemBtn" class="add-item-btn" type="button">
+        <span>+</span>
+        Add Item
+      </button>
+    </div>
+
+    <div class="items-table-shell">
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th class="col-description">Description</th>
+            <th class="col-small">Qty</th>
+            <th class="col-medium">Unit Price</th>
+            <th class="col-small">Tax %</th>
+            <th class="col-medium">Amount</th>
+            <th class="col-action"></th>
+          </tr>
+        </thead>
+        <tbody id="poItemsBody">
+          <tr>
+            <td><input class="item-desc" type="text" placeholder="Product description" /></td>
+            <td><input class="item-qty calc-field" type="number" value="1" min="0" step="1" /></td>
+            <td><input class="item-price calc-field" type="number" value="0" min="0" step="0.01" /></td>
+            <td><input class="item-tax calc-field" type="number" value="0" min="0" step="0.01" /></td>
+            <td><input class="item-amount" type="text" value="0.00" readonly /></td>
+            <td><button class="remove-item-btn" type="button" aria-label="Remove item">×</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="totals-card">
+      <div><span>Subtotal</span><strong id="poSubtotal">0.00</strong></div>
+      <div><span>Tax</span><strong id="poTax">0.00</strong></div>
+      <div><span>Total</span><strong id="poTotal">0.00</strong></div>
+    </div>
+  </section>
+
+  <section class="form-section">
+    <h2>Notes & Authorized</h2>
+    <div class="grid two">
+      <label>
+        Notes
+        <textarea id="poNotes" rows="4" placeholder="Additional notes" data-preview-field="notes"></textarea>
+      </label>
+
+      <label>
+        Authorized Signature
+        <input id="poSignature" type="text" placeholder="Signature" data-preview-field="signature" />
+      </label>
+    </div>
+  </section>
+
+  <GeneratorActions />
+
+  <script type="module" src="/scripts/purchase-order.js"></script>
+</form>
+
+<style>
+  .po-form {
+    width: 100%;
+  }
+
+  .notice {
+    margin: 0 0 24px;
+    padding: 14px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 14px;
+  }
+
+  .form-section {
+    padding: 22px 0;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .form-section:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .form-section h2 {
+    margin: 0 0 16px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .grid.two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid.four {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .mini-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 18px;
+    background: #ffffff;
+  }
+
+  .mini-card h3 {
+    margin: 0 0 14px;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  label + label {
+    margin-top: 14px;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #0f172a;
+    padding: 12px 13px;
+    outline: none;
+    transition:
+      border-color 0.18s ease,
+      box-shadow 0.18s ease,
+      background 0.18s ease;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: #94a3b8;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  }
+
+  .items-section {
+    margin: 26px 0;
+    padding: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.04);
+  }
+
+  .items-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 26px 28px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    background: linear-gradient(180deg, #ffffff, #fbfdff);
+  }
+
+  .items-header h2 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+
+  .items-header p {
+    margin: 7px 0 0;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .add-item-btn {
+    border: 0;
+    border-radius: 999px;
+    background: #0f172a;
+    color: #ffffff;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: 900;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    box-shadow: 0 10px 22px rgba(15, 23, 42, 0.16);
+  }
+
+  .add-item-btn span {
+    font-size: 20px;
+    line-height: 1;
+    margin-top: -1px;
+  }
+
+  .items-table-shell {
+    padding: 0 20px 20px;
+    overflow-x: auto;
+    background: #ffffff;
+  }
+
+  .items-table {
+    width: 100%;
+    min-width: 860px;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    table-layout: fixed;
+  }
+
+  .items-table thead th {
+    padding: 14px 10px 8px;
+    color: #64748b;
+    background: transparent;
+    font-size: 12px;
+    font-weight: 900;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .items-table tbody td {
+    padding: 0 8px;
+    border: 0;
+    background: transparent;
+    vertical-align: middle;
+  }
+
+  .items-table input {
+    height: 46px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .items-table input:hover,
+  .items-table input:focus {
+    background: #ffffff;
+  }
+
+  .items-table .item-desc {
+    font-weight: 600;
+  }
+
+  .items-table .item-amount {
+    color: #0f172a;
+    font-weight: 900;
+    background: #ffffff;
+  }
+
+  .col-description {
+    width: 46%;
+  }
+
+  .col-small {
+    width: 11%;
+  }
+
+  .col-medium {
+    width: 15%;
+  }
+
+  .col-action {
+    width: 48px;
+  }
+
+  .remove-item-btn {
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 999px;
+    background: #fff1f2;
+    color: #e11d48;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.55;
+  }
+
+  .items-table tbody tr:hover .remove-item-btn {
+    opacity: 1;
+  }
+
+  .totals-card {
+    margin: 0 20px 24px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border: 1px solid #dbeafe;
+    border-radius: 20px;
+    background: linear-gradient(180deg, #f8fbff, #ffffff);
+    overflow: hidden;
+  }
+
+  .totals-card div {
+    padding: 20px 18px;
+    border-right: 1px solid #dbe3ef;
+  }
+
+  .totals-card div:last-child {
+    border-right: 0;
+  }
+
+  .totals-card span {
+    display: block;
+    margin-bottom: 8px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .totals-card strong {
+    display: block;
+    color: #0f172a;
+    font-size: 24px;
+    line-height: 1.1;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+  }
+
+  @media (max-width: 900px) {
+    .grid.two,
+    .grid.four {
+      grid-template-columns: 1fr;
+    }
+
+    .items-header {
+      flex-direction: column;
+      padding: 22px 20px 18px;
+    }
+
+    .add-item-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .totals-card {
+      grid-template-columns: 1fr;
+    }
+
+    .totals-card div {
+      border-right: 0;
+      border-bottom: 1px solid #dbe3ef;
+    }
+
+    .totals-card div:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  @media print {
+    @page {
+      margin: 0;
+    }
+
+    body.print-a4 {
+      width: 210mm;
+    }
+
+    body.print-letter {
+      width: 8.5in;
+    }
+
+    html,
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #ffffff !important;
+    }
+
+    body * {
+      visibility: hidden !important;
+    }
+
+    #purchaseOrderPaper,
+    #purchaseOrderPaper * {
+      visibility: visible !important;
+    }
+
+    #purchaseOrderPaper {
+      position: absolute;
+      left: 0;
+      top: 0;
+      margin: 0 !important;
+      box-shadow: none !important;
+      background: #ffffff !important;
+      overflow: hidden !important;
+    }
+
+    #purchaseOrderPaper.document-paper-a4 {
+      width: 210mm !important;
+      min-height: 297mm !important;
+      padding: 12mm !important;
+    }
+
+    #purchaseOrderPaper.document-paper-letter {
+      width: 8.5in !important;
+      min-height: 11in !important;
+      padding: 0.45in !important;
+    }
+  }
+</style>

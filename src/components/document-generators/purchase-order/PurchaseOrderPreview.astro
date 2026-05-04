@@ -1,0 +1,251 @@
+---
+import DocumentPaper from "../shared/DocumentPaper.astro";
+---
+
+<DocumentPaper
+  paperId="purchaseOrderPaper"
+  title="Purchase Order"
+  className="po-paper"
+>
+  <div class="paper-head">
+    <div>
+      <h3>Purchase Order</h3>
+      <p class="paper-subtitle">Prepared for review and confirmation</p>
+    </div>
+
+    <div class="paper-meta">
+      <p><strong>PO No.</strong> <span data-preview="poNumber">—</span></p>
+      <p><strong>PO Date</strong> <span data-preview="poDate">—</span></p>
+      <p><strong>Expected Delivery</strong> <span data-preview="deliveryDate">—</span></p>
+      <p><strong>Payment Terms</strong> <span data-preview="paymentTerms">—</span></p>
+      <p><strong>Shipping Method</strong> <span data-preview="shippingMethod">—</span></p>
+    </div>
+  </div>
+
+  <div class="paper-grid two">
+    <div class="paper-box">
+      <h4>Buyer</h4>
+      <p data-preview="buyerName">—</p>
+      <p data-preview="buyerAddress">—</p>
+    </div>
+
+    <div class="paper-box">
+      <h4>Vendor / Supplier</h4>
+      <p data-preview="vendorName">—</p>
+      <p data-preview="vendorAddress">—</p>
+    </div>
+  </div>
+
+  <table class="paper-table">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Description</th>
+        <th>Qty</th>
+        <th>Unit Price</th>
+        <th>Tax</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody id="poPreviewItemsBody"></tbody>
+  </table>
+
+  <div class="paper-total-box">
+    <p><span>Subtotal</span><strong id="poPreviewSubtotal">0.00</strong></p>
+    <p><span>Tax</span><strong id="poPreviewTax">0.00</strong></p>
+    <p class="grand-total"><span>Total</span><strong id="poPreviewTotal">0.00</strong></p>
+  </div>
+
+  <div class="paper-signatures">
+    <div>
+      <span>Notes</span>
+      <strong data-preview="notes">—</strong>
+    </div>
+    <div>
+      <span>Authorized Signature</span>
+      <strong data-preview="signature">—</strong>
+    </div>
+  </div>
+</DocumentPaper>
+
+<style>
+  .po-paper {
+    font-size: 12px;
+  }
+
+  .paper-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 28px;
+    border-bottom: 2px solid #0f172a;
+    padding-bottom: 22px;
+    margin-bottom: 24px;
+  }
+
+  .paper-head h3 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .paper-subtitle {
+    margin: 8px 0 0;
+    color: #64748b;
+  }
+
+  .paper-meta {
+    min-width: 260px;
+  }
+
+  .paper-meta p {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    margin: 0 0 7px;
+  }
+
+  .paper-grid {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .paper-grid.two {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .paper-box {
+    min-height: 112px;
+    border: 1px solid #dbe3ef;
+    padding: 14px;
+    color: #334155;
+  }
+
+  .paper-box h4 {
+    margin: 0 0 10px;
+    color: #0f172a;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .paper-box p {
+    margin: 0 0 7px;
+    white-space: pre-line;
+  }
+
+  .paper-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 18px;
+    font-size: 11px;
+  }
+
+  .paper-table th,
+  .paper-table td {
+    border: 1px solid #dbe3ef;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .paper-table th {
+    background: #f1f5f9;
+    color: #0f172a;
+    font-weight: 900;
+  }
+
+  .paper-total-box {
+    width: 300px;
+    margin: 26px 0 28px auto;
+    border: 1px solid #dbe3ef;
+    padding: 14px;
+    font-size: 12px;
+  }
+
+  .paper-total-box p {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 0 8px;
+  }
+
+  .paper-total-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .paper-total-box .grand-total {
+    border-top: 1px solid #dbe3ef;
+    padding-top: 10px;
+    margin-top: 10px;
+    color: #0f172a;
+    font-size: 14px;
+  }
+
+  .paper-signatures {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 58px;
+  }
+
+  .paper-signatures div {
+    border-top: 1px solid #94a3b8;
+    padding-top: 10px;
+  }
+
+  .paper-signatures span {
+    display: block;
+    color: #64748b;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .paper-signatures strong {
+    display: block;
+    margin-top: 8px;
+    color: #0f172a;
+    font-size: 12px;
+    white-space: pre-line;
+  }
+
+  @media print {
+    .paper-head {
+      margin-bottom: 14px !important;
+      padding-bottom: 14px !important;
+    }
+
+    .paper-head h3 {
+      font-size: 22px !important;
+    }
+
+    .paper-box {
+      min-height: auto !important;
+      padding: 10px !important;
+    }
+
+    .paper-table {
+      margin-top: 12px !important;
+      font-size: 9.5px !important;
+    }
+
+    .paper-table th,
+    .paper-table td {
+      padding: 5px !important;
+    }
+
+    .paper-total-box {
+      margin-top: 18px !important;
+      margin-bottom: 20px !important;
+      padding: 10px !important;
+      font-size: 10px !important;
+    }
+
+    .paper-signatures {
+      margin-top: 34px !important;
+    }
+  }
+</style>

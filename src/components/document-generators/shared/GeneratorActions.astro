@@ -1,0 +1,115 @@
+<div class="generator-actions">
+  <div class="generator-paper-size-control" aria-label="Paper size">
+    <span>Paper Size</span>
+
+    <button class="generator-paper-size-btn active" type="button" data-paper-size="a4">
+      A4
+    </button>
+
+    <button class="generator-paper-size-btn" type="button" data-paper-size="letter">
+      US Letter
+    </button>
+  </div>
+
+  <div class="generator-action-buttons">
+    <button type="button" class="generator-action-btn generator-action-btn-ghost" data-reset-form>
+      Reset
+    </button>
+
+    <button type="button" class="generator-action-btn generator-action-btn-primary" data-print-document>
+      Print / Save as PDF
+    </button>
+  </div>
+</div>
+
+<style>
+  .generator-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-top: 8px;
+    flex-wrap: wrap;
+  }
+
+  .generator-paper-size-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    background: #f8fafc;
+  }
+
+  .generator-paper-size-control span {
+    padding: 0 8px;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .generator-paper-size-btn {
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #475569;
+    padding: 8px 13px;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .generator-paper-size-btn.active {
+    background: #0f172a;
+    color: #ffffff;
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.16);
+  }
+
+  .generator-action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .generator-action-btn {
+    border-radius: 999px;
+    padding: 13px 18px;
+    font-size: 15px;
+    line-height: 1.2;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .generator-action-btn-ghost {
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid #cbd5e1;
+  }
+
+  .generator-action-btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+    border: 1px solid #2563eb;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.16);
+  }
+
+  @media (max-width: 900px) {
+    .generator-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .generator-paper-size-control {
+      justify-content: center;
+    }
+
+    .generator-action-buttons {
+      flex-direction: column-reverse;
+    }
+
+    .generator-action-btn {
+      width: 100%;
+    }
+  }
+</style>
