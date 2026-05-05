@@ -48,6 +48,7 @@ function getToolIcon(tool: ToolDictionaryItem): string {
     purchase_order_generator: "invoice",
     invoice_template: "invoice",
     packing_list_generator: "packing",
+    export_packing_list_generator: "packing",
     packing_list_template: "packing",
     delivery_receipt_generator: "delivery",
     profit_margin_calculator: "profit",
@@ -130,41 +131,15 @@ function getCategorySections(categoryKey: CategoryKey): CategoryPageSection[] {
   }
 
   if (categoryKey === "printable_templates") {
-    const templateTools = getCategoryTools(categoryKey).map(toToolItem);
-
     return [
       {
-        key: "quote-billing",
-        title: "Quote & Billing",
-        tools: templateTools.filter((tool) =>
-          ["invoice_template"].includes(tool.key)
-        ),
+        key: "printable-templates",
+        title: "Printable Templates",
+        description:
+          "Printable business documents for billing, shipping, field service, and everyday operations.",
+        tools: getCategoryTools(categoryKey).map(toToolItem),
       },
-      {
-        key: "packing-shipping",
-        title: "Packing & Shipping",
-        tools: templateTools.filter((tool) =>
-          ["packing_list_template"].includes(tool.key)
-        ),
-      },
-      {
-        key: "employee-hr",
-        title: "Employee Scheduling & HR",
-        tools: templateTools.filter((tool) =>
-          [
-            "weekly_employee_schedule_template",
-            "employee_timesheet_template",
-          ].includes(tool.key)
-        ),
-      },
-      {
-        key: "field-service",
-        title: "Field Service & Job Forms",
-        tools: templateTools.filter((tool) =>
-          ["field_service_work_order_template"].includes(tool.key)
-        ),
-      },
-    ].filter((section) => section.tools.length > 0);
+    ];
   }
 
   return [

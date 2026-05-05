@@ -5,7 +5,6 @@ import {
 } from "./categoryDictionary";
 import {
   getToolsByCategory,
-  toolDictionary,
   type ToolStatus,
   type ToolType,
 } from "./toolDictionary";
@@ -134,7 +133,7 @@ function getToolIcon(toolKey: string, toolType: ToolType): string {
     proforma_invoice_generator: makeIcon("fileCheck"),
     purchase_order_generator: makeIcon("clipboardList"),
     packing_list_generator: makeIcon("boxes"),
-    export_packing_list_generator: makeIcon("packageCheck"),
+    export_packing_list_generator: makeIcon("package"),
     packing_list_template: makeIcon("clipboardList"),
     delivery_receipt_generator: makeIcon("truck"),
     profit_margin_calculator: makeIcon("chartPie"),
@@ -159,19 +158,9 @@ function getStatusLabel(status: ToolStatus) {
 }
 
 function getHomeTools(categoryKey: CategoryKey) {
-  const baseTools = getToolsByCategory(categoryKey);
-  const tools =
-    categoryKey === "packing_shipping"
-      ? [
-          ...baseTools,
-          toolDictionary.packing_list_template,
-        ]
-      : baseTools;
-
-  return tools
+  return getToolsByCategory(categoryKey)
     .filter((tool) => tool.showOnHome)
     .sort((a, b) => a.order - b.order)
-    .slice(0, 4)
     .map((tool) => ({
       key: tool.key,
       name: tool.shortTitle || tool.title,

@@ -149,7 +149,7 @@ const canonicalUrl = canonical || Astro.url.href;
       .desktop-nav {
         display: flex;
         align-items: center;
-        gap: 18px;
+        gap: 10px;
       }
 
       .desktop-nav > a,
@@ -164,46 +164,95 @@ const canonicalUrl = canonical || Astro.url.href;
 
       .desktop-group {
         position: relative;
-        padding-bottom: 10px;
-        margin-bottom: -10px;
+        padding-bottom: 12px;
+        margin-bottom: -12px;
       }
 
       .desktop-trigger {
         appearance: none;
-        border: 0;
-        background: transparent;
-        padding: 0;
+        border: 1px solid #dbe3ee;
+        background:
+          linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        padding: 0 14px;
         display: flex;
         align-items: center;
         gap: 6px;
         font: inherit;
         color: inherit;
         cursor: pointer;
-        min-height: 44px;
+        min-height: 42px;
+        border-radius: 999px;
+        box-shadow: 0 6px 18px -16px rgba(15, 23, 42, 0.28);
+        transition:
+          color 0.18s ease,
+          border-color 0.18s ease,
+          background 0.18s ease,
+          box-shadow 0.18s ease,
+          transform 0.18s ease;
+      }
+
+      .desktop-nav > a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 42px;
+        padding: 0 14px;
+        border: 1px solid #dbe3ee;
+        border-radius: 999px;
+        background:
+          linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        box-shadow: 0 6px 18px -16px rgba(15, 23, 42, 0.28);
+        transition:
+          color 0.18s ease,
+          border-color 0.18s ease,
+          background 0.18s ease,
+          box-shadow 0.18s ease,
+          transform 0.18s ease;
       }
 
       .desktop-group:hover .desktop-trigger,
       .desktop-group:focus-within .desktop-trigger,
       .desktop-group[data-open="true"] .desktop-trigger {
         color: var(--primary);
+        border-color: #bfd4ff;
+        background: #eff6ff;
+        box-shadow: 0 12px 26px -18px rgba(37, 99, 235, 0.4);
+        transform: translateY(-1px);
+      }
+
+      .desktop-nav > a:hover,
+      .desktop-nav > a:focus-visible {
+        color: var(--primary);
+        border-color: #bfd4ff;
+        background: #eff6ff;
+        box-shadow: 0 12px 26px -18px rgba(37, 99, 235, 0.4);
+        transform: translateY(-1px);
       }
 
       .desktop-group[data-theme="green"]:hover .desktop-trigger,
       .desktop-group[data-theme="green"]:focus-within .desktop-trigger,
       .desktop-group[data-theme="green"][data-open="true"] .desktop-trigger {
         color: #16a34a;
+        border-color: #b7e4c3;
+        background: #effaf2;
+        box-shadow: 0 12px 26px -18px rgba(22, 163, 74, 0.35);
       }
 
       .desktop-group[data-theme="purple"]:hover .desktop-trigger,
       .desktop-group[data-theme="purple"]:focus-within .desktop-trigger,
       .desktop-group[data-theme="purple"][data-open="true"] .desktop-trigger {
         color: #7c3aed;
+        border-color: #d8c3fb;
+        background: #f5efff;
+        box-shadow: 0 12px 26px -18px rgba(124, 58, 237, 0.32);
       }
 
       .desktop-group[data-theme="orange"]:hover .desktop-trigger,
       .desktop-group[data-theme="orange"]:focus-within .desktop-trigger,
       .desktop-group[data-theme="orange"][data-open="true"] .desktop-trigger {
         color: #ea580c;
+        border-color: #fdcfaa;
+        background: #fff5ed;
+        box-shadow: 0 12px 26px -18px rgba(234, 88, 12, 0.3);
       }
 
       .desktop-flyout {
@@ -510,12 +559,14 @@ const canonicalUrl = canonical || Astro.url.href;
       }
 
       .site-footer {
-        margin-top: 24px;
-        border-top: 1px solid var(--line);
+        margin-top: 0;
+        border-top: 1px solid rgba(148, 163, 184, 0.22);
         padding: 40px 0 28px;
-        color: var(--text-soft);
+        color: #cbd5e1;
         font-size: 0.95rem;
-        background: var(--bg-soft);
+        background:
+          radial-gradient(circle at top right, rgba(37, 99, 235, 0.14), transparent 28%),
+          linear-gradient(180deg, #162033 0%, #0f172a 100%);
       }
 
       .footer-inner {
@@ -532,7 +583,7 @@ const canonicalUrl = canonical || Astro.url.href;
 
       .footer-brand {
         display: inline-flex;
-        color: #2563eb;
+        color: #93c5fd;
         font-size: 1.8rem;
         font-weight: 900;
         letter-spacing: -0.05em;
@@ -540,12 +591,12 @@ const canonicalUrl = canonical || Astro.url.href;
       }
 
       .footer-brand:hover {
-        color: #1d4ed8;
+        color: #bfdbfe;
       }
 
       .footer-tagline {
         margin: 0;
-        color: var(--text-soft);
+        color: #94a3b8;
         font-size: 0.94rem;
       }
 
@@ -558,7 +609,7 @@ const canonicalUrl = canonical || Astro.url.href;
       .footer-col h2,
       .footer-col h3 {
         margin: 0 0 10px;
-        color: var(--text);
+        color: #f8fafc;
         font-size: 0.82rem;
         font-weight: 900;
         letter-spacing: 0.1em;
@@ -567,28 +618,28 @@ const canonicalUrl = canonical || Astro.url.href;
 
       .footer-col p {
         margin: 0;
-        color: var(--text-soft);
+        color: #cbd5e1;
         font-size: 0.92rem;
         line-height: 1.65;
       }
 
       .footer-col a {
-        color: var(--text);
+        color: #e2e8f0;
         font-weight: 700;
       }
 
       .footer-col a:hover {
-        color: var(--primary);
+        color: #93c5fd;
       }
 
       .footer-bottom {
         padding-top: 8px;
-        border-top: 1px solid var(--line);
+        border-top: 1px solid rgba(148, 163, 184, 0.18);
       }
 
       .footer-bottom p {
         margin: 0;
-        color: var(--text-soft);
+        color: #94a3b8;
         font-size: 0.86rem;
       }
 

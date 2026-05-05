@@ -14,6 +14,20 @@ export type CategoryDictionaryItem = {
 };
 
 export const categoryDictionary = {
+  business_calculators: {
+    key: "business_calculators",
+    title: "Business Calculators",
+    shortTitle: "Business Calculators",
+    href: "/business-calculators/",
+    theme: "purple",
+    badge: "Calculators",
+    description:
+      "Business calculators for pricing, profit margin, markup, break-even planning, landed cost, and other day-to-day commerce tasks.",
+    showInHeader: true,
+    showOnHome: true,
+    order: 10,
+  },
+
   quotes_invoices: {
     key: "quotes_invoices",
     title: "Quotes & Invoices",
@@ -25,7 +39,7 @@ export const categoryDictionary = {
       "Create quotes, invoices, proforma invoices, and receipts with clean layouts for small businesses, service providers, and trade use.",
     showInHeader: true,
     showOnHome: true,
-    order: 10,
+    order: 20,
   },
 
   packing_shipping: {
@@ -37,20 +51,6 @@ export const categoryDictionary = {
     badge: "Shipping",
     description:
       "Use packing lists, delivery documents, and shipping paperwork for e-commerce, wholesale, export shipments, and local delivery workflows.",
-    showInHeader: true,
-    showOnHome: true,
-    order: 20,
-  },
-
-  business_calculators: {
-    key: "business_calculators",
-    title: "Business Calculators",
-    shortTitle: "Business Calculators",
-    href: "/business-calculators/",
-    theme: "purple",
-    badge: "Calculators",
-    description:
-      "Business calculators for pricing, profit margin, markup, break-even planning, landed cost, and other day-to-day commerce tasks.",
     showInHeader: true,
     showOnHome: true,
     order: 30,

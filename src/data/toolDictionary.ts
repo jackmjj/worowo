@@ -38,7 +38,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: true,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 100,
+    order: 230,
     blankTemplateKey: "invoice_template",
   },
 
@@ -57,7 +57,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: true,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 110,
+    order: 210,
   },
 
   commercial_invoice_generator: {
@@ -75,7 +75,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: true,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 115,
+    order: 240,
   },
 
   proforma_invoice_generator: {
@@ -93,7 +93,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: true,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 120,
+    order: 220,
   },
 
   purchase_order_generator: {
@@ -111,7 +111,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: true,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 125,
+    order: 200,
   },
 
   invoice_template: {
@@ -129,7 +129,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: false,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 140,
+    order: 400,
     generatorKey: "invoice_generator",
   },
 
@@ -148,7 +148,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: true,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 200,
+    order: 300,
   },
 
   export_packing_list_generator: {
@@ -164,9 +164,9 @@ export const toolDictionary = {
     menuTitle: "Export Packing List Generator",
     showInHeaderMenu: true,
     featuredInHeaderMenu: true,
-    showOnHome: false,
+    showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 205,
+    order: 310,
   },
 
   packing_list_template: {
@@ -184,7 +184,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: true,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 210,
+    order: 410,
     generatorKey: "packing_list_generator",
   },
 
@@ -203,7 +203,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: true,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 220,
+    order: 320,
   },
 
   profit_margin_calculator: {
@@ -221,7 +221,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: true,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 300,
+    order: 100,
   },
 
   sales_commission_calculator: {
@@ -239,7 +239,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: true,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 305,
+    order: 140,
   },
 
   break_even_point_calculator: {
@@ -257,7 +257,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: true,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 315,
+    order: 110,
   },
 
   discount_calculator: {
@@ -275,7 +275,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: false,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 330,
+    order: 120,
   },
 
   unit_price_comparison_calculator: {
@@ -293,7 +293,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: false,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 335,
+    order: 130,
   },
 
   weekly_employee_schedule_template: {
@@ -309,9 +309,9 @@ export const toolDictionary = {
     menuTitle: "Weekly Employee Schedule",
     showInHeaderMenu: true,
     featuredInHeaderMenu: true,
-    showOnHome: false,
+    showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 410,
+    order: 440,
   },
 
   employee_timesheet_template: {
@@ -329,7 +329,7 @@ export const toolDictionary = {
     featuredInHeaderMenu: true,
     showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 420,
+    order: 430,
   },
 
   field_service_work_order_template: {
@@ -345,9 +345,9 @@ export const toolDictionary = {
     menuTitle: "Field Service Work Order",
     showInHeaderMenu: true,
     featuredInHeaderMenu: false,
-    showOnHome: false,
+    showOnHome: true,
     featuredOnCategoryPage: true,
-    order: 440,
+    order: 420,
   },
 } as const satisfies Record<string, ToolDictionaryItem>;
 
