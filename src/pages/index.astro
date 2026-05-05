@@ -19,7 +19,13 @@ import { homeCategories } from "../data/homeCategories";
           </p>
 
           <div class="hero-actions">
-            <a href="#tools" class="hero-btn">Browse Tools</a>
+            <a href="#tools" class="hero-btn hero-btn-primary">Browse Free Tools</a>
+            <a
+              href="/business-calculators/profit-margin-calculator/"
+              class="hero-btn hero-btn-secondary"
+            >
+              Profit Margin Calculator
+            </a>
           </div>
         </div>
       </div>
@@ -153,6 +159,9 @@ import { homeCategories } from "../data/homeCategories";
 
   .hero-actions {
     margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .hero-btn {
@@ -161,17 +170,34 @@ import { homeCategories } from "../data/homeCategories";
     justify-content: center;
     min-height: 48px;
     padding: 0 18px;
-    background: var(--primary);
-    color: #fff;
     border-radius: 6px;
     font-size: 0.95rem;
     font-weight: 700;
     transition: 0.2s ease;
+  }
+
+  .hero-btn-primary {
+    background: var(--primary);
+    color: #fff;
     box-shadow: 0 8px 22px -12px rgba(37, 99, 235, 0.55);
   }
 
-  .hero-btn:hover {
+  .hero-btn-primary:hover {
     background: #1d4ed8;
+    transform: translateY(-1px);
+  }
+
+  .hero-btn-secondary {
+    border: 1px solid #dbe3ee;
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 10px 22px -18px rgba(15, 23, 42, 0.28);
+  }
+
+  .hero-btn-secondary:hover {
+    border-color: #bfd4ff;
+    color: #1d4ed8;
+    background: #f8fbff;
     transform: translateY(-1px);
   }
 
@@ -501,6 +527,7 @@ import { homeCategories } from "../data/homeCategories";
 
     .hero-btn {
       width: 100%;
+      justify-content: center;
     }
 
     .card-inner {
