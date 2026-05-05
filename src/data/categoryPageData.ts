@@ -49,6 +49,8 @@ function getToolIcon(tool: ToolDictionaryItem): string {
     invoice_template: "invoice",
     packing_list_generator: "packing",
     export_packing_list_generator: "packing",
+    shipping_mark_generator: "packing",
+    carton_label_generator: "packing",
     packing_list_template: "packing",
     delivery_receipt_generator: "delivery",
     profit_margin_calculator: "profit",
@@ -102,6 +104,8 @@ function getCategorySections(categoryKey: CategoryKey): CategoryPageSection[] {
     const toolKeys = [
       "packing_list_generator",
       "export_packing_list_generator",
+      "shipping_mark_generator",
+      "carton_label_generator",
       "delivery_receipt_generator",
     ];
 

@@ -1,0 +1,696 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+
+const toolMeta = {
+  title: "Shipping Mark Generator",
+  seoTitle: "Shipping Mark Generator | Create Printable Export Shipping Marks | worowo",
+  category: "Packing & Shipping",
+  categoryHref: "/packing-shipping/",
+  description:
+    "Create printable shipping marks for export cartons with main mark, side mark, carton number, destination, weight, measurement, and handling notes.",
+  intro:
+    "Create clean, printable export shipping marks for cartons, then print or save them as PDF.",
+  canonical: "https://www.worowo.com/packing-shipping/shipping-mark-generator/",
+};
+
+const faqItems = [
+  {
+    question: "What is a shipping mark?",
+    answer:
+      "A shipping mark is a carton or package marking used in export and shipping workflows. It usually shows the buyer, destination, carton number, weight, measurement, and handling instructions.",
+  },
+  {
+    question: "Can I print multiple carton marks at once?",
+    answer:
+      "Yes. Enter a carton range and the generator will create one printable mark for each carton number in that range.",
+  },
+  {
+    question: "Can I save the shipping marks as PDF?",
+    answer:
+      "Yes. Use the Print / Save as PDF button to print only the shipping mark preview area or save it as a PDF from your browser.",
+  },
+  {
+    question: "Who can use this shipping mark generator?",
+    answer:
+      "It is useful for exporters, warehouses, factories, trading companies, wholesalers, and B2B sellers preparing carton labels for shipments.",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Packing List Generator",
+    href: "/packing-shipping/packing-list-generator/",
+    desc: "Create a simple packing list for shipment contents, carton details, and dispatch records.",
+  },
+  {
+    name: "Export Packing List Generator",
+    href: "/packing-shipping/export-packing-list-generator/",
+    desc: "Prepare a formal export packing list with exporter, consignee, item details, and totals.",
+  },
+  {
+    name: "Delivery Receipt Generator",
+    href: "/packing-shipping/delivery-receipt-generator/",
+    desc: "Create delivery receipts for shipment handover, receiver confirmation, and delivery records.",
+  },
+];
+---
+
+<ToolLayout
+  title={toolMeta.title}
+  pageTitle={toolMeta.seoTitle}
+  description={toolMeta.description}
+  canonical={toolMeta.canonical}
+  eyebrow="Packing & Shipping"
+  categoryLabel={toolMeta.category}
+  categoryHref={toolMeta.categoryHref}
+  intro={toolMeta.intro}
+  faqItems={faqItems}
+  relatedTools={relatedTools}
+>
+  <div slot="form" class="tool-card smg-card smg-form-card">
+    <div class="smg-form-head">
+      <h2 class="smg-title">Shipping Mark Details</h2>
+      <p class="smg-subtitle">
+        Fill in the details below. The preview updates automatically and creates one mark for each carton.
+      </p>
+    </div>
+
+    <div class="smg-form-grid">
+      <label class="smg-field smg-field-wide">
+        <span>Main Mark</span>
+        <textarea id="mainMark" rows="4" placeholder="ABC TRADING CO.&#10;LOS ANGELES&#10;USA"></textarea>
+      </label>
+
+      <label class="smg-field">
+        <span>Destination</span>
+        <input id="destination" type="text" placeholder="LOS ANGELES" />
+      </label>
+
+      <label class="smg-field">
+        <span>Consignee / Buyer</span>
+        <input id="consignee" type="text" placeholder="ABC Trading Co." />
+      </label>
+
+      <label class="smg-field">
+        <span>PO Number</span>
+        <input id="poNumber" type="text" placeholder="PO-2026-001" />
+      </label>
+
+      <label class="smg-field">
+        <span>Item / SKU</span>
+        <input id="itemNumber" type="text" placeholder="ITEM-1001" />
+      </label>
+
+      <label class="smg-field">
+        <span>Country of Origin</span>
+        <input id="origin" type="text" value="MADE IN CHINA" />
+      </label>
+
+      <div class="smg-inline-pair">
+        <label class="smg-field">
+          <span>Carton From</span>
+          <input id="cartonFrom" type="number" value="1" min="1" />
+        </label>
+
+        <label class="smg-field">
+          <span>Carton To</span>
+          <input id="cartonTo" type="number" value="20" min="1" />
+        </label>
+      </div>
+
+      <div class="smg-inline-pair">
+        <label class="smg-field">
+          <span>Net Weight</span>
+          <input id="netWeight" type="text" placeholder="18 KGS" />
+        </label>
+
+        <label class="smg-field">
+          <span>Gross Weight</span>
+          <input id="grossWeight" type="text" placeholder="20 KGS" />
+        </label>
+      </div>
+
+      <label class="smg-field">
+        <span>Measurement</span>
+        <input id="measurement" type="text" placeholder="50 x 40 x 35 CM" />
+      </label>
+
+      <label class="smg-field smg-field-wide">
+        <span>Side Mark Notes</span>
+        <textarea id="sideNotes" rows="3" placeholder="Keep Dry&#10;Handle With Care"></textarea>
+      </label>
+    </div>
+
+    <div class="smg-handling-card">
+      <h3>Handling Marks</h3>
+
+      <label class="smg-check-row">
+        <input class="handlingMark" type="checkbox" value="FRAGILE" />
+        <span>Fragile</span>
+      </label>
+
+      <label class="smg-check-row">
+        <input class="handlingMark" type="checkbox" value="KEEP DRY" checked />
+        <span>Keep Dry</span>
+      </label>
+
+      <label class="smg-check-row">
+        <input class="handlingMark" type="checkbox" value="THIS SIDE UP" />
+        <span>This Side Up</span>
+      </label>
+
+      <label class="smg-check-row">
+        <input class="handlingMark" type="checkbox" value="HANDLE WITH CARE" checked />
+        <span>Handle With Care</span>
+      </label>
+    </div>
+
+    <div class="smg-actions">
+      <button id="printBtn" class="smg-btn smg-btn-primary" type="button">Print / Save as PDF</button>
+      <button id="clearBtn" class="smg-btn smg-btn-secondary" type="button">Clear</button>
+    </div>
+  </div>
+
+  <div slot="results" class="tool-card smg-card smg-preview-card">
+    <div class="smg-preview-top">
+      <div>
+        <h2 class="smg-title">Preview</h2>
+        <p class="smg-subtitle">One printable shipping mark per carton.</p>
+      </div>
+
+      <div class="smg-paper-toggle" aria-label="Paper size">
+        <button class="smg-paper-btn is-active" type="button" data-paper="a4">A4</button>
+        <button class="smg-paper-btn" type="button" data-paper="letter">US Letter</button>
+      </div>
+    </div>
+
+    <div id="printArea" class="smg-print-area paper-a4">
+      <div id="marksGrid" class="smg-marks-grid"></div>
+    </div>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>Create Export Shipping Marks Online</h2>
+    <p>
+      This shipping mark generator helps exporters, warehouses, and trading companies prepare clear carton marks for international shipments.
+      Use it to generate main marks, side marks, carton numbers, destination details, weight, measurement, and handling notes before printing or saving as PDF.
+    </p>
+  </div>
+
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const fieldIds = [
+        "mainMark",
+        "destination",
+        "consignee",
+        "poNumber",
+        "itemNumber",
+        "origin",
+        "cartonFrom",
+        "cartonTo",
+        "netWeight",
+        "grossWeight",
+        "measurement",
+        "sideNotes",
+      ];
+
+      const getValue = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : "";
+      };
+
+      const escapeHtml = (value) =>
+        value
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+
+      const linesToHtml = (value) =>
+        escapeHtml(value)
+          .split("\n")
+          .filter(Boolean)
+          .map((line) => `<div>${line}</div>`)
+          .join("");
+
+      const getHandlingMarks = () =>
+        Array.from(document.querySelectorAll(".handlingMark"))
+          .filter((input) => input.checked)
+          .map((input) => input.value);
+
+      const renderMarks = () => {
+        const marksGrid = document.getElementById("marksGrid");
+        if (!marksGrid) return;
+
+        const mainMark = getValue("mainMark");
+        const destination = getValue("destination");
+        const consignee = getValue("consignee");
+        const poNumber = getValue("poNumber");
+        const itemNumber = getValue("itemNumber");
+        const origin = getValue("origin");
+        const netWeight = getValue("netWeight");
+        const grossWeight = getValue("grossWeight");
+        const measurement = getValue("measurement");
+        const sideNotes = getValue("sideNotes");
+
+        const cartonFrom = Math.max(parseInt(getValue("cartonFrom") || "1", 10), 1);
+        const cartonTo = Math.max(parseInt(getValue("cartonTo") || "1", 10), cartonFrom);
+        const totalCartons = cartonTo - cartonFrom + 1;
+        const handlingMarks = getHandlingMarks();
+
+        let html = "";
+
+        for (let cartonNo = cartonFrom; cartonNo <= cartonTo; cartonNo += 1) {
+          html += `
+            <article class="smg-mark">
+              <div class="smg-mark-title">SHIPPING MARK</div>
+
+              <div class="smg-main-mark">
+                ${
+                  mainMark
+                    ? linesToHtml(mainMark)
+                    : "<div>MAIN MARK</div><div>COMPANY NAME</div><div>DESTINATION</div>"
+                }
+              </div>
+
+              <div class="smg-mark-info">
+                ${destination ? `<div><strong>DESTINATION:</strong> ${escapeHtml(destination)}</div>` : ""}
+                ${consignee ? `<div><strong>CONSIGNEE:</strong> ${escapeHtml(consignee)}</div>` : ""}
+                ${poNumber ? `<div><strong>P.O. NO.:</strong> ${escapeHtml(poNumber)}</div>` : ""}
+                ${itemNumber ? `<div><strong>ITEM NO.:</strong> ${escapeHtml(itemNumber)}</div>` : ""}
+                <div><strong>C/NO.:</strong> ${cartonNo} / ${totalCartons}</div>
+                ${netWeight ? `<div><strong>N.W.:</strong> ${escapeHtml(netWeight)}</div>` : ""}
+                ${grossWeight ? `<div><strong>G.W.:</strong> ${escapeHtml(grossWeight)}</div>` : ""}
+                ${measurement ? `<div><strong>MEAS.:</strong> ${escapeHtml(measurement)}</div>` : ""}
+              </div>
+
+              ${
+                handlingMarks.length
+                  ? `<div class="smg-handling-row">${handlingMarks
+                      .map((mark) => `<span>${escapeHtml(mark)}</span>`)
+                      .join("")}</div>`
+                  : ""
+              }
+
+              ${sideNotes ? `<div class="smg-side-notes">${linesToHtml(sideNotes)}</div>` : ""}
+
+              ${origin ? `<div class="smg-origin">${escapeHtml(origin)}</div>` : ""}
+            </article>
+          `;
+        }
+
+        marksGrid.innerHTML = html;
+      };
+
+      const clearForm = () => {
+        fieldIds.forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+
+          if (id === "cartonFrom") el.value = "1";
+          else if (id === "cartonTo") el.value = "20";
+          else if (id === "origin") el.value = "MADE IN CHINA";
+          else el.value = "";
+        });
+
+        document.querySelectorAll(".handlingMark").forEach((input) => {
+          input.checked = input.value === "KEEP DRY" || input.value === "HANDLE WITH CARE";
+        });
+
+        renderMarks();
+      };
+
+      fieldIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", renderMarks);
+      });
+
+      document.querySelectorAll(".handlingMark").forEach((input) => {
+        input.addEventListener("change", renderMarks);
+      });
+
+      document.getElementById("printBtn")?.addEventListener("click", () => {
+        window.print();
+      });
+
+      document.getElementById("clearBtn")?.addEventListener("click", clearForm);
+
+      document.querySelectorAll(".smg-paper-btn").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".smg-paper-btn").forEach((btn) => btn.classList.remove("is-active"));
+          button.classList.add("is-active");
+
+          const printArea = document.getElementById("printArea");
+          if (!printArea) return;
+          printArea.classList.remove("paper-a4", "paper-letter");
+          printArea.classList.add(button.dataset.paper === "letter" ? "paper-letter" : "paper-a4");
+        });
+      });
+
+      renderMarks();
+    });
+  </script>
+
+  <style>
+    .smg-card {
+      padding: 24px;
+    }
+
+    .smg-form-head,
+    .smg-preview-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .smg-title {
+      margin: 0;
+      font-size: 1.45rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .smg-subtitle {
+      margin: 8px 0 0;
+      color: var(--text-soft);
+      line-height: 1.65;
+    }
+
+    .smg-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .smg-field,
+    .smg-inline-pair {
+      min-width: 0;
+    }
+
+    .smg-field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .smg-field span {
+      font-size: 13px;
+      font-weight: 800;
+      color: #334155;
+    }
+
+    .smg-field input,
+    .smg-field textarea {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 12px 13px;
+      font: inherit;
+      color: #0f172a;
+      background: #ffffff;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .smg-field input:focus,
+    .smg-field textarea:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .smg-field textarea {
+      resize: vertical;
+    }
+
+    .smg-field-wide {
+      grid-column: 1 / -1;
+    }
+
+    .smg-inline-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .smg-handling-card {
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #f8fafc;
+    }
+
+    .smg-handling-card h3 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    .smg-check-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .smg-check-row input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+    }
+
+    .smg-actions {
+      margin-top: 22px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .smg-btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 13px 18px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .smg-btn-primary {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .smg-btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .smg-btn-secondary {
+      background: #e0ecff;
+      color: #1d4ed8;
+    }
+
+    .smg-paper-toggle {
+      display: flex;
+      padding: 4px;
+      border-radius: 999px;
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+    }
+
+    .smg-paper-btn {
+      border: 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      color: #64748b;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .smg-paper-btn.is-active {
+      background: #ffffff;
+      color: #2563eb;
+      box-shadow: 0 3px 12px rgba(15, 23, 42, 0.08);
+    }
+
+    .smg-print-area {
+      padding: 24px;
+      min-height: 560px;
+      background: #f8fafc;
+      border-radius: 18px;
+    }
+
+    .smg-marks-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .smg-mark {
+      min-height: 360px;
+      padding: 20px;
+      border: 2px solid #0f172a;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .smg-mark-title {
+      padding-bottom: 10px;
+      border-bottom: 2px solid #0f172a;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+    }
+
+    .smg-main-mark {
+      padding: 18px 0;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1.28;
+      text-transform: uppercase;
+    }
+
+    .smg-mark-info {
+      display: grid;
+      gap: 6px;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .smg-handling-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .smg-handling-row span {
+      border: 1px solid #0f172a;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .smg-side-notes {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #0f172a;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.45;
+      text-transform: uppercase;
+    }
+
+    .smg-origin {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+
+    @media (max-width: 900px) {
+      .smg-form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .smg-field-wide {
+        grid-column: auto;
+      }
+
+      .smg-form-head,
+      .smg-preview-top {
+        flex-direction: column;
+      }
+
+      .smg-marks-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .smg-card {
+        padding: 18px;
+      }
+
+      .smg-inline-pair {
+        grid-template-columns: 1fr;
+      }
+
+      .smg-print-area {
+        padding: 14px;
+      }
+
+      .smg-mark {
+        min-height: 340px;
+      }
+
+      .smg-main-mark {
+        font-size: 20px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 10mm;
+      }
+
+      :global(.site-header),
+      :global(.tool-hero),
+      :global(.tool-content),
+      :global(.tool-faq),
+      :global(.tool-related),
+      :global(.site-footer),
+      .smg-form-card,
+      .smg-preview-top {
+        display: none !important;
+      }
+
+      :global(.tool-main) {
+        padding: 0 !important;
+      }
+
+      :global(.tool-grid) {
+        display: block !important;
+      }
+
+      .smg-preview-card,
+      .smg-print-area {
+        border: 0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        min-height: auto !important;
+      }
+
+      .smg-marks-grid {
+        gap: 8mm !important;
+      }
+
+      .smg-mark {
+        min-height: 125mm;
+        border: 1.5pt solid #000;
+        box-shadow: none;
+      }
+
+      .smg-mark-title {
+        border-bottom: 1.5pt solid #000;
+      }
+    }
+  </style>
+</ToolLayout>

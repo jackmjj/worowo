@@ -169,6 +169,42 @@ export const toolDictionary = {
     order: 310,
   },
 
+  shipping_mark_generator: {
+    key: "shipping_mark_generator",
+    categoryKey: "packing_shipping",
+    title: "Shipping Mark Generator",
+    shortTitle: "Shipping Mark",
+    href: "/packing-shipping/shipping-mark-generator/",
+    type: "generator",
+    status: "live",
+    description:
+      "Create professional shipping marks for export cartons with main mark, side mark, destination, carton numbers, weight, and measurement.",
+    menuTitle: "Shipping Mark Generator",
+    showInHeaderMenu: true,
+    featuredInHeaderMenu: false,
+    showOnHome: true,
+    featuredOnCategoryPage: true,
+    order: 315,
+  },
+
+  carton_label_generator: {
+    key: "carton_label_generator",
+    categoryKey: "packing_shipping",
+    title: "Carton Label Generator",
+    shortTitle: "Carton Label",
+    href: "/packing-shipping/carton-label-generator/",
+    type: "generator",
+    status: "live",
+    description:
+      "Generate printable carton labels with SKU, product name, quantity, carton number, weight, dimensions, and handling notes.",
+    menuTitle: "Carton Label Generator",
+    showInHeaderMenu: true,
+    featuredInHeaderMenu: false,
+    showOnHome: true,
+    featuredOnCategoryPage: true,
+    order: 317,
+  },
+
   packing_list_template: {
     key: "packing_list_template",
     categoryKey: "printable_templates",

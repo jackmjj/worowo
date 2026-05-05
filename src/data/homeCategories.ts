@@ -134,6 +134,8 @@ function getToolIcon(toolKey: string, toolType: ToolType): string {
     purchase_order_generator: makeIcon("clipboardList"),
     packing_list_generator: makeIcon("boxes"),
     export_packing_list_generator: makeIcon("package"),
+    shipping_mark_generator: makeIcon("package"),
+    carton_label_generator: makeIcon("boxes"),
     packing_list_template: makeIcon("clipboardList"),
     delivery_receipt_generator: makeIcon("truck"),
     profit_margin_calculator: makeIcon("chartPie"),

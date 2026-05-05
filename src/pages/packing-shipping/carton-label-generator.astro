@@ -1,0 +1,937 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+
+const toolMeta = {
+  title: "Carton Label Generator",
+  seoTitle: "Carton Label Generator | Create Printable Carton Labels | worowo",
+  category: "Packing & Shipping",
+  categoryHref: "/packing-shipping/",
+  description:
+    "Generate printable carton labels with SKU, product name, quantity, carton number, weight, dimensions, origin, and handling notes.",
+  intro:
+    "Generate clean, printable carton labels for warehouses, shipping cartons, export boxes, and ecommerce fulfillment.",
+  canonical: "https://www.worowo.com/packing-shipping/carton-label-generator/",
+};
+
+const faqItems = [
+  {
+    question: "What is a carton label?",
+    answer:
+      "A carton label is a box or shipping label used to identify products, SKU, carton number, quantity, weight, dimensions, and handling notes during storage or shipment.",
+  },
+  {
+    question: "Can I print multiple carton labels at once?",
+    answer:
+      "Yes. Enter a carton range and choose a layout such as 2, 4, or 6 labels per page, then print or save the labels as PDF.",
+  },
+  {
+    question: "Can I use this for warehouse or fulfillment labels?",
+    answer:
+      "Yes. This generator is suitable for warehouse labels, SKU labels, carton identification, ecommerce fulfillment, and export carton labeling.",
+  },
+  {
+    question: "Does the tool support PDF export?",
+    answer:
+      "Yes. Use the Print / Save as PDF button to print only the label preview area or save it as a PDF with your browser.",
+  },
+];
+
+const relatedTools = [
+  {
+    name: "Shipping Mark Generator",
+    href: "/packing-shipping/shipping-mark-generator/",
+    desc: "Create export shipping marks with main mark, destination, carton number, and handling notes.",
+  },
+  {
+    name: "Packing List Generator",
+    href: "/packing-shipping/packing-list-generator/",
+    desc: "Prepare a packing list with shipment details, item rows, and carton information.",
+  },
+  {
+    name: "Export Packing List Generator",
+    href: "/packing-shipping/export-packing-list-generator/",
+    desc: "Create a formal export packing list with exporter, consignee, and shipping details.",
+  },
+];
+---
+
+<ToolLayout
+  title={toolMeta.title}
+  pageTitle={toolMeta.seoTitle}
+  description={toolMeta.description}
+  canonical={toolMeta.canonical}
+  eyebrow="Packing & Shipping"
+  categoryLabel={toolMeta.category}
+  categoryHref={toolMeta.categoryHref}
+  intro={toolMeta.intro}
+  faqItems={faqItems}
+  relatedTools={relatedTools}
+>
+  <div slot="form" class="tool-card clg-card clg-form-card">
+    <div class="clg-form-head">
+      <h2 class="clg-title">Carton Label Details</h2>
+      <p class="clg-subtitle">
+        Fill in the product and carton information. The preview updates automatically.
+      </p>
+    </div>
+
+    <div class="clg-form-grid">
+      <label class="clg-field">
+        <span>Company / Brand</span>
+        <input id="companyName" type="text" placeholder="Worowo Trading" />
+      </label>
+
+      <label class="clg-field">
+        <span>Product Name</span>
+        <input id="productName" type="text" placeholder="Brake Pad Set" />
+      </label>
+
+      <div class="clg-inline-pair">
+        <label class="clg-field">
+          <span>SKU / Item No.</span>
+          <input id="sku" type="text" placeholder="BP-1001" />
+        </label>
+
+        <label class="clg-field">
+          <span>PO Number</span>
+          <input id="poNumber" type="text" placeholder="PO-2026-001" />
+        </label>
+      </div>
+
+      <div class="clg-inline-pair">
+        <label class="clg-field">
+          <span>Batch / Lot No.</span>
+          <input id="batchNumber" type="text" placeholder="LOT-0506" />
+        </label>
+
+        <label class="clg-field">
+          <span>Country of Origin</span>
+          <input id="origin" type="text" value="MADE IN CHINA" />
+        </label>
+      </div>
+
+      <div class="clg-inline-pair">
+        <label class="clg-field">
+          <span>Carton From</span>
+          <input id="cartonFrom" type="number" value="1" min="1" />
+        </label>
+
+        <label class="clg-field">
+          <span>Carton To</span>
+          <input id="cartonTo" type="number" value="20" min="1" />
+        </label>
+      </div>
+
+      <div class="clg-inline-pair">
+        <label class="clg-field">
+          <span>Quantity per Carton</span>
+          <input id="quantity" type="number" placeholder="24" min="0" />
+        </label>
+
+        <label class="clg-field">
+          <span>Unit</span>
+          <input id="unit" type="text" value="pcs" />
+        </label>
+      </div>
+
+      <div class="clg-inline-pair">
+        <label class="clg-field">
+          <span>Net Weight</span>
+          <input id="netWeight" type="text" placeholder="18 KGS" />
+        </label>
+
+        <label class="clg-field">
+          <span>Gross Weight</span>
+          <input id="grossWeight" type="text" placeholder="20 KGS" />
+        </label>
+      </div>
+
+      <label class="clg-field">
+        <span>Carton Size</span>
+        <input id="cartonSize" type="text" placeholder="50 x 40 x 35 CM" />
+      </label>
+
+      <label class="clg-field clg-field-wide">
+        <span>Custom Notes</span>
+        <textarea id="customNotes" rows="3" placeholder="Color: Black&#10;Model: Universal Fit"></textarea>
+      </label>
+    </div>
+
+    <div class="clg-option-grid">
+      <div class="clg-option-card">
+        <h3>Handling Marks</h3>
+
+        <label class="clg-check-row">
+          <input class="handlingMark" type="checkbox" value="FRAGILE" />
+          <span>Fragile</span>
+        </label>
+
+        <label class="clg-check-row">
+          <input class="handlingMark" type="checkbox" value="KEEP DRY" checked />
+          <span>Keep Dry</span>
+        </label>
+
+        <label class="clg-check-row">
+          <input class="handlingMark" type="checkbox" value="THIS SIDE UP" />
+          <span>This Side Up</span>
+        </label>
+
+        <label class="clg-check-row">
+          <input class="handlingMark" type="checkbox" value="HANDLE WITH CARE" checked />
+          <span>Handle With Care</span>
+        </label>
+      </div>
+
+      <div class="clg-option-card">
+        <h3>Label Options</h3>
+
+        <label class="clg-check-row">
+          <input id="showPlaceholderCode" type="checkbox" checked />
+          <span>Show code placeholder</span>
+        </label>
+
+        <label class="clg-check-row">
+          <input id="showLargeSku" type="checkbox" checked />
+          <span>Highlight SKU</span>
+        </label>
+
+        <label class="clg-check-row">
+          <input id="showBorder" type="checkbox" checked />
+          <span>Strong border</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="clg-actions">
+      <button id="printBtn" class="clg-btn clg-btn-primary" type="button">Print / Save as PDF</button>
+      <button id="clearBtn" class="clg-btn clg-btn-secondary" type="button">Clear</button>
+    </div>
+  </div>
+
+  <div slot="results" class="tool-card clg-card clg-preview-card">
+    <div class="clg-preview-top">
+      <div>
+        <h2 class="clg-title">Preview</h2>
+        <p class="clg-subtitle">Printable carton labels with automatic carton numbering.</p>
+      </div>
+
+      <div class="clg-toolbar-controls">
+        <div class="clg-paper-toggle" aria-label="Paper size">
+          <button class="clg-paper-btn is-active" type="button" data-paper="a4">A4</button>
+          <button class="clg-paper-btn" type="button" data-paper="letter">US Letter</button>
+        </div>
+
+        <select id="layoutSelect" class="clg-layout-select" aria-label="Label layout">
+          <option value="2">2 labels / page</option>
+          <option value="4" selected>4 labels / page</option>
+          <option value="6">6 labels / page</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="printArea" class="clg-print-area paper-a4 layout-4">
+      <div id="labelsGrid" class="clg-labels-grid"></div>
+    </div>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>Create Printable Carton Labels Online</h2>
+    <p>
+      This carton label generator helps warehouses, exporters, ecommerce sellers, and fulfillment teams create clean labels for shipping cartons.
+      Add product name, SKU, batch number, quantity, carton number, weight, dimensions, origin, and handling instructions, then print the labels or save them as a PDF.
+    </p>
+  </div>
+
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      const fieldIds = [
+        "companyName",
+        "productName",
+        "sku",
+        "poNumber",
+        "batchNumber",
+        "origin",
+        "cartonFrom",
+        "cartonTo",
+        "quantity",
+        "unit",
+        "netWeight",
+        "grossWeight",
+        "cartonSize",
+        "customNotes",
+      ];
+
+      const getValue = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.value.trim() : "";
+      };
+
+      const escapeHtml = (value) =>
+        value
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+
+      const linesToHtml = (value) =>
+        escapeHtml(value)
+          .split("\n")
+          .filter(Boolean)
+          .map((line) => `<div>${line}</div>`)
+          .join("");
+
+      const getHandlingMarks = () =>
+        Array.from(document.querySelectorAll(".handlingMark"))
+          .filter((input) => input.checked)
+          .map((input) => input.value);
+
+      const getSafeNumber = (id, fallback) => {
+        const value = parseInt(getValue(id) || String(fallback), 10);
+        return Number.isFinite(value) ? value : fallback;
+      };
+
+      const renderLabels = () => {
+        const labelsGrid = document.getElementById("labelsGrid");
+        const printArea = document.getElementById("printArea");
+        if (!labelsGrid || !printArea) return;
+
+        const companyName = getValue("companyName");
+        const productName = getValue("productName");
+        const sku = getValue("sku");
+        const poNumber = getValue("poNumber");
+        const batchNumber = getValue("batchNumber");
+        const origin = getValue("origin");
+        const quantity = getValue("quantity");
+        const unit = getValue("unit");
+        const netWeight = getValue("netWeight");
+        const grossWeight = getValue("grossWeight");
+        const cartonSize = getValue("cartonSize");
+        const customNotes = getValue("customNotes");
+
+        const showPlaceholderCode = document.getElementById("showPlaceholderCode")?.checked;
+        const showLargeSku = document.getElementById("showLargeSku")?.checked;
+        const showBorder = document.getElementById("showBorder")?.checked;
+
+        const cartonFrom = Math.max(getSafeNumber("cartonFrom", 1), 1);
+        const rawCartonTo = Math.max(getSafeNumber("cartonTo", 1), 1);
+        const cartonTo = Math.max(rawCartonTo, cartonFrom);
+        const totalCartons = cartonTo - cartonFrom + 1;
+        const handlingMarks = getHandlingMarks();
+
+        printArea.classList.toggle("no-strong-border", !showBorder);
+
+        let html = "";
+
+        for (let cartonNo = cartonFrom; cartonNo <= cartonTo; cartonNo += 1) {
+          html += `
+            <article class="clg-label">
+              <div class="clg-label-top">
+                <div>
+                  <div class="clg-label-title">CARTON LABEL</div>
+                  ${
+                    companyName
+                      ? `<div class="clg-company-name">${escapeHtml(companyName)}</div>`
+                      : `<div class="clg-company-name is-placeholder">COMPANY / BRAND</div>`
+                  }
+                </div>
+
+                ${
+                  showPlaceholderCode
+                    ? `<div class="clg-code-box">
+                        <div class="clg-code-lines">
+                          <span></span><span></span><span></span><span></span>
+                        </div>
+                        <small>CODE</small>
+                      </div>`
+                    : ""
+                }
+              </div>
+
+              ${
+                showLargeSku
+                  ? `<div class="clg-sku-banner">${sku ? escapeHtml(sku) : "SKU / ITEM NO."}</div>`
+                  : ""
+              }
+
+              <div class="clg-label-info">
+                ${
+                  productName
+                    ? `<div class="clg-info-row is-full"><strong>Product:</strong> ${escapeHtml(productName)}</div>`
+                    : `<div class="clg-info-row is-full"><strong>Product:</strong> Product Name</div>`
+                }
+                ${
+                  !showLargeSku
+                    ? `<div class="clg-info-row"><strong>SKU:</strong> ${sku ? escapeHtml(sku) : "SKU / Item No."}</div>`
+                    : ""
+                }
+                ${poNumber ? `<div class="clg-info-row"><strong>PO No.:</strong> ${escapeHtml(poNumber)}</div>` : ""}
+                ${batchNumber ? `<div class="clg-info-row"><strong>Batch:</strong> ${escapeHtml(batchNumber)}</div>` : ""}
+                <div class="clg-info-row"><strong>Carton No.:</strong> ${cartonNo} / ${totalCartons}</div>
+                ${quantity ? `<div class="clg-info-row"><strong>Qty:</strong> ${escapeHtml(quantity)} ${escapeHtml(unit || "pcs")}</div>` : ""}
+                ${netWeight ? `<div class="clg-info-row"><strong>N.W.:</strong> ${escapeHtml(netWeight)}</div>` : ""}
+                ${grossWeight ? `<div class="clg-info-row"><strong>G.W.:</strong> ${escapeHtml(grossWeight)}</div>` : ""}
+                ${cartonSize ? `<div class="clg-info-row is-full"><strong>Size:</strong> ${escapeHtml(cartonSize)}</div>` : ""}
+              </div>
+
+              ${
+                handlingMarks.length
+                  ? `<div class="clg-handling-row">${handlingMarks
+                      .map((mark) => `<span>${escapeHtml(mark)}</span>`)
+                      .join("")}</div>`
+                  : ""
+              }
+
+              ${customNotes ? `<div class="clg-custom-notes">${linesToHtml(customNotes)}</div>` : ""}
+
+              ${origin ? `<div class="clg-origin">${escapeHtml(origin)}</div>` : ""}
+            </article>
+          `;
+        }
+
+        labelsGrid.innerHTML = html;
+      };
+
+      const clearForm = () => {
+        fieldIds.forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+
+          if (id === "cartonFrom") el.value = "1";
+          else if (id === "cartonTo") el.value = "20";
+          else if (id === "origin") el.value = "MADE IN CHINA";
+          else if (id === "unit") el.value = "pcs";
+          else el.value = "";
+        });
+
+        document.querySelectorAll(".handlingMark").forEach((input) => {
+          input.checked = input.value === "KEEP DRY" || input.value === "HANDLE WITH CARE";
+        });
+
+        document.getElementById("showPlaceholderCode").checked = true;
+        document.getElementById("showLargeSku").checked = true;
+        document.getElementById("showBorder").checked = true;
+
+        renderLabels();
+      };
+
+      fieldIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("input", renderLabels);
+      });
+
+      document.querySelectorAll(".handlingMark").forEach((input) => {
+        input.addEventListener("change", renderLabels);
+      });
+
+      ["showPlaceholderCode", "showLargeSku", "showBorder"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener("change", renderLabels);
+      });
+
+      document.getElementById("printBtn")?.addEventListener("click", () => {
+        window.print();
+      });
+
+      document.getElementById("clearBtn")?.addEventListener("click", clearForm);
+
+      document.querySelectorAll(".clg-paper-btn").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".clg-paper-btn").forEach((btn) => btn.classList.remove("is-active"));
+          button.classList.add("is-active");
+
+          const printArea = document.getElementById("printArea");
+          if (!printArea) return;
+          printArea.classList.remove("paper-a4", "paper-letter");
+          printArea.classList.add(button.dataset.paper === "letter" ? "paper-letter" : "paper-a4");
+        });
+      });
+
+      document.getElementById("layoutSelect")?.addEventListener("change", (event) => {
+        const printArea = document.getElementById("printArea");
+        if (!printArea) return;
+        printArea.classList.remove("layout-2", "layout-4", "layout-6");
+        printArea.classList.add(`layout-${event.target.value}`);
+      });
+
+      renderLabels();
+    });
+  </script>
+
+  <style>
+    .clg-card {
+      padding: 24px;
+    }
+
+    .clg-form-head,
+    .clg-preview-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .clg-title {
+      margin: 0;
+      font-size: 1.45rem;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .clg-subtitle {
+      margin: 8px 0 0;
+      color: var(--text-soft);
+      line-height: 1.65;
+    }
+
+    .clg-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .clg-field,
+    .clg-inline-pair {
+      min-width: 0;
+    }
+
+    .clg-field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .clg-field span {
+      font-size: 13px;
+      font-weight: 800;
+      color: #334155;
+    }
+
+    .clg-field input,
+    .clg-field textarea,
+    .clg-layout-select {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 12px 13px;
+      font: inherit;
+      color: #0f172a;
+      background: #ffffff;
+      outline: none;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .clg-field input:focus,
+    .clg-field textarea:focus,
+    .clg-layout-select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .clg-field textarea {
+      resize: vertical;
+    }
+
+    .clg-field-wide {
+      grid-column: 1 / -1;
+    }
+
+    .clg-inline-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .clg-option-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .clg-option-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #f8fafc;
+    }
+
+    .clg-option-card h3 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+
+    .clg-check-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .clg-check-row input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+    }
+
+    .clg-actions {
+      margin-top: 22px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .clg-btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 13px 18px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .clg-btn-primary {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .clg-btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .clg-btn-secondary {
+      background: #e0ecff;
+      color: #1d4ed8;
+    }
+
+    .clg-toolbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .clg-paper-toggle {
+      display: flex;
+      padding: 4px;
+      border-radius: 999px;
+      background: #eff6ff;
+      border: 1px solid #dbeafe;
+    }
+
+    .clg-paper-btn {
+      border: 0;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      color: #64748b;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .clg-paper-btn.is-active {
+      background: #ffffff;
+      color: #2563eb;
+      box-shadow: 0 3px 12px rgba(15, 23, 42, 0.08);
+    }
+
+    .clg-layout-select {
+      min-width: 150px;
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .clg-print-area {
+      padding: 24px;
+      min-height: 560px;
+      background: #f8fafc;
+      border-radius: 18px;
+    }
+
+    .clg-labels-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .layout-2 .clg-labels-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .layout-4 .clg-labels-grid,
+    .layout-6 .clg-labels-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .clg-label {
+      min-height: 260px;
+      padding: 18px;
+      border: 2px solid #0f172a;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .no-strong-border .clg-label {
+      border: 1px solid #d1d5db;
+    }
+
+    .clg-label-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #0f172a;
+    }
+
+    .no-strong-border .clg-label-top {
+      border-bottom: 1px solid #d1d5db;
+    }
+
+    .clg-label-title {
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+    }
+
+    .clg-company-name {
+      margin-top: 6px;
+      font-size: 18px;
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .clg-company-name.is-placeholder {
+      color: #9ca3af;
+    }
+
+    .clg-code-box {
+      width: 74px;
+      height: 74px;
+      border: 1.5px solid #0f172a;
+      display: grid;
+      place-items: center;
+      padding: 7px;
+      flex-shrink: 0;
+    }
+
+    .clg-code-lines {
+      width: 100%;
+      display: grid;
+      gap: 4px;
+    }
+
+    .clg-code-lines span {
+      display: block;
+      height: 5px;
+      background: #0f172a;
+    }
+
+    .clg-code-lines span:nth-child(2) {
+      width: 78%;
+    }
+
+    .clg-code-lines span:nth-child(3) {
+      width: 92%;
+    }
+
+    .clg-code-box small {
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+
+    .clg-sku-banner {
+      padding: 10px;
+      border: 2px solid #0f172a;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 950;
+      letter-spacing: 0.04em;
+      word-break: break-word;
+    }
+
+    .no-strong-border .clg-sku-banner {
+      border: 1px solid #d1d5db;
+    }
+
+    .clg-label-info {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px 14px;
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .clg-info-row.is-full {
+      grid-column: 1 / -1;
+    }
+
+    .clg-handling-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .clg-handling-row span {
+      border: 1px solid #0f172a;
+      padding: 5px 8px;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .clg-custom-notes {
+      padding-top: 10px;
+      border-top: 1px solid #0f172a;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.45;
+      text-transform: uppercase;
+    }
+
+    .no-strong-border .clg-custom-notes {
+      border-top: 1px solid #d1d5db;
+    }
+
+    .clg-origin {
+      margin-top: auto;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+
+    @media (max-width: 900px) {
+      .clg-form-grid,
+      .clg-option-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .clg-form-head,
+      .clg-preview-top {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .clg-card {
+        padding: 18px;
+      }
+
+      .clg-inline-pair {
+        grid-template-columns: 1fr;
+      }
+
+      .clg-toolbar-controls {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .clg-print-area {
+        padding: 14px;
+      }
+
+      .layout-4 .clg-labels-grid,
+      .layout-6 .clg-labels-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .clg-label-info {
+        grid-template-columns: 1fr;
+      }
+
+      .clg-sku-banner {
+        font-size: 22px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 10mm;
+      }
+
+      :global(.site-header),
+      :global(.tool-hero),
+      :global(.tool-content),
+      :global(.tool-faq),
+      :global(.tool-related),
+      :global(.site-footer),
+      .clg-form-card,
+      .clg-preview-top {
+        display: none !important;
+      }
+
+      :global(.tool-main) {
+        padding: 0 !important;
+      }
+
+      :global(.tool-grid) {
+        display: block !important;
+      }
+
+      .clg-preview-card,
+      .clg-print-area {
+        border: 0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        min-height: auto !important;
+      }
+
+      .layout-2 .clg-labels-grid {
+        grid-template-columns: 1fr;
+        gap: 8mm;
+      }
+
+      .layout-4 .clg-labels-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8mm;
+      }
+
+      .layout-6 .clg-labels-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6mm;
+      }
+
+      .layout-2 .clg-label {
+        min-height: 120mm;
+      }
+
+      .layout-4 .clg-label {
+        min-height: 125mm;
+      }
+
+      .layout-6 .clg-label {
+        min-height: 82mm;
+      }
+
+      .clg-label {
+        border: 1.5pt solid #000;
+        box-shadow: none;
+      }
+
+      .clg-label-top {
+        border-bottom: 1.5pt solid #000;
+      }
+
+      .clg-sku-banner {
+        border: 1.5pt solid #000;
+      }
+    }
+  </style>
+</ToolLayout>
