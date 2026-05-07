@@ -19,6 +19,7 @@ const generator = getGeneratorForTool("invoice_template");
   previewDescription={config.previewDescription!}
   printHref="/printable-templates/simple-invoice-template-print/"
   canonical={config.canonical}
+  currentToolKey="invoice_template"
 >
   <Fragment slot="preview">
     <PrintableDocumentShell paper={previewPaper} orientation={previewOrientation}>

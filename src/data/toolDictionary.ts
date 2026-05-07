@@ -20,6 +20,7 @@ export type ToolDictionaryItem = {
   order: number;
   blankTemplateKey?: string;
   generatorKey?: string;
+  relatedToolKeys?: readonly string[];
 };
 
 export const toolDictionary = {
@@ -40,6 +41,12 @@ export const toolDictionary = {
     featuredOnCategoryPage: true,
     order: 230,
     blankTemplateKey: "invoice_template",
+    relatedToolKeys: [
+      "quotation_estimate_generator",
+      "proforma_invoice_generator",
+      "commercial_invoice_generator",
+      "purchase_order_generator",
+    ],
   },
 
   quotation_estimate_generator: {
@@ -58,6 +65,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 210,
+    relatedToolKeys: [
+      "invoice_generator",
+      "proforma_invoice_generator",
+      "purchase_order_generator",
+      "profit_margin_calculator",
+    ],
   },
 
   commercial_invoice_generator: {
@@ -76,6 +89,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 240,
+    relatedToolKeys: [
+      "proforma_invoice_generator",
+      "export_packing_list_generator",
+      "packing_list_generator",
+      "shipping_mark_generator",
+    ],
   },
 
   proforma_invoice_generator: {
@@ -94,6 +113,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 220,
+    relatedToolKeys: [
+      "commercial_invoice_generator",
+      "invoice_generator",
+      "quotation_estimate_generator",
+      "export_packing_list_generator",
+    ],
   },
 
   purchase_order_generator: {
@@ -112,6 +137,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 200,
+    relatedToolKeys: [
+      "quotation_estimate_generator",
+      "invoice_generator",
+      "unit_price_comparison_calculator",
+      "packing_list_generator",
+    ],
   },
 
   invoice_template: {
@@ -131,6 +162,12 @@ export const toolDictionary = {
     featuredOnCategoryPage: true,
     order: 400,
     generatorKey: "invoice_generator",
+    relatedToolKeys: [
+      "invoice_generator",
+      "packing_list_template",
+      "proforma_invoice_generator",
+      "commercial_invoice_generator",
+    ],
   },
 
   packing_list_generator: {
@@ -149,6 +186,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 300,
+    relatedToolKeys: [
+      "export_packing_list_generator",
+      "shipping_mark_generator",
+      "carton_label_generator",
+      "delivery_receipt_generator",
+    ],
   },
 
   export_packing_list_generator: {
@@ -167,6 +210,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 310,
+    relatedToolKeys: [
+      "packing_list_generator",
+      "commercial_invoice_generator",
+      "shipping_mark_generator",
+      "carton_label_generator",
+    ],
   },
 
   shipping_mark_generator: {
@@ -185,6 +234,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 315,
+    relatedToolKeys: [
+      "export_packing_list_generator",
+      "carton_label_generator",
+      "packing_list_generator",
+      "commercial_invoice_generator",
+    ],
   },
 
   carton_label_generator: {
@@ -203,6 +258,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 317,
+    relatedToolKeys: [
+      "shipping_mark_generator",
+      "packing_list_generator",
+      "export_packing_list_generator",
+      "delivery_receipt_generator",
+    ],
   },
 
   packing_list_template: {
@@ -222,6 +283,12 @@ export const toolDictionary = {
     featuredOnCategoryPage: true,
     order: 410,
     generatorKey: "packing_list_generator",
+    relatedToolKeys: [
+      "packing_list_generator",
+      "invoice_template",
+      "export_packing_list_generator",
+      "shipping_mark_generator",
+    ],
   },
 
   delivery_receipt_generator: {
@@ -240,6 +307,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 320,
+    relatedToolKeys: [
+      "packing_list_generator",
+      "carton_label_generator",
+      "invoice_generator",
+      "purchase_order_generator",
+    ],
   },
 
   profit_margin_calculator: {
@@ -258,6 +331,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 100,
+    relatedToolKeys: [
+      "break_even_point_calculator",
+      "discount_calculator",
+      "unit_price_comparison_calculator",
+      "sales_commission_calculator",
+    ],
   },
 
   sales_commission_calculator: {
@@ -276,6 +355,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 140,
+    relatedToolKeys: [
+      "profit_margin_calculator",
+      "break_even_point_calculator",
+      "discount_calculator",
+      "invoice_generator",
+    ],
   },
 
   break_even_point_calculator: {
@@ -294,6 +379,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 110,
+    relatedToolKeys: [
+      "profit_margin_calculator",
+      "unit_price_comparison_calculator",
+      "sales_commission_calculator",
+      "discount_calculator",
+    ],
   },
 
   discount_calculator: {
@@ -312,6 +403,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 120,
+    relatedToolKeys: [
+      "profit_margin_calculator",
+      "unit_price_comparison_calculator",
+      "sales_commission_calculator",
+      "break_even_point_calculator",
+    ],
   },
 
   unit_price_comparison_calculator: {
@@ -330,6 +427,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 130,
+    relatedToolKeys: [
+      "profit_margin_calculator",
+      "discount_calculator",
+      "break_even_point_calculator",
+      "purchase_order_generator",
+    ],
   },
 
   weekly_employee_schedule_template: {
@@ -348,6 +451,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 440,
+    relatedToolKeys: [
+      "employee_timesheet_template",
+      "field_service_work_order_template",
+      "invoice_template",
+      "sales_commission_calculator",
+    ],
   },
 
   employee_timesheet_template: {
@@ -366,6 +475,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 430,
+    relatedToolKeys: [
+      "weekly_employee_schedule_template",
+      "invoice_template",
+      "field_service_work_order_template",
+      "sales_commission_calculator",
+    ],
   },
 
   field_service_work_order_template: {
@@ -384,6 +499,12 @@ export const toolDictionary = {
     showOnHome: true,
     featuredOnCategoryPage: true,
     order: 420,
+    relatedToolKeys: [
+      "invoice_template",
+      "employee_timesheet_template",
+      "weekly_employee_schedule_template",
+      "delivery_receipt_generator",
+    ],
   },
 } as const satisfies Record<string, ToolDictionaryItem>;
 

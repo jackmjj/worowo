@@ -1,5 +1,6 @@
 ---
 import ToolLayout from "./ToolLayout.astro";
+import type { ToolKey } from "../data/toolDictionary";
 
 interface FaqItem {
   question: string;
@@ -9,7 +10,7 @@ interface FaqItem {
 interface RelatedTool {
   name: string;
   href: string;
-  desc: string;
+  desc?: string;
 }
 
 interface Props {
@@ -23,6 +24,7 @@ interface Props {
   intro: string;
   faqItems?: FaqItem[];
   relatedTools?: RelatedTool[];
+  currentToolKey?: ToolKey;
 }
 
 const {
@@ -36,6 +38,7 @@ const {
   intro,
   faqItems = [],
   relatedTools = [],
+  currentToolKey,
 } = Astro.props;
 ---
 
@@ -50,6 +53,7 @@ const {
   intro={intro}
   faqItems={faqItems}
   relatedTools={relatedTools}
+  currentToolKey={currentToolKey}
 >
   <section slot="form" class="single-page-tool-layout-shell">
     <slot />

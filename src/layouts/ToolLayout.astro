@@ -1,5 +1,10 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import RelatedTools from "../components/tools/RelatedTools.astro";
+import ToolGuide from "../components/tools/ToolGuide.astro";
+import Faq from "../components/tools/Faq.astro";
+import { getRelatedTools } from "../lib/getRelatedTools";
+import type { ToolKey } from "../data/toolDictionary";
 
 interface FaqItem {
   question: string;
@@ -9,7 +14,7 @@ interface FaqItem {
 interface RelatedTool {
   name: string;
   href: string;
-  desc: string;
+  desc?: string;
 }
 
 interface Props {
@@ -23,6 +28,7 @@ interface Props {
   intro: string;
   faqItems?: FaqItem[];
   relatedTools?: RelatedTool[];
+  currentToolKey?: ToolKey;
 }
 
 const {
@@ -36,7 +42,17 @@ const {
   intro,
   faqItems = [],
   relatedTools = [],
+  currentToolKey,
 } = Astro.props;
+
+const resolvedRelatedTools =
+  currentToolKey
+    ? getRelatedTools(currentToolKey).map((tool) => ({
+        name: tool.shortTitle || tool.title,
+        href: tool.href,
+        desc: tool.description,
+      }))
+    : relatedTools;
 ---
 
 <BaseLayout title={pageTitle} description={description} canonical={canonical}>
@@ -68,10 +84,20 @@ const {
       </div>
     </section>
 
+    {resolvedRelatedTools.length > 0 && (
+      <section class="tool-related">
+        <div class="container">
+          <RelatedTools tools={resolvedRelatedTools} />
+        </div>
+      </section>
+    )}
+
     {Astro.slots.has("content") && (
       <section class="tool-content">
-        <div class="container content-grid">
-          <slot name="content" />
+        <div class="container">
+          <ToolGuide title="How It Works & Use Cases">
+            <slot name="content" />
+          </ToolGuide>
         </div>
       </section>
     )}
@@ -79,38 +105,9 @@ const {
     {(faqItems.length > 0 || Astro.slots.has("faq")) && (
       <section class="tool-faq">
         <div class="container">
-          <h2 class="section-title">FAQ</h2>
-
-          {faqItems.length > 0 && (
-            <div class="faq-list">
-              {faqItems.map((item) => (
-                <details>
-                  <summary>{item.question}</summary>
-                  <p>{item.answer}</p>
-                </details>
-              ))}
-            </div>
-          )}
-
-          <slot name="faq" />
-        </div>
-      </section>
-    )}
-
-    {relatedTools.length > 0 && (
-      <section class="tool-related">
-        <div class="container">
-          <h2 class="section-title">Related Tools</h2>
-
-          <div class="related-grid">
-            {relatedTools.map((tool) => (
-              <a href={tool.href} class="related-card">
-                <span class="related-name">{tool.name}</span>
-                <span class="related-desc">{tool.desc}</span>
-                <span class="related-arrow">→</span>
-              </a>
-            ))}
-          </div>
+          <Faq items={faqItems}>
+            <slot name="faq" />
+          </Faq>
         </div>
       </section>
     )}
@@ -174,33 +171,11 @@ const {
     align-items: stretch;
   }
 
-  .content-grid,
-  .related-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-  }
-
-  .tool-card,
-  .content-card,
-  .related-card,
-  .faq-list details {
+  .tool-card {
     background: #ffffff;
     border: 1px solid var(--line);
     border-radius: 16px;
     box-shadow: 0 16px 40px -28px rgba(15, 23, 42, 0.25);
-  }
-
-  .content-card {
-    padding: 24px;
-  }
-
-  .content-card h2,
-  .section-title {
-    margin: 0 0 10px;
-    font-size: 1.5rem;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
   }
 
   .tool-content,
@@ -209,87 +184,13 @@ const {
     padding: 0 0 28px;
   }
 
-  .content-card p,
-  .content-card li {
-    color: var(--text-soft);
-    line-height: 1.8;
-  }
-
-  .content-card ul {
-    margin: 14px 0 0;
-    padding-left: 18px;
-  }
-
-  .faq-list {
-    display: grid;
-    gap: 16px;
-    margin-top: 18px;
-  }
-
-  .faq-list details {
-    padding: 18px 20px;
-  }
-
-  .faq-list summary {
-    cursor: pointer;
-    font-weight: 700;
-    line-height: 1.6;
-  }
-
-  .faq-list p {
-    margin: 14px 0 0;
-    color: var(--text-soft);
-    line-height: 1.85;
-  }
-
-  .related-card {
-    position: relative;
-    display: block;
-    padding: 22px;
-    transition: transform 0.18s ease, border-color 0.18s ease;
-  }
-
-  .related-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--text);
-  }
-
-  .related-name {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 1rem;
-    font-weight: 800;
-    line-height: 1.35;
-  }
-
-  .related-desc {
-    display: block;
-    max-width: 32ch;
-    color: var(--text-soft);
-    font-size: 0.92rem;
-    line-height: 1.6;
-  }
-
-  .related-arrow {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    color: var(--primary);
-  }
-
   @media (max-width: 980px) {
-    .tool-grid,
-    .content-grid,
-    .related-grid {
+    .tool-grid {
       grid-template-columns: 1fr;
     }
   }
 
   @media (max-width: 600px) {
-    .content-card {
-      padding: 20px;
-    }
-
     .tool-page-title {
       font-size: clamp(1.9rem, 8vw, 2.35rem);
     }

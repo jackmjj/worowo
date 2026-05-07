@@ -1,0 +1,117 @@
+---
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  items?: FaqItem[];
+  title?: string;
+}
+
+const { items = [], title = "FAQ" } = Astro.props;
+
+const faqSchema =
+  items.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: items.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer,
+          },
+        })),
+      }
+    : null;
+---
+
+{faqSchema && (
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+)}
+
+{(items.length > 0 || Astro.slots.has("default")) && (
+  <section class="tool-faq-block">
+    <h2 class="tool-faq-title">{title}</h2>
+
+    {items.length > 0 && (
+      <div class="tool-faq-list">
+        {items.map((item) => (
+          <details>
+            <summary>{item.question}</summary>
+            <p>{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    )}
+
+    <slot />
+  </section>
+)}
+
+<style>
+  .tool-faq-block {
+    padding: 0 0 28px;
+  }
+
+  .tool-faq-title {
+    margin: 0 0 14px;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .tool-faq-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  .tool-faq-list details {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 16px 40px -28px rgba(15, 23, 42, 0.25);
+    padding: 18px 20px;
+  }
+
+  .tool-faq-list summary {
+    position: relative;
+    cursor: pointer;
+    font-weight: 800;
+    line-height: 1.6;
+    list-style: none;
+    padding-right: 28px;
+  }
+
+  .tool-faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .tool-faq-list summary::after {
+    content: "+";
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: var(--primary);
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1.4;
+    transition: transform 0.18s ease;
+  }
+
+  .tool-faq-list details[open] summary::after {
+    transform: rotate(45deg);
+  }
+
+  .tool-faq-list summary:hover {
+    color: var(--primary);
+  }
+
+  .tool-faq-list p {
+    margin: 14px 0 0;
+    color: var(--text-soft);
+    line-height: 1.85;
+  }
+</style>

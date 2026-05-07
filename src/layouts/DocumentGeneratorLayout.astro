@@ -1,5 +1,6 @@
 ---
 import ToolLayout from "./ToolLayout.astro";
+import type { ToolKey } from "../data/toolDictionary";
 
 interface FaqItem {
   question: string;
@@ -26,6 +27,7 @@ interface Props {
   faqItems?: FaqItem[];
   faq?: FaqItem[];
   relatedTools?: RelatedTool[];
+  currentToolKey?: ToolKey;
 }
 
 const {
@@ -40,6 +42,7 @@ const {
   faqItems = [],
   faq = [],
   relatedTools = [],
+  currentToolKey,
 } = Astro.props;
 
 const normalizedFaqItems = faqItems.length > 0 ? faqItems : faq;
@@ -61,6 +64,7 @@ const normalizedRelatedTools = relatedTools.map((tool) => ({
   intro={intro}
   faqItems={normalizedFaqItems}
   relatedTools={normalizedRelatedTools}
+  currentToolKey={currentToolKey}
 >
   <section slot="form" class="document-generator-layout-shell">
     <div class="document-generator-layout-page">
