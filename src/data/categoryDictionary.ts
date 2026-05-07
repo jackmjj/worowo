@@ -36,7 +36,7 @@ export const categoryDictionary = {
     theme: "blue",
     badge: "Documents",
     description:
-      "Create quotes, invoices, proforma invoices, and receipts with clean layouts for small businesses, service providers, and trade use.",
+      "Create quotes, invoices, proforma invoices, purchase orders, and commercial invoices with clean layouts for small businesses, service providers, and trade use.",
     showInHeader: true,
     showOnHome: true,
     order: 20,
@@ -50,7 +50,7 @@ export const categoryDictionary = {
     theme: "green",
     badge: "Shipping",
     description:
-      "Use packing lists, delivery documents, and shipping paperwork for e-commerce, wholesale, export shipments, and local delivery workflows.",
+      "Use packing lists, delivery documents, carton labels, and shipping marks for e-commerce, wholesale, export shipments, and local delivery workflows.",
     showInHeader: true,
     showOnHome: true,
     order: 30,

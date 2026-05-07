@@ -1,5 +1,8 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Faq from "../../../components/tools/Faq.astro";
+import RelatedTools from "../../../components/tools/RelatedTools.astro";
+import ToolGuide from "../../../components/tools/ToolGuide.astro";
 
 const pageTitle = "Export Packing List Generator";
 const pageDescription =
@@ -26,14 +29,14 @@ const faqItems = [
 
 const relatedTools = [
   {
-    title: "Packing List Generator",
+    name: "Packing List Generator",
     href: "/packing-shipping/packing-list-generator/",
-    description: "Create a simpler packing list for general shipping, order packing, and day-to-day warehouse use.",
+    desc: "Create a simpler packing list for general shipping, order packing, and day-to-day warehouse use.",
   },
   {
-    title: "Delivery Receipt Generator",
+    name: "Delivery Receipt Generator",
     href: "/packing-shipping/delivery-receipt-generator/",
-    description: "Generate a delivery receipt for handover confirmation, signatures, and receiving records.",
+    desc: "Generate a delivery receipt for handover confirmation, signatures, and receiving records.",
   },
 ];
 ---
@@ -291,9 +294,13 @@ const relatedTools = [
         </div>
       </section>
 
+      <section class="xplg-related-block">
+        <RelatedTools tools={relatedTools} />
+      </section>
+
       <section class="xplg-seo-block">
-        <div class="xplg-seo-grid">
-          <article class="xplg-seo-card">
+        <ToolGuide title="How It Works & Use Cases">
+          <article class="content-card">
             <h2>How This Export Packing List Generator Works</h2>
             <p>
               Enter exporter, consignee, shipment, and item details directly on the document. The page keeps the final
@@ -301,7 +308,7 @@ const relatedTools = [
             </p>
           </article>
 
-          <article class="xplg-seo-card">
+          <article class="content-card">
             <h2>When to Use It</h2>
             <p>
               Use this export packing list generator for international shipments, factory dispatch paperwork, B2B order
@@ -309,44 +316,18 @@ const relatedTools = [
             </p>
           </article>
 
-          <article class="xplg-seo-card">
+          <article class="content-card">
             <h2>Why It Helps</h2>
             <p>
               A structured export packing list improves shipment clarity, reduces manual calculation errors, and makes
               it easier to produce a professional document for logistics teams and overseas buyers.
             </p>
           </article>
-        </div>
+        </ToolGuide>
       </section>
 
-      <section class="xplg-faq-block" aria-labelledby="export-packing-faq-title">
-        <div class="xplg-section-head">
-          <h2 id="export-packing-faq-title">Frequently Asked Questions</h2>
-        </div>
-
-        <div class="xplg-faq-list">
-          {faqItems.map((item) => (
-            <details class="xplg-faq-item">
-              <summary>{item.question}</summary>
-              <p>{item.answer}</p>
-            </details>
-          ))}
-        </div>
-      </section>
-
-      <section class="xplg-related-block" aria-labelledby="export-packing-related-title">
-        <div class="xplg-section-head">
-          <h2 id="export-packing-related-title">Related Tools</h2>
-        </div>
-
-        <div class="xplg-related-grid">
-          {relatedTools.map((tool) => (
-            <a class="xplg-related-card" href={tool.href}>
-              <h3>{tool.title}</h3>
-              <p>{tool.description}</p>
-            </a>
-          ))}
-        </div>
+      <section class="xplg-faq-block">
+        <Faq items={faqItems} />
       </section>
     </div>
   </main>
@@ -699,96 +680,6 @@ const relatedTools = [
       margin-top: 28px;
     }
 
-    .xplg-seo-grid,
-    .xplg-related-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .xplg-seo-card,
-    .xplg-related-card,
-    .xplg-faq-item {
-      border: 1px solid #dbe3ee;
-      border-radius: 18px;
-      background: #ffffff;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
-    }
-
-    .xplg-seo-card,
-    .xplg-related-card {
-      padding: 20px;
-    }
-
-    .xplg-seo-card h2,
-    .xplg-section-head h2,
-    .xplg-related-card h3 {
-      margin: 0 0 10px;
-      color: #0f172a;
-      letter-spacing: -0.02em;
-    }
-
-    .xplg-seo-card h2,
-    .xplg-section-head h2 {
-      font-size: 1.2rem;
-      line-height: 1.3;
-    }
-
-    .xplg-related-card h3 {
-      font-size: 1.05rem;
-      line-height: 1.35;
-    }
-
-    .xplg-seo-card p,
-    .xplg-related-card p,
-    .xplg-faq-item p {
-      margin: 0;
-      color: #475569;
-      font-size: 15px;
-      line-height: 1.75;
-    }
-
-    .xplg-section-head {
-      margin-bottom: 14px;
-    }
-
-    .xplg-faq-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .xplg-faq-item {
-      padding: 18px 20px;
-    }
-
-    .xplg-faq-item summary {
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 700;
-      color: #0f172a;
-      list-style: none;
-    }
-
-    .xplg-faq-item summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .xplg-faq-item p {
-      margin-top: 10px;
-    }
-
-    .xplg-related-card {
-      display: block;
-      text-decoration: none;
-      transition: 0.18s ease;
-    }
-
-    .xplg-related-card:hover {
-      border-color: #93c5fd;
-      box-shadow: 0 10px 28px rgba(37, 99, 235, 0.08);
-      transform: translateY(-1px);
-    }
-
     .xplg-document {
       margin: 0 auto;
       background: #fff;
@@ -1063,10 +954,6 @@ const relatedTools = [
         grid-template-columns: 1fr;
       }
 
-      .xplg-seo-grid,
-      .xplg-related-grid {
-        grid-template-columns: 1fr;
-      }
     }
 
     @media print {

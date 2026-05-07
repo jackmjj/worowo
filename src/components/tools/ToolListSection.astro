@@ -13,7 +13,7 @@ type ToolItem = {
 };
 
 interface Props {
-  eyebrow?: string;
+  eyebrow?: string | null;
   title: string;
   description?: string;
   tools: ToolItem[];
@@ -21,7 +21,7 @@ interface Props {
 }
 
 const {
-  eyebrow = "Category",
+  eyebrow,
   title,
   description = "",
   tools = [],
@@ -71,7 +71,7 @@ const tokens = themeTokens[theme];
   style={`--tool-accent:${tokens.accent};--tool-soft:${tokens.soft};--tool-hover-border:${tokens.hoverBorder};--tool-hover-shadow:${tokens.hoverShadow};`}
 >
   <div class="tool-section-head">
-    <span class="tool-section-eyebrow">{eyebrow}</span>
+    {eyebrow && <span class="tool-section-eyebrow">{eyebrow}</span>}
     <h2 class="tool-section-title">{title}</h2>
     {description && <p class="tool-section-description">{description}</p>}
   </div>

@@ -1,5 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Faq from "../../components/tools/Faq.astro";
+import RelatedTools from "../../components/tools/RelatedTools.astro";
+import ToolGuide from "../../components/tools/ToolGuide.astro";
 
 const pageTitle = "Packing List Generator";
 const pageDescription =
@@ -26,15 +29,15 @@ const faqItems = [
 
 const relatedTools = [
   {
-    title: "Export Packing List Generator",
+    name: "Export Packing List Generator",
     href: "/packing-shipping/export-packing-list-generator/",
-    description:
+    desc:
       "Create an export-style packing list with exporter, consignee, shipment details, weights, and CBM.",
   },
   {
-    title: "Delivery Receipt Generator",
+    name: "Delivery Receipt Generator",
     href: "/packing-shipping/delivery-receipt-generator/",
-    description: "Generate a delivery receipt for proof of handover and signature collection.",
+    desc: "Generate a delivery receipt for proof of handover and signature collection.",
   },
 ];
 ---
@@ -238,9 +241,13 @@ const relatedTools = [
         </div>
       </section>
 
+      <section class="generator-related-block">
+        <RelatedTools tools={relatedTools} />
+      </section>
+
       <section class="generator-seo-block">
-        <div class="generator-seo-grid">
-          <article class="generator-seo-card">
+        <ToolGuide title="How It Works & Use Cases">
+          <article class="content-card">
             <h2>How This Packing List Generator Works</h2>
             <p>
               Fill in shipment details directly on the document, add item rows as needed, and adjust the paper size
@@ -249,7 +256,7 @@ const relatedTools = [
             </p>
           </article>
 
-          <article class="generator-seo-card">
+          <article class="content-card">
             <h2>When to Use It</h2>
             <p>
               Use this packing list generator for e-commerce orders, wholesale shipments, warehouse picking, carton
@@ -257,44 +264,18 @@ const relatedTools = [
             </p>
           </article>
 
-          <article class="generator-seo-card">
+          <article class="content-card">
             <h2>Why It Helps</h2>
             <p>
               A consistent packing list reduces manual formatting work, keeps shipment contents easier to review, and
               makes it simpler to print or save a professional document for operations and customer reference.
             </p>
           </article>
-        </div>
+        </ToolGuide>
       </section>
 
-      <section class="generator-faq-block" aria-labelledby="packing-list-faq-title">
-        <div class="generator-section-head">
-          <h2 id="packing-list-faq-title">Frequently Asked Questions</h2>
-        </div>
-
-        <div class="generator-faq-list">
-          {faqItems.map((item) => (
-            <details class="generator-faq-item">
-              <summary>{item.question}</summary>
-              <p>{item.answer}</p>
-            </details>
-          ))}
-        </div>
-      </section>
-
-      <section class="generator-related-block" aria-labelledby="packing-list-related-title">
-        <div class="generator-section-head">
-          <h2 id="packing-list-related-title">Related Tools</h2>
-        </div>
-
-        <div class="generator-related-grid">
-          {relatedTools.map((tool) => (
-            <a class="generator-related-card" href={tool.href}>
-              <h3>{tool.title}</h3>
-              <p>{tool.description}</p>
-            </a>
-          ))}
-        </div>
+      <section class="generator-faq-block">
+        <Faq items={faqItems} />
       </section>
     </div>
   </main>
@@ -487,100 +468,10 @@ const relatedTools = [
       padding: 4px 0 0;
     }
 
+    .generator-related-block,
     .generator-seo-block,
-    .generator-faq-block,
-    .generator-related-block {
+    .generator-faq-block {
       margin-top: 28px;
-    }
-
-    .generator-seo-grid,
-    .generator-related-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .generator-seo-card,
-    .generator-related-card,
-    .generator-faq-item {
-      border: 1px solid #dbe3ee;
-      border-radius: 18px;
-      background: #ffffff;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
-    }
-
-    .generator-seo-card,
-    .generator-related-card {
-      padding: 20px;
-    }
-
-    .generator-seo-card h2,
-    .generator-section-head h2,
-    .generator-related-card h3 {
-      margin: 0 0 10px;
-      color: #0f172a;
-      letter-spacing: -0.02em;
-    }
-
-    .generator-seo-card h2,
-    .generator-section-head h2 {
-      font-size: 1.2rem;
-      line-height: 1.3;
-    }
-
-    .generator-related-card h3 {
-      font-size: 1.05rem;
-      line-height: 1.35;
-    }
-
-    .generator-seo-card p,
-    .generator-related-card p,
-    .generator-faq-item p {
-      margin: 0;
-      color: #475569;
-      font-size: 15px;
-      line-height: 1.75;
-    }
-
-    .generator-section-head {
-      margin-bottom: 14px;
-    }
-
-    .generator-faq-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .generator-faq-item {
-      padding: 18px 20px;
-    }
-
-    .generator-faq-item summary {
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 700;
-      color: #0f172a;
-      list-style: none;
-    }
-
-    .generator-faq-item summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .generator-faq-item p {
-      margin-top: 10px;
-    }
-
-    .generator-related-card {
-      display: block;
-      text-decoration: none;
-      transition: 0.18s ease;
-    }
-
-    .generator-related-card:hover {
-      border-color: #93c5fd;
-      box-shadow: 0 10px 28px rgba(37, 99, 235, 0.08);
-      transform: translateY(-1px);
     }
 
     .packing-document {
@@ -816,10 +707,6 @@ const relatedTools = [
         grid-template-columns: 1fr;
       }
 
-      .generator-seo-grid,
-      .generator-related-grid {
-        grid-template-columns: 1fr;
-      }
     }
   </style>
 

@@ -92,9 +92,9 @@ function getCategorySections(categoryKey: CategoryKey): CategoryPageSection[] {
     return [
       {
         key: "quote-billing-tools",
-        title: "Quote & Billing Tools",
+        title: "Available Tools",
         description:
-          "Use these tools to prepare customer-facing billing documents quickly and generate clean quote and invoice workflows.",
+          "Prepare customer-facing quote, invoice, purchase, and billing documents quickly.",
         tools: tools.map(toToolItem),
       },
     ];
@@ -112,9 +112,9 @@ function getCategorySections(categoryKey: CategoryKey): CategoryPageSection[] {
     return [
       {
         key: "shipping-documents",
-        title: "Shipping Documents",
+        title: "Available Tools",
         description:
-          "A compact set of tools and printable templates for shipment records, delivery confirmation, and daily dispatch work.",
+          "Create shipment records, export packing documents, carton labels, shipping marks, and delivery confirmations.",
         tools: toolKeys.map((key) => toToolItem(toolDictionary[key as keyof typeof toolDictionary])),
       },
     ];
@@ -126,9 +126,9 @@ function getCategorySections(categoryKey: CategoryKey): CategoryPageSection[] {
     return [
       {
         key: "business-calculators",
-        title: "Business Calculators",
+        title: "Available Tools",
         description:
-          "These calculators are designed for quick use, clear results, and practical business decisions.",
+          "Quick calculators for pricing, margins, discounts, unit costs, commissions, and daily business decisions.",
         tools: tools.map(toToolItem),
       },
     ];
@@ -138,9 +138,9 @@ function getCategorySections(categoryKey: CategoryKey): CategoryPageSection[] {
     return [
       {
         key: "printable-templates",
-        title: "Printable Templates",
+        title: "Available Templates",
         description:
-          "Printable business documents for billing, shipping, field service, and everyday operations.",
+          "Printable documents for billing, shipping, field service, employee schedules, timesheets, and everyday operations.",
         tools: getCategoryTools(categoryKey).map(toToolItem),
       },
     ];
