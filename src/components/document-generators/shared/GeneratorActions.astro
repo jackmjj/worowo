@@ -11,14 +11,28 @@
     </button>
   </div>
 
-  <div class="generator-action-buttons">
-    <button type="button" class="generator-action-btn generator-action-btn-ghost" data-reset-form>
-      Reset
-    </button>
+  <div class="generator-action-footer">
+    <div class="generator-action-buttons">
+      <button type="button" class="generator-action-btn generator-action-btn-primary" data-print-document title="Generate and download professional PDF invoice" aria-label="Generate and download professional PDF invoice">
+        <svg class="generator-action-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
+          <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
+          <path d="M16 9h3v3h-3z" fill="currentColor"></path>
+        </svg>
+        <span>Print / Save as PDF</span>
+        <svg class="generator-action-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path d="M12 3a1 1 0 0 1 1 1v9.59l2.3-2.29a1 1 0 1 1 1.4 1.42l-4 3.97a1 1 0 0 1-1.4 0l-4-3.97a1 1 0 1 1 1.4-1.42L11 13.59V4a1 1 0 0 1 1-1z" fill="currentColor"></path>
+          <path d="M5 18a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z" fill="currentColor"></path>
+        </svg>
+      </button>
 
-    <button type="button" class="generator-action-btn generator-action-btn-primary" data-print-document>
-      Print / Save as PDF
-    </button>
+      <button type="button" class="generator-action-btn generator-action-btn-ghost" data-reset-form>
+        Reset Form
+      </button>
+    </div>
+    <p class="generator-privacy-note">
+      Your data is processed locally in your browser and is not stored on our servers.
+    </p>
   </div>
 </div>
 
@@ -26,7 +40,7 @@
   .generator-actions {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     gap: 16px;
     padding-top: 8px;
     flex-wrap: wrap;
@@ -66,6 +80,13 @@
     box-shadow: 0 6px 14px rgba(15, 23, 42, 0.16);
   }
 
+  .generator-action-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
   .generator-action-buttons {
     display: flex;
     justify-content: flex-end;
@@ -73,9 +94,10 @@
   }
 
   .generator-action-btn {
-    border-radius: 999px;
-    padding: 13px 18px;
-    font-size: 15px;
+    border-radius: 6px;
+    min-height: 48px;
+    padding: 0 14px;
+    font-size: 14px;
     line-height: 1.2;
     font-weight: 800;
     cursor: pointer;
@@ -88,10 +110,40 @@
   }
 
   .generator-action-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 10px;
     background: #2563eb;
     color: #ffffff;
     border: 1px solid #2563eb;
     box-shadow: 0 10px 24px rgba(37, 99, 235, 0.16);
+    padding: 0 22px;
+    white-space: nowrap;
+  }
+
+  .generator-action-btn-primary:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+  }
+
+  .generator-action-icon {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    min-height: 16px;
+    max-width: 16px;
+    max-height: 16px;
+    flex: 0 0 auto;
+  }
+
+  .generator-privacy-note {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: right;
   }
 
   @media (max-width: 900px) {
@@ -104,12 +156,34 @@
       justify-content: center;
     }
 
+    .generator-action-footer {
+      align-items: stretch;
+      gap: 10px;
+    }
+
     .generator-action-buttons {
-      flex-direction: column-reverse;
+      flex-direction: column;
     }
 
     .generator-action-btn {
       width: 100%;
+    }
+
+    .generator-privacy-note {
+      text-align: center;
+      font-size: 11px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .generator-actions {
+      position: sticky;
+      bottom: 0;
+      z-index: 24;
+      margin: 8px 0 0;
+      padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px));
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, #ffffff 40%);
+      backdrop-filter: blur(6px);
     }
   }
 </style>

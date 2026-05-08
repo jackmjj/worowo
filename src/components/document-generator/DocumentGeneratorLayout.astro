@@ -108,7 +108,13 @@ const templateLink = config?.templateLink;
               Reset Form
             </button>
 
-            <button type="button" id="printDocumentBtn" class="action-btn action-btn-primary">
+            <button
+              type="button"
+              id="printDocumentBtn"
+              class="action-btn action-btn-primary"
+              title="Generate and download professional PDF invoice"
+              aria-label="Generate and download professional PDF invoice"
+            >
               Print / Save as PDF
             </button>
           </div>
@@ -122,9 +128,36 @@ const templateLink = config?.templateLink;
       </section>
 
       <div class="document-bottom-actions no-print">
-        <button type="button" class="document-bottom-print-btn" data-print-document>
-          Print / Save as PDF
-        </button>
+        <div class="tool-actions-footer">
+          <div class="tool-actions-footer__buttons">
+            <button
+              type="button"
+              class="document-bottom-print-btn"
+              data-print-document
+              title="Generate and download professional PDF invoice"
+              aria-label="Generate and download professional PDF invoice"
+            >
+              <svg class="document-bottom-action-icon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+                <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
+                <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
+                <path d="M16 9h3v3h-3z" fill="currentColor"></path>
+              </svg>
+              <span>Print / Save as PDF</span>
+              <svg class="document-bottom-action-icon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+                <path d="M12 3a1 1 0 0 1 1 1v9.59l2.3-2.29a1 1 0 1 1 1.4 1.42l-4 3.97a1 1 0 0 1-1.4 0l-4-3.97a1 1 0 1 1 1.4-1.42L11 13.59V4a1 1 0 0 1 1-1z" fill="currentColor"></path>
+                <path d="M5 18a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z" fill="currentColor"></path>
+              </svg>
+            </button>
+
+            <button type="button" class="document-bottom-reset-btn" data-reset-form-trigger>
+              Reset Form
+            </button>
+          </div>
+
+          <p class="document-bottom-privacy-note">
+            Your data is processed locally in your browser and is not stored on our servers.
+          </p>
+        </div>
       </div>
 
       <section class="generator-related-block">
@@ -380,18 +413,41 @@ const templateLink = config?.templateLink;
     margin: 24px 0 0;
   }
 
+  .tool-actions-footer {
+    width: min(100%, 640px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px 8px;
+  }
+
+  .tool-actions-footer__buttons {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
   .document-bottom-print-btn {
-    min-width: min(100%, 320px);
+    min-width: min(100%, 380px);
     min-height: 52px;
-    padding: 0 28px;
-    border: 1px solid #1d4ed8;
-    border-radius: 999px;
-    background: #1d4ed8;
+    padding: 0 24px;
+    border: 1px solid #2563eb;
+    border-radius: 6px;
+    background: #2563eb;
     color: #ffffff;
     font-size: 15px;
     font-weight: 850;
     line-height: 1;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    white-space: nowrap;
     box-shadow: 0 18px 38px rgba(37, 99, 235, 0.22);
     transition:
       background-color 0.15s ease,
@@ -400,11 +456,53 @@ const templateLink = config?.templateLink;
       box-shadow 0.15s ease;
   }
 
+  .document-bottom-action-icon {
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    min-height: 17px !important;
+    max-width: 17px !important;
+    max-height: 17px !important;
+    flex: 0 0 auto;
+  }
+
   .document-bottom-print-btn:hover {
-    background: #1e40af;
-    border-color: #1e40af;
+    background: #1d4ed8;
+    border-color: #1d4ed8;
     transform: translateY(-1px);
     box-shadow: 0 22px 46px rgba(37, 99, 235, 0.28);
+  }
+
+  .document-bottom-reset-btn {
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .document-bottom-reset-btn:hover {
+    border-color: #94a3b8;
+    color: #334155;
+    background: #f8fafc;
+  }
+
+  .document-bottom-privacy-note {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.45;
+    text-align: center;
   }
 
   .inline-document-root.paper-letter {
@@ -945,9 +1043,40 @@ const templateLink = config?.templateLink;
       min-height: 38px;
     }
 
+    .document-bottom-actions {
+      position: sticky;
+      bottom: 0;
+      z-index: 24;
+      margin: 16px 0 0;
+      padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px));
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, #ffffff 40%);
+      backdrop-filter: blur(6px);
+    }
+
+    .tool-actions-footer {
+      width: 100%;
+      padding: 8px 0 0;
+      gap: 8px;
+    }
+
+    .tool-actions-footer__buttons {
+      gap: 10px;
+    }
+
     .document-bottom-print-btn {
       width: 100%;
       min-width: 0;
+      min-height: 52px;
+    }
+
+    .document-bottom-reset-btn {
+      min-height: 52px;
+      padding: 0 12px;
+      font-size: 12px;
+    }
+
+    .document-bottom-privacy-note {
+      font-size: 11px;
     }
   }
 
@@ -1087,5 +1216,17 @@ const templateLink = config?.templateLink;
     if (!printButton) return;
 
     window.print();
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const resetTrigger = target.closest("[data-reset-form-trigger]");
+    if (!resetTrigger) return;
+
+    const resetBtn = document.getElementById("resetFormBtn");
+    if (!(resetBtn instanceof HTMLButtonElement)) return;
+    resetBtn.click();
   });
 </script>
