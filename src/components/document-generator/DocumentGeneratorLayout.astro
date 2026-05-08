@@ -1,0 +1,1091 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Faq from "../tools/Faq.astro";
+import RelatedTools from "../tools/RelatedTools.astro";
+import ToolGuide from "../tools/ToolGuide.astro";
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface RelatedTool {
+  name: string;
+  href: string;
+  desc: string;
+}
+
+interface Props {
+  config?: {
+    title: string;
+    description: string;
+    canonical: string;
+    categoryName?: string;
+    categoryHref?: string;
+    breadcrumbCurrent?: string;
+    backLabel?: string;
+    templateLink?: {
+      text: string;
+      href: string;
+      label: string;
+    };
+  };
+  title?: string;
+  description?: string;
+  canonical?: string;
+  breadcrumbCurrent?: string;
+  relatedTools: RelatedTool[];
+  faqItems: FaqItem[];
+}
+
+const {
+  config,
+  title: legacyTitle,
+  description: legacyDescription,
+  canonical: legacyCanonical,
+  breadcrumbCurrent: legacyBreadcrumbCurrent,
+  relatedTools,
+  faqItems,
+} = Astro.props;
+
+const title = config?.title || legacyTitle || "";
+const description = config?.description || legacyDescription || "";
+const canonical = config?.canonical || legacyCanonical || "";
+const categoryName = config?.categoryName || "Quotes & Invoices";
+const categoryHref = config?.categoryHref || "/quotes-invoices/";
+const breadcrumbCurrent = config?.breadcrumbCurrent || legacyBreadcrumbCurrent || title;
+const backLabel = config?.backLabel || `Back to ${categoryName}`;
+const templateLink = config?.templateLink;
+---
+
+<BaseLayout
+  title={`${title} | Worowo`}
+  description={description}
+  canonical={canonical}
+  bodyClass="document-generator-page"
+>
+  <main class="inline-generator-page">
+    <div class="inline-generator-inner">
+      <nav class="generator-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span>></span>
+        <a href={categoryHref}>{categoryName}</a>
+        <span>></span>
+        <span aria-current="page">{breadcrumbCurrent}</span>
+      </nav>
+
+      <section class="generator-hero">
+        <span class="generator-eyebrow">{categoryName}</span>
+        <h1 class="generator-title">{title}</h1>
+        <p class="generator-description">{description}</p>
+        {templateLink && (
+          <div class="generator-hero-links">
+            <span>{templateLink.text}</span>
+            <a href={templateLink.href} class="generator-inline-link">{templateLink.label}</a>
+          </div>
+        )}
+
+        <div class="document-action-bar no-print">
+          <div class="document-action-bar__left">
+            <a href={categoryHref} class="action-btn action-btn-secondary">{backLabel}</a>
+          </div>
+
+          <div class="document-action-bar__right">
+            <div class="paper-size-group">
+              <span class="paper-size-label">Paper Size</span>
+
+              <div class="paper-size-toggle" aria-label="Paper size">
+                <button type="button" class="paper-btn" data-paper-size="letter">
+                  US Letter
+                </button>
+                <button type="button" class="paper-btn is-active" data-paper-size="a4">
+                  A4
+                </button>
+              </div>
+            </div>
+
+            <button type="button" id="resetFormBtn" class="action-btn action-btn-ghost">
+              Reset Form
+            </button>
+
+            <button type="button" id="printDocumentBtn" class="action-btn action-btn-primary">
+              Print / Save as PDF
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="document-stage">
+        <div class="document-stage-inner">
+          <slot name="document" />
+        </div>
+      </section>
+
+      <div class="document-bottom-actions no-print">
+        <button type="button" class="document-bottom-print-btn" data-print-document>
+          Print / Save as PDF
+        </button>
+      </div>
+
+      <section class="generator-related-block">
+        <RelatedTools tools={relatedTools} />
+      </section>
+
+      <section class="generator-seo-block">
+        <ToolGuide title="How It Works & Use Cases">
+          <slot name="guide" />
+        </ToolGuide>
+      </section>
+
+      <section class="generator-faq-block">
+        <Faq items={faqItems} />
+      </section>
+
+      <slot />
+    </div>
+  </main>
+</BaseLayout>
+
+<style is:global>
+  .inline-generator-page {
+    background:
+      linear-gradient(180deg, #f8fafc 0%, #f1f5f9 52%, #ffffff 100%);
+  }
+
+  .inline-generator-inner {
+    width: min(1280px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 40px 0 72px;
+  }
+
+  .generator-hero {
+    margin-bottom: 24px;
+  }
+
+  .generator-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .generator-breadcrumb a {
+    color: #64748b;
+    text-decoration: none;
+  }
+
+  .generator-breadcrumb a:hover {
+    color: #2563eb;
+  }
+
+  .generator-eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #2563eb;
+  }
+
+  .generator-title {
+    margin: 0 0 14px;
+    font-size: clamp(34px, 4vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: #0f172a;
+  }
+
+  .generator-description {
+    max-width: 900px;
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.75;
+    color: #475569;
+  }
+
+  .generator-hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .generator-inline-link {
+    color: #2563eb;
+    text-decoration: none;
+  }
+
+  .document-action-bar {
+    position: static;
+    top: auto;
+    z-index: auto;
+    margin: 18px 0 20px;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+  }
+
+  .document-action-bar__left {
+    flex: 0 0 auto;
+  }
+
+  .document-action-bar__right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .paper-size-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .paper-size-label {
+    font-size: 13px;
+    font-weight: 750;
+    color: #6b7280;
+    white-space: nowrap;
+  }
+
+  .paper-size-toggle {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: 999px;
+    background: #f3f4f6;
+  }
+
+  .paper-btn {
+    min-width: 84px;
+    height: 34px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 750;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .paper-btn.is-active {
+    background: #ffffff;
+    color: #2563eb;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+  }
+
+  .action-btn {
+    min-height: 36px;
+    padding: 0 14px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 750;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .action-btn-secondary {
+    border: 1px solid #dbe3ef;
+    background: #ffffff;
+    color: #374151;
+  }
+
+  .action-btn-secondary:hover {
+    border-color: #93c5fd;
+    background: #eff6ff;
+    color: #2563eb;
+  }
+
+  .action-btn-ghost {
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #4b5563;
+  }
+
+  .action-btn-ghost:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+    color: #111827;
+  }
+
+  .action-btn-primary {
+    border: 1px solid #2563eb;
+    background: #2563eb;
+    color: #ffffff;
+  }
+
+  .action-btn-primary:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
+  }
+
+  .document-stage {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 0;
+  }
+
+  .document-stage-inner {
+    width: 100%;
+    overflow: auto;
+    padding: 12px 0 4px;
+  }
+
+  .inline-document-root {
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid rgba(203, 213, 225, 0.7);
+    box-shadow:
+      0 26px 70px rgba(15, 23, 42, 0.14),
+      0 4px 18px rgba(15, 23, 42, 0.06);
+  }
+
+  .document-bottom-actions {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0 0;
+  }
+
+  .document-bottom-print-btn {
+    min-width: min(100%, 320px);
+    min-height: 52px;
+    padding: 0 28px;
+    border: 1px solid #1d4ed8;
+    border-radius: 999px;
+    background: #1d4ed8;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 850;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 18px 38px rgba(37, 99, 235, 0.22);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .document-bottom-print-btn:hover {
+    background: #1e40af;
+    border-color: #1e40af;
+    transform: translateY(-1px);
+    box-shadow: 0 22px 46px rgba(37, 99, 235, 0.28);
+  }
+
+  .inline-document-root.paper-letter {
+    width: min(100%, 884px);
+    min-height: 1144px;
+  }
+
+  .inline-document-root.paper-a4 {
+    width: min(100%, 860px);
+    min-height: 1216px;
+  }
+
+  .inline-document-inner {
+    padding: 54px 48px 48px;
+    color: #111827;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .document-title-row,
+  .invoice-title-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .document-logo-text,
+  .invoice-logo-text {
+    width: 100%;
+    max-width: 360px;
+    min-height: 54px;
+    padding: 8px 12px;
+    border: 2px dashed #d1d5db;
+    border-radius: 14px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 34px;
+    font-weight: 850;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    outline: none;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .document-logo-text::placeholder,
+  .invoice-logo-text::placeholder {
+    color: #b6beca;
+  }
+
+  .document-logo-text:hover,
+  .invoice-logo-text:hover,
+  .document-logo-text:focus,
+  .invoice-logo-text:focus {
+    background-color: #fffbea;
+    border-color: #2563eb;
+    box-shadow:
+      0 0 0 4px rgba(37, 99, 235, 0.22),
+      0 6px 18px rgba(37, 99, 235, 0.1);
+    outline: none;
+  }
+
+  .document-title,
+  .invoice-title {
+    font-size: 34px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: #111827;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #cbd5e1;
+  }
+
+  .doc-title {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .doc-subtitle {
+    margin-top: 8px;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .editor-hint,
+  .doc-subtitle.editor-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 6px 0 0;
+    padding: 4px 8px;
+    border: 1px solid #bfdbfe;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .editor-hint::before,
+  .doc-subtitle.editor-hint::before {
+    content: "Hint";
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .doc-meta {
+    min-width: 250px;
+  }
+
+  .doc-section {
+    margin-top: 16px;
+  }
+
+  .section-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    margin: 0;
+    font-size: 11pt;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .two-col,
+  .three-col {
+    display: grid;
+    gap: 18px;
+  }
+
+  .two-col {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .three-col {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .box {
+    border: 1px solid #cbd5e1;
+    padding: 12px;
+  }
+
+  .field-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-height: 26px;
+    font-size: 10pt;
+    line-height: 1.45;
+  }
+
+  .field-row-block {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    align-items: start;
+    min-height: auto;
+    margin-bottom: 10px;
+  }
+
+  .field-row-block:last-child {
+    margin-bottom: 0;
+  }
+
+  .field-label {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .doc-input,
+  .doc-select,
+  .doc-textarea {
+    width: 100%;
+    border: 1.5px dashed #e5e7eb;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #111827;
+    font: inherit;
+    padding: 9px 10px;
+    outline: none;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .doc-input::placeholder,
+  .doc-textarea::placeholder {
+    color: #6b7280;
+  }
+
+  .inline-input {
+    padding: 4px 8px;
+  }
+
+  .short-inline-input {
+    max-width: 96px;
+  }
+
+  .doc-input:hover,
+  .doc-select:hover,
+  .doc-textarea:hover,
+  .doc-input:focus,
+  .doc-select:focus,
+  .doc-textarea:focus {
+    background-color: #fffbea !important;
+    border-color: #2563eb !important;
+    box-shadow:
+      0 0 0 4px rgba(37, 99, 235, 0.22),
+      0 6px 18px rgba(37, 99, 235, 0.1) !important;
+    outline: none;
+  }
+
+  .doc-textarea {
+    resize: vertical;
+  }
+
+  .compact-area,
+  .compact-remarks {
+    min-height: 64px;
+  }
+
+  .doc-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .doc-table th,
+  .doc-table td {
+    border: 1px solid #cbd5e1;
+    padding: 7px 8px;
+    font-size: 9.5pt;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .doc-table td {
+    height: 36px;
+  }
+
+  .table-input {
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    padding: 8px;
+    min-height: 28px;
+  }
+
+  .table-input:hover,
+  .table-input:focus {
+    background-color: #fffbea !important;
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18) !important;
+    outline: none;
+  }
+
+  .amount-cell {
+    vertical-align: middle;
+  }
+
+  .line-amount {
+    display: inline-block;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .action-cell {
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .item-delete-btn,
+  .remove-row-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    border: 1px solid #f9a8d4;
+    border-radius: 10px;
+    background: #fdf2f8;
+    color: #db2777;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .item-delete-btn svg,
+  .remove-row-btn svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
+
+  .item-delete-btn:hover,
+  .remove-row-btn:hover {
+    background: #fce7f3;
+    border-color: #f472b6;
+    color: #be185d;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(219, 39, 119, 0.12);
+  }
+
+  .item-delete-btn:focus-visible,
+  .remove-row-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.22);
+  }
+
+  .items-section-header,
+  .section-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .add-item-btn,
+  .add-item-inline-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 0 14px;
+    border: 1px solid #93c5fd;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .add-item-btn:hover,
+  .add-item-inline-btn:hover {
+    background: #dbeafe;
+    border-color: #60a5fa;
+    color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+  }
+
+  .add-item-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 900;
+  }
+
+  .notes-totals-row {
+    align-items: start;
+  }
+
+  .totals-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .totals-panel {
+    border: 1px solid #dbe3ee;
+    padding: 12px;
+  }
+
+  .total-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    padding: 4px 0;
+    font-size: 9.5pt;
+    color: #475569;
+  }
+
+  .total-row-grand {
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px solid #dbe3ee;
+    color: #0f172a;
+    font-weight: 700;
+  }
+
+  .signature-grid {
+    margin-top: 22px;
+  }
+
+  .generator-related-block {
+    margin: 44px calc(50% - 50vw) 0;
+    padding: 38px max(16px, calc((100vw - 1280px) / 2 + 16px)) 10px;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+    background: #f9fafb;
+  }
+
+  .generator-seo-block {
+    margin: 0 calc(50% - 50vw);
+    padding: 38px max(16px, calc((100vw - 1280px) / 2 + 16px)) 10px;
+    background: #ffffff;
+  }
+
+  .generator-faq-block {
+    margin: 0 calc(50% - 50vw);
+    padding: 10px max(16px, calc((100vw - 1280px) / 2 + 16px)) 8px;
+    background: #ffffff;
+  }
+
+  @media (max-width: 900px) {
+    .document-action-bar {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .document-action-bar__left,
+    .document-action-bar__right {
+      width: 100%;
+    }
+
+    .document-action-bar__right {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .inline-generator-inner {
+      width: min(1280px, calc(100% - 24px));
+      padding: 28px 0 56px;
+    }
+
+    .generator-breadcrumb {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .generator-description {
+      font-size: 16px;
+    }
+
+    .two-col,
+    .three-col {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .document-title-row,
+    .invoice-title-row {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .document-logo-text,
+    .invoice-logo-text {
+      max-width: none;
+      font-size: 30px;
+    }
+
+    .document-title,
+    .invoice-title {
+      font-size: 30px;
+    }
+
+    .document-action-bar {
+      padding: 12px;
+      border-radius: 16px;
+    }
+
+    .document-action-bar__right {
+      gap: 10px;
+    }
+
+    .paper-size-group {
+      width: 100%;
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .paper-size-toggle {
+      width: 100%;
+    }
+
+    .paper-btn {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .action-btn {
+      min-height: 38px;
+    }
+
+    .document-bottom-print-btn {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+
+  @media print {
+    body {
+      background: #ffffff !important;
+    }
+
+    .inline-generator-page,
+    .inline-generator-inner,
+    .document-stage,
+    .document-stage-inner {
+      display: block !important;
+      width: auto !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #ffffff !important;
+      overflow: visible !important;
+    }
+
+    .site-header,
+    .site-footer,
+    .generator-breadcrumb,
+    .generator-hero,
+    .generator-related-block,
+    .generator-seo-block,
+    .generator-faq-block,
+    .no-print,
+    .document-action-bar,
+    .document-bottom-actions,
+    .editor-hint,
+    .doc-subtitle,
+    .field-label,
+    .item-delete-btn,
+    .remove-row-btn,
+    .edit-only {
+      display: none !important;
+    }
+
+    .inline-document-root {
+      position: static !important;
+      display: block !important;
+      width: auto !important;
+      max-width: none !important;
+      height: auto !important;
+      min-height: auto !important;
+      margin: 0 !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      background: #fff !important;
+      overflow: visible !important;
+      break-after: auto;
+      break-inside: avoid;
+      page-break-after: auto;
+      page-break-inside: avoid;
+    }
+
+    .inline-document-root.paper-letter,
+    .inline-document-root.paper-a4 {
+      width: auto !important;
+      min-height: auto !important;
+    }
+
+    .doc-input,
+    .doc-select,
+    .doc-textarea {
+      border: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+      resize: none !important;
+      appearance: none !important;
+    }
+
+    .field-label.print-label {
+      display: inline !important;
+      font-weight: 700 !important;
+      white-space: nowrap !important;
+    }
+
+    .document-logo-text,
+    .invoice-logo-text {
+      border-color: transparent !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    .document-logo-text::placeholder,
+    .invoice-logo-text::placeholder,
+    .doc-input::placeholder,
+    .doc-textarea::placeholder {
+      color: transparent !important;
+    }
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener("focusin", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const input = target.closest("[data-clear-zero-on-focus='true']");
+    if (!(input instanceof HTMLInputElement)) return;
+
+    if (input.value === "0" || input.value === "0.00") {
+      input.dataset.wasAutoCleared = "true";
+      input.value = "";
+    } else {
+      input.dataset.wasAutoCleared = "false";
+    }
+  });
+
+  document.addEventListener("focusout", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const input = target.closest("[data-clear-zero-on-focus='true']");
+    if (!(input instanceof HTMLInputElement)) return;
+
+    if (input.value.trim() === "") {
+      input.value = input.dataset.defaultValue || "0";
+    }
+
+    input.dataset.wasAutoCleared = "false";
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const printButton = target.closest("[data-print-document]");
+    if (!printButton) return;
+
+    window.print();
+  });
+</script>

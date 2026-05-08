@@ -1,80 +1,421 @@
 ---
-import DocumentGeneratorLayout from "../../layouts/DocumentGeneratorLayout.astro";
-import PurchaseOrderForm from "../../components/document-generators/purchase-order/PurchaseOrderForm.astro";
-import PurchaseOrderPreview from "../../components/document-generators/purchase-order/PurchaseOrderPreview.astro";
+import DocumentGeneratorLayout from "../../components/document-generator/DocumentGeneratorLayout.astro";
 
 const title = "Free Purchase Order Generator";
 const description =
   "Create a professional purchase order online for free. Add buyer, vendor, shipping details, items, totals, and print or save as PDF. No sign-up required.";
 const canonical = "https://www.worowo.com/quotes-invoices/purchase-order-generator/";
 
-const breadcrumbs = [
-  { label: "Home", href: "/" },
-  { label: "Quotes & Invoices", href: "/quotes-invoices/" },
-  { label: "Free Purchase Order Generator" },
-];
-
-const faq = [
+const faqItems = [
   {
     question: "Is this purchase order generator free?",
     answer:
-      "Yes. You can create, preview, print, or save your purchase order as PDF for free. No sign-up required.",
+      "Yes. You can create, edit, print, or save your purchase order as PDF for free. No sign-up required.",
   },
   {
     question: "Can I customize the purchase order?",
     answer:
-      "Yes. You can fill in buyer, vendor, shipping details, items, totals, and notes before generating the PO.",
+      "Yes. You can fill in buyer, vendor, shipping details, item rows, taxes, notes, and authorization details directly on the document.",
   },
   {
-    question: "Can I download the PO as a PDF?",
+    question: "Can I download the purchase order as a PDF?",
     answer:
       "Yes. Use the Print / Save as PDF button and choose your browser PDF option.",
   },
   {
     question: "Who can use this tool?",
     answer:
-      "Small businesses, procurement teams, wholesalers, importers, and trading companies.",
+      "Small businesses, procurement teams, wholesalers, importers, and trading companies can use it for supplier purchase records.",
   },
 ];
 
 const relatedTools = [
   {
-    title: "Invoice Generator",
+    name: "Invoice Generator",
     href: "/quotes-invoices/invoice-generator/",
-    description: "Create a professional invoice online and save it as PDF.",
+    desc: "Create a professional invoice online and save it as PDF.",
   },
   {
-    title: "Quote / Estimate Generator",
+    name: "Quote / Estimate Generator",
     href: "/quotes-invoices/quote-estimate-generator/",
-    description: "Prepare a customer quote or estimate with item lines, discounts, taxes, and approval details.",
+    desc: "Prepare a customer quote or estimate with item lines, discounts, taxes, and approval details.",
   },
   {
-    title: "Commercial Invoice Generator",
+    name: "Commercial Invoice Generator",
     href: "/quotes-invoices/commercial-invoice-generator/",
-    description: "Create a commercial invoice for international trade and customs documents.",
+    desc: "Create a commercial invoice for international trade and customs documents.",
   },
   {
-    title: "Proforma Invoice Generator",
+    name: "Proforma Invoice Generator",
     href: "/quotes-invoices/proforma-invoice-generator/",
-    description: "Create a proforma invoice for quotations, advance payment, and international orders.",
+    desc: "Create a proforma invoice for quotations, advance payment, and international orders.",
   },
 ];
 ---
 
 <DocumentGeneratorLayout
-  title={title}
-  pageTitle={`${title} | Worowo`}
-  description={description}
-  canonical={canonical}
-  eyebrow="Quotes & Invoices"
-  categoryLabel="Quotes & Invoices"
-  categoryHref="/quotes-invoices/"
-  intro={description}
-  breadcrumbs={breadcrumbs}
-  faq={faq}
-  currentToolKey="purchase_order_generator"
+  config={{
+    title,
+    description,
+    canonical,
+    categoryName: "Quotes & Invoices",
+    categoryHref: "/quotes-invoices/",
+    breadcrumbCurrent: "Free Purchase Order Generator",
+    backLabel: "Back to Quotes & Invoices",
+  }}
   relatedTools={relatedTools}
+  faqItems={faqItems}
 >
-  <PurchaseOrderForm slot="form" />
-  <PurchaseOrderPreview slot="preview" />
+  <div id="purchase-order-document" class="inline-document-root paper-a4" slot="document">
+    <div class="inline-document-inner">
+      <div class="document-title-row">
+        <input
+          id="documentLogoText"
+          class="document-logo-text"
+          type="text"
+          placeholder="Your Business Name"
+          aria-label="Business name or logo text"
+        />
+
+        <div class="document-title">PURCHASE ORDER</div>
+      </div>
+
+      <div class="doc-header">
+        <div>
+          <div class="doc-subtitle editor-hint no-print">Buyer document for ordering goods or services</div>
+        </div>
+
+        <div class="doc-meta">
+          <div class="field-row">
+            <span class="field-label print-label">PO No.:</span>
+            <input id="poNumber" class="doc-input inline-input" type="text" placeholder="PO No." />
+          </div>
+          <div class="field-row">
+            <span class="field-label print-label">PO Date:</span>
+            <input id="poDate" class="doc-input inline-input" type="date" placeholder="PO Date" />
+          </div>
+          <div class="field-row">
+            <span class="field-label print-label">Expected Delivery:</span>
+            <input id="deliveryDate" class="doc-input inline-input" type="date" placeholder="Expected Delivery" />
+          </div>
+          <div class="field-row">
+            <span class="field-label print-label">Currency:</span>
+            <input id="currencyCode" class="doc-input inline-input short-inline-input" type="text" value="USD" maxlength="8" placeholder="USD" />
+          </div>
+        </div>
+      </div>
+
+      <section class="doc-section">
+        <div class="two-col">
+          <div class="box">
+            <h2 class="section-title">Buyer</h2>
+            <div class="field-row field-row-block">
+              <input id="buyerName" class="doc-input" type="text" placeholder="Company Name" />
+            </div>
+            <div class="field-row field-row-block">
+              <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address"></textarea>
+            </div>
+            <div class="field-row field-row-block">
+              <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" />
+            </div>
+          </div>
+
+          <div class="box">
+            <h2 class="section-title">Vendor / Supplier</h2>
+            <div class="field-row field-row-block">
+              <input id="vendorName" class="doc-input" type="text" placeholder="Company Name" />
+            </div>
+            <div class="field-row field-row-block">
+              <textarea id="vendorAddress" class="doc-textarea compact-area" rows="2" placeholder="Address"></textarea>
+            </div>
+            <div class="field-row field-row-block">
+              <input id="vendorContact" class="doc-input" type="text" placeholder="Email / Phone" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section">
+        <h2 class="section-title">Purchase & Shipping Terms</h2>
+        <div class="box">
+          <div class="three-col">
+            <div class="field-row field-row-block">
+              <span class="field-label">Payment Terms:</span>
+              <input id="paymentTerms" class="doc-input" type="text" placeholder="Net 30 / Prepaid" />
+            </div>
+            <div class="field-row field-row-block">
+              <span class="field-label">Shipping Method:</span>
+              <input id="shippingMethod" class="doc-input" type="text" placeholder="Air / Sea / Courier" />
+            </div>
+            <div class="field-row field-row-block">
+              <span class="field-label">Delivery Address:</span>
+              <input id="deliveryAddress" class="doc-input" type="text" placeholder="Delivery Address" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section">
+        <div class="section-title-row">
+          <h2 class="section-title">Items</h2>
+          <button type="button" class="add-item-btn edit-only" id="addItemBtn">
+            <span class="add-item-icon" aria-hidden="true">+</span>
+            <span>Add Item</span>
+          </button>
+        </div>
+
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th style="width: 33%;">Description</th>
+              <th style="width: 11%;">SKU</th>
+              <th style="width: 8%;">Qty</th>
+              <th style="width: 10%;">Unit</th>
+              <th style="width: 13%;">Unit Price</th>
+              <th style="width: 9%;">Tax %</th>
+              <th style="width: 13%;">Amount</th>
+              <th class="edit-only" style="width: 3%;"></th>
+            </tr>
+          </thead>
+          <tbody id="itemsTableBody">
+            {Array.from({ length: 2 }, () => (
+              <tr class="item-row">
+                <td><input class="doc-input table-input item-description" type="text" /></td>
+                <td><input class="doc-input table-input item-sku" type="text" /></td>
+                <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
+                <td><input class="doc-input table-input item-unit" type="text" placeholder="pcs" /></td>
+                <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+                <td><input class="doc-input table-input item-tax" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+                <td class="amount-cell"><span class="line-amount">USD 0.00</span></td>
+                <td class="edit-only action-cell">
+                  <button type="button" class="item-delete-btn" aria-label="Remove item">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section">
+        <div class="two-col notes-totals-row">
+          <div class="box">
+            <h2 class="section-title">Notes</h2>
+            <textarea id="poNotes" class="doc-textarea compact-remarks" rows="2"></textarea>
+          </div>
+
+          <div class="box totals-box">
+            <div class="totals-panel">
+              <div class="total-row"><span>Subtotal</span><strong id="subtotalValue">USD 0.00</strong></div>
+              <div class="total-row"><span>Tax</span><strong id="taxValue">USD 0.00</strong></div>
+              <div class="total-row total-row-grand"><span>Total</span><strong id="grandTotalValue">USD 0.00</strong></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section signature-grid">
+        <div class="two-col">
+          <div class="box">
+            <h2 class="section-title">Prepared By</h2>
+            <input id="preparedBy" class="doc-input" type="text" />
+          </div>
+          <div class="box">
+            <h2 class="section-title">Authorized Signature</h2>
+            <input id="poSignature" class="doc-input" type="text" />
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <article class="content-card" slot="guide">
+    <h2>How This Purchase Order Generator Works</h2>
+    <p>
+      Fill in buyer, supplier, shipping terms, and item lines directly on the purchase order. The document stays
+      print-ready while item totals and tax amounts update automatically.
+    </p>
+  </article>
+
+  <article class="content-card" slot="guide">
+    <h2>When to Use It</h2>
+    <p>
+      Use this purchase order generator when ordering products, confirming supplier pricing, preparing procurement
+      records, or sending clear buying instructions to vendors.
+    </p>
+  </article>
+
+  <article class="content-card" slot="guide">
+    <h2>Why It Helps</h2>
+    <p>
+      A structured purchase order keeps supplier communication clearer, reduces manual formatting work, and gives both
+      buyer and vendor a clean record of quantities, prices, and terms.
+    </p>
+  </article>
+
+  <script>
+    const documentRoot = document.getElementById("purchase-order-document");
+    const itemsTableBody = document.getElementById("itemsTableBody");
+    const addItemBtn = document.getElementById("addItemBtn");
+    const resetBtn = document.getElementById("resetFormBtn");
+    const printBtn = document.getElementById("printDocumentBtn");
+    const paperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
+    const currencyInput = document.getElementById("currencyCode");
+
+    function currencyCode() {
+      return currencyInput?.value?.trim() || "USD";
+    }
+
+    function formatMoney(value) {
+      return `${currencyCode()} ${value.toFixed(2)}`;
+    }
+
+    function toNumber(value) {
+      const parsed = Number.parseFloat(value);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function recalcRowsAndTotals() {
+      const rows = Array.from(itemsTableBody.querySelectorAll(".item-row"));
+      let subtotal = 0;
+      let taxTotal = 0;
+
+      rows.forEach((row) => {
+        const qty = toNumber(row.querySelector(".item-qty")?.value);
+        const unitPrice = toNumber(row.querySelector(".item-unit-price")?.value);
+        const taxRate = toNumber(row.querySelector(".item-tax")?.value);
+        const lineBase = qty * unitPrice;
+        const lineTax = (lineBase * taxRate) / 100;
+        const lineValue = lineBase + lineTax;
+        subtotal += lineBase;
+        taxTotal += lineTax;
+
+        const amount = row.querySelector(".line-amount");
+        if (amount) amount.textContent = formatMoney(lineValue);
+      });
+
+      const subtotalValue = document.getElementById("subtotalValue");
+      const taxValue = document.getElementById("taxValue");
+      const grandTotalValue = document.getElementById("grandTotalValue");
+
+      if (subtotalValue) subtotalValue.textContent = formatMoney(subtotal);
+      if (taxValue) taxValue.textContent = formatMoney(taxTotal);
+      if (grandTotalValue) grandTotalValue.textContent = formatMoney(subtotal + taxTotal);
+    }
+
+    function attachInputHandlers(scope = document) {
+      scope.querySelectorAll(".item-qty, .item-unit-price, .item-tax").forEach((input) => {
+        if (input.dataset.bound === "1") return;
+        input.dataset.bound = "1";
+        input.addEventListener("input", recalcRowsAndTotals);
+      });
+
+      if (currencyInput && currencyInput.dataset.bound !== "1") {
+        currencyInput.dataset.bound = "1";
+        currencyInput.addEventListener("input", recalcRowsAndTotals);
+      }
+    }
+
+    function attachRemoveHandlers(scope = document) {
+      scope.querySelectorAll(".item-delete-btn").forEach((btn) => {
+        if (btn.dataset.bound === "1") return;
+        btn.dataset.bound = "1";
+        btn.addEventListener("click", () => {
+          const rows = itemsTableBody.querySelectorAll(".item-row");
+          if (rows.length <= 1) return;
+          btn.closest(".item-row")?.remove();
+          recalcRowsAndTotals();
+        });
+      });
+    }
+
+    function createItemRow() {
+      const tr = document.createElement("tr");
+      tr.className = "item-row";
+      tr.innerHTML = `
+        <td><input class="doc-input table-input item-description" type="text" /></td>
+        <td><input class="doc-input table-input item-sku" type="text" /></td>
+        <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
+        <td><input class="doc-input table-input item-unit" type="text" placeholder="pcs" /></td>
+        <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+        <td><input class="doc-input table-input item-tax" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+        <td class="amount-cell"><span class="line-amount">${formatMoney(0)}</span></td>
+        <td class="edit-only action-cell">
+          <button type="button" class="item-delete-btn" aria-label="Remove item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </td>
+      `;
+      return tr;
+    }
+
+    function applyPaper(paper) {
+      documentRoot.classList.remove("paper-letter", "paper-a4");
+      documentRoot.classList.add(paper === "letter" ? "paper-letter" : "paper-a4");
+      paperButtons.forEach((btn) => btn.classList.toggle("is-active", btn.dataset.paperSize === paper));
+
+      const styleId = "purchase-order-print-page-rule";
+      let styleTag = document.getElementById(styleId);
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+      }
+      styleTag.textContent =
+        paper === "letter"
+          ? "@page { size: Letter portrait; margin: 0.7in 0.65in; }"
+          : "@page { size: A4 portrait; margin: 18mm 16mm; }";
+    }
+
+    function resetForm() {
+      documentRoot.querySelectorAll("input").forEach((input) => {
+        if (input.id === "currencyCode") {
+          input.value = "USD";
+        } else if (input.type === "number") {
+          input.value = input.classList.contains("item-qty") ? "1" : "0";
+        } else {
+          input.value = "";
+        }
+      });
+
+      documentRoot.querySelectorAll("textarea").forEach((textarea) => {
+        textarea.value = "";
+      });
+
+      itemsTableBody.innerHTML = "";
+      itemsTableBody.appendChild(createItemRow());
+      itemsTableBody.appendChild(createItemRow());
+      attachRemoveHandlers(itemsTableBody);
+      attachInputHandlers(itemsTableBody);
+      applyPaper("a4");
+      recalcRowsAndTotals();
+    }
+
+    addItemBtn?.addEventListener("click", () => {
+      itemsTableBody.appendChild(createItemRow());
+      attachRemoveHandlers(itemsTableBody);
+      attachInputHandlers(itemsTableBody);
+      recalcRowsAndTotals();
+    });
+
+    resetBtn?.addEventListener("click", resetForm);
+    printBtn?.addEventListener("click", () => window.print());
+    paperButtons.forEach((btn) => btn.addEventListener("click", () => applyPaper(btn.dataset.paperSize || "a4")));
+
+    attachRemoveHandlers(document);
+    attachInputHandlers(document);
+    applyPaper("a4");
+    recalcRowsAndTotals();
+  </script>
 </DocumentGeneratorLayout>

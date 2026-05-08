@@ -1,8 +1,5 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Faq from "../../components/tools/Faq.astro";
-import RelatedTools from "../../components/tools/RelatedTools.astro";
-import ToolGuide from "../../components/tools/ToolGuide.astro";
+import DocumentGeneratorLayout from "../../components/document-generator/DocumentGeneratorLayout.astro";
 import { getBlankTemplateForTool } from "../../data/toolRelations";
 
 const pageTitle = "Invoice Generator";
@@ -31,101 +28,79 @@ const faqItems = [
 
 const relatedTools = [
   {
-    name: blankTemplate?.title || "Invoice Template",
-    href: blankTemplate?.href || "/printable-templates/simple-invoice-template/",
-    desc: "Use a printable invoice template when you need a handwritten or offline version.",
+    name: "Quote / Estimate Generator",
+    href: "/quotes-invoices/quote-estimate-generator/",
+    desc: "Create a quote or estimate before turning a job or order into an invoice.",
   },
   {
-    name: "Packing List Generator",
-    href: "/packing-shipping/packing-list-generator/",
-    desc: "Create a clean packing list for shipments, carton details, and dispatch paperwork.",
+    name: "Proforma Invoice Generator",
+    href: "/quotes-invoices/proforma-invoice-generator/",
+    desc: "Prepare a preliminary invoice for customer review, payment reference, or trade planning.",
   },
   {
-    name: "Delivery Receipt Generator",
-    href: "/packing-shipping/delivery-receipt-generator/",
-    desc: "Generate a delivery receipt for handover confirmation and receiving records.",
+    name: "Commercial Invoice Generator",
+    href: "/quotes-invoices/commercial-invoice-generator/",
+    desc: "Create an export invoice with trade, customs, and shipment details.",
+  },
+  {
+    name: "Purchase Order Generator",
+    href: "/quotes-invoices/purchase-order-generator/",
+    desc: "Prepare a purchase order for ordering goods or services from a supplier.",
   },
 ];
 ---
 
-<BaseLayout
-  title={`${pageTitle} | Worowo`}
-  description={pageDescription}
-  canonical={canonical}
+<DocumentGeneratorLayout
+  config={{
+    title: pageTitle,
+    description: pageDescription,
+    canonical,
+    categoryName: "Quotes & Invoices",
+    categoryHref: "/quotes-invoices/",
+    breadcrumbCurrent: "Invoice Generator",
+    backLabel: "Back to Quotes & Invoices",
+    templateLink: blankTemplate
+      ? {
+          text: "Need a blank version for handwriting?",
+          href: blankTemplate.href,
+          label: `View the ${blankTemplate.title}.`,
+        }
+      : undefined,
+  }}
+  relatedTools={relatedTools}
+  faqItems={faqItems}
 >
-  <main class="invoice-generator-page">
-    <div class="invoice-generator-inner">
-      <nav class="generator-breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a>
-        <span>></span>
-        <a href="/quotes-invoices/">Quotes & Invoices</a>
-        <span>></span>
-        <span aria-current="page">Invoice Generator</span>
-      </nav>
+  <div id="invoice-document" class="inline-document-root invoice-document paper-a4" slot="document">
+    <div class="inline-document-inner invoice-document-inner">
+              <div class="document-title-row">
+                <input
+                  id="invoiceLogoText"
+                  class="document-logo-text"
+                  type="text"
+                  placeholder="Your Business Name"
+                  aria-label="Business name or logo text"
+                />
 
-      <section class="generator-hero">
-        <span class="generator-eyebrow">Quotes & Invoices</span>
-        <h1 class="generator-title">{pageTitle}</h1>
-        <p class="generator-description">{pageDescription}</p>
-        {blankTemplate && (
-          <div class="generator-hero-links">
-            <a href={blankTemplate.href} class="generator-inline-link">
-              Need a blank version for handwriting? View the {blankTemplate.title}.
-            </a>
-          </div>
-        )}
-      </section>
+                <div class="document-title">INVOICE</div>
+              </div>
 
-      <div class="document-toolbar">
-        <div class="document-toolbar-left">
-          <a href="/" class="brand-link">worowo</a>
-        </div>
-
-        <div class="document-toolbar-center">
-          <a href="/quotes-invoices/" class="toolbar-link-btn">Back to Quotes & Invoices</a>
-        </div>
-
-        <div class="document-toolbar-right">
-          <span class="toolbar-label">Paper Size</span>
-
-          <div class="paper-toggle-group">
-            <button type="button" class="toolbar-btn paper-toggle" data-paper="letter">
-              US Letter
-            </button>
-            <button type="button" class="toolbar-btn paper-toggle is-active" data-paper="a4">
-              A4
-            </button>
-          </div>
-
-          <button type="button" class="toolbar-btn" id="resetBtn">Reset Form</button>
-          <button type="button" class="toolbar-btn toolbar-btn-primary" id="printBtn">
-            Print / Save as PDF
-          </button>
-        </div>
-      </div>
-
-      <section class="document-stage">
-        <div class="document-stage-inner">
-          <div id="invoice-document" class="invoice-document paper-a4">
-            <div class="invoice-document-inner">
               <div class="doc-header">
                 <div>
-                  <div class="doc-title">INVOICE</div>
-                  <div class="doc-subtitle">Billing document for products or services</div>
+                  <div class="doc-subtitle editor-hint no-print">Billing document for products or services</div>
                 </div>
 
                 <div class="doc-meta">
                   <div class="field-row">
-                    <span class="field-label">Invoice No.:</span>
-                    <input id="invoiceNumber" class="doc-input inline-input" type="text" />
+                    <span class="field-label print-label">Invoice No.:</span>
+                    <input id="invoiceNumber" class="doc-input inline-input" type="text" placeholder="Invoice No." />
                   </div>
                   <div class="field-row">
-                    <span class="field-label">Date:</span>
-                    <input id="invoiceDate" class="doc-input inline-input" type="date" />
+                    <span class="field-label print-label">Date:</span>
+                    <input id="invoiceDate" class="doc-input inline-input" type="date" placeholder="Invoice Date" />
                   </div>
                   <div class="field-row">
-                    <span class="field-label">Due Date:</span>
-                    <input id="dueDate" class="doc-input inline-input" type="date" />
+                    <span class="field-label print-label">Due Date:</span>
+                    <input id="dueDate" class="doc-input inline-input" type="date" placeholder="Due Date" />
                   </div>
                 </div>
               </div>
@@ -135,42 +110,37 @@ const relatedTools = [
                   <div class="box">
                     <h2 class="section-title">From</h2>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Business Name:</span>
-                      <input id="sellerName" class="doc-input" type="text" />
+                      <input id="sellerName" class="doc-input" type="text" placeholder="Business Name" />
                     </div>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Address:</span>
-                      <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2"></textarea>
+                      <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address"></textarea>
                     </div>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Contact:</span>
-                      <input id="sellerContact" class="doc-input" type="text" />
+                      <input id="sellerContact" class="doc-input" type="text" placeholder="Email / Phone" />
                     </div>
                   </div>
 
                   <div class="box">
                     <h2 class="section-title">Bill To</h2>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Client Name:</span>
-                      <input id="buyerName" class="doc-input" type="text" />
+                      <input id="buyerName" class="doc-input" type="text" placeholder="Client Name" />
                     </div>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Address:</span>
-                      <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2"></textarea>
+                      <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address"></textarea>
                     </div>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Contact:</span>
-                      <input id="buyerContact" class="doc-input" type="text" />
+                      <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" />
                     </div>
                   </div>
                 </div>
               </section>
 
               <section class="doc-section">
-                <div class="section-title-row">
+                <div class="items-section-header">
                   <h2 class="section-title">Items</h2>
-                  <button type="button" class="toolbar-btn add-item-inline-btn edit-only" id="addItemBtn">
-                    Add Item
+                  <button type="button" id="addItemBtn" class="add-item-btn edit-only">
+                    <span class="add-item-icon" aria-hidden="true">+</span>
+                    <span>Add Item</span>
                   </button>
                 </div>
 
@@ -190,11 +160,18 @@ const relatedTools = [
                       <tr class="item-row">
                         <td><input class="doc-input table-input item-description" type="text" /></td>
                         <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
-                        <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" /></td>
-                        <td><input class="doc-input table-input item-tax-rate" type="number" min="0" step="0.01" value="0" /></td>
+                        <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+                        <td><input class="doc-input table-input item-tax-rate" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
                         <td class="amount-cell"><span class="line-amount">$0.00</span></td>
                         <td class="edit-only action-cell">
-                          <button type="button" class="remove-row-btn">×</button>
+                          <button type="button" class="item-delete-btn" aria-label="Remove item">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -211,12 +188,12 @@ const relatedTools = [
 
                   <div class="box totals-box">
                     <div class="field-row field-row-block">
-                      <span class="field-label">Currency Symbol:</span>
-                      <input id="currencySymbol" class="doc-input short-input" type="text" value="$" maxlength="4" />
+                      <span class="field-label print-label">Currency Symbol:</span>
+                      <input id="currencySymbol" class="doc-input short-input" type="text" value="$" maxlength="4" placeholder="$" />
                     </div>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Discount:</span>
-                      <input id="discountValue" class="doc-input short-input" type="number" min="0" step="0.01" value="0" />
+                      <span class="field-label print-label">Discount:</span>
+                      <input id="discountValue" class="doc-input short-input" type="number" min="0" step="0.01" value="0" placeholder="Discount" data-clear-zero-on-focus="true" data-default-value="0" />
                     </div>
 
                     <div class="totals-panel">
@@ -228,48 +205,32 @@ const relatedTools = [
                   </div>
                 </div>
               </section>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="generator-related-block">
-        <RelatedTools tools={relatedTools} />
-      </section>
-
-      <section class="generator-seo-block">
-        <ToolGuide title="How It Works & Use Cases">
-          <article class="content-card">
-            <h2>How This Invoice Generator Works</h2>
-            <p>
-              Fill in your business details, customer information, and invoice items directly on the document. The
-              invoice stays print-ready while totals update automatically as you edit.
-            </p>
-          </article>
-
-          <article class="content-card">
-            <h2>When to Use It</h2>
-            <p>
-              Use this invoice generator for freelance work, agency projects, consulting services, product sales, and
-              small business billing when you need a clean professional invoice quickly.
-            </p>
-          </article>
-
-          <article class="content-card">
-            <h2>Why It Helps</h2>
-            <p>
-              A structured invoice reduces formatting work, keeps customer billing clearer, and makes it easy to print
-              or save a polished PDF without switching into spreadsheet software.
-            </p>
-          </article>
-        </ToolGuide>
-      </section>
-
-      <section class="generator-faq-block">
-        <Faq items={faqItems} />
-      </section>
     </div>
-  </main>
+  </div>
+
+  <article class="content-card" slot="guide">
+    <h2>How This Invoice Generator Works</h2>
+    <p>
+      Fill in your business details, customer information, and invoice items directly on the document. The invoice
+      stays print-ready while totals update automatically as you edit.
+    </p>
+  </article>
+
+  <article class="content-card" slot="guide">
+    <h2>When to Use It</h2>
+    <p>
+      Use this invoice generator for freelance work, agency projects, consulting services, product sales, and small
+      business billing when you need a clean professional invoice quickly.
+    </p>
+  </article>
+
+  <article class="content-card" slot="guide">
+    <h2>Why It Helps</h2>
+    <p>
+      A structured invoice reduces formatting work, keeps customer billing clearer, and makes it easy to print or save a
+      polished PDF without switching into spreadsheet software.
+    </p>
+  </article>
 
   <style is:global>
     .invoice-generator-page {
@@ -345,141 +306,222 @@ const relatedTools = [
       text-decoration: none;
     }
 
-    .document-toolbar {
-      position: sticky;
-      top: 79px;
-      z-index: 30;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 18px;
+    .invoice-action-bar {
+      position: static;
+      top: auto;
+      z-index: auto;
+      margin: 18px 0 20px;
       padding: 14px 16px;
-      margin-bottom: 22px;
-      border: 1px solid #dbe3ee;
+      border: 1px solid #e5e7eb;
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
-    }
-
-    .document-toolbar-left {
+      background: #ffffff;
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
     }
 
-    .document-toolbar-center {
-      display: flex;
-      justify-content: center;
+    .invoice-action-bar__left {
+      flex: 0 0 auto;
     }
 
-    .document-toolbar-right {
+    .invoice-action-bar__right {
       display: flex;
       align-items: center;
       justify-content: flex-end;
+      gap: 12px;
       flex-wrap: wrap;
+    }
+
+    .paper-size-group {
+      display: flex;
+      align-items: center;
       gap: 10px;
     }
 
-    .brand-link {
-      color: #0f172a;
-      text-decoration: none;
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.05em;
-      line-height: 1;
+    .paper-size-label {
+      font-size: 13px;
+      font-weight: 750;
+      color: #6b7280;
       white-space: nowrap;
     }
 
-    .brand-link:hover {
-      color: #2563eb;
+    .paper-size-toggle {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      border-radius: 999px;
+      background: #f3f4f6;
     }
 
-    .toolbar-link-btn,
-    .toolbar-btn {
+    .paper-btn {
+      min-width: 84px;
+      height: 34px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+      transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .paper-btn.is-active {
+      background: #ffffff;
+      color: #2563eb;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+    }
+
+    .action-btn {
+      min-height: 36px;
+      padding: 0 14px;
+      border-radius: 999px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 40px;
-      padding: 0 14px;
-      border-radius: 10px;
-      border: 1px solid #dbe3ee;
-      background: #fff;
-      color: #0f172a;
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 750;
+      line-height: 1;
       text-decoration: none;
       cursor: pointer;
-      transition: 0.18s ease;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
     }
 
-    .toolbar-link-btn:hover,
-    .toolbar-btn:hover {
-      border-color: #94a3b8;
+    .action-btn-secondary {
+      border: 1px solid #dbe3ef;
+      background: #ffffff;
+      color: #374151;
+    }
+
+    .action-btn-secondary:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+      color: #2563eb;
+    }
+
+    .action-btn-ghost {
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      color: #4b5563;
+    }
+
+    .action-btn-ghost:hover {
+      border-color: #cbd5e1;
       background: #f8fafc;
+      color: #111827;
     }
 
-    .toolbar-btn-primary {
+    .action-btn-primary {
+      border: 1px solid #2563eb;
       background: #2563eb;
-      border-color: #2563eb;
-      color: #fff;
+      color: #ffffff;
     }
 
-    .toolbar-btn-primary:hover {
+    .action-btn-primary:hover {
       background: #1d4ed8;
       border-color: #1d4ed8;
-    }
-
-    .toolbar-label {
-      font-size: 14px;
-      font-weight: 700;
-      color: #475569;
-      white-space: nowrap;
-    }
-
-    .paper-toggle-group {
-      display: inline-flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .paper-toggle.is-active {
-      background: #dbeafe;
-      color: #1d4ed8;
-      border-color: #93c5fd;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
     }
 
     .document-stage {
       display: flex;
       justify-content: center;
+      padding: 10px 0 0;
     }
 
     .document-stage-inner {
       width: 100%;
       overflow: auto;
-      padding: 4px 0 0;
+      padding: 12px 0 4px;
     }
 
     .invoice-document {
       margin: 0 auto;
       background: #fff;
-      border: 1px solid #cbd5e1;
-      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+      border: 1px solid rgba(203, 213, 225, 0.7);
+      box-shadow:
+        0 26px 70px rgba(15, 23, 42, 0.14),
+        0 4px 18px rgba(15, 23, 42, 0.06);
     }
 
     .invoice-document.paper-letter {
-      width: 816px;
-      min-height: 1056px;
+      width: min(100%, 884px);
+      min-height: 1144px;
     }
 
     .invoice-document.paper-a4 {
-      width: 794px;
-      min-height: 1123px;
+      width: min(100%, 860px);
+      min-height: 1216px;
     }
 
     .invoice-document-inner {
       padding: 54px 48px 48px;
       color: #111827;
       font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .invoice-title-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .invoice-logo-text {
+      width: 100%;
+      max-width: 360px;
+      min-height: 54px;
+      padding: 8px 12px;
+      border: 2px dashed #d1d5db;
+      border-radius: 14px;
+      background: #ffffff;
+      color: #111827;
+      font-size: 34px;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      outline: none;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .invoice-logo-text::placeholder {
+      color: #b6beca;
+    }
+
+    .invoice-logo-text:hover,
+    .invoice-logo-text:focus {
+      background-color: #fffbea;
+      border-color: #2563eb;
+      box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.22),
+        0 6px 18px rgba(37, 99, 235, 0.1);
+      outline: none;
+    }
+
+    .invoice-title {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: #111827;
+      white-space: nowrap;
     }
 
     .doc-header {
@@ -491,14 +533,8 @@ const relatedTools = [
       border-bottom: 2px solid #cbd5e1;
     }
 
-    .doc-title {
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-    }
-
     .doc-subtitle {
-      margin-top: 8px;
+      margin-top: 0;
       color: #64748b;
       font-size: 12px;
       line-height: 1.5;
@@ -512,12 +548,21 @@ const relatedTools = [
       margin-top: 16px;
     }
 
-    .section-title-row {
+    .items-section-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+    }
+
+    .items-section-header h2 {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #111827;
     }
 
     .section-title {
@@ -569,18 +614,26 @@ const relatedTools = [
     .doc-input,
     .doc-textarea {
       width: 100%;
-      border: 1px solid transparent;
-      border-radius: 8px;
-      background: transparent;
-      color: #0f172a;
+      border: 1.5px dashed #e5e7eb;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #111827;
       font: inherit;
-      padding: 6px 8px;
+      padding: 9px 10px;
       outline: none;
-      transition: 0.18s ease;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .doc-input::placeholder,
+    .doc-textarea::placeholder {
+      color: #6b7280;
     }
 
     .inline-input {
-      padding: 2px 6px;
+      padding: 4px 8px;
     }
 
     .short-input {
@@ -588,16 +641,15 @@ const relatedTools = [
     }
 
     .doc-input:hover,
-    .doc-textarea:hover {
-      border-color: #dbe3ee;
-      background: #f8fafc;
-    }
-
+    .doc-textarea:hover,
     .doc-input:focus,
     .doc-textarea:focus {
-      border-color: #93c5fd;
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.22);
+      background-color: #fffbea !important;
+      border-color: #2563eb !important;
+      box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.22),
+        0 6px 18px rgba(37, 99, 235, 0.1) !important;
+      outline: none;
     }
 
     .doc-textarea {
@@ -628,9 +680,19 @@ const relatedTools = [
     }
 
     .table-input {
-      padding: 4px 6px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      padding: 8px;
       min-height: 28px;
-      border-radius: 6px;
+    }
+
+    .table-input:hover,
+    .table-input:focus {
+      background-color: #fffbea !important;
+      border-color: #2563eb !important;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18) !important;
+      outline: none;
     }
 
     .amount-cell {
@@ -648,31 +710,93 @@ const relatedTools = [
       vertical-align: middle;
     }
 
-    .remove-row-btn {
+    .item-delete-btn {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
+      border: 1px solid #f9a8d4;
+      border-radius: 10px;
+      background: #fdf2f8;
+      color: #db2777;
+      cursor: pointer;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .item-delete-btn svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+
+    .item-delete-btn:hover {
+      background: #fce7f3;
+      border-color: #f472b6;
+      color: #be185d;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(219, 39, 119, 0.12);
+    }
+
+    .item-delete-btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.22);
+    }
+
+    .add-item-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 14px;
+      border: 1px solid #93c5fd;
       border-radius: 999px;
-      border: 1px solid #dbe3ee;
-      background: #fff;
-      color: #64748b;
-      font-size: 16px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 800;
       line-height: 1;
       cursor: pointer;
-      transition: 0.18s ease;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
     }
 
-    .remove-row-btn:hover {
-      border-color: #94a3b8;
-      background: #f8fafc;
+    .add-item-btn:hover {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
     }
 
-    .add-item-inline-btn {
-      min-height: 34px;
-      padding: 0 12px;
-      font-size: 13px;
+    .add-item-btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+    }
+
+    .add-item-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 900;
     }
 
     .notes-totals-row {
@@ -708,24 +832,40 @@ const relatedTools = [
       font-weight: 700;
     }
 
-    .generator-seo-block,
-    .generator-faq-block,
     .generator-related-block {
-      margin-top: 28px;
+      margin: 44px calc(50% - 50vw) 0;
+      padding: 38px max(16px, calc((100vw - 1280px) / 2 + 16px)) 10px;
+      border-top: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
+      background: #f9fafb;
     }
 
-    @media (max-width: 980px) {
-      .document-toolbar {
-        grid-template-columns: 1fr;
-        gap: 12px;
+    .generator-seo-block {
+      margin: 0 calc(50% - 50vw);
+      padding: 38px max(16px, calc((100vw - 1280px) / 2 + 16px)) 10px;
+      background: #ffffff;
+    }
+
+    .generator-faq-block {
+      margin: 0 calc(50% - 50vw);
+      padding: 10px max(16px, calc((100vw - 1280px) / 2 + 16px)) 8px;
+      background: #ffffff;
+    }
+
+    @media (max-width: 900px) {
+      .invoice-action-bar {
+        align-items: stretch;
+        flex-direction: column;
       }
 
-      .document-toolbar-left,
-      .document-toolbar-center,
-      .document-toolbar-right {
+      .invoice-action-bar__left,
+      .invoice-action-bar__right {
+        width: 100%;
+      }
+
+      .invoice-action-bar__right {
         justify-content: flex-start;
       }
-
     }
 
     @media (max-width: 760px) {
@@ -747,35 +887,88 @@ const relatedTools = [
         grid-template-columns: 1fr;
       }
     }
+
+    @media (max-width: 640px) {
+      .invoice-title-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .invoice-logo-text {
+        max-width: none;
+        font-size: 30px;
+      }
+
+      .invoice-title {
+        font-size: 30px;
+      }
+
+      .invoice-action-bar {
+        padding: 12px;
+        border-radius: 16px;
+      }
+
+      .invoice-action-bar__right {
+        gap: 10px;
+      }
+
+      .paper-size-group {
+        width: 100%;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .paper-size-toggle {
+        width: 100%;
+      }
+
+      .paper-btn {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+
+      .action-btn {
+        min-height: 38px;
+      }
+    }
   </style>
 
   <style is:global>
     @media print {
-      body * {
-        visibility: hidden !important;
-      }
-
-      #invoice-document,
-      #invoice-document * {
-        visibility: visible !important;
-      }
-
       .site-header,
       .site-footer,
-      .document-toolbar,
-      .remove-row-btn,
+      .generator-breadcrumb,
+      .generator-hero,
+      .generator-related-block,
+      .generator-seo-block,
+      .generator-faq-block,
+      .no-print,
+      .invoice-action-bar,
+      .editor-hint,
+      .doc-subtitle,
+      .field-label:not(.print-label),
+      .item-delete-btn,
       .edit-only {
         display: none !important;
       }
 
       #invoice-document {
-        position: absolute !important;
-        left: 0 !important;
-        top: 0 !important;
+        position: static !important;
+        display: block !important;
+        width: auto !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: auto !important;
         margin: 0 !important;
         border: 0 !important;
         box-shadow: none !important;
         background: #fff !important;
+        overflow: visible !important;
+        break-after: auto;
+        break-inside: avoid;
+        page-break-after: auto;
+        page-break-inside: avoid;
       }
 
       .invoice-document.paper-letter,
@@ -793,6 +986,26 @@ const relatedTools = [
         border-radius: 0 !important;
         resize: none !important;
       }
+
+      .field-label.print-label {
+        display: inline !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+      }
+
+      .invoice-logo-text {
+        border-color: transparent !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      .invoice-logo-text::placeholder,
+      .doc-input::placeholder,
+      .doc-textarea::placeholder {
+        color: transparent !important;
+      }
     }
   </style>
 
@@ -800,9 +1013,9 @@ const relatedTools = [
     const documentRoot = document.getElementById("invoice-document");
     const itemsTableBody = document.getElementById("itemsTableBody");
     const addItemBtn = document.getElementById("addItemBtn");
-    const resetBtn = document.getElementById("resetBtn");
-    const printBtn = document.getElementById("printBtn");
-    const paperButtons = Array.from(document.querySelectorAll(".paper-toggle"));
+    const resetBtn = document.getElementById("resetFormBtn");
+    const printBtn = document.getElementById("printDocumentBtn");
+    const paperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
     const currencyInput = document.getElementById("currencySymbol");
     const discountInput = document.getElementById("discountValue");
 
@@ -869,7 +1082,7 @@ const relatedTools = [
     }
 
     function attachRemoveHandlers(scope = document) {
-      scope.querySelectorAll(".remove-row-btn").forEach((btn) => {
+      scope.querySelectorAll(".item-delete-btn").forEach((btn) => {
         if (btn.dataset.bound === "1") return;
         btn.dataset.bound = "1";
 
@@ -888,11 +1101,18 @@ const relatedTools = [
       tr.innerHTML = `
         <td><input class="doc-input table-input item-description" type="text" /></td>
         <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
-        <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" /></td>
-        <td><input class="doc-input table-input item-tax-rate" type="number" min="0" step="0.01" value="0" /></td>
+        <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+        <td><input class="doc-input table-input item-tax-rate" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
         <td class="amount-cell"><span class="line-amount">${formatMoney(0)}</span></td>
         <td class="edit-only action-cell">
-          <button type="button" class="remove-row-btn">×</button>
+          <button type="button" class="item-delete-btn" aria-label="Remove item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
         </td>
       `;
       return tr;
@@ -931,7 +1151,7 @@ const relatedTools = [
       documentRoot.classList.add(paper === "letter" ? "paper-letter" : "paper-a4");
 
       paperButtons.forEach((btn) => {
-        btn.classList.toggle("is-active", btn.dataset.paper === paper);
+        btn.classList.toggle("is-active", btn.dataset.paperSize === paper);
       });
 
       const styleId = "invoice-print-page-rule";
@@ -963,7 +1183,7 @@ const relatedTools = [
 
     paperButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        applyPaper(btn.dataset.paper || "a4");
+        applyPaper(btn.dataset.paperSize || "a4");
       });
     });
 
@@ -976,4 +1196,4 @@ const relatedTools = [
     applyPaper("a4");
     recalcRowsAndTotals();
   </script>
-</BaseLayout>
+</DocumentGeneratorLayout>

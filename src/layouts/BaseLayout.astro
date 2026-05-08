@@ -21,6 +21,7 @@ interface Props {
   canonical?: string;
   noindex?: boolean;
   navGroups?: NavGroup[];
+  bodyClass?: string;
 }
 
 const {
@@ -29,6 +30,7 @@ const {
   canonical,
   noindex = false,
   navGroups,
+  bodyClass,
 } = Astro.props;
 
 const defaultNavGroups = headerNavigation.map((section) => ({
@@ -105,13 +107,40 @@ const canonicalUrl = canonical || Astro.url.href;
 
       body
         :where(
-          input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([readonly]),
+          input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="file"]):not([type="color"]):not([readonly]),
+          textarea,
+          select
+        ):hover,
+      body
+        :where(
+          input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="file"]):not([type="color"]):not([readonly]),
           textarea,
           select
         ):focus {
-        border-color: #1d4ed8 !important;
-        box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.18) !important;
-        background: #fff7d6 !important;
+        background-color: #fffbea !important;
+        border-color: #2563eb !important;
+        box-shadow:
+          0 0 0 4px rgba(37, 99, 235, 0.22),
+          0 6px 18px rgba(37, 99, 235, 0.1) !important;
+        outline: none;
+      }
+
+      @media print {
+        body
+          :where(
+            input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="file"]):not([type="color"]),
+            textarea,
+            select
+          ) {
+          border-color: transparent !important;
+          background: transparent !important;
+          box-shadow: none !important;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+          color: transparent !important;
+        }
       }
 
       a {
@@ -130,9 +159,7 @@ const canonicalUrl = canonical || Astro.url.href;
       }
 
       .site-header {
-        position: sticky;
-        top: 0;
-        z-index: 40;
+        position: static;
         background: rgba(255, 255, 255, 0.94);
         backdrop-filter: blur(10px);
         border-bottom: 1px solid var(--line);
@@ -748,7 +775,7 @@ const canonicalUrl = canonical || Astro.url.href;
     </style>
   </head>
 
-  <body>
+  <body class={bodyClass}>
     <header class="site-header" data-open="false" id="siteHeader">
       <div class="container">
         <div class="header-row">

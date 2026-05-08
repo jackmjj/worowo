@@ -1,8 +1,5 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Faq from "../../components/tools/Faq.astro";
-import RelatedTools from "../../components/tools/RelatedTools.astro";
-import ToolGuide from "../../components/tools/ToolGuide.astro";
+import DocumentGeneratorLayout from "../../components/document-generator/DocumentGeneratorLayout.astro";
 
 const pageTitle = "Proforma Invoice Generator";
 const pageDescription =
@@ -29,9 +26,9 @@ const faqItems = [
 
 const relatedTools = [
   {
-    name: "Commercial Invoice Generator",
-    href: "/quotes-invoices/commercial-invoice-generator/",
-    desc: "Create a final trade invoice for international shipments, customs support, and shipment valuation.",
+    name: "Quote / Estimate Generator",
+    href: "/quotes-invoices/quote-estimate-generator/",
+    desc: "Create an initial customer-facing price offer before preparing a proforma invoice.",
   },
   {
     name: "Invoice Generator",
@@ -39,84 +36,62 @@ const relatedTools = [
     desc: "Create a standard invoice for billing customers, project work, and day-to-day business use.",
   },
   {
-    name: "Export Packing List Generator",
-    href: "/packing-shipping/export-packing-list-generator/",
-    desc: "Prepare an export packing list with cartons, weights, CBM, shipment details, and totals.",
+    name: "Commercial Invoice Generator",
+    href: "/quotes-invoices/commercial-invoice-generator/",
+    desc: "Create a final trade invoice for international shipments, customs support, and shipment valuation.",
+  },
+  {
+    name: "Purchase Order Generator",
+    href: "/quotes-invoices/purchase-order-generator/",
+    desc: "Prepare a buyer purchase order before supplier confirmation and invoicing.",
   },
 ];
 ---
 
-<BaseLayout
-  title={`${pageTitle} | Worowo`}
-  description={pageDescription}
-  canonical={canonical}
+<DocumentGeneratorLayout
+  config={{
+    title: pageTitle,
+    description: pageDescription,
+    canonical,
+    categoryName: "Quotes & Invoices",
+    categoryHref: "/quotes-invoices/",
+    breadcrumbCurrent: "Proforma Invoice Generator",
+    backLabel: "Back to Quotes & Invoices",
+  }}
+  relatedTools={relatedTools}
+  faqItems={faqItems}
 >
-  <main class="proforma-invoice-page">
-    <div class="proforma-invoice-inner">
-      <nav class="generator-breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a>
-        <span>></span>
-        <a href="/quotes-invoices/">Quotes & Invoices</a>
-        <span>></span>
-        <span aria-current="page">Proforma Invoice Generator</span>
-      </nav>
+  <div id="proforma-invoice-document" class="inline-document-root proforma-document paper-a4" slot="document">
+    <div class="inline-document-inner proforma-document-inner">
+      <div class="document-title-row">
+        <input
+          id="documentLogoText"
+          class="document-logo-text"
+          type="text"
+          placeholder="Your Business Name"
+          aria-label="Business name or logo text"
+        />
 
-      <section class="generator-hero">
-        <span class="generator-eyebrow">Quotes & Invoices</span>
-        <h1 class="generator-title">{pageTitle}</h1>
-        <p class="generator-description">{pageDescription}</p>
-      </section>
-
-      <div class="document-toolbar">
-        <div class="document-toolbar-left">
-          <a href="/" class="brand-link">worowo</a>
-        </div>
-
-        <div class="document-toolbar-center">
-          <a href="/quotes-invoices/" class="toolbar-link-btn">Back to Quotes & Invoices</a>
-        </div>
-
-        <div class="document-toolbar-right">
-          <span class="toolbar-label">Paper Size</span>
-
-          <div class="paper-toggle-group">
-            <button type="button" class="toolbar-btn paper-toggle" data-paper="letter">
-              US Letter
-            </button>
-            <button type="button" class="toolbar-btn paper-toggle is-active" data-paper="a4">
-              A4
-            </button>
-          </div>
-
-          <button type="button" class="toolbar-btn" id="resetBtn">Reset Form</button>
-          <button type="button" class="toolbar-btn toolbar-btn-primary" id="printBtn">
-            Print / Save as PDF
-          </button>
-        </div>
+        <div class="document-title">PROFORMA INVOICE</div>
       </div>
 
-      <section class="document-stage">
-        <div class="document-stage-inner">
-          <div id="proforma-invoice-document" class="proforma-document paper-a4">
-            <div class="proforma-document-inner">
               <div class="doc-header">
                 <div>
-                  <div class="doc-title">PROFORMA INVOICE</div>
-                  <div class="doc-subtitle">Preliminary invoice for quotation, confirmation, and payment preparation</div>
+                  <div class="doc-subtitle editor-hint no-print">Preliminary invoice for trade and payment reference</div>
                 </div>
 
                 <div class="doc-meta">
                   <div class="field-row">
-                    <span class="field-label">Proforma No.:</span>
-                    <input id="invoiceNumber" class="doc-input inline-input" type="text" />
+                    <span class="field-label print-label">Proforma No.:</span>
+                    <input id="invoiceNumber" class="doc-input inline-input" type="text" placeholder="Proforma No." />
                   </div>
                   <div class="field-row">
-                    <span class="field-label">Date:</span>
-                    <input id="invoiceDate" class="doc-input inline-input" type="date" />
+                    <span class="field-label print-label">Date:</span>
+                    <input id="invoiceDate" class="doc-input inline-input" type="date" placeholder="Date" />
                   </div>
                   <div class="field-row">
-                    <span class="field-label">Currency:</span>
-                    <input id="currencyCode" class="doc-input inline-input short-inline-input" type="text" value="USD" maxlength="8" />
+                    <span class="field-label print-label">Currency:</span>
+                    <input id="currencyCode" class="doc-input inline-input short-inline-input" type="text" value="USD" maxlength="8" placeholder="USD" />
                   </div>
                 </div>
               </div>
@@ -126,32 +101,26 @@ const relatedTools = [
                   <div class="box">
                     <h2 class="section-title">Seller</h2>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Company Name:</span>
-                      <input id="sellerName" class="doc-input" type="text" />
+                      <input id="sellerName" class="doc-input" type="text" placeholder="Company Name" />
                     </div>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Address:</span>
-                      <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2"></textarea>
+                      <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address"></textarea>
                     </div>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Contact:</span>
-                      <input id="sellerContact" class="doc-input" type="text" />
+                      <input id="sellerContact" class="doc-input" type="text" placeholder="Email / Phone" />
                     </div>
                   </div>
 
                   <div class="box">
                     <h2 class="section-title">Buyer</h2>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Company Name:</span>
-                      <input id="buyerName" class="doc-input" type="text" />
+                      <input id="buyerName" class="doc-input" type="text" placeholder="Company Name" />
                     </div>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Address:</span>
-                      <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2"></textarea>
+                      <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address"></textarea>
                     </div>
                     <div class="field-row field-row-block">
-                      <span class="field-label">Contact:</span>
-                      <input id="buyerContact" class="doc-input" type="text" />
+                      <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" />
                     </div>
                   </div>
                 </div>
@@ -164,11 +133,11 @@ const relatedTools = [
                     <div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Ship From:</span>
-                        <input id="shipFrom" class="doc-input" type="text" />
+                        <input id="shipFrom" class="doc-input" type="text" placeholder="Ship From" />
                       </div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Port of Loading:</span>
-                        <input id="portOfLoading" class="doc-input" type="text" />
+                        <input id="portOfLoading" class="doc-input" type="text" placeholder="Port of Loading" />
                       </div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Estimated Lead Time:</span>
@@ -179,11 +148,11 @@ const relatedTools = [
                     <div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Ship To:</span>
-                        <input id="shipTo" class="doc-input" type="text" />
+                        <input id="shipTo" class="doc-input" type="text" placeholder="Ship To" />
                       </div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Port of Discharge:</span>
-                        <input id="portOfDischarge" class="doc-input" type="text" />
+                        <input id="portOfDischarge" class="doc-input" type="text" placeholder="Port of Discharge" />
                       </div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Incoterms:</span>
@@ -202,7 +171,7 @@ const relatedTools = [
                       </div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Estimated Charges:</span>
-                        <input id="estimatedCharges" class="doc-input" type="number" min="0" step="0.01" value="0" />
+                        <input id="estimatedCharges" class="doc-input" type="number" min="0" step="0.01" value="0" placeholder="Estimated Charges" data-clear-zero-on-focus="true" data-default-value="0" />
                       </div>
                     </div>
                   </div>
@@ -212,8 +181,9 @@ const relatedTools = [
               <section class="doc-section">
                 <div class="section-title-row">
                   <h2 class="section-title">Items</h2>
-                  <button type="button" class="toolbar-btn add-item-inline-btn edit-only" id="addItemBtn">
-                    Add Item
+                  <button type="button" class="add-item-btn edit-only" id="addItemBtn">
+                    <span class="add-item-icon" aria-hidden="true">+</span>
+                    <span>Add Item</span>
                   </button>
                 </div>
 
@@ -236,10 +206,17 @@ const relatedTools = [
                         <td><input class="doc-input table-input item-hs-code" type="text" /></td>
                         <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
                         <td><input class="doc-input table-input item-unit" type="text" placeholder="pcs" /></td>
-                        <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" /></td>
+                        <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
                         <td class="amount-cell"><span class="line-amount">USD 0.00</span></td>
                         <td class="edit-only action-cell">
-                          <button type="button" class="remove-row-btn">×</button>
+                          <button type="button" class="item-delete-btn" aria-label="Remove item">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -263,18 +240,10 @@ const relatedTools = [
                   </div>
                 </div>
               </section>
-            </div>
-          </div>
-        </div>
-      </section>
+    </div>
+  </div>
 
-      <section class="generator-related-block">
-        <RelatedTools tools={relatedTools} />
-      </section>
-
-      <section class="generator-seo-block">
-        <ToolGuide title="How It Works & Use Cases">
-          <article class="content-card">
+  <article class="content-card" slot="guide">
             <h2>How This Proforma Invoice Generator Works</h2>
             <p>
               Fill in seller, buyer, shipment terms, and estimated item values directly on the document. The proforma
@@ -282,7 +251,7 @@ const relatedTools = [
             </p>
           </article>
 
-          <article class="content-card">
+  <article class="content-card" slot="guide">
             <h2>When to Use It</h2>
             <p>
               Use this proforma invoice generator for quotations, order confirmation, advance payment requests, and
@@ -290,21 +259,13 @@ const relatedTools = [
             </p>
           </article>
 
-          <article class="content-card">
+  <article class="content-card" slot="guide">
             <h2>Why It Helps</h2>
             <p>
               A structured proforma invoice makes preliminary pricing clearer, helps buyers review terms faster, and
               gives you a professional document for pre-shipment communication.
             </p>
           </article>
-        </ToolGuide>
-      </section>
-
-      <section class="generator-faq-block">
-        <Faq items={faqItems} />
-      </section>
-    </div>
-  </main>
 
   <style is:global>
     .proforma-invoice-page {
@@ -473,29 +434,32 @@ const relatedTools = [
     .document-stage {
       display: flex;
       justify-content: center;
+      padding: 10px 0 0;
     }
 
     .document-stage-inner {
       width: 100%;
       overflow: auto;
-      padding: 4px 0 0;
+      padding: 12px 0 4px;
     }
 
     .proforma-document {
       margin: 0 auto;
       background: #fff;
-      border: 1px solid #cbd5e1;
-      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+      border: 1px solid rgba(203, 213, 225, 0.7);
+      box-shadow:
+        0 26px 70px rgba(15, 23, 42, 0.14),
+        0 4px 18px rgba(15, 23, 42, 0.06);
     }
 
     .proforma-document.paper-letter {
-      width: 816px;
-      min-height: 1056px;
+      width: min(100%, 884px);
+      min-height: 1144px;
     }
 
     .proforma-document.paper-a4 {
-      width: 794px;
-      min-height: 1123px;
+      width: min(100%, 860px);
+      min-height: 1216px;
     }
 
     .proforma-document-inner {
@@ -597,18 +561,26 @@ const relatedTools = [
     .doc-input,
     .doc-textarea {
       width: 100%;
-      border: 1px solid transparent;
-      border-radius: 8px;
-      background: transparent;
-      color: #0f172a;
+      border: 1.5px dashed #e5e7eb;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #111827;
       font: inherit;
-      padding: 6px 8px;
+      padding: 9px 10px;
       outline: none;
-      transition: 0.18s ease;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .doc-input::placeholder,
+    .doc-textarea::placeholder {
+      color: #6b7280;
     }
 
     .inline-input {
-      padding: 2px 6px;
+      padding: 4px 8px;
     }
 
     .short-inline-input {
@@ -616,16 +588,15 @@ const relatedTools = [
     }
 
     .doc-input:hover,
-    .doc-textarea:hover {
-      border-color: #dbe3ee;
-      background: #f8fafc;
-    }
-
+    .doc-textarea:hover,
     .doc-input:focus,
     .doc-textarea:focus {
-      border-color: #93c5fd;
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.22);
+      background-color: #fffbea !important;
+      border-color: #2563eb !important;
+      box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.22),
+        0 6px 18px rgba(37, 99, 235, 0.1) !important;
+      outline: none;
     }
 
     .doc-textarea {
@@ -656,9 +627,19 @@ const relatedTools = [
     }
 
     .table-input {
-      padding: 4px 6px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      padding: 8px;
       min-height: 28px;
-      border-radius: 6px;
+    }
+
+    .table-input:hover,
+    .table-input:focus {
+      background-color: #fffbea !important;
+      border-color: #2563eb !important;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18) !important;
+      outline: none;
     }
 
     .amount-cell {
@@ -735,10 +716,24 @@ const relatedTools = [
       font-weight: 700;
     }
 
-    .generator-seo-block,
-    .generator-faq-block,
     .generator-related-block {
-      margin-top: 28px;
+      margin: 44px calc(50% - 50vw) 0;
+      padding: 38px max(16px, calc((100vw - 1280px) / 2 + 16px)) 10px;
+      border-top: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
+      background: #f9fafb;
+    }
+
+    .generator-seo-block {
+      margin: 0 calc(50% - 50vw);
+      padding: 38px max(16px, calc((100vw - 1280px) / 2 + 16px)) 10px;
+      background: #ffffff;
+    }
+
+    .generator-faq-block {
+      margin: 0 calc(50% - 50vw);
+      padding: 10px max(16px, calc((100vw - 1280px) / 2 + 16px)) 8px;
+      background: #ffffff;
     }
 
     @media (max-width: 980px) {
@@ -779,31 +774,40 @@ const relatedTools = [
 
   <style is:global>
     @media print {
-      body * {
-        visibility: hidden !important;
-      }
-
-      #proforma-invoice-document,
-      #proforma-invoice-document * {
-        visibility: visible !important;
-      }
-
       .site-header,
       .site-footer,
+      .generator-breadcrumb,
+      .generator-hero,
+      .generator-related-block,
+      .generator-seo-block,
+      .generator-faq-block,
       .document-toolbar,
+      .document-action-bar,
+      .editor-hint,
+      .doc-subtitle,
+      .field-label:not(.print-label),
       .remove-row-btn,
+      .item-delete-btn,
       .edit-only {
         display: none !important;
       }
 
       #proforma-invoice-document {
-        position: absolute !important;
-        left: 0 !important;
-        top: 0 !important;
+        position: static !important;
+        display: block !important;
+        width: auto !important;
+        max-width: none !important;
+        height: auto !important;
+        min-height: auto !important;
         margin: 0 !important;
         border: 0 !important;
         box-shadow: none !important;
         background: #fff !important;
+        overflow: visible !important;
+        break-after: auto;
+        break-inside: avoid;
+        page-break-after: auto;
+        page-break-inside: avoid;
       }
 
       .proforma-document.paper-letter,
@@ -821,6 +825,12 @@ const relatedTools = [
         border-radius: 0 !important;
         resize: none !important;
       }
+
+      .field-label.print-label {
+        display: inline !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+      }
     }
   </style>
 
@@ -828,9 +838,9 @@ const relatedTools = [
     const documentRoot = document.getElementById("proforma-invoice-document");
     const itemsTableBody = document.getElementById("itemsTableBody");
     const addItemBtn = document.getElementById("addItemBtn");
-    const resetBtn = document.getElementById("resetBtn");
-    const printBtn = document.getElementById("printBtn");
-    const paperButtons = Array.from(document.querySelectorAll(".paper-toggle"));
+    const resetBtn = document.getElementById("resetFormBtn");
+    const printBtn = document.getElementById("printDocumentBtn");
+    const paperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
     const currencyInput = document.getElementById("currencyCode");
     const chargesInput = document.getElementById("estimatedCharges");
 
@@ -891,7 +901,7 @@ const relatedTools = [
     }
 
     function attachRemoveHandlers(scope = document) {
-      scope.querySelectorAll(".remove-row-btn").forEach((btn) => {
+      scope.querySelectorAll(".item-delete-btn").forEach((btn) => {
         if (btn.dataset.bound === "1") return;
         btn.dataset.bound = "1";
 
@@ -912,10 +922,17 @@ const relatedTools = [
         <td><input class="doc-input table-input item-hs-code" type="text" /></td>
         <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
         <td><input class="doc-input table-input item-unit" type="text" placeholder="pcs" /></td>
-        <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" /></td>
+        <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
         <td class="amount-cell"><span class="line-amount">${formatMoney(0)}</span></td>
         <td class="edit-only action-cell">
-          <button type="button" class="remove-row-btn">×</button>
+          <button type="button" class="item-delete-btn" aria-label="Remove item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
         </td>
       `;
       return tr;
@@ -956,7 +973,7 @@ const relatedTools = [
       documentRoot.classList.add(paper === "letter" ? "paper-letter" : "paper-a4");
 
       paperButtons.forEach((btn) => {
-        btn.classList.toggle("is-active", btn.dataset.paper === paper);
+        btn.classList.toggle("is-active", btn.dataset.paperSize === paper);
       });
 
       const styleId = "proforma-invoice-print-page-rule";
@@ -988,7 +1005,7 @@ const relatedTools = [
 
     paperButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        applyPaper(btn.dataset.paper || "a4");
+        applyPaper(btn.dataset.paperSize || "a4");
       });
     });
 
@@ -1001,4 +1018,4 @@ const relatedTools = [
     applyPaper("a4");
     recalcRowsAndTotals();
   </script>
-</BaseLayout>
+</DocumentGeneratorLayout>

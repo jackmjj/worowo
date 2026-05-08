@@ -1,24 +1,16 @@
 ---
-import DocumentGeneratorLayout from "../../layouts/DocumentGeneratorLayout.astro";
-import QuoteEstimateForm from "../../components/document-generators/quote-estimate/QuoteEstimateForm.astro";
-import QuoteEstimatePreview from "../../components/document-generators/quote-estimate/QuoteEstimatePreview.astro";
+import DocumentGeneratorLayout from "../../components/document-generator/DocumentGeneratorLayout.astro";
 
 const title = "Free Quote / Estimate Generator";
 const description =
   "Create a professional quote or estimate online for free. Add client details, item lines, discounts, taxes, terms, and print or save as PDF. No sign-up required.";
 const canonical = "https://www.worowo.com/quotes-invoices/quote-estimate-generator/";
 
-const breadcrumbs = [
-  { label: "Home", href: "/" },
-  { label: "Quotes & Invoices", href: "/quotes-invoices/" },
-  { label: "Free Quote / Estimate Generator" },
-];
-
-const faq = [
+const faqItems = [
   {
     question: "Is this quote generator free?",
     answer:
-      "Yes. You can create, preview, print, or save your quote as PDF for free. No sign-up required.",
+      "Yes. You can create, edit, print, or save your quote as PDF for free. No sign-up required.",
   },
   {
     question: "What is the difference between a quote and an estimate?",
@@ -39,44 +31,409 @@ const faq = [
 
 const relatedTools = [
   {
-    title: "Invoice Generator",
-    description: "Create a professional invoice online and save it as PDF.",
+    name: "Invoice Generator",
+    desc: "Create a professional invoice online and save it as PDF.",
     href: "/quotes-invoices/invoice-generator/",
   },
   {
-    title: "Proforma Invoice Generator",
-    description:
-      "Create a proforma invoice for quotations, advance payment, and international orders.",
+    name: "Proforma Invoice Generator",
+    desc: "Create a proforma invoice for quotations, advance payment, and international orders.",
     href: "/quotes-invoices/proforma-invoice-generator/",
   },
   {
-    title: "Commercial Invoice Generator",
-    description:
-      "Create a commercial invoice for international trade and customs documents.",
+    name: "Commercial Invoice Generator",
+    desc: "Create a commercial invoice for international trade and customs documents.",
     href: "/quotes-invoices/commercial-invoice-generator/",
   },
   {
-    title: "Purchase Order Generator",
-    description: "Create a purchase order for suppliers and vendors.",
+    name: "Purchase Order Generator",
+    desc: "Create a purchase order for suppliers and vendors.",
     href: "/quotes-invoices/purchase-order-generator/",
   },
 ];
 ---
 
 <DocumentGeneratorLayout
-  title={title}
-  pageTitle={`${title} | Worowo`}
-  description={description}
-  canonical={canonical}
-  eyebrow="Quotes & Invoices"
-  categoryLabel="Quotes & Invoices"
-  categoryHref="/quotes-invoices/"
-  intro={description}
-  breadcrumbs={breadcrumbs}
-  faq={faq}
-  currentToolKey="quotation_estimate_generator"
+  config={{
+    title,
+    description,
+    canonical,
+    categoryName: "Quotes & Invoices",
+    categoryHref: "/quotes-invoices/",
+    breadcrumbCurrent: "Free Quote / Estimate Generator",
+    backLabel: "Back to Quotes & Invoices",
+  }}
   relatedTools={relatedTools}
+  faqItems={faqItems}
 >
-  <QuoteEstimateForm slot="form" />
-  <QuoteEstimatePreview slot="preview" />
+  <div id="quote-estimate-document" class="inline-document-root paper-a4" slot="document">
+    <div class="inline-document-inner">
+      <div class="document-title-row">
+        <input
+          id="documentLogoText"
+          class="document-logo-text"
+          type="text"
+          placeholder="Your Business Name"
+          aria-label="Business name or logo text"
+        />
+
+        <div class="document-title" id="documentTitlePreview">QUOTATION</div>
+      </div>
+
+      <div class="doc-header">
+        <div>
+          <div class="doc-subtitle editor-hint no-print">Price offer before an order is confirmed</div>
+        </div>
+
+        <div class="doc-meta">
+          <div class="field-row">
+            <span class="field-label print-label">Type:</span>
+            <select id="documentType" class="doc-select inline-input">
+              <option value="Quote">Quote</option>
+              <option value="Estimate">Estimate</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <span class="field-label print-label" id="documentNumberLabel">Quote No.:</span>
+            <input id="documentNo" class="doc-input inline-input" type="text" placeholder="Quote No." />
+          </div>
+          <div class="field-row">
+            <span class="field-label print-label">Issue Date:</span>
+            <input id="issueDate" class="doc-input inline-input" type="date" placeholder="Issue Date" />
+          </div>
+          <div class="field-row">
+            <span class="field-label print-label">Valid Until:</span>
+            <input id="validUntil" class="doc-input inline-input" type="date" placeholder="Valid Until" />
+          </div>
+          <div class="field-row">
+            <span class="field-label print-label">Currency:</span>
+            <input id="currencyCode" class="doc-input inline-input short-inline-input" type="text" value="USD" maxlength="8" placeholder="USD" />
+          </div>
+        </div>
+      </div>
+
+      <section class="doc-section">
+        <div class="two-col">
+          <div class="box">
+            <h2 class="section-title">From</h2>
+            <div class="field-row field-row-block">
+              <input id="businessName" class="doc-input" type="text" placeholder="Business Name" />
+            </div>
+            <div class="field-row field-row-block">
+              <textarea id="businessAddress" class="doc-textarea compact-area" rows="2" placeholder="Address"></textarea>
+            </div>
+            <div class="field-row field-row-block">
+              <input id="businessContact" class="doc-input" type="text" placeholder="Email / Phone" />
+            </div>
+          </div>
+
+          <div class="box">
+            <h2 class="section-title">To</h2>
+            <div class="field-row field-row-block">
+              <input id="clientName" class="doc-input" type="text" placeholder="Client Name" />
+            </div>
+            <div class="field-row field-row-block">
+              <textarea id="clientAddress" class="doc-textarea compact-area" rows="2" placeholder="Address"></textarea>
+            </div>
+            <div class="field-row field-row-block">
+              <input id="clientContact" class="doc-input" type="text" placeholder="Email / Phone" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section">
+        <div class="section-title-row">
+          <h2 class="section-title">Items / Services</h2>
+          <button type="button" class="add-item-btn edit-only" id="addItemBtn">
+            <span class="add-item-icon" aria-hidden="true">+</span>
+            <span>Add Item</span>
+          </button>
+        </div>
+
+        <table class="doc-table">
+          <thead>
+            <tr>
+              <th style="width: 36%;">Description</th>
+              <th style="width: 8%;">Qty</th>
+              <th style="width: 13%;">Unit Price</th>
+              <th style="width: 10%;">Discount %</th>
+              <th style="width: 9%;">Tax %</th>
+              <th style="width: 16%;">Amount</th>
+              <th class="edit-only" style="width: 8%;"></th>
+            </tr>
+          </thead>
+          <tbody id="itemsTableBody">
+            {Array.from({ length: 2 }, () => (
+              <tr class="item-row">
+                <td><input class="doc-input table-input item-description" type="text" /></td>
+                <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
+                <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+                <td><input class="doc-input table-input item-discount" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+                <td><input class="doc-input table-input item-tax" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+                <td class="amount-cell"><span class="line-amount">USD 0.00</span></td>
+                <td class="edit-only action-cell">
+                  <button type="button" class="item-delete-btn" aria-label="Remove item">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section class="doc-section">
+        <div class="two-col notes-totals-row">
+          <div class="box">
+            <h2 class="section-title">Terms & Notes</h2>
+            <div class="field-row field-row-block">
+              <span class="field-label">Terms:</span>
+              <textarea id="terms" class="doc-textarea compact-remarks" rows="2" placeholder="Terms"></textarea>
+            </div>
+            <div class="field-row field-row-block">
+              <span class="field-label">Notes:</span>
+              <textarea id="notes" class="doc-textarea compact-remarks" rows="2" placeholder="Notes"></textarea>
+            </div>
+          </div>
+
+          <div class="box totals-box">
+            <div class="totals-panel">
+              <div class="total-row"><span>Subtotal</span><strong id="subtotalValue">USD 0.00</strong></div>
+              <div class="total-row"><span>Discount</span><strong id="discountValue">USD 0.00</strong></div>
+              <div class="total-row"><span>Tax</span><strong id="taxValue">USD 0.00</strong></div>
+              <div class="total-row total-row-grand"><span>Total</span><strong id="grandTotalValue">USD 0.00</strong></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section signature-grid">
+        <div class="two-col">
+          <div class="box">
+            <h2 class="section-title">Prepared By</h2>
+            <input id="preparedBy" class="doc-input" type="text" />
+          </div>
+          <div class="box">
+            <h2 class="section-title">Authorized Signature</h2>
+            <input id="signature" class="doc-input" type="text" />
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <article class="content-card" slot="guide">
+    <h2>How This Quote / Estimate Generator Works</h2>
+    <p>
+      Choose Quote or Estimate, add client details, and enter item lines directly on the document. Subtotals,
+      discounts, tax, and final totals update automatically while the page stays print-ready.
+    </p>
+  </article>
+
+  <article class="content-card" slot="guide">
+    <h2>When to Use It</h2>
+    <p>
+      Use this tool for service proposals, product quotes, contractor estimates, freelance work, B2B pricing, and
+      customer approvals before final invoicing.
+    </p>
+  </article>
+
+  <article class="content-card" slot="guide">
+    <h2>Why It Helps</h2>
+    <p>
+      A clean quote or estimate helps customers review scope and pricing faster, while the editable document format
+      reduces the back-and-forth of formatting separate previews.
+    </p>
+  </article>
+
+  <script>
+    const documentRoot = document.getElementById("quote-estimate-document");
+    const itemsTableBody = document.getElementById("itemsTableBody");
+    const addItemBtn = document.getElementById("addItemBtn");
+    const resetBtn = document.getElementById("resetFormBtn");
+    const printBtn = document.getElementById("printDocumentBtn");
+    const paperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
+    const currencyInput = document.getElementById("currencyCode");
+    const documentTypeInput = document.getElementById("documentType");
+
+    function currencyCode() {
+      return currencyInput?.value?.trim() || "USD";
+    }
+
+    function formatMoney(value) {
+      return `${currencyCode()} ${value.toFixed(2)}`;
+    }
+
+    function toNumber(value) {
+      const parsed = Number.parseFloat(value);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    function syncDocumentType() {
+      const type = documentTypeInput?.value || "Quote";
+      const titlePreview = document.getElementById("documentTitlePreview");
+      const numberLabel = document.getElementById("documentNumberLabel");
+
+      if (titlePreview) titlePreview.textContent = type === "Estimate" ? "ESTIMATE" : "QUOTATION";
+      if (numberLabel) numberLabel.textContent = `${type} No.:`;
+    }
+
+    function recalcRowsAndTotals() {
+      const rows = Array.from(itemsTableBody.querySelectorAll(".item-row"));
+      let subtotal = 0;
+      let discountTotal = 0;
+      let taxTotal = 0;
+
+      rows.forEach((row) => {
+        const qty = toNumber(row.querySelector(".item-qty")?.value);
+        const unitPrice = toNumber(row.querySelector(".item-unit-price")?.value);
+        const discountRate = toNumber(row.querySelector(".item-discount")?.value);
+        const taxRate = toNumber(row.querySelector(".item-tax")?.value);
+        const lineBase = qty * unitPrice;
+        const lineDiscount = (lineBase * discountRate) / 100;
+        const taxable = Math.max(lineBase - lineDiscount, 0);
+        const lineTax = (taxable * taxRate) / 100;
+        const lineValue = taxable + lineTax;
+
+        subtotal += lineBase;
+        discountTotal += lineDiscount;
+        taxTotal += lineTax;
+
+        const amount = row.querySelector(".line-amount");
+        if (amount) amount.textContent = formatMoney(lineValue);
+      });
+
+      const subtotalValue = document.getElementById("subtotalValue");
+      const discountValue = document.getElementById("discountValue");
+      const taxValue = document.getElementById("taxValue");
+      const grandTotalValue = document.getElementById("grandTotalValue");
+
+      if (subtotalValue) subtotalValue.textContent = formatMoney(subtotal);
+      if (discountValue) discountValue.textContent = formatMoney(discountTotal);
+      if (taxValue) taxValue.textContent = formatMoney(taxTotal);
+      if (grandTotalValue) grandTotalValue.textContent = formatMoney(subtotal - discountTotal + taxTotal);
+    }
+
+    function attachInputHandlers(scope = document) {
+      scope.querySelectorAll(".item-qty, .item-unit-price, .item-discount, .item-tax").forEach((input) => {
+        if (input.dataset.bound === "1") return;
+        input.dataset.bound = "1";
+        input.addEventListener("input", recalcRowsAndTotals);
+      });
+
+      if (currencyInput && currencyInput.dataset.bound !== "1") {
+        currencyInput.dataset.bound = "1";
+        currencyInput.addEventListener("input", recalcRowsAndTotals);
+      }
+
+      if (documentTypeInput && documentTypeInput.dataset.bound !== "1") {
+        documentTypeInput.dataset.bound = "1";
+        documentTypeInput.addEventListener("change", syncDocumentType);
+      }
+    }
+
+    function attachRemoveHandlers(scope = document) {
+      scope.querySelectorAll(".item-delete-btn").forEach((btn) => {
+        if (btn.dataset.bound === "1") return;
+        btn.dataset.bound = "1";
+        btn.addEventListener("click", () => {
+          const rows = itemsTableBody.querySelectorAll(".item-row");
+          if (rows.length <= 1) return;
+          btn.closest(".item-row")?.remove();
+          recalcRowsAndTotals();
+        });
+      });
+    }
+
+    function createItemRow() {
+      const tr = document.createElement("tr");
+      tr.className = "item-row";
+      tr.innerHTML = `
+        <td><input class="doc-input table-input item-description" type="text" /></td>
+        <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
+        <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+        <td><input class="doc-input table-input item-discount" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+        <td><input class="doc-input table-input item-tax" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+        <td class="amount-cell"><span class="line-amount">${formatMoney(0)}</span></td>
+        <td class="edit-only action-cell">
+          <button type="button" class="item-delete-btn" aria-label="Remove item">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </td>
+      `;
+      return tr;
+    }
+
+    function applyPaper(paper) {
+      documentRoot.classList.remove("paper-letter", "paper-a4");
+      documentRoot.classList.add(paper === "letter" ? "paper-letter" : "paper-a4");
+      paperButtons.forEach((btn) => btn.classList.toggle("is-active", btn.dataset.paperSize === paper));
+
+      const styleId = "quote-estimate-print-page-rule";
+      let styleTag = document.getElementById(styleId);
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleId;
+        document.head.appendChild(styleTag);
+      }
+      styleTag.textContent =
+        paper === "letter"
+          ? "@page { size: Letter portrait; margin: 0.7in 0.65in; }"
+          : "@page { size: A4 portrait; margin: 18mm 16mm; }";
+    }
+
+    function resetForm() {
+      documentRoot.querySelectorAll("input").forEach((input) => {
+        if (input.id === "currencyCode") {
+          input.value = "USD";
+        } else if (input.type === "number") {
+          input.value = input.classList.contains("item-qty") ? "1" : "0";
+        } else {
+          input.value = "";
+        }
+      });
+
+      documentRoot.querySelectorAll("textarea").forEach((textarea) => {
+        textarea.value = "";
+      });
+
+      if (documentTypeInput) documentTypeInput.value = "Quote";
+      itemsTableBody.innerHTML = "";
+      itemsTableBody.appendChild(createItemRow());
+      itemsTableBody.appendChild(createItemRow());
+      attachRemoveHandlers(itemsTableBody);
+      attachInputHandlers(itemsTableBody);
+      syncDocumentType();
+      applyPaper("a4");
+      recalcRowsAndTotals();
+    }
+
+    addItemBtn?.addEventListener("click", () => {
+      itemsTableBody.appendChild(createItemRow());
+      attachRemoveHandlers(itemsTableBody);
+      attachInputHandlers(itemsTableBody);
+      recalcRowsAndTotals();
+    });
+
+    resetBtn?.addEventListener("click", resetForm);
+    printBtn?.addEventListener("click", () => window.print());
+    paperButtons.forEach((btn) => btn.addEventListener("click", () => applyPaper(btn.dataset.paperSize || "a4")));
+
+    attachRemoveHandlers(document);
+    attachInputHandlers(document);
+    syncDocumentType();
+    applyPaper("a4");
+    recalcRowsAndTotals();
+  </script>
 </DocumentGeneratorLayout>
