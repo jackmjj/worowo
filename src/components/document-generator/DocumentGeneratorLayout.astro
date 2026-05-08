@@ -1,4 +1,5 @@
 ---
+import "../../styles/inline-document-mobile-shell.css";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Faq from "../tools/Faq.astro";
 import RelatedTools from "../tools/RelatedTools.astro";
@@ -29,6 +30,7 @@ interface Props {
       href: string;
       label: string;
     };
+    printHref?: string;
   };
   title?: string;
   description?: string;
@@ -56,6 +58,7 @@ const categoryHref = config?.categoryHref || "/quotes-invoices/";
 const breadcrumbCurrent = config?.breadcrumbCurrent || legacyBreadcrumbCurrent || title;
 const backLabel = config?.backLabel || `Back to ${categoryName}`;
 const templateLink = config?.templateLink;
+const printHref = config?.printHref || "#";
 ---
 
 <BaseLayout
@@ -108,15 +111,16 @@ const templateLink = config?.templateLink;
               Reset Form
             </button>
 
-            <button
-              type="button"
+            <a
+              href={printHref}
               id="printDocumentBtn"
               class="action-btn action-btn-primary"
+              data-print-document
               title="Generate and download professional PDF invoice"
               aria-label="Generate and download professional PDF invoice"
             >
               Print / Save as PDF
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -130,8 +134,8 @@ const templateLink = config?.templateLink;
       <div class="document-bottom-actions no-print">
         <div class="tool-actions-footer">
           <div class="tool-actions-footer__buttons">
-            <button
-              type="button"
+            <a
+              href={printHref}
               class="document-bottom-print-btn"
               data-print-document
               title="Generate and download professional PDF invoice"
@@ -147,7 +151,7 @@ const templateLink = config?.templateLink;
                 <path d="M12 3a1 1 0 0 1 1 1v9.59l2.3-2.29a1 1 0 1 1 1.4 1.42l-4 3.97a1 1 0 0 1-1.4 0l-4-3.97a1 1 0 1 1 1.4-1.42L11 13.59V4a1 1 0 0 1 1-1z" fill="currentColor"></path>
                 <path d="M5 18a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z" fill="currentColor"></path>
               </svg>
-            </button>
+            </a>
 
             <button type="button" class="document-bottom-reset-btn" data-reset-form-trigger>
               Reset Form
@@ -959,7 +963,7 @@ const templateLink = config?.templateLink;
     background: #ffffff;
   }
 
-  @media (max-width: 900px) {
+  @media screen and (max-width: 900px) {
     .document-action-bar {
       align-items: stretch;
       flex-direction: column;
@@ -975,7 +979,7 @@ const templateLink = config?.templateLink;
     }
   }
 
-  @media (max-width: 760px) {
+  @media screen and (max-width: 760px) {
     .inline-generator-inner {
       width: min(1280px, calc(100% - 24px));
       padding: 28px 0 56px;
@@ -996,7 +1000,7 @@ const templateLink = config?.templateLink;
     }
   }
 
-  @media (max-width: 640px) {
+  @media screen and (max-width: 640px) {
     .document-title-row,
     .invoice-title-row {
       grid-template-columns: 1fr;
@@ -1214,6 +1218,14 @@ const templateLink = config?.templateLink;
 
     const printButton = target.closest("[data-print-document]");
     if (!printButton) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (typeof window.handleDocumentPrint === "function") {
+      window.handleDocumentPrint();
+      return;
+    }
 
     window.print();
   });

@@ -57,11 +57,14 @@ const relatedTools = [
     categoryHref: "/quotes-invoices/",
     breadcrumbCurrent: "Commercial Invoice Generator",
     backLabel: "Back to Quotes & Invoices",
+    printHref: "#print",
   }}
   relatedTools={relatedTools}
   faqItems={faqItems}
 >
-  <div id="commercial-invoice-document" class="inline-document-root commercial-document paper-a4" slot="document">
+  <div class="inline-document-mobile-shell" slot="document">
+    <div class="desktop-document-editor">
+      <div id="commercial-invoice-document" class="inline-document-root commercial-document paper-a4">
     <div class="inline-document-inner commercial-document-inner">
       <div class="document-title-row">
         <input
@@ -70,6 +73,7 @@ const relatedTools = [
           type="text"
           placeholder="Your Business Name"
           aria-label="Business name or logo text"
+          data-field="logoText"
         />
 
         <div class="document-title">COMMERCIAL INVOICE</div>
@@ -83,15 +87,15 @@ const relatedTools = [
                 <div class="doc-meta">
                   <div class="field-row">
                     <span class="field-label print-label">Invoice No.:</span>
-                    <input id="invoiceNumber" class="doc-input inline-input" type="text" placeholder="Invoice No." />
+                    <input id="invoiceNumber" class="doc-input inline-input" type="text" placeholder="Invoice No." data-field="invoiceNumber" />
                   </div>
                   <div class="field-row">
                     <span class="field-label print-label">Date:</span>
-                    <input id="invoiceDate" class="doc-input inline-input" type="date" placeholder="Date" />
+                    <input id="invoiceDate" class="doc-input inline-input" type="date" placeholder="Date" data-field="invoiceDate" />
                   </div>
                   <div class="field-row">
                     <span class="field-label print-label">Currency:</span>
-                    <input id="currencyCode" class="doc-input inline-input short-inline-input" type="text" value="USD" maxlength="8" placeholder="USD" />
+                    <input id="currencyCode" class="doc-input inline-input short-inline-input" type="text" value="USD" maxlength="8" placeholder="USD" data-field="currencyCode" />
                   </div>
                 </div>
               </div>
@@ -101,26 +105,26 @@ const relatedTools = [
                   <div class="box">
                     <h2 class="section-title">Exporter / Seller</h2>
                     <div class="field-row field-row-block">
-                      <input id="sellerName" class="doc-input" type="text" placeholder="Company Name" />
+                      <input id="sellerName" class="doc-input" type="text" placeholder="Company Name" data-field="sellerName" />
                     </div>
                     <div class="field-row field-row-block">
-                      <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address"></textarea>
+                      <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="sellerAddress"></textarea>
                     </div>
                     <div class="field-row field-row-block">
-                      <input id="sellerContact" class="doc-input" type="text" placeholder="Email / Phone" />
+                      <input id="sellerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="sellerContact" />
                     </div>
                   </div>
 
                   <div class="box">
                     <h2 class="section-title">Consignee / Buyer</h2>
                     <div class="field-row field-row-block">
-                      <input id="buyerName" class="doc-input" type="text" placeholder="Company Name" />
+                      <input id="buyerName" class="doc-input" type="text" placeholder="Company Name" data-field="buyerName" />
                     </div>
                     <div class="field-row field-row-block">
-                      <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address"></textarea>
+                      <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="buyerAddress"></textarea>
                     </div>
                     <div class="field-row field-row-block">
-                      <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" />
+                      <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="buyerContact" />
                     </div>
                   </div>
                 </div>
@@ -133,45 +137,45 @@ const relatedTools = [
                     <div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Ship From:</span>
-                        <input id="shipFrom" class="doc-input" type="text" placeholder="Ship From" />
+                        <input id="shipFrom" class="doc-input" type="text" placeholder="Ship From" data-field="shipFrom" />
                       </div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Port of Loading:</span>
-                        <input id="portOfLoading" class="doc-input" type="text" placeholder="Port of Loading" />
+                        <input id="portOfLoading" class="doc-input" type="text" placeholder="Port of Loading" data-field="portOfLoading" />
                       </div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Country of Origin:</span>
-                        <input id="countryOfOrigin" class="doc-input" type="text" placeholder="Country of Origin" />
+                        <input id="countryOfOrigin" class="doc-input" type="text" placeholder="Country of Origin" data-field="countryOfOrigin" />
                       </div>
                     </div>
 
                     <div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Ship To:</span>
-                        <input id="shipTo" class="doc-input" type="text" placeholder="Ship To" />
+                        <input id="shipTo" class="doc-input" type="text" placeholder="Ship To" data-field="shipTo" />
                       </div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Port of Discharge:</span>
-                        <input id="portOfDischarge" class="doc-input" type="text" placeholder="Port of Discharge" />
+                        <input id="portOfDischarge" class="doc-input" type="text" placeholder="Port of Discharge" data-field="portOfDischarge" />
                       </div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Incoterms:</span>
-                        <input id="incoterms" class="doc-input" type="text" placeholder="e.g. FOB, CIF, EXW" />
+                        <input id="incoterms" class="doc-input" type="text" placeholder="e.g. FOB, CIF, EXW" data-field="incoterms" />
                       </div>
                     </div>
 
                     <div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Shipment Method:</span>
-                        <input id="shipmentMethod" class="doc-input" type="text" placeholder="Sea, Air, Courier..." />
+                        <input id="shipmentMethod" class="doc-input" type="text" placeholder="Sea, Air, Courier..." data-field="shipmentMethod" />
                       </div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Reference No.:</span>
-                        <input id="referenceNumber" class="doc-input" type="text" placeholder="Reference No." />
+                        <input id="referenceNumber" class="doc-input" type="text" placeholder="Reference No." data-field="referenceNumber" />
                       </div>
                       <div class="field-row field-row-block">
                         <span class="field-label">Freight / Insurance:</span>
-                        <input id="freightInsurance" class="doc-input" type="number" min="0" step="0.01" value="0" placeholder="Freight / Insurance" data-clear-zero-on-focus="true" data-default-value="0" />
+                        <input id="freightInsurance" class="doc-input" type="number" min="0" step="0.01" value="0" placeholder="Freight / Insurance" data-clear-zero-on-focus="true" data-default-value="0" data-field="freightInsurance" />
                       </div>
                     </div>
                   </div>
@@ -181,7 +185,7 @@ const relatedTools = [
               <section class="doc-section">
                 <div class="section-title-row">
                   <h2 class="section-title">Items</h2>
-                  <button type="button" class="add-item-btn edit-only" id="addItemBtn">
+                  <button type="button" class="add-item-btn edit-only" id="addItemBtn" data-add-item-trigger>
                     <span class="add-item-icon" aria-hidden="true">+</span>
                     <span>Add Item</span>
                   </button>
@@ -199,28 +203,7 @@ const relatedTools = [
                       <th class="edit-only" style="width: 8%;"></th>
                     </tr>
                   </thead>
-                  <tbody id="itemsTableBody">
-                    {Array.from({ length: 2 }, () => (
-                      <tr class="item-row">
-                        <td><input class="doc-input table-input item-description" type="text" /></td>
-                        <td><input class="doc-input table-input item-hs-code" type="text" /></td>
-                        <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
-                        <td><input class="doc-input table-input item-unit" type="text" placeholder="pcs" /></td>
-                        <td><input class="doc-input table-input item-unit-value" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
-                        <td class="amount-cell"><span class="line-amount">USD 0.00</span></td>
-                        <td class="edit-only action-cell">
-                          <button type="button" class="item-delete-btn" aria-label="Remove item">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                              <path
-                                d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
+                  <tbody id="itemsTableBody"></tbody>
                 </table>
               </section>
 
@@ -228,7 +211,7 @@ const relatedTools = [
                 <div class="two-col notes-totals-row">
                   <div class="box">
                     <h2 class="section-title">Remarks</h2>
-                    <textarea id="invoiceRemarks" class="doc-textarea compact-remarks" rows="2"></textarea>
+                    <textarea id="invoiceRemarks" class="doc-textarea compact-remarks" rows="2" data-field="invoiceRemarks"></textarea>
                   </div>
 
                   <div class="box totals-box">
@@ -240,6 +223,93 @@ const relatedTools = [
                   </div>
                 </div>
               </section>
+    </div>
+      </div>
+    </div>
+
+    <div class="mobile-document-editor no-print">
+      <div class="mobile-action-card">
+        <a href="/quotes-invoices/" class="mobile-back-btn">Back to Quotes & Invoices</a>
+        <div class="mobile-paper-size">
+          <span class="mobile-paper-size-label">Paper Size</span>
+          <div class="mobile-paper-toggle" aria-label="Paper size">
+            <button type="button" class="paper-btn" data-paper-size="letter">US Letter</button>
+            <button type="button" class="paper-btn is-active" data-paper-size="a4">A4</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="mobile-form-card">
+        <h2>Invoice Header</h2>
+        <input class="mobile-input mobile-logo-input" type="text" placeholder="Your Business Name" data-field="logoText" />
+        <input class="mobile-input" type="text" placeholder="Invoice No." data-field="invoiceNumber" />
+        <input class="mobile-input" type="date" data-field="invoiceDate" />
+        <input class="mobile-input" type="text" placeholder="Currency (e.g. USD)" data-field="currencyCode" maxlength="8" />
+      </section>
+
+      <section class="mobile-form-card">
+        <h2>Exporter / Seller</h2>
+        <input class="mobile-input" type="text" placeholder="Company Name" data-field="sellerName" />
+        <textarea class="mobile-textarea" placeholder="Address" data-field="sellerAddress"></textarea>
+        <input class="mobile-input" type="text" placeholder="Email / Phone" data-field="sellerContact" />
+      </section>
+
+      <section class="mobile-form-card">
+        <h2>Consignee / Buyer</h2>
+        <input class="mobile-input" type="text" placeholder="Company Name" data-field="buyerName" />
+        <textarea class="mobile-textarea" placeholder="Address" data-field="buyerAddress"></textarea>
+        <input class="mobile-input" type="text" placeholder="Email / Phone" data-field="buyerContact" />
+      </section>
+
+      <section class="mobile-form-card">
+        <h2>Shipment Details</h2>
+        <input class="mobile-input" type="text" placeholder="Ship From" data-field="shipFrom" />
+        <input class="mobile-input" type="text" placeholder="Port of Loading" data-field="portOfLoading" />
+        <input class="mobile-input" type="text" placeholder="Country of Origin" data-field="countryOfOrigin" />
+        <input class="mobile-input" type="text" placeholder="Ship To" data-field="shipTo" />
+        <input class="mobile-input" type="text" placeholder="Port of Discharge" data-field="portOfDischarge" />
+        <input class="mobile-input" type="text" placeholder="Incoterms" data-field="incoterms" />
+        <input class="mobile-input" type="text" placeholder="Shipment Method" data-field="shipmentMethod" />
+        <input class="mobile-input" type="text" placeholder="Reference No." data-field="referenceNumber" />
+        <input class="mobile-input" type="number" min="0" step="0.01" placeholder="Freight / Insurance" data-field="freightInsurance" data-clear-zero-on-focus="true" data-default-value="0" />
+      </section>
+
+      <section class="mobile-form-card">
+        <div class="mobile-section-header">
+          <h2>Items</h2>
+          <button type="button" class="mobile-add-item-btn" data-add-item-trigger>+ Add Item</button>
+        </div>
+        <div id="mobileItemsList" class="mobile-items-list"></div>
+      </section>
+
+      <section class="mobile-form-card">
+        <h2>Remarks & Totals</h2>
+        <textarea class="mobile-textarea" placeholder="Remarks" data-field="invoiceRemarks"></textarea>
+        <div class="mobile-total-card">
+          <div><span>Subtotal</span><strong id="mobileSubtotalValue">USD 0.00</strong></div>
+          <div><span>Freight / Insurance</span><strong id="mobileFreightValue">USD 0.00</strong></div>
+          <div class="grand-total"><span>Total Invoice Value</span><strong id="mobileGrandTotalValue">USD 0.00</strong></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="mobile-bottom-action-bar no-print">
+      <a
+        href="#print"
+        class="mobile-print-btn"
+        data-print-document
+        title="Generate and download professional PDF commercial invoice"
+        aria-label="Generate and download professional PDF commercial invoice"
+      >
+        <svg class="mobile-print-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
+          <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
+          <path d="M16 9h3v3h-3z" fill="currentColor"></path>
+        </svg>
+        <span>Print / Save as PDF</span>
+      </a>
+      <button type="button" class="mobile-reset-btn" data-reset-form-trigger>Reset</button>
+      <p class="mobile-privacy-note">Your data is processed locally in your browser and is not stored on our servers.</p>
     </div>
   </div>
 
@@ -837,143 +907,216 @@ const relatedTools = [
   <script>
     const documentRoot = document.getElementById("commercial-invoice-document");
     const itemsTableBody = document.getElementById("itemsTableBody");
-    const addItemBtn = document.getElementById("addItemBtn");
-    const resetBtn = document.getElementById("resetFormBtn");
-    const printBtn = document.getElementById("printDocumentBtn");
+    const mobileItemsList = document.getElementById("mobileItemsList");
+    const resetTriggers = Array.from(document.querySelectorAll("[data-reset-form-trigger], #resetFormBtn"));
+    const printTriggers = Array.from(document.querySelectorAll("[data-print-document]"));
     const paperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
-    const currencyInput = document.getElementById("currencyCode");
-    const freightInput = document.getElementById("freightInsurance");
 
-    function currencyCode() {
-      return currencyInput?.value?.trim() || "USD";
+    const syncFields = [
+      "logoText",
+      "invoiceNumber",
+      "invoiceDate",
+      "currencyCode",
+      "sellerName",
+      "sellerAddress",
+      "sellerContact",
+      "buyerName",
+      "buyerAddress",
+      "buyerContact",
+      "shipFrom",
+      "portOfLoading",
+      "countryOfOrigin",
+      "shipTo",
+      "portOfDischarge",
+      "incoterms",
+      "shipmentMethod",
+      "referenceNumber",
+      "freightInsurance",
+      "invoiceRemarks",
+    ];
+
+    let nextItemId = 3;
+
+    function updateNextItemId() {
+      const numericIds = state.items
+        .map((item) => Number.parseInt(String(item.id).replace("item-", ""), 10))
+        .filter((value) => Number.isFinite(value));
+      nextItemId = numericIds.length > 0 ? Math.max(...numericIds) + 1 : 1;
     }
 
-    function formatMoney(value) {
-      return `${currencyCode()} ${value.toFixed(2)}`;
+    function defaultFields() {
+      return {
+        logoText: "",
+        invoiceNumber: "",
+        invoiceDate: "",
+        currencyCode: "USD",
+        sellerName: "",
+        sellerAddress: "",
+        sellerContact: "",
+        buyerName: "",
+        buyerAddress: "",
+        buyerContact: "",
+        shipFrom: "",
+        portOfLoading: "",
+        countryOfOrigin: "",
+        shipTo: "",
+        portOfDischarge: "",
+        incoterms: "",
+        shipmentMethod: "",
+        referenceNumber: "",
+        freightInsurance: "0",
+        invoiceRemarks: "",
+      };
     }
+
+    function createItem() {
+      return {
+        id: `item-${nextItemId++}`,
+        description: "",
+        hsCode: "",
+        qty: "1",
+        unit: "",
+        unitValue: "0",
+      };
+    }
+
+    const state = {
+      paper: "a4",
+      fields: defaultFields(),
+      items: [createItem(), createItem()],
+    };
 
     function toNumber(value) {
       const parsed = Number.parseFloat(value);
       return Number.isFinite(parsed) ? parsed : 0;
     }
 
-    function recalcRowsAndTotals() {
-      const rows = Array.from(itemsTableBody.querySelectorAll(".item-row"));
+    function currencyCode() {
+      return state.fields.currencyCode.trim() || "USD";
+    }
+
+    function formatMoney(value) {
+      return `${currencyCode()} ${value.toFixed(2)}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function lineAmounts(item) {
+      const qty = toNumber(item.qty);
+      const unitValue = toNumber(item.unitValue);
+      const lineTotal = qty * unitValue;
+      return { lineTotal };
+    }
+
+    function calculateTotals() {
       let subtotal = 0;
-
-      rows.forEach((row) => {
-        const qty = toNumber(row.querySelector(".item-qty")?.value);
-        const unitValue = toNumber(row.querySelector(".item-unit-value")?.value);
-        const lineValue = qty * unitValue;
-        subtotal += lineValue;
-        const amount = row.querySelector(".line-amount");
-        if (amount) amount.textContent = formatMoney(lineValue);
+      state.items.forEach((item) => {
+        subtotal += lineAmounts(item).lineTotal;
       });
-
-      const freight = toNumber(freightInput?.value);
+      const freight = toNumber(state.fields.freightInsurance);
       const grandTotal = subtotal + freight;
-
-      const subtotalValue = document.getElementById("subtotalValue");
-      const freightValue = document.getElementById("freightValue");
-      const grandTotalValue = document.getElementById("grandTotalValue");
-
-      if (subtotalValue) subtotalValue.textContent = formatMoney(subtotal);
-      if (freightValue) freightValue.textContent = formatMoney(freight);
-      if (grandTotalValue) grandTotalValue.textContent = formatMoney(grandTotal);
+      return { subtotal, freight, grandTotal };
     }
 
-    function attachInputHandlers(scope = document) {
-      scope.querySelectorAll(".item-qty, .item-unit-value").forEach((input) => {
-        if (input.dataset.bound === "1") return;
-        input.dataset.bound = "1";
-        input.addEventListener("input", recalcRowsAndTotals);
-      });
-
-      if (currencyInput && currencyInput.dataset.bound !== "1") {
-        currencyInput.dataset.bound = "1";
-        currencyInput.addEventListener("input", recalcRowsAndTotals);
-      }
-
-      if (freightInput && freightInput.dataset.bound !== "1") {
-        freightInput.dataset.bound = "1";
-        freightInput.addEventListener("input", recalcRowsAndTotals);
-      }
-    }
-
-    function attachRemoveHandlers(scope = document) {
-      scope.querySelectorAll(".item-delete-btn").forEach((btn) => {
-        if (btn.dataset.bound === "1") return;
-        btn.dataset.bound = "1";
-
-        btn.addEventListener("click", () => {
-          const rows = itemsTableBody.querySelectorAll(".item-row");
-          if (rows.length <= 1) return;
-          btn.closest(".item-row")?.remove();
-          recalcRowsAndTotals();
+    function renderSharedFields() {
+      syncFields.forEach((field) => {
+        document.querySelectorAll(`[data-field="${field}"]`).forEach((input) => {
+          const value = state.fields[field];
+          if (input.value !== value) input.value = value;
         });
       });
     }
 
-    function createItemRow() {
-      const tr = document.createElement("tr");
-      tr.className = "item-row";
-      tr.innerHTML = `
-        <td><input class="doc-input table-input item-description" type="text" /></td>
-        <td><input class="doc-input table-input item-hs-code" type="text" /></td>
-        <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
-        <td><input class="doc-input table-input item-unit" type="text" placeholder="pcs" /></td>
-        <td><input class="doc-input table-input item-unit-value" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
-        <td class="amount-cell"><span class="line-amount">${formatMoney(0)}</span></td>
-        <td class="edit-only action-cell">
-          <button type="button" class="item-delete-btn" aria-label="Remove item">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
-                fill="currentColor"
-              />
-            </svg>
-          </button>
-        </td>
+    function desktopItemRow(item) {
+      const { lineTotal } = lineAmounts(item);
+      return `
+        <tr class="item-row" data-item-id="${item.id}">
+          <td><input class="doc-input table-input item-description" type="text" data-item-id="${item.id}" data-item-field="description" value="${escapeHtml(item.description)}" /></td>
+          <td><input class="doc-input table-input item-hs-code" type="text" data-item-id="${item.id}" data-item-field="hsCode" value="${escapeHtml(item.hsCode)}" /></td>
+          <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" data-item-id="${item.id}" data-item-field="qty" value="${escapeHtml(item.qty)}" /></td>
+          <td><input class="doc-input table-input item-unit" type="text" placeholder="pcs" data-item-id="${item.id}" data-item-field="unit" value="${escapeHtml(item.unit)}" /></td>
+          <td><input class="doc-input table-input item-unit-value" type="number" min="0" step="0.01" data-item-id="${item.id}" data-item-field="unitValue" value="${escapeHtml(item.unitValue)}" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+          <td class="amount-cell"><span class="line-amount" data-item-line-total="${item.id}">${formatMoney(lineTotal)}</span></td>
+          <td class="edit-only action-cell">
+            <button type="button" class="item-delete-btn" aria-label="Remove item" data-remove-item="${item.id}">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z" fill="currentColor" />
+              </svg>
+            </button>
+          </td>
+        </tr>
       `;
-      return tr;
     }
 
-    function resetForm() {
-      documentRoot.querySelectorAll("input").forEach((input) => {
-        if (input.id === "currencyCode") {
-          input.value = "USD";
-        } else if (input.id === "freightInsurance") {
-          input.value = "0";
-        } else if (input.type === "number") {
-          if (input.classList.contains("item-qty")) {
-            input.value = "1";
-          } else {
-            input.value = "0";
-          }
-        } else {
-          input.value = "";
-        }
+    function mobileItemCard(item, index) {
+      const { lineTotal } = lineAmounts(item);
+      return `
+        <article class="mobile-item-card" data-item-id="${item.id}">
+          <div class="mobile-item-title">
+            <strong>Item ${index + 1}</strong>
+            <button type="button" class="mobile-delete-item-btn" aria-label="Remove item" data-remove-item="${item.id}">Delete</button>
+          </div>
+          <input class="mobile-input" type="text" placeholder="Description" data-item-id="${item.id}" data-item-field="description" value="${escapeHtml(item.description)}" />
+          <input class="mobile-input" type="text" placeholder="HS Code" data-item-id="${item.id}" data-item-field="hsCode" value="${escapeHtml(item.hsCode)}" />
+          <div class="mobile-two-col">
+            <input class="mobile-input" type="number" placeholder="Qty" min="0" step="1" data-item-id="${item.id}" data-item-field="qty" value="${escapeHtml(item.qty)}" />
+            <input class="mobile-input" type="text" placeholder="Unit" data-item-id="${item.id}" data-item-field="unit" value="${escapeHtml(item.unit)}" />
+          </div>
+          <input class="mobile-input" type="number" placeholder="Unit Value" min="0" step="0.01" data-item-id="${item.id}" data-item-field="unitValue" value="${escapeHtml(item.unitValue)}" data-clear-zero-on-focus="true" data-default-value="0" />
+          <div class="mobile-amount-box">
+            <span>Amount</span>
+            <strong data-item-line-total="${item.id}">${formatMoney(lineTotal)}</strong>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderItems() {
+      updateNextItemId();
+      if (itemsTableBody) {
+        itemsTableBody.innerHTML = state.items.map((item) => desktopItemRow(item)).join("");
+      }
+      if (mobileItemsList) {
+        mobileItemsList.innerHTML = state.items.map((item, index) => mobileItemCard(item, index)).join("");
+      }
+    }
+
+    function renderTotals() {
+      const { subtotal, freight, grandTotal } = calculateTotals();
+
+      document.querySelectorAll("[data-item-line-total]").forEach((el) => {
+        const id = el.getAttribute("data-item-line-total");
+        const item = state.items.find((entry) => entry.id === id);
+        if (item) el.textContent = formatMoney(lineAmounts(item).lineTotal);
       });
 
-      documentRoot.querySelectorAll("textarea").forEach((textarea) => {
-        textarea.value = "";
+      const targets = {
+        subtotalValue: subtotal,
+        freightValue: freight,
+        grandTotalValue: grandTotal,
+        mobileSubtotalValue: subtotal,
+        mobileFreightValue: freight,
+        mobileGrandTotalValue: grandTotal,
+      };
+      Object.entries(targets).forEach(([id, value]) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = formatMoney(value);
       });
-
-      itemsTableBody.innerHTML = "";
-      itemsTableBody.appendChild(createItemRow());
-      itemsTableBody.appendChild(createItemRow());
-      attachRemoveHandlers(itemsTableBody);
-      attachInputHandlers(itemsTableBody);
-      applyPaper("a4");
-      recalcRowsAndTotals();
     }
 
     function applyPaper(paper) {
+      state.paper = paper === "letter" ? "letter" : "a4";
       documentRoot.classList.remove("paper-letter", "paper-a4");
-      documentRoot.classList.add(paper === "letter" ? "paper-letter" : "paper-a4");
+      documentRoot.classList.add(state.paper === "letter" ? "paper-letter" : "paper-a4");
 
       paperButtons.forEach((btn) => {
-        btn.classList.toggle("is-active", btn.dataset.paperSize === paper);
+        btn.classList.toggle("is-active", btn.dataset.paperSize === state.paper);
       });
 
       const styleId = "commercial-invoice-print-page-rule";
@@ -985,37 +1128,145 @@ const relatedTools = [
         document.head.appendChild(styleTag);
       }
 
-      if (paper === "letter") {
-        styleTag.textContent =
-          "@page { size: Letter portrait; margin: 0.7in 0.65in 0.7in 0.65in; }";
-      } else {
-        styleTag.textContent =
-          "@page { size: A4 portrait; margin: 18mm 16mm 18mm 16mm; }";
-      }
+      styleTag.textContent =
+        state.paper === "letter"
+          ? "@page { size: Letter portrait; margin: 0.7in 0.65in 0.7in 0.65in; }"
+          : "@page { size: A4 portrait; margin: 18mm 16mm 18mm 16mm; }";
     }
 
-    addItemBtn?.addEventListener("click", () => {
-      itemsTableBody.appendChild(createItemRow());
-      attachRemoveHandlers(itemsTableBody);
-      attachInputHandlers(itemsTableBody);
-      recalcRowsAndTotals();
+    function addItem() {
+      state.items.push(createItem());
+      renderItems();
+      renderTotals();
+    }
+
+    function removeItem(itemId) {
+      if (state.items.length <= 1) return;
+      state.items = state.items.filter((item) => item.id !== itemId);
+      renderItems();
+      renderTotals();
+    }
+
+    function resetDocumentForm() {
+      state.fields = defaultFields();
+      state.items = [createItem(), createItem()];
+      renderSharedFields();
+      renderItems();
+      applyPaper("a4");
+      renderTotals();
+    }
+
+    function updateField(field, value, source) {
+      state.fields[field] = value;
+      document.querySelectorAll(`[data-field="${field}"]`).forEach((input) => {
+        if (input !== source && input.value !== value) {
+          input.value = value;
+        }
+      });
+      renderTotals();
+    }
+
+    function updateItemField(itemId, field, value, source) {
+      const item = state.items.find((entry) => entry.id === itemId);
+      if (!item) return;
+      item[field] = value;
+      document.querySelectorAll(`[data-item-id="${itemId}"][data-item-field="${field}"]`).forEach((input) => {
+        if (input !== source && input.value !== value) {
+          input.value = value;
+        }
+      });
+      renderTotals();
+    }
+
+    function preparePrintState() {
+      documentRoot.querySelectorAll("input, textarea").forEach((field) => {
+        const value = field.value.trim();
+        if (value !== "") {
+          field.classList.remove("print-empty-field");
+          return;
+        }
+        field.classList.add("print-empty-field");
+        if (field.placeholder) {
+          field.dataset.restorePlaceholder = field.placeholder;
+          field.placeholder = "";
+        }
+      });
+    }
+
+    function restorePrintVisualState() {
+      document.body.classList.remove("inline-doc-print-reveal");
+      documentRoot.querySelectorAll(".print-empty-field").forEach((field) => {
+        field.classList.remove("print-empty-field");
+        if (field.dataset.restorePlaceholder) {
+          field.placeholder = field.dataset.restorePlaceholder;
+          delete field.dataset.restorePlaceholder;
+        }
+      });
+    }
+
+    function handleDocumentPrint() {
+      preparePrintState();
+      document.body.classList.add("inline-doc-print-reveal");
+      window.setTimeout(() => window.print(), 60);
+    }
+
+    function onPrintTrigger(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      handleDocumentPrint();
+    }
+
+    window.addEventListener("afterprint", restorePrintVisualState);
+
+    document.addEventListener("input", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)) return;
+
+      const field = target.dataset.field;
+      if (field) {
+        updateField(field, target.value, target);
+        return;
+      }
+
+      const itemId = target.dataset.itemId;
+      const itemField = target.dataset.itemField;
+      if (itemId && itemField) {
+        updateItemField(itemId, itemField, target.value, target);
+      }
     });
 
-    resetBtn?.addEventListener("click", resetForm);
+    document.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const removeButton = target.closest("[data-remove-item]");
+      if (removeButton) {
+        removeItem(removeButton.getAttribute("data-remove-item"));
+        return;
+      }
+
+      if (target.closest("[data-add-item-trigger]")) {
+        addItem();
+      }
+    });
+
+    resetTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", resetDocumentForm);
+    });
 
     paperButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        applyPaper(btn.dataset.paperSize || "a4");
-      });
+      btn.addEventListener("click", () => applyPaper(btn.dataset.paperSize || "a4"));
     });
 
-    printBtn?.addEventListener("click", () => {
-      window.print();
+    printTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", onPrintTrigger);
     });
 
-    attachRemoveHandlers(document);
-    attachInputHandlers(document);
-    applyPaper("a4");
-    recalcRowsAndTotals();
+    window.handleDocumentPrint = handleDocumentPrint;
+
+    renderSharedFields();
+    renderItems();
+    applyPaper(state.paper);
+    renderTotals();
   </script>
 </DocumentGeneratorLayout>

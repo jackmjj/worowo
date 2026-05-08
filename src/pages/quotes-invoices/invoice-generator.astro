@@ -59,6 +59,7 @@ const relatedTools = [
     categoryHref: "/quotes-invoices/",
     breadcrumbCurrent: "Invoice Generator",
     backLabel: "Back to Quotes & Invoices",
+    printHref: "#print",
     templateLink: blankTemplate
       ? {
           text: "Need a blank version for handwriting?",
@@ -70,8 +71,10 @@ const relatedTools = [
   relatedTools={relatedTools}
   faqItems={faqItems}
 >
-  <div id="invoice-document" class="inline-document-root invoice-document paper-a4" slot="document">
-    <div class="inline-document-inner invoice-document-inner">
+  <div class="invoice-editor-shell inline-document-mobile-shell" slot="document">
+    <div class="desktop-document-editor">
+      <div id="invoice-document" class="inline-document-root invoice-document paper-a4">
+        <div class="inline-document-inner invoice-document-inner">
               <div class="document-title-row">
                 <input
                   id="invoiceLogoText"
@@ -79,6 +82,7 @@ const relatedTools = [
                   type="text"
                   placeholder="Your Business Name"
                   aria-label="Business name or logo text"
+                  data-field="businessName"
                 />
 
                 <div class="document-title">INVOICE</div>
@@ -92,15 +96,15 @@ const relatedTools = [
                 <div class="doc-meta">
                   <div class="field-row">
                     <span class="field-label print-label">Invoice No.:</span>
-                    <input id="invoiceNumber" class="doc-input inline-input" type="text" placeholder="Invoice No." />
+                    <input id="invoiceNumber" class="doc-input inline-input" type="text" placeholder="Invoice No." data-field="invoiceNo" />
                   </div>
                   <div class="field-row">
                     <span class="field-label print-label">Date:</span>
-                    <input id="invoiceDate" class="doc-input inline-input" type="date" placeholder="Invoice Date" />
+                    <input id="invoiceDate" class="doc-input inline-input" type="date" placeholder="Invoice Date" data-field="invoiceDate" />
                   </div>
                   <div class="field-row">
                     <span class="field-label print-label">Due Date:</span>
-                    <input id="dueDate" class="doc-input inline-input" type="date" placeholder="Due Date" />
+                    <input id="dueDate" class="doc-input inline-input" type="date" placeholder="Due Date" data-field="dueDate" />
                   </div>
                 </div>
               </div>
@@ -110,26 +114,26 @@ const relatedTools = [
                   <div class="box">
                     <h2 class="section-title">From</h2>
                     <div class="field-row field-row-block">
-                      <input id="sellerName" class="doc-input" type="text" placeholder="Business Name" />
+                      <input id="sellerName" class="doc-input" type="text" placeholder="Business Name" data-field="fromName" />
                     </div>
                     <div class="field-row field-row-block">
-                      <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address"></textarea>
+                      <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="fromAddress"></textarea>
                     </div>
                     <div class="field-row field-row-block">
-                      <input id="sellerContact" class="doc-input" type="text" placeholder="Email / Phone" />
+                      <input id="sellerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="fromContact" />
                     </div>
                   </div>
 
                   <div class="box">
                     <h2 class="section-title">Bill To</h2>
                     <div class="field-row field-row-block">
-                      <input id="buyerName" class="doc-input" type="text" placeholder="Client Name" />
+                      <input id="buyerName" class="doc-input" type="text" placeholder="Client Name" data-field="billToName" />
                     </div>
                     <div class="field-row field-row-block">
-                      <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address"></textarea>
+                      <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="billToAddress"></textarea>
                     </div>
                     <div class="field-row field-row-block">
-                      <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" />
+                      <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="billToContact" />
                     </div>
                   </div>
                 </div>
@@ -138,7 +142,7 @@ const relatedTools = [
               <section class="doc-section">
                 <div class="items-section-header">
                   <h2 class="section-title">Items</h2>
-                  <button type="button" id="addItemBtn" class="add-item-btn edit-only">
+                  <button type="button" id="addItemBtn" class="add-item-btn edit-only" data-add-item-trigger>
                     <span class="add-item-icon" aria-hidden="true">+</span>
                     <span>Add Item</span>
                   </button>
@@ -155,27 +159,7 @@ const relatedTools = [
                       <th class="edit-only" style="width: 6%;"></th>
                     </tr>
                   </thead>
-                  <tbody id="itemsTableBody">
-                    {Array.from({ length: 2 }, () => (
-                      <tr class="item-row">
-                        <td><input class="doc-input table-input item-description" type="text" /></td>
-                        <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
-                        <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
-                        <td><input class="doc-input table-input item-tax-rate" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
-                        <td class="amount-cell"><span class="line-amount">$0.00</span></td>
-                        <td class="edit-only action-cell">
-                          <button type="button" class="item-delete-btn" aria-label="Remove item">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                              <path
-                                d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
+                  <tbody id="itemsTableBody"></tbody>
                 </table>
               </section>
 
@@ -183,17 +167,17 @@ const relatedTools = [
                 <div class="two-col notes-totals-row">
                   <div class="box">
                     <h2 class="section-title">Notes</h2>
-                    <textarea id="invoiceNotes" class="doc-textarea compact-remarks" rows="2"></textarea>
+                    <textarea id="invoiceNotes" class="doc-textarea compact-remarks" rows="2" data-field="notes"></textarea>
                   </div>
 
                   <div class="box totals-box">
                     <div class="field-row field-row-block">
                       <span class="field-label print-label">Currency Symbol:</span>
-                      <input id="currencySymbol" class="doc-input short-input" type="text" value="$" maxlength="4" placeholder="$" />
+                      <input id="currencySymbol" class="doc-input short-input" type="text" value="$" maxlength="4" placeholder="$" data-field="currencySymbol" data-default-value="$" />
                     </div>
                     <div class="field-row field-row-block">
                       <span class="field-label print-label">Discount:</span>
-                      <input id="discountValue" class="doc-input short-input" type="number" min="0" step="0.01" value="0" placeholder="Discount" data-clear-zero-on-focus="true" data-default-value="0" />
+                      <input id="discountValue" class="doc-input short-input" type="number" min="0" step="0.01" value="0" placeholder="Discount" data-field="discount" data-clear-zero-on-focus="true" data-default-value="0" />
                     </div>
 
                     <div class="totals-panel">
@@ -205,6 +189,187 @@ const relatedTools = [
                   </div>
                 </div>
               </section>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-document-editor no-print">
+      <div class="mobile-action-card">
+        <a href="/quotes-invoices/" class="mobile-back-btn">Back to Quotes & Invoices</a>
+
+        <div class="mobile-paper-size">
+          <span class="mobile-paper-size-label">Paper Size</span>
+          <div class="mobile-paper-toggle" aria-label="Paper size">
+            <button type="button" class="paper-btn" data-paper-size="letter">US Letter</button>
+            <button type="button" class="paper-btn is-active" data-paper-size="a4">A4</button>
+          </div>
+        </div>
+      </div>
+
+      <section class="mobile-form-card">
+        <h2>Business & Invoice Info</h2>
+
+        <input class="mobile-input mobile-logo-input" type="text" placeholder="Your Business Name" data-field="businessName" />
+        <input class="mobile-input" type="text" placeholder="Invoice No." data-field="invoiceNo" />
+        <input class="mobile-input" type="date" data-field="invoiceDate" />
+        <input class="mobile-input" type="date" data-field="dueDate" />
+      </section>
+
+      <section class="mobile-form-card">
+        <h2>From</h2>
+
+        <input class="mobile-input" type="text" placeholder="Business Name" data-field="fromName" />
+        <textarea class="mobile-textarea" placeholder="Address" data-field="fromAddress"></textarea>
+        <input class="mobile-input" type="text" placeholder="Email / Phone" data-field="fromContact" />
+      </section>
+
+      <section class="mobile-form-card">
+        <h2>Bill To</h2>
+
+        <input class="mobile-input" type="text" placeholder="Client Name" data-field="billToName" />
+        <textarea class="mobile-textarea" placeholder="Address" data-field="billToAddress"></textarea>
+        <input class="mobile-input" type="text" placeholder="Email / Phone" data-field="billToContact" />
+      </section>
+
+      <section class="mobile-form-card">
+        <div class="mobile-section-header">
+          <h2>Items</h2>
+          <button type="button" class="mobile-add-item-btn" data-add-item-trigger>+ Add Item</button>
+        </div>
+
+        <div id="mobileItemsList" class="mobile-items-list"></div>
+      </section>
+
+      <section class="mobile-form-card">
+        <h2>Notes & Totals</h2>
+
+        <textarea class="mobile-textarea" placeholder="Notes" data-field="notes"></textarea>
+
+        <div class="mobile-two-col">
+          <input class="mobile-input" type="text" placeholder="Currency Symbol" data-field="currencySymbol" data-default-value="$" />
+          <input class="mobile-input" type="number" placeholder="Discount" data-field="discount" data-clear-zero-on-focus="true" data-default-value="0" />
+        </div>
+
+        <div class="mobile-total-card">
+          <div><span>Subtotal</span><strong id="mobileSubtotalValue">$0.00</strong></div>
+          <div><span>Tax</span><strong id="mobileTaxValue">$0.00</strong></div>
+          <div><span>Discount</span><strong id="mobileDiscountPreviewValue">$0.00</strong></div>
+          <div class="grand-total"><span>Grand Total</span><strong id="mobileGrandTotalValue">$0.00</strong></div>
+        </div>
+      </section>
+    </div>
+
+    <div id="invoice-print-document" class="print-document invoice-print-document">
+      <div class="invoice-document-inner">
+        <div class="document-title-row">
+          <div class="print-logo-text" data-print-field="businessName"></div>
+          <div class="document-title">INVOICE</div>
+        </div>
+
+        <div class="doc-header">
+          <div></div>
+
+          <div class="doc-meta">
+            <div class="field-row">
+              <span class="field-label print-label">Invoice No.:</span>
+              <span class="print-inline-value" data-print-field="invoiceNo"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label print-label">Date:</span>
+              <span class="print-inline-value" data-print-field="invoiceDate"></span>
+            </div>
+            <div class="field-row">
+              <span class="field-label print-label">Due Date:</span>
+              <span class="print-inline-value" data-print-field="dueDate"></span>
+            </div>
+          </div>
+        </div>
+
+        <section class="doc-section">
+          <div class="two-col">
+            <div class="box">
+              <h2 class="section-title">From</h2>
+              <div class="print-block-lines">
+                <div data-print-field="fromName"></div>
+                <div data-print-field="fromAddress"></div>
+                <div data-print-field="fromContact"></div>
+              </div>
+            </div>
+
+            <div class="box">
+              <h2 class="section-title">Bill To</h2>
+              <div class="print-block-lines">
+                <div data-print-field="billToName"></div>
+                <div data-print-field="billToAddress"></div>
+                <div data-print-field="billToContact"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="doc-section">
+          <div class="items-section-header">
+            <h2 class="section-title">Items</h2>
+          </div>
+
+          <table class="doc-table invoice-table">
+            <thead>
+              <tr>
+                <th style="width: 38%;">Description</th>
+                <th style="width: 11%;">Qty</th>
+                <th style="width: 16%;">Unit Price</th>
+                <th style="width: 11%;">Tax %</th>
+                <th style="width: 18%;">Amount</th>
+              </tr>
+            </thead>
+            <tbody id="printItemsTableBody"></tbody>
+          </table>
+        </section>
+
+        <section class="doc-section">
+          <div class="two-col notes-totals-row">
+            <div class="box">
+              <h2 class="section-title">Notes</h2>
+              <div class="print-multiline" data-print-field="notes"></div>
+            </div>
+
+            <div class="box totals-box">
+              <div class="field-row">
+                <span class="field-label print-label">Currency Symbol:</span>
+                <span class="print-inline-value" data-print-field="currencySymbol"></span>
+              </div>
+              <div class="field-row">
+                <span class="field-label print-label">Discount:</span>
+                <span class="print-inline-value" id="printDiscountFieldValue"></span>
+              </div>
+
+              <div class="totals-panel">
+                <div class="total-row"><span>Subtotal</span><strong id="printSubtotalValue">$0.00</strong></div>
+                <div class="total-row"><span>Tax</span><strong id="printTaxValue">$0.00</strong></div>
+                <div class="total-row"><span>Discount</span><strong id="printDiscountPreviewValue">$0.00</strong></div>
+                <div class="total-row total-row-grand"><span>Grand Total</span><strong id="printGrandTotalValue">$0.00</strong></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="mobile-bottom-action-bar no-print">
+      <a href="#print" class="mobile-print-btn" data-print-document title="Generate and download professional PDF invoice" aria-label="Generate and download professional PDF invoice">
+        <svg class="mobile-print-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
+          <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
+          <path d="M16 9h3v3h-3z" fill="currentColor"></path>
+        </svg>
+        <span>Print / Save as PDF</span>
+      </a>
+
+      <button type="button" class="mobile-reset-btn" data-reset-form-trigger>Reset</button>
+
+      <p class="mobile-privacy-note">
+        Private and secure. Data stays in your browser.
+      </p>
     </div>
   </div>
 
@@ -852,7 +1017,309 @@ const relatedTools = [
       background: #ffffff;
     }
 
-    @media (max-width: 900px) {
+    .mobile-document-editor,
+    .mobile-bottom-action-bar,
+    .print-document {
+      display: none;
+    }
+
+    .print-logo-text {
+      min-height: 38px;
+      font-size: 34px;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      color: #111827;
+    }
+
+    .print-inline-value {
+      color: #111827;
+      white-space: nowrap;
+    }
+
+    .print-block-lines,
+    .print-multiline {
+      display: grid;
+      gap: 6px;
+      min-height: 64px;
+      white-space: pre-line;
+      line-height: 1.5;
+      color: #111827;
+    }
+
+    .mobile-action-card,
+    .mobile-form-card {
+      border: 1px solid #dbe3ef;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+    }
+
+    .mobile-action-card {
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .mobile-back-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 14px;
+      border: 1px solid #dbe3ef;
+      border-radius: 12px;
+      background: #ffffff;
+      color: #334155;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .mobile-paper-size {
+      margin-top: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .mobile-paper-size-label {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+
+    .mobile-paper-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 4px;
+      border-radius: 14px;
+      background: #f1f5f9;
+    }
+
+    .mobile-form-card {
+      margin: 16px 0;
+      padding: 16px;
+    }
+
+    .mobile-form-card h2 {
+      margin: 0 0 14px;
+      font-size: 16px;
+      font-weight: 850;
+      color: #111827;
+    }
+
+    .mobile-input,
+    .mobile-textarea {
+      width: 100%;
+      min-height: 44px;
+      margin-bottom: 12px;
+      padding: 11px 12px;
+      border: 1.5px dashed #cbd5e1;
+      border-radius: 12px;
+      background: #ffffff;
+      color: #111827;
+      font-size: 15px;
+      line-height: 1.4;
+      outline: none;
+      transition:
+        border-color 0.15s ease,
+        background-color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .mobile-textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .mobile-input:hover,
+    .mobile-textarea:hover,
+    .mobile-input:focus,
+    .mobile-textarea:focus {
+      background-color: #fffbea;
+      border-color: #2563eb;
+      box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.22),
+        0 6px 18px rgba(37, 99, 235, 0.1);
+    }
+
+    .mobile-logo-input {
+      min-height: 52px;
+      font-size: 24px;
+      font-weight: 850;
+      letter-spacing: -0.03em;
+    }
+
+    .mobile-section-header,
+    .mobile-item-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .mobile-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .mobile-add-item-btn {
+      min-height: 36px;
+      padding: 0 14px;
+      border: 1px solid #93c5fd;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .mobile-items-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .mobile-item-card {
+      padding: 14px;
+      border: 1px solid #dbe3ef;
+      border-radius: 16px;
+      background: #f8fafc;
+    }
+
+    .mobile-item-title {
+      margin-bottom: 12px;
+    }
+
+    .mobile-item-title strong {
+      font-size: 15px;
+      color: #111827;
+    }
+
+    .mobile-delete-item-btn {
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid #f9a8d4;
+      border-radius: 999px;
+      background: #fdf2f8;
+      color: #db2777;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .mobile-amount-box {
+      min-height: 44px;
+      margin-bottom: 12px;
+      padding: 11px 12px;
+      border: 1px solid #dbe3ef;
+      border-radius: 12px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: #475569;
+      font-size: 13px;
+    }
+
+    .mobile-amount-box strong {
+      color: #0f172a;
+      font-size: 15px;
+    }
+
+    .mobile-total-card {
+      margin-top: 4px;
+      border: 1px solid #dbe3ef;
+      border-radius: 16px;
+      background: #f8fafc;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .mobile-total-card div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: #475569;
+      font-size: 14px;
+    }
+
+    .mobile-total-card strong {
+      color: #0f172a;
+    }
+
+    .mobile-total-card .grand-total {
+      padding-top: 10px;
+      border-top: 1px solid #dbe3ef;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .mobile-bottom-action-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 50;
+      gap: 10px;
+      padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+      border-top: 1px solid #dbe3ef;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 -12px 30px rgba(15, 23, 42, 0.1);
+      flex-wrap: wrap;
+    }
+
+    .mobile-print-btn {
+      flex: 1 1 auto;
+      min-height: 48px;
+      border: 1px solid #2563eb;
+      border-radius: 6px;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 850;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .mobile-reset-btn {
+      min-height: 48px;
+      padding: 0 14px;
+      border: 1px solid #dbe3ef;
+      border-radius: 6px;
+      background: #ffffff;
+      color: #374151;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .mobile-print-icon {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .mobile-privacy-note {
+      width: 100%;
+      margin: 0;
+      color: #64748b;
+      font-size: 10px;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    @media screen and (max-width: 900px) {
       .invoice-action-bar {
         align-items: stretch;
         flex-direction: column;
@@ -868,7 +1335,7 @@ const relatedTools = [
       }
     }
 
-    @media (max-width: 760px) {
+    @media screen and (max-width: 760px) {
       .invoice-generator-inner {
         width: min(1280px, calc(100% - 24px));
         padding: 28px 0 56px;
@@ -888,7 +1355,7 @@ const relatedTools = [
       }
     }
 
-    @media (max-width: 640px) {
+    @media screen and (max-width: 640px) {
       .invoice-title-row {
         grid-template-columns: 1fr;
         gap: 12px;
@@ -931,11 +1398,36 @@ const relatedTools = [
       .action-btn {
         min-height: 38px;
       }
+
+      .mobile-two-col {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media screen and (max-width: 360px) {
+      .mobile-two-col {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 
   <style is:global>
     @media print {
+      body.document-generator-page * {
+        visibility: hidden !important;
+      }
+
+      body.document-generator-page .inline-generator-page,
+      body.document-generator-page .inline-generator-inner,
+      body.document-generator-page .document-stage,
+      body.document-generator-page .document-stage-inner,
+      body.document-generator-page .invoice-editor-shell,
+      body.document-generator-page .desktop-document-editor,
+      body.document-generator-page #invoice-document,
+      body.document-generator-page #invoice-document * {
+        visibility: visible !important;
+      }
+
       .site-header,
       .site-footer,
       .generator-breadcrumb,
@@ -953,9 +1445,22 @@ const relatedTools = [
         display: none !important;
       }
 
-      #invoice-document {
-        position: static !important;
+      .invoice-editor-shell,
+      .invoice-editor-shell .desktop-document-editor {
         display: block !important;
+      }
+
+      .invoice-editor-shell .mobile-document-editor,
+      .invoice-editor-shell .mobile-bottom-action-bar,
+      .print-document,
+      #invoice-print-document {
+        display: none !important;
+      }
+
+      .invoice-document {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
         width: auto !important;
         max-width: none !important;
         height: auto !important;
@@ -971,10 +1476,31 @@ const relatedTools = [
         page-break-inside: avoid;
       }
 
-      .invoice-document.paper-letter,
-      .invoice-document.paper-a4 {
-        width: auto !important;
-        min-height: auto !important;
+      .invoice-document .invoice-document-inner {
+        padding: 0 !important;
+      }
+
+      .invoice-document .document-title-row {
+        margin-bottom: 16px !important;
+      }
+
+      .invoice-document .doc-header {
+        gap: 18px;
+        padding-bottom: 10px;
+      }
+
+      .invoice-document .doc-section {
+        margin-top: 12px;
+      }
+
+      .invoice-document .box,
+      .invoice-document .totals-panel {
+        padding: 10px;
+      }
+
+      .invoice-document .doc-table th,
+      .invoice-document .doc-table td {
+        padding: 6px 7px;
       }
 
       .doc-input,
@@ -1006,152 +1532,303 @@ const relatedTools = [
       .doc-textarea::placeholder {
         color: transparent !important;
       }
+
+      .print-empty-field {
+        color: transparent !important;
+      }
+
+      .print-empty-field::-webkit-calendar-picker-indicator {
+        opacity: 0 !important;
+      }
+    }
+
+    body.invoice-printing .site-header,
+    body.invoice-printing .generator-breadcrumb,
+    body.invoice-printing .generator-hero,
+    body.invoice-printing .document-action-bar,
+    body.invoice-printing .document-bottom-actions,
+    body.invoice-printing .mobile-document-editor,
+    body.invoice-printing .mobile-bottom-action-bar,
+    body.invoice-printing .print-document,
+    body.invoice-printing #invoice-print-document,
+    body.invoice-printing .generator-related-block,
+    body.invoice-printing .generator-seo-block,
+    body.invoice-printing .generator-faq-block,
+    body.invoice-printing .site-footer {
+      display: none !important;
+    }
+
+    body.invoice-printing .desktop-document-editor {
+      display: block !important;
+    }
+
+    body.invoice-printing .document-stage,
+    body.invoice-printing .document-stage-inner {
+      display: block !important;
+      width: auto !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: visible !important;
+      background: #ffffff !important;
+    }
+
+    body.invoice-printing .inline-generator-inner,
+    body.invoice-printing .invoice-editor-shell {
+      width: auto !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    body.invoice-printing .invoice-document {
+      width: min(100%, 820px);
+      margin: 0 auto;
+      background: #ffffff;
     }
   </style>
 
   <script>
     const documentRoot = document.getElementById("invoice-document");
     const itemsTableBody = document.getElementById("itemsTableBody");
-    const addItemBtn = document.getElementById("addItemBtn");
-    const resetBtn = document.getElementById("resetFormBtn");
-    const printBtn = document.getElementById("printDocumentBtn");
+    const mobileItemsList = document.getElementById("mobileItemsList");
+    const printItemsTableBody = document.getElementById("printItemsTableBody");
     const paperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
-    const currencyInput = document.getElementById("currencySymbol");
-    const discountInput = document.getElementById("discountValue");
+    const addItemTriggers = Array.from(document.querySelectorAll("[data-add-item-trigger]"));
+    const resetTriggers = Array.from(document.querySelectorAll("[data-reset-form-trigger], #resetFormBtn"));
+    const printTriggers = Array.from(document.querySelectorAll("[data-print-document]"));
+    const syncFields = [
+      "businessName",
+      "invoiceNo",
+      "invoiceDate",
+      "dueDate",
+      "fromName",
+      "fromAddress",
+      "fromContact",
+      "billToName",
+      "billToAddress",
+      "billToContact",
+      "notes",
+      "currencySymbol",
+      "discount",
+    ];
 
-    function currencySymbol() {
-      return currencyInput?.value?.trim() || "$";
+    let nextItemId = 3;
+
+    function updateNextItemId() {
+      const numericIds = state.items
+        .map((item) => Number.parseInt(String(item.id).replace("item-", ""), 10))
+        .filter((value) => Number.isFinite(value));
+      nextItemId = numericIds.length > 0 ? Math.max(...numericIds) + 1 : 1;
     }
 
-    function formatMoney(value) {
-      return `${currencySymbol()}${value.toFixed(2)}`;
+    function defaultFields() {
+      return {
+        businessName: "",
+        invoiceNo: "",
+        invoiceDate: "",
+        dueDate: "",
+        fromName: "",
+        fromAddress: "",
+        fromContact: "",
+        billToName: "",
+        billToAddress: "",
+        billToContact: "",
+        notes: "",
+        currencySymbol: "$",
+        discount: "0",
+      };
     }
+
+    function createItem() {
+      return {
+        id: `item-${nextItemId++}`,
+        description: "",
+        qty: "1",
+        unitPrice: "0",
+        taxRate: "0",
+      };
+    }
+
+    const state = {
+      paper: "a4",
+      fields: defaultFields(),
+      items: [createItem(), createItem()],
+    };
 
     function toNumber(value) {
       const parsed = Number.parseFloat(value);
       return Number.isFinite(parsed) ? parsed : 0;
     }
 
-    function recalcRowsAndTotals() {
-      const rows = Array.from(itemsTableBody.querySelectorAll(".item-row"));
+    function currencySymbol() {
+      return state.fields.currencySymbol.trim() || "$";
+    }
+
+    function formatMoney(value) {
+      return `${currencySymbol()}${value.toFixed(2)}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function calculateItemAmount(item) {
+      return toNumber(item.qty) * toNumber(item.unitPrice);
+    }
+
+    function calculateTotals() {
       let subtotal = 0;
       let taxTotal = 0;
 
-      rows.forEach((row) => {
-        const qty = toNumber(row.querySelector(".item-qty")?.value);
-        const unitPrice = toNumber(row.querySelector(".item-unit-price")?.value);
-        const taxRate = toNumber(row.querySelector(".item-tax-rate")?.value);
-        const lineSubtotal = qty * unitPrice;
-        const lineTax = (lineSubtotal * taxRate) / 100;
+      state.items.forEach((item) => {
+        const lineSubtotal = calculateItemAmount(item);
         subtotal += lineSubtotal;
-        taxTotal += lineTax;
-        const amount = row.querySelector(".line-amount");
-        if (amount) amount.textContent = formatMoney(lineSubtotal);
+        taxTotal += (lineSubtotal * toNumber(item.taxRate)) / 100;
       });
 
-      const discount = toNumber(discountInput?.value);
-      const grandTotal = Math.max(0, subtotal + taxTotal - discount);
-
-      const subtotalValue = document.getElementById("subtotalValue");
-      const taxValue = document.getElementById("taxValue");
-      const discountPreviewValue = document.getElementById("discountPreviewValue");
-      const grandTotalValue = document.getElementById("grandTotalValue");
-
-      if (subtotalValue) subtotalValue.textContent = formatMoney(subtotal);
-      if (taxValue) taxValue.textContent = formatMoney(taxTotal);
-      if (discountPreviewValue) discountPreviewValue.textContent = formatMoney(discount);
-      if (grandTotalValue) grandTotalValue.textContent = formatMoney(grandTotal);
+      const discount = toNumber(state.fields.discount);
+      return {
+        subtotal,
+        taxTotal,
+        discount,
+        grandTotal: Math.max(0, subtotal + taxTotal - discount),
+      };
     }
 
-    function attachInputHandlers(scope = document) {
-      scope.querySelectorAll(".item-qty, .item-unit-price, .item-tax-rate").forEach((input) => {
-        if (input.dataset.bound === "1") return;
-        input.dataset.bound = "1";
-        input.addEventListener("input", recalcRowsAndTotals);
-      });
+    function renderSharedFields() {
+      syncFields.forEach((field) => {
+        document.querySelectorAll(`[data-field="${field}"]`).forEach((input) => {
+          if (input.value !== state.fields[field]) {
+            input.value = state.fields[field];
+          }
+        });
 
-      if (currencyInput && currencyInput.dataset.bound !== "1") {
-        currencyInput.dataset.bound = "1";
-        currencyInput.addEventListener("input", recalcRowsAndTotals);
-      }
-
-      if (discountInput && discountInput.dataset.bound !== "1") {
-        discountInput.dataset.bound = "1";
-        discountInput.addEventListener("input", recalcRowsAndTotals);
-      }
-    }
-
-    function attachRemoveHandlers(scope = document) {
-      scope.querySelectorAll(".item-delete-btn").forEach((btn) => {
-        if (btn.dataset.bound === "1") return;
-        btn.dataset.bound = "1";
-
-        btn.addEventListener("click", () => {
-          const rows = itemsTableBody.querySelectorAll(".item-row");
-          if (rows.length <= 1) return;
-          btn.closest(".item-row")?.remove();
-          recalcRowsAndTotals();
+        document.querySelectorAll(`[data-print-field="${field}"]`).forEach((node) => {
+          node.textContent = state.fields[field];
         });
       });
+
+      const printDiscountFieldValue = document.getElementById("printDiscountFieldValue");
+      if (printDiscountFieldValue) {
+        printDiscountFieldValue.textContent = state.fields.discount;
+      }
     }
 
-    function createItemRow() {
-      const tr = document.createElement("tr");
-      tr.className = "item-row";
-      tr.innerHTML = `
-        <td><input class="doc-input table-input item-description" type="text" /></td>
-        <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" value="1" /></td>
-        <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
-        <td><input class="doc-input table-input item-tax-rate" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
-        <td class="amount-cell"><span class="line-amount">${formatMoney(0)}</span></td>
-        <td class="edit-only action-cell">
-          <button type="button" class="item-delete-btn" aria-label="Remove item">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
-                fill="currentColor"
-              />
-            </svg>
-          </button>
-        </td>
+    function desktopItemRow(item) {
+      return `
+        <tr class="item-row" data-item-id="${item.id}">
+          <td><input class="doc-input table-input" type="text" data-item-id="${item.id}" data-item-field="description" value="${escapeHtml(item.description)}" /></td>
+          <td><input class="doc-input table-input" type="number" min="0" step="1" data-item-id="${item.id}" data-item-field="qty" value="${escapeHtml(item.qty)}" /></td>
+          <td><input class="doc-input table-input" type="number" min="0" step="0.01" data-item-id="${item.id}" data-item-field="unitPrice" value="${escapeHtml(item.unitPrice)}" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+          <td><input class="doc-input table-input" type="number" min="0" step="0.01" data-item-id="${item.id}" data-item-field="taxRate" value="${escapeHtml(item.taxRate)}" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+          <td class="amount-cell"><span class="line-amount" data-item-amount="${item.id}">${formatMoney(calculateItemAmount(item))}</span></td>
+          <td class="edit-only action-cell">
+            <button type="button" class="item-delete-btn" aria-label="Remove item" data-remove-item="${item.id}">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+          </td>
+        </tr>
       `;
-      return tr;
     }
 
-    function resetForm() {
-      documentRoot.querySelectorAll("input").forEach((input) => {
-        if (input.id === "currencySymbol") {
-          input.value = "$";
-        } else if (input.type === "number") {
-          if (input.classList.contains("item-qty")) {
-            input.value = "1";
-          } else {
-            input.value = "0";
-          }
-        } else {
-          input.value = "";
-        }
+    function mobileItemCard(item, index) {
+      return `
+        <article class="mobile-item-card" data-item-id="${item.id}">
+          <div class="mobile-item-title">
+            <strong>Item ${index + 1}</strong>
+            <button type="button" class="mobile-delete-item-btn" aria-label="Remove item" data-remove-item="${item.id}">Delete</button>
+          </div>
+
+          <input class="mobile-input" type="text" placeholder="Description" data-item-id="${item.id}" data-item-field="description" value="${escapeHtml(item.description)}" />
+
+          <div class="mobile-two-col">
+            <input class="mobile-input" type="number" placeholder="Qty" min="0" step="1" data-item-id="${item.id}" data-item-field="qty" value="${escapeHtml(item.qty)}" />
+            <input class="mobile-input" type="number" placeholder="Unit Price" min="0" step="0.01" data-item-id="${item.id}" data-item-field="unitPrice" value="${escapeHtml(item.unitPrice)}" data-clear-zero-on-focus="true" data-default-value="0" />
+          </div>
+
+          <div class="mobile-two-col">
+            <input class="mobile-input" type="number" placeholder="Tax %" min="0" step="0.01" data-item-id="${item.id}" data-item-field="taxRate" value="${escapeHtml(item.taxRate)}" data-clear-zero-on-focus="true" data-default-value="0" />
+            <div class="mobile-amount-box">
+              <span>Amount</span>
+              <strong data-item-amount="${item.id}">${formatMoney(calculateItemAmount(item))}</strong>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderItems() {
+      if (itemsTableBody) {
+        itemsTableBody.innerHTML = state.items.map((item) => desktopItemRow(item)).join("");
+      }
+
+      if (mobileItemsList) {
+        mobileItemsList.innerHTML = state.items.map((item, index) => mobileItemCard(item, index)).join("");
+      }
+
+      if (printItemsTableBody) {
+        printItemsTableBody.innerHTML = state.items
+          .map(
+                (item) => `
+              <tr>
+                <td>${escapeHtml(item.description)}</td>
+                <td>${escapeHtml(item.qty)}</td>
+                <td>${formatMoney(toNumber(item.unitPrice))}</td>
+                <td>${escapeHtml(item.taxRate)}</td>
+                <td class="amount-cell"><span class="line-amount">${formatMoney(calculateItemAmount(item))}</span></td>
+              </tr>
+            `,
+          )
+          .join("");
+      }
+    }
+
+    function renderTotals() {
+      const totals = calculateTotals();
+
+      document.querySelectorAll('[data-item-amount]').forEach((el) => {
+        const item = state.items.find((entry) => entry.id === el.getAttribute("data-item-amount"));
+        if (item) el.textContent = formatMoney(calculateItemAmount(item));
       });
 
-      documentRoot.querySelectorAll("textarea").forEach((textarea) => {
-        textarea.value = "";
-      });
+      const totalTargets = {
+        subtotalValue: totals.subtotal,
+        taxValue: totals.taxTotal,
+        discountPreviewValue: totals.discount,
+        grandTotalValue: totals.grandTotal,
+        mobileSubtotalValue: totals.subtotal,
+        mobileTaxValue: totals.taxTotal,
+        mobileDiscountPreviewValue: totals.discount,
+        mobileGrandTotalValue: totals.grandTotal,
+        printSubtotalValue: totals.subtotal,
+        printTaxValue: totals.taxTotal,
+        printDiscountPreviewValue: totals.discount,
+        printGrandTotalValue: totals.grandTotal,
+      };
 
-      itemsTableBody.innerHTML = "";
-      itemsTableBody.appendChild(createItemRow());
-      itemsTableBody.appendChild(createItemRow());
-      attachRemoveHandlers(itemsTableBody);
-      attachInputHandlers(itemsTableBody);
-      applyPaper("a4");
-      recalcRowsAndTotals();
+      Object.entries(totalTargets).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = formatMoney(value);
+      });
     }
 
     function applyPaper(paper) {
+      state.paper = paper === "letter" ? "letter" : "a4";
       documentRoot.classList.remove("paper-letter", "paper-a4");
-      documentRoot.classList.add(paper === "letter" ? "paper-letter" : "paper-a4");
+      documentRoot.classList.add(state.paper === "letter" ? "paper-letter" : "paper-a4");
 
       paperButtons.forEach((btn) => {
-        btn.classList.toggle("is-active", btn.dataset.paperSize === paper);
+        btn.classList.toggle("is-active", btn.dataset.paperSize === state.paper);
       });
 
       const styleId = "invoice-print-page-rule";
@@ -1163,23 +1840,144 @@ const relatedTools = [
         document.head.appendChild(styleTag);
       }
 
-      if (paper === "letter") {
-        styleTag.textContent =
-          "@page { size: Letter portrait; margin: 0.7in 0.65in 0.7in 0.65in; }";
-      } else {
-        styleTag.textContent =
-          "@page { size: A4 portrait; margin: 18mm 16mm 18mm 16mm; }";
-      }
+      styleTag.textContent =
+        state.paper === "letter"
+          ? "@page { size: Letter portrait; margin: 0.7in 0.65in 0.7in 0.65in; }"
+          : "@page { size: A4 portrait; margin: 18mm 16mm 18mm 16mm; }";
     }
 
-    addItemBtn?.addEventListener("click", () => {
-      itemsTableBody.appendChild(createItemRow());
-      attachRemoveHandlers(itemsTableBody);
-      attachInputHandlers(itemsTableBody);
-      recalcRowsAndTotals();
+    function addItem() {
+      state.items.push(createItem());
+      renderItems();
+      renderTotals();
+    }
+
+    function removeItem(itemId) {
+      if (state.items.length <= 1) return;
+      state.items = state.items.filter((item) => item.id !== itemId);
+      renderItems();
+      renderTotals();
+    }
+
+    function resetDocumentForm() {
+      state.fields = defaultFields();
+      state.items = [createItem(), createItem()];
+      renderSharedFields();
+      renderItems();
+      applyPaper("a4");
+      renderTotals();
+    }
+
+    function updateField(field, value, source) {
+      state.fields[field] = value;
+
+      document.querySelectorAll(`[data-field="${field}"]`).forEach((input) => {
+        if (input !== source && input.value !== value) {
+          input.value = value;
+        }
+      });
+
+      renderTotals();
+    }
+
+    function updateItemField(itemId, field, value, source) {
+      const item = state.items.find((entry) => entry.id === itemId);
+      if (!item) return;
+      item[field] = value;
+
+      document.querySelectorAll(`[data-item-id="${itemId}"][data-item-field="${field}"]`).forEach((input) => {
+        if (input !== source && input.value !== value) {
+          input.value = value;
+        }
+      });
+
+      renderTotals();
+    }
+
+    function handleDocumentPrint() {
+      preparePrintState();
+      document.body.classList.add("invoice-printing");
+
+      window.setTimeout(() => {
+        window.print();
+      }, 60);
+    }
+
+    function onPrintTrigger(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      handleDocumentPrint();
+    }
+
+    function preparePrintState() {
+      documentRoot.querySelectorAll("input, textarea").forEach((field) => {
+        const value = field.value.trim();
+
+        if (value !== "") {
+          field.classList.remove("print-empty-field");
+          return;
+        }
+
+        field.classList.add("print-empty-field");
+
+        if (field.placeholder) {
+          field.dataset.restorePlaceholder = field.placeholder;
+          field.placeholder = "";
+        }
+      });
+    }
+
+    function restorePrintState() {
+      document.body.classList.remove("invoice-printing");
+      documentRoot.querySelectorAll(".print-empty-field").forEach((field) => {
+        field.classList.remove("print-empty-field");
+
+        if (field.dataset.restorePlaceholder) {
+          field.placeholder = field.dataset.restorePlaceholder;
+          delete field.dataset.restorePlaceholder;
+        }
+      });
+    }
+
+    window.addEventListener("beforeprint", preparePrintState);
+    window.addEventListener("afterprint", restorePrintState);
+
+    document.addEventListener("input", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement)) return;
+
+      const field = target.dataset.field;
+      if (field) {
+        updateField(field, target.value, target);
+        return;
+      }
+
+      const itemId = target.dataset.itemId;
+      const itemField = target.dataset.itemField;
+
+      if (itemId && itemField) {
+        updateItemField(itemId, itemField, target.value, target);
+      }
     });
 
-    resetBtn?.addEventListener("click", resetForm);
+    document.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const removeButton = target.closest("[data-remove-item]");
+      if (removeButton) {
+        removeItem(removeButton.getAttribute("data-remove-item"));
+        return;
+      }
+
+      if (target.closest("[data-add-item-trigger]")) {
+        addItem();
+      }
+    });
+
+    resetTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", resetDocumentForm);
+    });
 
     paperButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -1187,13 +1985,14 @@ const relatedTools = [
       });
     });
 
-    printBtn?.addEventListener("click", () => {
-      window.print();
+    printTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", onPrintTrigger);
     });
 
-    attachRemoveHandlers(document);
-    attachInputHandlers(document);
-    applyPaper("a4");
-    recalcRowsAndTotals();
+    window.handleDocumentPrint = handleDocumentPrint;
+    renderSharedFields();
+    renderItems();
+    applyPaper(state.paper);
+    renderTotals();
   </script>
 </DocumentGeneratorLayout>
