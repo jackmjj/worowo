@@ -222,7 +222,7 @@ const relatedTools = getRelatedToolsForTool("quotation_estimate_generator");
           </select>
         </label>
         <input class="mobile-input mobile-logo-input" type="text" placeholder="Your Business Name (logo)" data-field="logoText" />
-        <input class="mobile-input" type="text" placeholder="Quote / Estimate No." data-field="documentNo" />
+        <input class="mobile-input" type="text" placeholder="Quote No." data-field="documentNo" />
         <input class="mobile-input" type="date" data-field="issueDate" />
         <input class="mobile-input" type="date" data-field="validUntil" />
       </section>
@@ -587,6 +587,10 @@ const relatedTools = getRelatedToolsForTool("quotation_estimate_generator");
       const numberLabel = document.getElementById("documentNumberLabel");
       if (titlePreview) titlePreview.textContent = type === "Estimate" ? "ESTIMATE" : "QUOTATION";
       if (numberLabel) numberLabel.textContent = `${type} No.:`;
+      const numberPlaceholder = type === "Estimate" ? "Estimate No." : "Quote No.";
+      document.querySelectorAll('[data-field="documentNo"]').forEach((el) => {
+        if (el instanceof HTMLInputElement) el.placeholder = numberPlaceholder;
+      });
     }
 
     function renderSharedFields() {
