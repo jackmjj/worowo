@@ -919,11 +919,15 @@ const printHref = config?.printHref || "#";
   }
 
   .amount-cell {
-    vertical-align: middle;
+    vertical-align: middle !important;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   .line-amount {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
     font-weight: 700;
     color: #0f172a;
   }
