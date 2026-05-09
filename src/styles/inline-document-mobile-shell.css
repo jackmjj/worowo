@@ -1,5 +1,10 @@
 /* Shared mobile editor shell for quotes/invoices inline document generators */
 
+/* Forces CSS bundle fingerprint change if Pages edge serves HTTP 500 for a stale hashed chunk (harmless noop). */
+:root {
+  --inline-document-shell-sentinel: 0;
+}
+
 .mobile-document-editor,
 .mobile-bottom-action-bar {
   display: none;
