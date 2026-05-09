@@ -50,7 +50,7 @@ const relatedTools = getRelatedToolsForTool("quotation_estimate_generator");
 >
   <div class="inline-document-mobile-shell" slot="document">
     <div class="desktop-document-editor">
-      <div id="quote-estimate-document" class="inline-document-root paper-a4">
+      <div id="quote-estimate-document" class="inline-document-root paper-a4 quote-estimate-sentinel">
     <div class="inline-document-inner">
       <div class="document-title-row">
         <input
@@ -321,6 +321,10 @@ const relatedTools = getRelatedToolsForTool("quotation_estimate_generator");
   </article>
 
   <style>
+    .quote-estimate-sentinel {
+      --quote-estimate-sentinel: 1;
+    }
+
     @media print {
       #quote-estimate-document .inline-document-inner {
         padding: 44px 40px 38px !important;

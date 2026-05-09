@@ -50,7 +50,7 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
 >
   <div class="inline-document-mobile-shell" slot="document">
     <div class="desktop-document-editor">
-      <div id="purchase-order-document" class="inline-document-root paper-a4">
+      <div id="purchase-order-document" class="inline-document-root paper-a4 purchase-order-sentinel">
     <div class="inline-document-inner">
       <div class="document-title-row">
         <input
@@ -328,6 +328,10 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
   </article>
 
   <style>
+    .purchase-order-sentinel {
+      --purchase-order-sentinel: 1;
+    }
+
     @media print {
       #purchase-order-document .inline-document-inner {
         padding: 44px 40px 38px !important;

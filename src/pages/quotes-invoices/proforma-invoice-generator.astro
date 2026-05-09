@@ -45,7 +45,7 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
 >
   <div class="inline-document-mobile-shell" slot="document">
     <div class="desktop-document-editor">
-      <div id="proforma-invoice-document" class="inline-document-root proforma-document paper-a4">
+      <div id="proforma-invoice-document" class="inline-document-root proforma-document paper-a4 proforma-sentinel">
     <div class="inline-document-inner proforma-document-inner">
       <div class="document-title-row">
         <input
@@ -903,6 +903,12 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
         font-weight: 700 !important;
         white-space: nowrap !important;
       }
+    }
+  </style>
+
+  <style>
+    .proforma-sentinel {
+      --proforma-sentinel: 1;
     }
   </style>
 
