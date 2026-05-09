@@ -107,8 +107,13 @@ const printHref = config?.printHref || "#";
               </div>
             </div>
 
-            <button type="button" id="resetFormBtn" class="action-btn action-btn-ghost">
-              Reset Form
+            <button type="button" id="resetFormBtn" class="action-btn action-btn-reset">
+              <span class="action-btn__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 5a7 7 0 1 1-6.67 9.12 1 1 0 1 1 1.91-.59A5 5 0 1 0 8.1 8.3H11a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1V3a1 1 0 1 1 2 0v3.32A8.97 8.97 0 0 1 12 5z" fill="currentColor"></path>
+                </svg>
+              </span>
+              <span>Reset Form</span>
             </button>
 
             <a
@@ -119,7 +124,14 @@ const printHref = config?.printHref || "#";
               title="Generate and download professional PDF invoice"
               aria-label="Generate and download professional PDF invoice"
             >
-              Print / Save as PDF
+              <span class="action-btn__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
+                  <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
+                  <path d="M16 9h3v3h-3z" fill="currentColor"></path>
+                </svg>
+              </span>
+              <span>Print / Save as PDF</span>
             </a>
           </div>
         </div>
@@ -134,6 +146,15 @@ const printHref = config?.printHref || "#";
       <div class="document-bottom-actions no-print">
         <div class="tool-actions-footer">
           <div class="tool-actions-footer__buttons">
+            <button type="button" class="document-bottom-reset-btn" data-reset-form-trigger>
+              <span class="action-btn__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 5a7 7 0 1 1-6.67 9.12 1 1 0 1 1 1.91-.59A5 5 0 1 0 8.1 8.3H11a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1V3a1 1 0 1 1 2 0v3.32A8.97 8.97 0 0 1 12 5z" fill="currentColor"></path>
+                </svg>
+              </span>
+              <span>Reset Form</span>
+            </button>
+
             <a
               href={printHref}
               class="document-bottom-print-btn"
@@ -152,10 +173,6 @@ const printHref = config?.printHref || "#";
                 <path d="M5 18a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z" fill="currentColor"></path>
               </svg>
             </a>
-
-            <button type="button" class="document-bottom-reset-btn" data-reset-form-trigger>
-              Reset Form
-            </button>
           </div>
 
           <p class="document-bottom-privacy-note">
@@ -266,14 +283,14 @@ const printHref = config?.printHref || "#";
     z-index: auto;
     margin: 18px 0 20px;
     padding: 14px 16px;
-    border: 1px solid #e5e7eb;
-    border-radius: 18px;
+    border: 1px solid #dbe4ef;
+    border-radius: 16px;
     background: #ffffff;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
   }
 
   .document-action-bar__left {
@@ -291,7 +308,7 @@ const printHref = config?.printHref || "#";
   .paper-size-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
 
   .paper-size-label {
@@ -305,13 +322,15 @@ const printHref = config?.printHref || "#";
     display: inline-flex;
     align-items: center;
     padding: 4px;
+    border: 1px solid #d9e2ee;
     border-radius: 999px;
-    background: #f3f4f6;
+    background: #eef3f8;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
   }
 
   .paper-btn {
     min-width: 84px;
-    height: 34px;
+    height: 36px;
     padding: 0 12px;
     border: 0;
     border-radius: 999px;
@@ -327,20 +346,26 @@ const printHref = config?.printHref || "#";
   }
 
   .paper-btn.is-active {
-    background: #ffffff;
-    color: #2563eb;
-    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.22);
+  }
+
+  .paper-btn:not(.is-active):hover {
+    color: #1e293b;
+    background: rgba(255, 255, 255, 0.72);
   }
 
   .action-btn {
-    min-height: 36px;
+    min-height: 38px;
     padding: 0 14px;
-    border-radius: 999px;
+    border-radius: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     font-size: 13px;
-    font-weight: 750;
+    font-weight: 800;
     line-height: 1;
     text-decoration: none;
     cursor: pointer;
@@ -351,6 +376,21 @@ const printHref = config?.printHref || "#";
       color 0.15s ease,
       transform 0.15s ease,
       box-shadow 0.15s ease;
+  }
+
+  .action-btn__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
+  }
+
+  .action-btn__icon svg {
+    width: 14px;
+    height: 14px;
+    display: block;
   }
 
   .action-btn-secondary {
@@ -365,22 +405,23 @@ const printHref = config?.printHref || "#";
     color: #2563eb;
   }
 
-  .action-btn-ghost {
-    border: 1px solid #e5e7eb;
+  .action-btn-reset {
+    border: 1px dashed #d7dce5;
     background: #ffffff;
-    color: #4b5563;
+    color: #6b7280;
   }
 
-  .action-btn-ghost:hover {
-    border-color: #cbd5e1;
-    background: #f8fafc;
-    color: #111827;
+  .action-btn-reset:hover {
+    border-color: #f59bb7;
+    background: #fff8fb;
+    color: #be185d;
   }
 
   .action-btn-primary {
     border: 1px solid #2563eb;
     background: #2563eb;
     color: #ffffff;
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.16);
   }
 
   .action-btn-primary:hover {
@@ -407,8 +448,8 @@ const printHref = config?.printHref || "#";
     background: #fff;
     border: 1px solid rgba(203, 213, 225, 0.7);
     box-shadow:
-      0 26px 70px rgba(15, 23, 42, 0.14),
-      0 4px 18px rgba(15, 23, 42, 0.06);
+      0 34px 78px rgba(15, 23, 42, 0.12),
+      0 10px 28px rgba(15, 23, 42, 0.08);
   }
 
   .document-bottom-actions {
@@ -480,14 +521,18 @@ const printHref = config?.printHref || "#";
   .document-bottom-reset-btn {
     min-height: 48px;
     padding: 0 14px;
-    border: 1px solid #d1d5db;
+    border: 1px dashed #d7dce5;
     border-radius: 6px;
     background: #ffffff;
-    color: #64748b;
+    color: #6b7280;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
     line-height: 1;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     white-space: nowrap;
     transition:
       border-color 0.15s ease,
@@ -496,9 +541,9 @@ const printHref = config?.printHref || "#";
   }
 
   .document-bottom-reset-btn:hover {
-    border-color: #94a3b8;
-    color: #334155;
-    background: #f8fafc;
+    border-color: #f59bb7;
+    color: #be185d;
+    background: #fff8fb;
   }
 
   .document-bottom-privacy-note {
@@ -652,6 +697,80 @@ const printHref = config?.printHref || "#";
     margin-bottom: 10px;
   }
 
+  .items-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .currency-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 0 14px;
+    border: 1px solid #93c5fd;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .currency-control:hover {
+    background: #dbeafe;
+    border-color: #60a5fa;
+    color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+  }
+
+  .currency-control:focus-within {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+  }
+
+  .currency-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: 900;
+    flex: 0 0 auto;
+  }
+
+  .currency-label {
+    color: #2563eb;
+    white-space: nowrap;
+  }
+
+  .currency-select {
+    border: 0;
+    background: transparent;
+    color: #111827;
+    font-size: 13px;
+    font-weight: 850;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
   .section-title {
     margin: 0;
     font-size: 11pt;
@@ -775,6 +894,12 @@ const printHref = config?.printHref || "#";
 
   .doc-table td {
     height: 36px;
+  }
+
+  .total-output {
+    display: inline-block;
+    font: inherit;
+    color: inherit;
   }
 
   .table-input {
@@ -915,6 +1040,32 @@ const printHref = config?.printHref || "#";
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+
+  .amount-settings-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .amount-setting {
+    flex: 1 1 180px;
+    min-width: 0;
+  }
+
+  .amount-setting-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+
+  .amount-setting-control {
+    min-height: 38px;
+    margin: 0;
   }
 
   .totals-panel {
@@ -1089,6 +1240,16 @@ const printHref = config?.printHref || "#";
       background: #ffffff !important;
     }
 
+    .inline-document-mobile-shell,
+    .inline-document-mobile-shell .desktop-document-editor {
+      display: block !important;
+    }
+
+    .inline-document-mobile-shell .mobile-document-editor,
+    .inline-document-mobile-shell .mobile-bottom-action-bar {
+      display: none !important;
+    }
+
     .inline-generator-page,
     .inline-generator-inner,
     .document-stage,
@@ -1122,7 +1283,7 @@ const printHref = config?.printHref || "#";
     }
 
     .inline-document-root {
-      position: static !important;
+      position: relative !important;
       display: block !important;
       width: auto !important;
       max-width: none !important;
@@ -1143,6 +1304,22 @@ const printHref = config?.printHref || "#";
     .inline-document-root.paper-a4 {
       width: auto !important;
       min-height: auto !important;
+    }
+
+    .inline-document-root::after {
+      content: "Generated by worowo.com";
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 6mm;
+      display: block;
+      margin-top: 0;
+      text-align: center;
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(15, 23, 42, 0.24);
+      pointer-events: none;
     }
 
     .doc-input,

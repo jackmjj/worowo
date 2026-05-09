@@ -1,5 +1,7 @@
 ---
 import DocumentGeneratorLayout from "../../components/document-generator/DocumentGeneratorLayout.astro";
+import { commonCurrencyOptions } from "../../data/currencyOptions";
+import { getRelatedToolsForTool } from "../../data/toolRelations";
 
 const title = "Free Purchase Order Generator";
 const description =
@@ -29,28 +31,7 @@ const faqItems = [
   },
 ];
 
-const relatedTools = [
-  {
-    name: "Invoice Generator",
-    href: "/quotes-invoices/invoice-generator/",
-    desc: "Create a professional invoice online and save it as PDF.",
-  },
-  {
-    name: "Quote / Estimate Generator",
-    href: "/quotes-invoices/quote-estimate-generator/",
-    desc: "Prepare a customer quote or estimate with item lines, discounts, taxes, and approval details.",
-  },
-  {
-    name: "Commercial Invoice Generator",
-    href: "/quotes-invoices/commercial-invoice-generator/",
-    desc: "Create a commercial invoice for international trade and customs documents.",
-  },
-  {
-    name: "Proforma Invoice Generator",
-    href: "/quotes-invoices/proforma-invoice-generator/",
-    desc: "Create a proforma invoice for quotations, advance payment, and international orders.",
-  },
-];
+const relatedTools = getRelatedToolsForTool("purchase_order_generator");
 ---
 
 <DocumentGeneratorLayout
@@ -101,10 +82,6 @@ const relatedTools = [
           <div class="field-row">
             <span class="field-label print-label">Expected Delivery:</span>
             <input id="deliveryDate" class="doc-input inline-input" type="date" placeholder="Expected Delivery" data-field="deliveryDate" />
-          </div>
-          <div class="field-row">
-            <span class="field-label print-label">Currency:</span>
-            <input id="currencyCode" class="doc-input inline-input short-inline-input" type="text" value="USD" maxlength="8" placeholder="USD" data-field="currencyCode" />
           </div>
         </div>
       </div>
@@ -162,10 +139,19 @@ const relatedTools = [
       <section class="doc-section">
         <div class="section-title-row">
           <h2 class="section-title">Items</h2>
-          <button type="button" class="add-item-btn edit-only" id="addItemBtn" data-add-item-trigger>
-            <span class="add-item-icon" aria-hidden="true">+</span>
-            <span>Add Item</span>
-          </button>
+          <div class="items-actions">
+            <label class="currency-control no-print">
+              <span class="currency-icon" aria-hidden="true">$</span>
+              <span class="currency-label">Currency</span>
+              <select id="currencyCode" class="currency-select" data-field="currencyCode">
+                {commonCurrencyOptions.map((option) => <option value={option.value}>{option.label}</option>)}
+              </select>
+            </label>
+            <button type="button" class="add-item-btn edit-only" id="addItemBtn" data-add-item-trigger>
+              <span class="add-item-icon" aria-hidden="true">+</span>
+              <span>Add Item</span>
+            </button>
+          </div>
         </div>
 
         <table class="doc-table">
@@ -196,7 +182,7 @@ const relatedTools = [
             <div class="totals-panel">
               <div class="total-row"><span>Subtotal</span><strong id="subtotalValue">USD 0.00</strong></div>
               <div class="total-row"><span>Tax</span><strong id="taxValue">USD 0.00</strong></div>
-              <div class="total-row total-row-grand"><span>Total</span><strong id="grandTotalValue">USD 0.00</strong></div>
+              <div class="total-row total-row-grand"><span>Total</span><output id="grandTotalValue" class="total-output">USD 0.00</output></div>
             </div>
           </div>
         </div>
@@ -236,7 +222,6 @@ const relatedTools = [
         <input class="mobile-input" type="text" placeholder="PO No." data-field="poNumber" />
         <input class="mobile-input" type="date" data-field="poDate" />
         <input class="mobile-input" type="date" data-field="deliveryDate" />
-        <input class="mobile-input" type="text" placeholder="Currency (e.g. USD)" data-field="currencyCode" maxlength="8" />
       </section>
 
       <section class="mobile-form-card">
@@ -263,7 +248,16 @@ const relatedTools = [
       <section class="mobile-form-card">
         <div class="mobile-section-header">
           <h2>Items</h2>
-          <button type="button" class="mobile-add-item-btn" data-add-item-trigger>+ Add Item</button>
+          <div class="items-actions items-actions--mobile">
+            <label class="currency-control">
+              <span class="currency-icon" aria-hidden="true">$</span>
+              <span class="currency-label">Currency</span>
+              <select class="mobile-select currency-select" data-field="currencyCode">
+                {commonCurrencyOptions.map((option) => <option value={option.value}>{option.label}</option>)}
+              </select>
+            </label>
+            <button type="button" class="mobile-add-item-btn" data-add-item-trigger>+ Add Item</button>
+          </div>
         </div>
         <div id="mobileItemsList" class="mobile-items-list"></div>
       </section>
@@ -276,12 +270,21 @@ const relatedTools = [
         <div class="mobile-total-card">
           <div><span>Subtotal</span><strong id="mobileSubtotalValue">USD 0.00</strong></div>
           <div><span>Tax</span><strong id="mobileTaxValue">USD 0.00</strong></div>
-          <div class="grand-total"><span>Total</span><strong id="mobileGrandTotalValue">USD 0.00</strong></div>
+          <div class="grand-total"><span>Total</span><output id="mobileGrandTotalValue" class="total-output">USD 0.00</output></div>
         </div>
       </section>
     </div>
 
     <div class="mobile-bottom-action-bar no-print">
+      <button type="button" class="mobile-reset-btn" data-reset-form-trigger>
+        <span class="reset-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 5a7 7 0 1 1-6.67 9.12 1 1 0 1 1 1.91-.59A5 5 0 1 0 8.1 8.3H11a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1V3a1 1 0 1 1 2 0v3.32A8.97 8.97 0 0 1 12 5z" fill="currentColor"></path>
+          </svg>
+        </span>
+        <span>Reset</span>
+      </button>
+
       <a
         href="#print"
         class="mobile-print-btn"
@@ -296,7 +299,6 @@ const relatedTools = [
         </svg>
         <span>Print / Save as PDF</span>
       </a>
-      <button type="button" class="mobile-reset-btn" data-reset-form-trigger>Reset</button>
       <p class="mobile-privacy-note">Your data is processed locally in your browser and is not stored on our servers.</p>
     </div>
   </div>
@@ -324,6 +326,56 @@ const relatedTools = [
       buyer and vendor a clean record of quantities, prices, and terms.
     </p>
   </article>
+
+  <style>
+    @media print {
+      #purchase-order-document .inline-document-inner {
+        padding: 44px 40px 38px !important;
+      }
+
+      #purchase-order-document .document-title-row {
+        margin-bottom: 18px !important;
+      }
+
+      #purchase-order-document .doc-header {
+        gap: 18px !important;
+        padding-bottom: 10px !important;
+      }
+
+      #purchase-order-document .doc-section {
+        margin-top: 12px !important;
+      }
+
+      #purchase-order-document .two-col,
+      #purchase-order-document .three-col {
+        gap: 14px !important;
+      }
+
+      #purchase-order-document .box {
+        padding: 10px !important;
+      }
+
+      #purchase-order-document .section-title-row {
+        margin-bottom: 8px !important;
+      }
+
+      #purchase-order-document .field-row-block {
+        gap: 4px !important;
+        margin-bottom: 8px !important;
+      }
+
+      #purchase-order-document .compact-area,
+      #purchase-order-document .compact-remarks {
+        min-height: 52px !important;
+      }
+
+      #purchase-order-document .doc-table th,
+      #purchase-order-document .doc-table td {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+      }
+    }
+  </style>
 
   <script>
     const documentRoot = document.getElementById("purchase-order-document");
@@ -551,8 +603,8 @@ const relatedTools = [
       }
       styleTag.textContent =
         state.paper === "letter"
-          ? "@page { size: Letter portrait; margin: 0.7in 0.65in; }"
-          : "@page { size: A4 portrait; margin: 18mm 16mm; }";
+          ? "@page { size: Letter portrait; margin: 0.55in 0.55in; }"
+          : "@page { size: A4 portrait; margin: 14mm 14mm; }";
     }
 
     function addItem() {
@@ -654,6 +706,13 @@ const relatedTools = [
       if (itemId && itemField) {
         updateItemField(itemId, itemField, target.value, target);
       }
+    });
+
+    document.addEventListener("change", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLSelectElement)) return;
+      const field = target.dataset.field;
+      if (field) updateField(field, target.value, target);
     });
 
     document.addEventListener("click", (event) => {

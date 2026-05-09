@@ -68,8 +68,8 @@ export const toolDictionary = {
     relatedToolKeys: [
       "invoice_generator",
       "proforma_invoice_generator",
+      "commercial_invoice_generator",
       "purchase_order_generator",
-      "profit_margin_calculator",
     ],
   },
 
@@ -90,10 +90,10 @@ export const toolDictionary = {
     featuredOnCategoryPage: true,
     order: 240,
     relatedToolKeys: [
+      "quotation_estimate_generator",
+      "invoice_generator",
       "proforma_invoice_generator",
-      "export_packing_list_generator",
-      "packing_list_generator",
-      "shipping_mark_generator",
+      "purchase_order_generator",
     ],
   },
 
@@ -117,7 +117,7 @@ export const toolDictionary = {
       "commercial_invoice_generator",
       "invoice_generator",
       "quotation_estimate_generator",
-      "export_packing_list_generator",
+      "purchase_order_generator",
     ],
   },
 
@@ -140,8 +140,8 @@ export const toolDictionary = {
     relatedToolKeys: [
       "quotation_estimate_generator",
       "invoice_generator",
-      "unit_price_comparison_calculator",
-      "packing_list_generator",
+      "proforma_invoice_generator",
+      "commercial_invoice_generator",
     ],
   },
 
