@@ -771,7 +771,8 @@ const printHref = config?.printHref || "#";
     padding: 0;
   }
 
-  .section-title {
+  /* Scoped under the paper root so BaseLayout's global `.section-title` (1.5rem) cannot win on cascade order. */
+  .inline-document-root .section-title {
     margin: 0;
     font-size: 11pt;
     font-weight: 700;

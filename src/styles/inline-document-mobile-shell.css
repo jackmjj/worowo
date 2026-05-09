@@ -2,7 +2,7 @@
 
 /* Forces CSS bundle fingerprint change if Pages edge serves HTTP 500 for a stale hashed chunk (harmless noop). */
 :root {
-  --inline-document-shell-sentinel: 1;
+  --inline-document-shell-sentinel: 2;
 }
 
 .mobile-document-editor,
