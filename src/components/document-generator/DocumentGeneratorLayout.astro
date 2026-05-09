@@ -109,7 +109,7 @@ const printHref = config?.printHref || "#";
 
             <button type="button" id="resetFormBtn" class="action-btn action-btn-reset">
               <span class="action-btn__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
                   <path d="M12 5a7 7 0 1 1-6.67 9.12 1 1 0 1 1 1.91-.59A5 5 0 1 0 8.1 8.3H11a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1V3a1 1 0 1 1 2 0v3.32A8.97 8.97 0 0 1 12 5z" fill="currentColor"></path>
                 </svg>
               </span>
@@ -125,7 +125,7 @@ const printHref = config?.printHref || "#";
               aria-label="Generate and download professional PDF invoice"
             >
               <span class="action-btn__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
                   <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
                   <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
                   <path d="M16 9h3v3h-3z" fill="currentColor"></path>
@@ -148,7 +148,7 @@ const printHref = config?.printHref || "#";
           <div class="tool-actions-footer__buttons">
             <button type="button" class="document-bottom-reset-btn" data-reset-form-trigger>
               <span class="action-btn__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
                   <path d="M12 5a7 7 0 1 1-6.67 9.12 1 1 0 1 1 1.91-.59A5 5 0 1 0 8.1 8.3H11a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1V3a1 1 0 1 1 2 0v3.32A8.97 8.97 0 0 1 12 5z" fill="currentColor"></path>
                 </svg>
               </span>
@@ -1116,6 +1116,14 @@ const printHref = config?.printHref || "#";
     margin: 0 calc(50% - 50vw);
     padding: 10px max(16px, calc((100vw - 1280px) / 2 + 16px)) 8px;
     background: #ffffff;
+  }
+
+  /* Inline SVGs without width/height can render huge if a CSS chunk fails to load. */
+  body.document-generator-page svg[viewBox]:not([width]) {
+    width: 1em;
+    height: 1em;
+    max-width: 2rem;
+    max-height: 2rem;
   }
 
   @media screen and (max-width: 900px) {
