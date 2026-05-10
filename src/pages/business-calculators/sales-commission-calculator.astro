@@ -1,12 +1,12 @@
 ---
 import SalesCommissionForm from "../../components/document-generators/sales-commission/SalesCommissionForm.astro";
 import SalesCommissionPreview from "../../components/document-generators/sales-commission/SalesCommissionPreview.astro";
-import GeneratorActions from "../../components/document-generators/shared/GeneratorActions.astro";
+import CalculatorOutputActions from "../../components/business-calculators/CalculatorOutputActions.astro";
 import DocumentGeneratorLayout from "../../layouts/DocumentGeneratorLayout.astro";
 
 const title = "Sales Commission Calculator";
 const description =
-  "Calculate sales commission, bonus, deductions, and net payout online. Review the results in a printable statement and save as PDF in A4 or US Letter format.";
+  "Calculate tiered sales commission, base salary, bonus, deductions, and net payout online. Review the results in a printable monthly commission statement and save as PDF in A4 or US Letter format.";
 const canonical = "https://www.worowo.com/business-calculators/sales-commission-calculator/";
 
 const breadcrumbs = [
@@ -19,12 +19,22 @@ const faq = [
   {
     question: "What does this sales commission calculator do?",
     answer:
-      "It calculates base commission, optional bonus, deductions, gross commission, and final net payout from your sales inputs.",
+      "It calculates tiered commission, base salary, optional bonus, deductions, gross earnings, and final net payout from your sales inputs.",
+  },
+  {
+    question: "How do I calculate tiered commission?",
+    answer:
+      "Add one or more commission tiers in order. For example, enter 10,000 at 3% for the first tier and leave the second tier open at 5% to apply 5% to all remaining sales above 10,000.",
+  },
+  {
+    question: "Can I include base salary with commission?",
+    answer:
+      "Yes. Enter a base salary and the calculator will add it to tiered commission and any earned bonus before subtracting deductions.",
   },
   {
     question: "Can I print or save the commission statement as PDF?",
     answer:
-      "Yes. Use the Print / Save as PDF button to print only the preview statement and save it as PDF from your browser.",
+      "Yes. Use the Print / Save as PDF button to print only the monthly commission statement preview and save it as PDF from your browser.",
   },
   {
     question: "Can I switch between A4 and US Letter?",
@@ -81,18 +91,51 @@ const relatedTools = [
       <SalesCommissionForm />
     </div>
 
+    <div class="generator-mobile-actions">
+      <CalculatorOutputActions showReset={true} showPrivacyNote={true} />
+    </div>
+
     <div class="generator-preview">
       <SalesCommissionPreview />
       <div class="paper-actions">
-        <GeneratorActions />
+        <CalculatorOutputActions showReset={true} showPrivacyNote={true} />
       </div>
     </div>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>How This Sales Commission Calculator Works</h2>
+    <p>
+      Use this calculator to prepare a practical monthly commission statement without opening a spreadsheet.
+      It is designed for small teams, agencies, distributors, and business owners who need something more
+      realistic than a single percentage field but still faster than payroll software.
+    </p>
+    <ul>
+      <li><strong>Tiered commission</strong> supports threshold-based rates for realistic incentive plans.</li>
+      <li><strong>Base salary</strong> lets you show salary plus commission in one printable statement.</li>
+      <li><strong>Bonus and deductions</strong> help you present the actual payout, not only raw commission.</li>
+    </ul>
+  </div>
+
+  <div slot="content" class="content-card">
+    <h2>Common Use Cases</h2>
+    <p>
+      This tool works well for monthly payroll review, sales incentive planning, manager approval, and internal payout records.
+      It is especially useful when commission changes after a target is reached or when you need a clean statement with signature space.
+    </p>
+    <ul>
+      <li>Monthly commission statement for a salesperson</li>
+      <li>Base salary plus tiered commission compensation plans</li>
+      <li>Distributor or channel partner payout review</li>
+      <li>Manager sign-off before payroll processing</li>
+    </ul>
   </div>
 </DocumentGeneratorLayout>
 
 <style>
   .generator-split {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(360px, 0.95fr) minmax(460px, 1.05fr);
     gap: 24px;
     align-items: flex-start;
     margin-top: 8px;
@@ -100,7 +143,6 @@ const relatedTools = [
 
   .generator-form,
   .generator-preview {
-    flex: 1;
     min-width: 0;
   }
 
@@ -109,22 +151,154 @@ const relatedTools = [
     top: 16px;
   }
 
+  .generator-preview :global(.document-paper-shell) {
+    padding: 18px;
+    overflow: visible;
+  }
+
+  .generator-preview :global(.document-paper) {
+    width: 100%;
+    max-width: 560px;
+    min-height: auto;
+    margin: 0 auto;
+    overflow: visible;
+  }
+
+  .generator-preview :global(.document-paper-a4),
+  .generator-preview :global(.document-paper-letter) {
+    width: 100%;
+    min-height: auto;
+    padding: 32px;
+  }
+
   .paper-actions {
-    margin-top: 12px;
+    margin-top: 14px;
   }
 
-  .paper-actions :global(.generator-actions) {
-    padding-top: 0;
+  .generator-mobile-actions {
+    display: none;
   }
 
-  @media (max-width: 1100px) {
+    .paper-actions :global(.calculator-output-actions) {
+      padding-top: 0;
+      border-top: 0;
+    }
+
+  @media (max-width: 980px) {
     .generator-split {
-      flex-direction: column;
+      grid-template-columns: 1fr;
+    }
+
+    .generator-mobile-actions {
+      display: block;
+      position: sticky;
+      bottom: 12px;
+      z-index: 12;
+      margin-top: -4px;
+    }
+
+    .generator-mobile-actions :global(.calculator-output-actions) {
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid #dbe4f0;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 -12px 30px rgba(15, 23, 42, 0.08);
+      backdrop-filter: blur(12px);
+      border-top-color: #dbe4f0;
     }
 
     .generator-preview {
       position: static;
       width: 100%;
+    }
+
+    .paper-actions {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1200px) and (min-width: 981px) {
+    .generator-split {
+      grid-template-columns: minmax(340px, 0.95fr) minmax(420px, 1.05fr);
+      gap: 20px;
+    }
+
+    .generator-preview :global(.document-paper-shell) {
+      padding: 14px;
+    }
+
+    .generator-preview :global(.document-paper) {
+      max-width: 520px;
+    }
+
+    .generator-preview :global(.document-paper-a4),
+    .generator-preview :global(.document-paper-letter) {
+      padding: 24px;
+    }
+  }
+
+  @media print {
+    :global(.site-header),
+    :global(.tool-hero),
+    :global(.tool-related),
+    :global(.tool-content),
+    :global(.tool-faq),
+    :global(footer),
+    .generator-form,
+    .generator-mobile-actions,
+    .paper-actions {
+      display: none !important;
+    }
+
+    :global(body) {
+      background: #ffffff !important;
+    }
+
+    :global(.tool-main) {
+      padding: 0 !important;
+    }
+
+    :global(.container) {
+      width: 100% !important;
+      margin: 0 !important;
+    }
+
+    .generator-split {
+      display: block !important;
+      margin: 0 !important;
+    }
+
+    .generator-preview {
+      position: static !important;
+      width: 100% !important;
+    }
+
+    .generator-preview :global(.document-paper-shell) {
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      overflow: visible !important;
+    }
+
+    .generator-preview :global(.document-paper) {
+      max-width: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      margin: 0 auto !important;
+    }
+
+    :global(body.print-a4 #salesCommissionPaper) {
+      width: 210mm !important;
+      min-height: 297mm !important;
+      padding: 14mm !important;
+    }
+
+    :global(body.print-letter #salesCommissionPaper) {
+      width: 8.5in !important;
+      min-height: 11in !important;
+      padding: 0.55in !important;
     }
   }
 </style>

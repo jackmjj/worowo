@@ -1,3 +1,31 @@
+---
+const currentYear = new Date().getFullYear();
+const years = Array.from({ length: 5 }, (_, index) => currentYear - 2 + index);
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const currencies = [
+  { code: "USD", label: "USD $" },
+  { code: "EUR", label: "EUR €" },
+  { code: "GBP", label: "GBP £" },
+  { code: "CNY", label: "CNY ¥" },
+  { code: "JPY", label: "JPY ¥" },
+  { code: "CAD", label: "CAD $" },
+  { code: "AUD", label: "AUD $" },
+];
+---
+
 <form id="salesCommissionForm" class="sc-form">
   <p class="sc-notice">
     Fill in the commission details below. The printable payout statement updates automatically as you type.
@@ -6,15 +34,35 @@
   <section class="sc-section">
     <h2>Statement Details</h2>
 
-    <div class="sc-grid sc-grid-3">
+    <div class="sc-grid sc-grid-2 sc-statement-details-grid">
       <label>
         Salesperson Name
         <input id="salespersonName" type="text" placeholder="Enter salesperson name" data-preview-field="salespersonName" />
       </label>
 
+      <label class="sc-currency-field no-print">
+        Currency
+        <span class="sc-currency-control">
+          <span class="sc-currency-icon" aria-hidden="true">$</span>
+          <select id="commissionCurrency" class="sc-currency-select" aria-label="Currency">
+            {currencies.map((currency) => <option value={currency.code}>{currency.label}</option>)}
+          </select>
+        </span>
+      </label>
+
       <label>
-        Period / Reference
-        <input id="statementPeriod" type="text" placeholder="Example: May 2026" data-preview-field="statementPeriod" />
+        Period
+        <div class="sc-period-fields">
+          <select id="commissionMonth" data-period-field="month" aria-label="Commission month">
+            <option value="">Month</option>
+            {months.map((month) => <option value={month}>{month}</option>)}
+          </select>
+
+          <select id="commissionYear" data-period-field="year" aria-label="Commission year">
+            <option value="">Year</option>
+            {years.map((year) => <option value={String(year)}>{year}</option>)}
+          </select>
+        </div>
       </label>
 
       <label>
@@ -29,16 +77,16 @@
 
     <div class="sc-grid sc-grid-2">
       <div class="sc-mini-card">
-        <h3>Sales</h3>
+        <h3>Sales & Salary</h3>
 
         <label>
           Total Sales Amount
-          <input id="salesAmount" type="number" min="0" step="0.01" placeholder="0.00" />
+          <input id="salesAmount" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" />
         </label>
 
         <label>
-          Commission Rate (%)
-          <input id="commissionRate" type="number" min="0" step="0.01" placeholder="Example: 5" />
+          Base Salary
+          <input id="baseSalary" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" />
         </label>
       </div>
 
@@ -47,38 +95,77 @@
 
         <label>
           Bonus Threshold
-          <input id="bonusThreshold" type="number" min="0" step="0.01" placeholder="0.00" />
+          <input id="bonusThreshold" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" />
         </label>
 
         <label>
           Bonus Amount
-          <input id="bonusAmount" type="number" min="0" step="0.01" placeholder="0.00" />
+          <input id="bonusAmount" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" />
         </label>
 
         <label>
           Other Deductions
-          <input id="deductions" type="number" min="0" step="0.01" placeholder="0.00" />
+          <input id="deductions" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" />
         </label>
       </div>
     </div>
   </section>
 
   <section class="sc-section">
+    <div class="sc-section-head">
+      <div>
+        <h2>Tiered Commission</h2>
+        <p class="sc-section-copy">
+          Add one or more sales tiers. Leave the last "Up To" field blank to pay that rate on all remaining sales.
+        </p>
+      </div>
+
+      <button type="button" id="addTierButton" class="sc-tier-action-btn">
+        <span class="sc-tier-action-icon" aria-hidden="true">+</span>
+        <span>Add Tier</span>
+      </button>
+    </div>
+
+    <div id="commissionTierList" class="sc-tier-list" aria-live="polite"></div>
+  </section>
+
+  <section class="sc-section">
     <h2>Notes</h2>
 
-    <label>
-      Notes
-      <textarea
-        id="commissionNotes"
-        rows="4"
-        placeholder="Optional notes about targets, adjustments, or payment details"
-        data-preview-field="commissionNotes"
-      ></textarea>
-    </label>
+    <textarea
+      id="commissionNotes"
+      rows="4"
+      placeholder="Optional notes about targets, adjustments, or payment details"
+      data-preview-field="commissionNotes"
+      aria-label="Notes"
+    ></textarea>
   </section>
 
   <script type="module" src="/scripts/sales-commission.js"></script>
 </form>
+
+<template id="commissionTierTemplate">
+  <div class="sc-tier-row" data-tier-row>
+    <div class="sc-tier-row-head">
+      <strong data-tier-title>Tier 1</strong>
+      <button type="button" class="sc-tier-remove-btn" data-remove-tier>
+        Remove
+      </button>
+    </div>
+
+    <div class="sc-grid sc-grid-2 sc-tier-fields">
+      <label>
+        Up To Sales Amount
+        <input type="number" min="0" step="0.01" data-tier-field="cap" placeholder="Leave blank for no upper limit" />
+      </label>
+
+      <label>
+        Commission Rate (%)
+        <input type="number" min="0" step="0.01" data-tier-field="rate" value="0" data-clear-zero-on-focus="true" data-default-value="0" />
+      </label>
+    </div>
+  </div>
+</template>
 
 <style>
   .sc-form {
@@ -97,7 +184,7 @@
     border-radius: 14px;
     background: #f8fafc;
     color: #64748b;
-    font-size: 14px;
+    font-size: 0.94rem;
     line-height: 1.6;
   }
 
@@ -110,7 +197,7 @@
   .sc-section h2 {
     margin: 0 0 16px;
     color: #334155;
-    font-size: 13px;
+    font-size: 0.82rem;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -129,6 +216,108 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .sc-statement-details-grid {
+    align-items: end;
+  }
+
+  .sc-period-fields {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 10px;
+  }
+
+  .sc-currency-field {
+    gap: 7px;
+  }
+
+  .sc-currency-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 52px;
+    padding: 0 14px;
+    border: 1px solid #93c5fd;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 0.95rem;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+    width: 100%;
+    box-sizing: border-box;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .sc-currency-control:hover {
+    background: #dbeafe;
+    border-color: #60a5fa;
+    color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+  }
+
+  .sc-currency-control:focus-within {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+  }
+
+  .sc-currency-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: 900;
+    flex: 0 0 auto;
+  }
+
+  .sc-currency-select {
+    border: 0;
+    background: transparent;
+    color: #111827;
+    font-size: 0.95rem;
+    font-weight: 850;
+    outline: none;
+    cursor: pointer;
+    padding: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .sc-currency-select:hover,
+  .sc-currency-select:focus {
+    border-color: transparent !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .sc-section-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .sc-section-copy {
+    margin: -8px 0 0;
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
   .sc-mini-card {
     border: 1px solid #e2e8f0;
     border-radius: 18px;
@@ -139,7 +328,7 @@
   .sc-mini-card h3 {
     margin: 0 0 14px;
     color: #475569;
-    font-size: 13px;
+    font-size: 0.82rem;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -150,7 +339,7 @@
     flex-direction: column;
     gap: 7px;
     color: #334155;
-    font-size: 13px;
+    font-size: 0.95rem;
     font-weight: 800;
   }
 
@@ -158,7 +347,106 @@
     margin-top: 14px;
   }
 
+  .sc-tier-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  .sc-tier-row {
+    border: 1px solid #dbe4f0;
+    border-radius: 18px;
+    padding: 16px;
+    background: linear-gradient(180deg, #f8fbff 0%, #fdfefe 100%);
+  }
+
+  .sc-tier-row-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .sc-tier-row-head strong {
+    color: #334155;
+    font-size: 0.82rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .sc-tier-fields label + label {
+    margin-top: 0;
+  }
+
+  .sc-tier-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 0 14px;
+    border: 1px solid #93c5fd;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .sc-tier-action-btn:hover {
+    background: #dbeafe;
+    border-color: #60a5fa;
+    color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+  }
+
+  .sc-tier-action-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: 900;
+  }
+
+  .sc-tier-remove-btn {
+    min-height: 32px;
+    padding: 0 12px;
+    border: 1px dashed #d7dce5;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #6b7280;
+    font-size: 0.82rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .sc-tier-remove-btn:hover {
+    border-color: #f59bb7;
+    background: #fff8fb;
+    color: #be185d;
+  }
+
   input,
+  select,
   textarea {
     width: 100%;
     border: 1px solid #cbd5e1;
@@ -166,6 +454,7 @@
     background: #ffffff;
     color: #0f172a;
     padding: 12px 13px;
+    font-size: 1rem;
     outline: none;
     transition:
       border-color 0.18s ease,
@@ -183,15 +472,76 @@
   }
 
   input:focus,
+  select:focus,
   textarea:focus {
     border-color: #2563eb;
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
   }
 
   @media (max-width: 900px) {
+    .sc-form {
+      padding: 18px;
+      border-radius: 20px;
+      box-shadow: 0 14px 36px -30px rgba(15, 23, 42, 0.16);
+    }
+
+    .sc-notice {
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+
+    .sc-section {
+      padding: 16px;
+      border: 1px solid #dbe4f0;
+      border-radius: 18px;
+      background: #ffffff;
+    }
+
     .sc-grid-2,
     .sc-grid-3 {
       grid-template-columns: 1fr;
+    }
+
+    .sc-section + .sc-section {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .sc-section-head {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .sc-mini-card {
+      padding: 16px;
+      border-radius: 16px;
+      background: #f8fbff;
+    }
+
+    .sc-tier-row {
+      padding: 14px;
+      border-radius: 16px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .sc-form {
+      padding: 16px;
+    }
+
+    .sc-period-fields {
+      grid-template-columns: 1fr;
+    }
+
+    .sc-currency-control {
+      justify-content: flex-start;
+    }
+
+    .sc-tier-action-btn {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>

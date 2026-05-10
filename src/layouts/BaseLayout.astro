@@ -159,7 +159,8 @@ const canonicalUrl = canonical || Astro.url.href;
       }
 
       .site-header {
-        position: static;
+        position: relative;
+        z-index: 100;
         background: rgba(255, 255, 255, 0.94);
         backdrop-filter: blur(10px);
         border-bottom: 1px solid var(--line);

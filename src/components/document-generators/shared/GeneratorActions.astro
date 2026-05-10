@@ -13,7 +13,11 @@
 
   <div class="generator-action-footer">
     <div class="generator-action-buttons">
-      <button type="button" class="generator-action-btn generator-action-btn-primary" data-print-document title="Generate and download professional PDF invoice" aria-label="Generate and download professional PDF invoice">
+      <button type="button" class="generator-action-btn generator-action-btn-reset" data-reset-form>
+        Reset Form
+      </button>
+
+      <button type="button" class="generator-action-btn generator-action-btn-primary" data-print-document title="Print or save this report as a PDF" aria-label="Print or save this report as a PDF">
         <svg class="generator-action-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
           <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
           <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
@@ -25,10 +29,6 @@
           <path d="M5 18a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z" fill="currentColor"></path>
         </svg>
       </button>
-
-      <button type="button" class="generator-action-btn generator-action-btn-ghost" data-reset-form>
-        Reset Form
-      </button>
     </div>
     <p class="generator-privacy-note">
       Your data is processed locally in your browser and is not stored on our servers.
@@ -38,75 +38,82 @@
 
 <style>
   .generator-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-    padding-top: 8px;
-    flex-wrap: wrap;
+    margin-top: 16px;
+    display: grid;
+    gap: 12px;
+    justify-items: center;
+    padding-top: 0;
   }
 
   .generator-paper-size-control {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 6px;
-    border: 1px solid #e2e8f0;
+    padding: 4px;
+    border: 1px solid #e5e7eb;
     border-radius: 999px;
-    background: #f8fafc;
+    background: #f3f4f6;
   }
 
   .generator-paper-size-control span {
-    padding: 0 8px;
+    padding: 0 6px 0 10px;
     color: #64748b;
     font-size: 13px;
-    font-weight: 800;
+    font-weight: 750;
   }
 
   .generator-paper-size-btn {
     border: 0;
     border-radius: 999px;
     background: transparent;
-    color: #475569;
-    padding: 8px 13px;
+    color: #6b7280;
+    min-width: 84px;
+    height: 34px;
+    padding: 0 12px;
     font-size: 13px;
-    font-weight: 900;
+    font-weight: 800;
     cursor: pointer;
   }
 
   .generator-paper-size-btn.active {
-    background: #0f172a;
+    background: #2563eb;
     color: #ffffff;
-    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.16);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.18);
   }
 
   .generator-action-footer {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     gap: 8px;
   }
 
   .generator-action-buttons {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: 12px;
   }
 
   .generator-action-btn {
-    border-radius: 6px;
-    min-height: 48px;
-    padding: 0 14px;
+    border-radius: 12px;
+    min-height: 38px;
+    padding: 0 16px;
     font-size: 14px;
     line-height: 1.2;
     font-weight: 800;
     cursor: pointer;
   }
 
-  .generator-action-btn-ghost {
+  .generator-action-btn-reset {
     background: #ffffff;
-    color: #0f172a;
-    border: 1px solid #cbd5e1;
+    color: #6b7280;
+    border: 1px dashed #d7dce5;
+  }
+
+  .generator-action-btn-reset:hover {
+    border-color: #f59bb7;
+    background: #fff8fb;
+    color: #be185d;
   }
 
   .generator-action-btn-primary {
@@ -143,15 +150,10 @@
     color: #94a3b8;
     font-size: 12px;
     line-height: 1.4;
-    text-align: right;
+    text-align: center;
   }
 
   @media (max-width: 900px) {
-    .generator-actions {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
     .generator-paper-size-control {
       justify-content: center;
     }
@@ -161,12 +163,8 @@
       gap: 10px;
     }
 
-    .generator-action-buttons {
-      flex-direction: column;
-    }
-
     .generator-action-btn {
-      width: 100%;
+      min-width: 0;
     }
 
     .generator-privacy-note {
@@ -176,14 +174,18 @@
   }
 
   @media (max-width: 640px) {
-    .generator-actions {
-      position: sticky;
-      bottom: 0;
-      z-index: 24;
-      margin: 8px 0 0;
-      padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px));
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, #ffffff 40%);
-      backdrop-filter: blur(6px);
+    .generator-paper-size-control {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .generator-action-buttons {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .generator-action-btn {
+      width: 100%;
     }
   }
 </style>

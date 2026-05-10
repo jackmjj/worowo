@@ -53,9 +53,25 @@ const resolvedRelatedTools =
         desc: tool.description,
       }))
     : relatedTools;
+
+const softwareApplicationSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: title,
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Any",
+  description,
+  url: canonical || Astro.url.href,
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
 ---
 
 <BaseLayout title={pageTitle} description={description} canonical={canonical}>
+  <script type="application/ld+json" set:html={JSON.stringify(softwareApplicationSchema)} />
   <main class="tool-page">
     <section class="tool-hero">
       <div class="container">

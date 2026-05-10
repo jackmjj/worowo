@@ -2,18 +2,24 @@
 import DocumentPaper from "../shared/DocumentPaper.astro";
 ---
 
-<DocumentPaper paperId="salesCommissionPaper" title="Sales Commission Statement" className="sc-paper">
+<DocumentPaper paperId="salesCommissionPaper" title="Monthly Commission Statement" className="sc-paper">
   <div class="sc-paper-head">
     <div>
-      <h3>Sales Commission Statement</h3>
-      <p class="sc-paper-subtitle">Commission payout preview for review and records</p>
+      <h3 id="previewStatementTitle">Sales Commission Statement</h3>
+      <p class="sc-paper-subtitle">Commission payout statement for payroll review, signatures, and records</p>
     </div>
 
     <div class="sc-paper-meta">
       <p><strong>Salesperson</strong> <span data-preview="salespersonName">—</span></p>
-      <p><strong>Period</strong> <span data-preview="statementPeriod">—</span></p>
+      <p><strong>Period</strong> <span id="previewStatementPeriod">—</span></p>
       <p><strong>Payout Date</strong> <span data-preview="payoutDate">—</span></p>
     </div>
+  </div>
+
+  <div class="sc-payout-hero">
+    <span>Net Payout</span>
+    <strong id="previewNetPayoutHero">0.00</strong>
+    <small>Final payout after base salary, commission, bonus, and deductions.</small>
   </div>
 
   <div class="sc-summary-grid">
@@ -22,32 +28,64 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
       <strong id="previewSalesAmount">0.00</strong>
     </div>
     <div class="sc-summary-card">
-      <span>Commission Rate</span>
-      <strong id="previewCommissionRate">0.00%</strong>
+      <span>Base Salary</span>
+      <strong id="previewBaseSalary">0.00</strong>
     </div>
     <div class="sc-summary-card">
-      <span>Base Commission</span>
-      <strong id="previewBaseCommission">0.00</strong>
+      <span>Total Commission</span>
+      <strong id="previewTierCommission">0.00</strong>
     </div>
+    <div class="sc-summary-card">
+      <span>Gross Earnings</span>
+      <strong id="previewGrossCommissionHero">0.00</strong>
+    </div>
+  </div>
+
+  <div class="sc-paper-box">
+    <h4>Commission Breakdown</h4>
+
+    <table class="sc-tier-table">
+      <thead>
+        <tr>
+          <th>Tier</th>
+          <th>Sales Range</th>
+          <th>Rate</th>
+          <th>Commission</th>
+        </tr>
+      </thead>
+      <tbody id="previewTierTableBody">
+        <tr>
+          <td colspan="4">Add tier settings to see the commission breakdown.</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <table class="sc-paper-table">
     <tbody>
       <tr>
+        <th>Base Salary</th>
+        <td id="previewBaseSalaryTable">0.00</td>
+      </tr>
+      <tr>
+        <th>Tiered Commission</th>
+        <td id="previewTierCommissionTable">0.00</td>
+      </tr>
+      <tr>
         <th>Bonus Threshold</th>
         <td id="previewBonusThreshold">0.00</td>
       </tr>
       <tr>
-        <th>Bonus Amount</th>
+        <th>Bonus Earned</th>
         <td id="previewBonusAmount">0.00</td>
+      </tr>
+      <tr>
+        <th>Gross Earnings</th>
+        <td id="previewGrossCommission">0.00</td>
       </tr>
       <tr>
         <th>Other Deductions</th>
         <td id="previewDeductions">0.00</td>
-      </tr>
-      <tr>
-        <th>Gross Commission</th>
-        <td id="previewGrossCommission">0.00</td>
       </tr>
       <tr>
         <th>Net Payout</th>
@@ -61,17 +99,26 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
     <p data-preview="commissionNotes">—</p>
   </div>
 
-  <div class="sc-paper-signature">
-    <div>
-      <span>Prepared Statement</span>
-      <strong>Worowo Sales Commission Calculator</strong>
+  <div class="sc-paper-signature-grid">
+    <div class="sc-paper-signature">
+      <div>
+        <span>Employee Signature</span>
+        <strong>____________________________</strong>
+      </div>
+    </div>
+
+    <div class="sc-paper-signature">
+      <div>
+        <span>Manager Signature</span>
+        <strong>____________________________</strong>
+      </div>
     </div>
   </div>
 </DocumentPaper>
 
 <style>
   .sc-paper {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .sc-paper-head {
@@ -94,6 +141,7 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
   .sc-paper-subtitle {
     margin: 8px 0 0;
     color: #64748b;
+    font-size: 0.92rem;
   }
 
   .sc-paper-meta {
@@ -105,13 +153,48 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
     justify-content: space-between;
     gap: 18px;
     margin: 0 0 7px;
+    font-size: 0.9rem;
   }
 
   .sc-summary-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
     margin-bottom: 18px;
+  }
+
+  .sc-payout-hero {
+    margin-bottom: 16px;
+    padding: 18px 20px;
+    border: 1px solid #cfe8c5;
+    background: linear-gradient(180deg, #f1f9f5 0%, #f8fcfa 100%);
+  }
+
+  .sc-payout-hero span {
+    display: block;
+    margin-bottom: 8px;
+    color: #2d6a4f;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .sc-payout-hero strong {
+    display: block;
+    color: #047857;
+    font-size: 34px;
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  .sc-payout-hero small {
+    display: block;
+    margin-top: 10px;
+    color: #475569;
+    font-size: 11px;
+    line-height: 1.45;
   }
 
   .sc-summary-card {
@@ -123,7 +206,7 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
     display: block;
     margin-bottom: 8px;
     color: #64748b;
-    font-size: 11px;
+    font-size: 0.78rem;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -136,40 +219,48 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
     letter-spacing: -0.04em;
   }
 
-  .sc-paper-table {
+  .sc-paper-table,
+  .sc-tier-table {
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     margin-top: 18px;
-    font-size: 11px;
+    font-size: 0.85rem;
   }
 
   .sc-paper-table th,
-  .sc-paper-table td {
+  .sc-paper-table td,
+  .sc-tier-table th,
+  .sc-tier-table td {
     border: 1px solid #dbe3ef;
     padding: 10px;
     text-align: left;
     vertical-align: top;
   }
 
-  .sc-paper-table th {
-    width: 46%;
+  .sc-paper-table th,
+  .sc-tier-table th {
     background: #f8fafc;
     color: #0f172a;
     font-weight: 900;
   }
 
+  .sc-paper-table th {
+    width: 46%;
+  }
+
   .sc-paper-box {
-    min-height: 124px;
     border: 1px solid #dbe3ef;
     padding: 14px;
     margin-top: 18px;
     color: #334155;
+    overflow: visible;
   }
 
   .sc-paper-box h4 {
     margin: 0 0 10px;
     color: #0f172a;
-    font-size: 11px;
+    font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
@@ -179,7 +270,10 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
     white-space: pre-line;
   }
 
-  .sc-paper-signature {
+  .sc-paper-signature-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 36px;
     margin-top: 56px;
   }
 
@@ -191,7 +285,7 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
   .sc-paper-signature span {
     display: block;
     color: #64748b;
-    font-size: 10px;
+    font-size: 0.76rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
@@ -200,16 +294,29 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
     display: block;
     margin-top: 8px;
     color: #0f172a;
-    font-size: 12px;
+    font-size: 0.88rem;
   }
 
   @media (max-width: 900px) {
     .sc-summary-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sc-paper-signature-grid {
       grid-template-columns: 1fr;
     }
   }
 
   @media print {
+    .sc-payout-hero {
+      margin-bottom: 12px !important;
+      padding: 12px 14px !important;
+    }
+
+    .sc-payout-hero strong {
+      font-size: 26px !important;
+    }
+
     .sc-paper-head {
       margin-bottom: 14px !important;
       padding-bottom: 14px !important;
@@ -224,14 +331,31 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
       padding: 10px !important;
     }
 
-    .sc-paper-table {
+    .sc-summary-grid {
+      gap: 10px !important;
+      margin-bottom: 12px !important;
+    }
+
+    .sc-paper-table,
+    .sc-tier-table {
       margin-top: 12px !important;
       font-size: 9.5px !important;
     }
 
     .sc-paper-table th,
-    .sc-paper-table td {
+    .sc-paper-table td,
+    .sc-tier-table th,
+    .sc-tier-table td {
       padding: 5px !important;
+    }
+
+    .sc-paper-box {
+      margin-top: 12px !important;
+    }
+
+    .sc-paper-signature-grid {
+      gap: 22px !important;
+      margin-top: 28px !important;
     }
   }
 </style>

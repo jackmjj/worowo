@@ -1,5 +1,6 @@
 ---
 import ToolLayout from "../../layouts/ToolLayout.astro";
+import CalculatorOutputActions from "../../components/business-calculators/CalculatorOutputActions.astro";
 
 const toolMeta = {
   title: "Unit Price Comparison Calculator",
@@ -47,6 +48,16 @@ const relatedTools = [
     href: "/business-calculators/profit-margin-calculator/",
     desc: "Calculate margin, markup, selling price, and profit projection.",
   },
+  {
+    name: "Break-Even Point Calculator",
+    href: "/business-calculators/break-even-point-calculator/",
+    desc: "Check how supplier cost changes the units or revenue you need to break even.",
+  },
+  {
+    name: "Purchase Order Generator",
+    href: "/quotes-invoices/purchase-order-generator/",
+    desc: "Turn the winning supplier quote into a clean purchase order.",
+  },
 ];
 ---
 
@@ -66,7 +77,12 @@ const relatedTools = [
   <div slot="form" class="upc-form-card">
     <div class="upc-form-header">
       <h2>Compare Supplier Unit Prices</h2>
-      <p>Add supplier quotes, shipping, quantities, and fees to find the most cost-effective option.</p>
+      <p>
+        Add supplier quotes, shipping, taxes, fees, and quantities to find the lowest landed unit price.
+      </p>
+      <p class="upc-form-header-note">
+        Use this before placing a purchase order or choosing the most cost-effective supplier.
+      </p>
     </div>
 
     <div id="supplierCards" class="upc-supplier-list" aria-live="polite"></div>
@@ -109,7 +125,12 @@ const relatedTools = [
     </div>
   </div>
 
-  <div slot="results" class="upc-results-card">
+  <div slot="results" class="upc-results-card printable-result">
+    <div class="upc-print-meta" aria-hidden="true">
+      <h2 id="printReportTitle">Supplier Unit Price Comparison</h2>
+      <p id="printDecisionNotes">—</p>
+    </div>
+
     <div class="upc-hero-panel">
       <div class="upc-hero-label">Best Supplier</div>
       <div id="bestSupplierName" class="upc-hero-name">—</div>
@@ -122,7 +143,7 @@ const relatedTools = [
 
     <div class="upc-results-summary">
       <div class="upc-results-summary-head">
-        <h3>Supplier Comparison</h3>
+        <h3>Supplier Ranking</h3>
         <p>Each supplier is ranked by landed unit price.</p>
       </div>
 
@@ -146,18 +167,29 @@ const relatedTools = [
       </p>
     </div>
 
+    <div class="upc-savings-grid">
+      <div class="upc-savings-card">
+        <span>Best Landed Unit Price</span>
+        <strong id="bestUnitPriceSummary">$0.00</strong>
+      </div>
+      <div class="upc-savings-card">
+        <span>Savings vs Highest Quote</span>
+        <strong id="savingsVsHighest">$0.00</strong>
+      </div>
+      <div class="upc-savings-card">
+        <span>Savings vs Second Best Quote</span>
+        <strong id="savingsVsSecond">$0.00</strong>
+      </div>
+    </div>
+
     <div class="upc-right-divider upc-action-divider"></div>
 
     <div class="upc-export-row">
       <p class="upc-export-note">
-        Export a PDF after reviewing the unit price comparison result.
+        Print or save a clean supplier comparison summary after reviewing the result.
       </p>
       <p class="upc-error upc-error-placeholder" aria-hidden="true"></p>
-      <div class="upc-export-actions">
-        <button id="exportPdfButton" type="button" class="upc-btn upc-btn-primary">
-          Export PDF
-        </button>
-      </div>
+      <CalculatorOutputActions />
     </div>
   </div>
 
@@ -261,7 +293,7 @@ const relatedTools = [
     const addSupplierButton = document.getElementById("addSupplierButton");
     const resetButton = document.getElementById("resetButton");
     const compareButton = document.getElementById("compareButton");
-    const exportPdfButton = document.getElementById("exportPdfButton");
+    const exportPdfButton = document.querySelector(".upc-export-row [data-print-document]");
     const reportTitleInput = document.getElementById("reportTitle");
     const decisionNotesInput = document.getElementById("decisionNotes");
     const bestSupplierNameEl = document.getElementById("bestSupplierName");
@@ -271,6 +303,11 @@ const relatedTools = [
     const procurementSummaryEl = document.getElementById("procurementSummary");
     const unitWarningEl = document.getElementById("unitWarning");
     const errorMessageEl = document.getElementById("errorMessage");
+    const bestUnitPriceSummaryEl = document.getElementById("bestUnitPriceSummary");
+    const savingsVsHighestEl = document.getElementById("savingsVsHighest");
+    const savingsVsSecondEl = document.getElementById("savingsVsSecond");
+    const printReportTitleEl = document.getElementById("printReportTitle");
+    const printDecisionNotesEl = document.getElementById("printDecisionNotes");
 
     const tones = [
       "upc-tone-blue",
@@ -304,6 +341,16 @@ const relatedTools = [
 
     function setError(message) {
       errorMessageEl.textContent = message;
+    }
+
+    function syncPrintableMeta() {
+      if (printReportTitleEl) {
+        printReportTitleEl.textContent = reportTitleInput.value.trim() || "Supplier Unit Price Comparison";
+      }
+
+      if (printDecisionNotesEl) {
+        printDecisionNotesEl.textContent = decisionNotesInput.value.trim() || "—";
+      }
     }
 
     function createSupplierCard(index, preset = {}) {
@@ -390,6 +437,9 @@ const relatedTools = [
       savingsBannerEl.textContent = "Add at least two complete quotes to compare savings.";
       procurementSummaryEl.textContent =
         "Add at least two complete supplier quotes to see the most cost-effective option.";
+      bestUnitPriceSummaryEl.textContent = "$0.00";
+      savingsVsHighestEl.textContent = "$0.00";
+      savingsVsSecondEl.textContent = "$0.00";
       renderQuoteResults(suppliers, []);
       unitWarningEl.hidden = true;
     }
@@ -444,23 +494,37 @@ const relatedTools = [
           const toneClass = tones[index % tones.length];
           const supplierName = escapeHtml(supplier.name);
           const rankLabel = supplier.hasMinimumData
-            ? (isBest ? "Best Value" : `Rank ${rankIndex + 1}`)
-            : "Incomplete";
+            ? (isBest ? "#1 Best Value" : `#${rankIndex + 1} Ranked`)
+            : `Quote ${index + 1}`;
           const price = supplier.hasMinimumData ? money(supplier.unitPrice) : "$0.00";
           const meta = supplier.hasMinimumData
             ? `Landed total: ${money(supplier.landedTotal)} · Shipping: ${money(supplier.shipping)} · Qty: ${supplier.qty} ${escapeHtml(supplier.unit)}`
             : "Enter total price and quantity to calculate.";
+          const deltaValue = supplier.hasMinimumData && best
+            ? Math.max(0, supplier.unitPrice - best.unitPrice)
+            : 0;
+          const summaryTitle = !supplier.hasMinimumData
+            ? "Needs Data"
+            : isBest
+              ? "Best Price"
+              : `+${money(deltaValue)} / ${escapeHtml(best.unit)}`;
+          const summaryText = !supplier.hasMinimumData
+            ? "complete this quote"
+            : isBest
+              ? "current leader"
+              : `higher than ${escapeHtml(best.name)}`;
 
           return `
             <article class="upc-rank-card ${toneClass} ${isBest ? "is-best" : ""} ${supplier.hasMinimumData ? "" : "is-incomplete"}" data-result-card>
               <div class="upc-rank-main">
-                <span class="upc-rank-label">Quote ${index + 1} · ${rankLabel}</span>
-                <strong>${price} / ${escapeHtml(supplier.unit)}</strong>
-                <small><b>${supplierName}</b> · ${meta}</small>
+                <span class="upc-rank-label">${rankLabel}</span>
+                <strong class="upc-rank-supplier-name">${supplierName}</strong>
+                <div class="upc-rank-unit-price">${price} / ${escapeHtml(supplier.unit)}</div>
+                <small>${meta}</small>
               </div>
-              <div class="upc-rank-price">
-                <strong>${isBest ? "Best Price" : `#${rankIndex + 1}`}</strong>
-                <span>${supplier.hasMinimumData ? "current quote" : "needs data"}</span>
+              <div class="upc-rank-summary">
+                <span class="upc-rank-summary-label">${summaryTitle}</span>
+                <strong class="upc-rank-summary-value">${summaryText}</strong>
               </div>
             </article>
           `;
@@ -490,19 +554,27 @@ const relatedTools = [
       unitWarningEl.hidden = unitSet.size <= 1;
       bestSupplierNameEl.textContent = best.name;
       bestSupplierPriceEl.textContent = `${money(best.unitPrice)} / ${best.unit}`;
+      bestUnitPriceSummaryEl.textContent = `${money(best.unitPrice)} / ${best.unit}`;
 
       if (second) {
         const savingsPercent = second.unitPrice > 0
           ? ((second.unitPrice - best.unitPrice) / second.unitPrice) * 100
           : 0;
+        const highest = sorted[sorted.length - 1];
+        const savingsVsHighest = Math.max(0, highest.unitPrice - best.unitPrice);
+        const savingsVsSecond = Math.max(0, second.unitPrice - best.unitPrice);
         savingsBannerEl.textContent =
           `Saves ${savingsPercent.toFixed(2)}% compared with the next cheapest quote.`;
         procurementSummaryEl.textContent =
           `${best.name} is currently the most cost-effective supplier at ${money(best.unitPrice)} per ${best.unit}.`;
+        savingsVsHighestEl.textContent = `${money(savingsVsHighest)} / ${best.unit}`;
+        savingsVsSecondEl.textContent = `${money(savingsVsSecond)} / ${best.unit}`;
       } else {
         savingsBannerEl.textContent = "Add one more complete quote to compare savings.";
         procurementSummaryEl.textContent =
           `${best.name} currently has the only complete quote at ${money(best.unitPrice)} per ${best.unit}.`;
+        savingsVsHighestEl.textContent = "$0.00";
+        savingsVsSecondEl.textContent = "$0.00";
       }
 
       renderQuoteResults(suppliers, sorted);
@@ -517,6 +589,7 @@ const relatedTools = [
       setError("");
       createSupplierCard(1);
       createSupplierCard(2);
+      syncPrintableMeta();
       renderEmptyState();
     }
 
@@ -527,124 +600,8 @@ const relatedTools = [
         setError("Please enter at least one complete supplier quote before exporting.");
         return;
       }
-
-      const best = sorted[0];
-      const second = sorted[1];
-      const reportTitle = reportTitleInput.value.trim() || "Supplier Unit Price Comparison";
-      const decisionNotes = decisionNotesInput.value.trim();
-      const savingsText = second
-        ? `Saves ${(((second.unitPrice - best.unitPrice) / second.unitPrice) * 100).toFixed(2)}% compared with the next cheapest quote.`
-        : "Only one complete quote is currently available.";
-      const unitWarning = new Set(sorted.map((supplier) => supplier.unit)).size > 1
-        ? '<p class="warning">Warning: supplier units are different. Review carefully before making a final purchasing decision.</p>'
-        : "";
-      const rows = sorted.map((supplier, index) => `
-        <tr class="${index === 0 ? "best" : ""}">
-          <td>${index + 1}</td>
-          <td>${escapeHtml(supplier.name)}</td>
-          <td>${money(supplier.price)}</td>
-          <td>${money(supplier.fees)}</td>
-          <td>${money(supplier.shipping)}</td>
-          <td>${money(supplier.landedTotal)}</td>
-          <td>${supplier.qty} ${escapeHtml(supplier.unit)}</td>
-          <td>${money(supplier.unitPrice)}</td>
-        </tr>
-      `).join("");
-      const summaryText = second
-        ? `${best.name} is currently the most cost-effective supplier at ${money(best.unitPrice)} per ${best.unit}.`
-        : `${best.name} currently has the only complete quote at ${money(best.unitPrice)} per ${best.unit}.`;
-
-      const reportHtml = `
-        <!doctype html>
-        <html>
-          <head>
-            <meta charset="utf-8" />
-            <title>${escapeHtml(reportTitle)}</title>
-            <style>
-              body { font-family: Arial, Helvetica, sans-serif; color: #0f172a; padding: 32px; line-height: 1.5; }
-              .brand { display: flex; justify-content: space-between; gap: 24px; border-bottom: 1px solid #dbe4f0; padding-bottom: 16px; margin-bottom: 24px; }
-              .brand h1 { margin: 0; font-size: 30px; font-weight: 800; }
-              .brand small, .meta, .footer { color: #64748b; }
-              .title { margin: 0 0 6px; font-size: 24px; font-weight: 800; text-align: right; }
-              .hero { background: #eff5fd; border: 1px solid #c7daf6; border-radius: 16px; padding: 20px; margin-bottom: 20px; }
-              .label { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 8px; }
-              .name { font-size: 42px; font-weight: 800; color: #0f7a55; line-height: 1.05; }
-              .price { font-size: 24px; font-weight: 700; margin-top: 8px; }
-              .banner { background: #eef7f0; border: 1px solid #bfddc3; color: #246b45; border-radius: 12px; padding: 12px 14px; font-weight: 700; margin-top: 16px; }
-              h2 { font-size: 18px; margin: 26px 0 12px; }
-              table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-              th, td { border: 1px solid #dbe4f0; padding: 8px 9px; text-align: left; font-size: 12px; }
-              th { background: #f8fbff; font-weight: 700; }
-              tr.best td { background: #f3faf6; font-weight: 700; }
-              .box { border: 1px solid #dbe4f0; border-radius: 14px; padding: 16px; margin-top: 18px; background: #fbfdff; }
-              .warning { margin: 10px 0 0; color: #a16207; font-size: 13px; }
-              .footer { margin-top: 28px; padding-top: 16px; border-top: 1px solid #dbe4f0; font-size: 13px; }
-              a { color: #2563eb; text-decoration: none; }
-            </style>
-          </head>
-          <body>
-            <div class="brand">
-              <div>
-                <h1>worowo</h1>
-                <small>Skip the Software. Get the Result.</small>
-              </div>
-              <div>
-                <div class="title">${escapeHtml(reportTitle)}</div>
-                <div class="meta">Generated on ${new Date().toLocaleString()}</div>
-              </div>
-            </div>
-            <div class="hero">
-              <div class="label">Best Supplier</div>
-              <div class="name">${escapeHtml(best.name)}</div>
-              <div class="price">${money(best.unitPrice)} / ${escapeHtml(best.unit)}</div>
-              <div class="banner">${escapeHtml(savingsText)}</div>
-            </div>
-            <h2>Supplier Comparison Table</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Rank</th>
-                  <th>Supplier</th>
-                  <th>Total Price</th>
-                  <th>Tax / Fees</th>
-                  <th>Shipping</th>
-                  <th>Landed Total</th>
-                  <th>Quantity</th>
-                  <th>Unit Price</th>
-                </tr>
-              </thead>
-              <tbody>${rows}</tbody>
-            </table>
-            ${unitWarning}
-            <div class="box">
-              <strong>Procurement Summary</strong>
-              <p>${escapeHtml(summaryText)}</p>
-            </div>
-            ${decisionNotes ? `
-              <div class="box">
-                <strong>Decision Notes</strong>
-                <p style="white-space: pre-line;">${escapeHtml(decisionNotes)}</p>
-              </div>
-            ` : ""}
-            <div class="footer">
-              <div>worowo business calculators</div>
-              <div><a href="https://www.worowo.com">https://www.worowo.com</a></div>
-            </div>
-          </body>
-        </html>
-      `;
-
-      const printWindow = window.open("", "_blank", "width=1100,height=800");
-      if (!printWindow) {
-        setError("Unable to open the PDF export window. Please allow pop-ups and try again.");
-        return;
-      }
-
-      printWindow.document.open();
-      printWindow.document.write(reportHtml);
-      printWindow.document.close();
-      printWindow.focus();
-      setTimeout(() => printWindow.print(), 300);
+      syncPrintableMeta();
+      window.print();
     }
 
     addSupplierButton.addEventListener("click", () => {
@@ -657,6 +614,8 @@ const relatedTools = [
     resetButton.addEventListener("click", resetCalculator);
     compareButton.addEventListener("click", calculateAndRender);
     exportPdfButton.addEventListener("click", exportPdf);
+    reportTitleInput.addEventListener("input", syncPrintableMeta);
+    decisionNotesInput.addEventListener("input", syncPrintableMeta);
     window.addEventListener("resize", queueSyncQuoteRows);
 
     resetCalculator();
@@ -693,6 +652,29 @@ const relatedTools = [
     color: #475569;
     font-size: 0.94rem;
     line-height: 1.55;
+  }
+
+  .upc-form-header,
+  .upc-hero-panel {
+    min-height: 168px;
+  }
+
+  .upc-form-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 22px;
+    border: 1px solid #dbe3ef;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+  }
+
+  .upc-form-header-note {
+    margin-top: 10px;
+    color: #64748b;
+    font-size: 0.88rem;
+    font-weight: 700;
   }
 
   .upc-supplier-list {
@@ -980,13 +962,8 @@ const relatedTools = [
   }
 
   .upc-export-row {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .upc-export-actions {
-    justify-content: flex-end;
+    display: grid;
+    gap: 14px;
   }
 
   .upc-btn {
@@ -1014,17 +991,22 @@ const relatedTools = [
   }
 
   .upc-btn-ghost {
-    border: 1px solid #b8c7db;
+    border: 1px dashed #d7dce5;
     background: #ffffff;
-    color: #0f172a;
+    color: #6b7280;
   }
 
   .upc-btn-ghost:hover {
-    border-color: #94a3b8;
-    background: #f8fbff;
+    border-color: #f59bb7;
+    background: #fff8fb;
+    color: #be185d;
+    transform: translateY(-1px);
   }
 
   .upc-hero-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding: 18px 22px 16px;
     border: 1px solid #c7daf6;
     border-radius: 18px;
@@ -1177,6 +1159,21 @@ const relatedTools = [
     line-height: 1.05;
   }
 
+  :global(.upc-rank-supplier-name) {
+    color: #0f172a;
+    font-size: 1.18rem;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
+  :global(.upc-rank-unit-price) {
+    margin-top: 10px;
+    color: #0f7a55;
+    font-size: 1.28rem;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
   :global(.upc-rank-card small) {
     display: block;
     margin-top: 10px;
@@ -1190,26 +1187,31 @@ const relatedTools = [
     font-weight: 850;
   }
 
-  :global(.upc-rank-price) {
+  :global(.upc-rank-summary) {
     display: flex;
-    min-width: 124px;
-    padding-left: 14px;
+    min-width: 148px;
+    padding: 10px 0 10px 14px;
     border-left: 1px solid rgba(148, 163, 184, 0.32);
     flex-direction: column;
     justify-content: center;
     text-align: right;
   }
 
-  :global(.upc-rank-price strong) {
-    color: #047857;
-    font-size: 0.84rem;
-    letter-spacing: -0.02em;
+  :global(.upc-rank-summary-label) {
+    color: #64748b;
+    font-size: 0.73rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
+    text-transform: uppercase;
   }
 
-  :global(.upc-rank-price span) {
-    color: #64748b;
-    font-size: 0.8rem;
-    font-weight: 700;
+  :global(.upc-rank-summary-value) {
+    margin-top: 8px;
+    color: #0f172a;
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1.45;
   }
 
   .upc-warning {
@@ -1236,6 +1238,39 @@ const relatedTools = [
     color: #475569;
     font-size: 1.04rem;
     line-height: 1.8;
+  }
+
+  .upc-savings-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .upc-savings-card {
+    padding: 14px 16px;
+    border: 1px solid #d7e2ef;
+    border-radius: 14px;
+    background: #fbfdff;
+  }
+
+  .upc-savings-card span {
+    display: block;
+    margin-bottom: 8px;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 850;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .upc-savings-card strong {
+    color: #0f172a;
+    font-size: 1.12rem;
+    font-weight: 900;
+  }
+
+  .upc-print-meta {
+    display: none;
   }
 
   .upc-supplier-preview {
@@ -1273,6 +1308,11 @@ const relatedTools = [
   }
 
   @media (max-width: 900px) {
+    .upc-form-header,
+    .upc-hero-panel {
+      min-height: auto;
+    }
+
     .upc-fields-grid {
       grid-template-columns: 1fr;
     }
@@ -1286,11 +1326,17 @@ const relatedTools = [
       grid-template-columns: 1fr;
     }
 
-    .upc-actions,
-    .upc-export-row,
-    .upc-export-actions {
+    .upc-savings-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .upc-actions {
       align-items: stretch;
       flex-direction: column;
+    }
+
+    .upc-export-row {
+      gap: 12px;
     }
 
     .upc-btn {
@@ -1302,13 +1348,65 @@ const relatedTools = [
       flex-direction: column;
     }
 
-    :global(.upc-rank-price) {
+    :global(.upc-rank-summary) {
       min-width: 0;
       padding-top: 12px;
       padding-left: 0;
       border-top: 1px solid rgba(148, 163, 184, 0.32);
       border-left: 0;
       text-align: left;
+    }
+  }
+
+  @media print {
+    :global(.site-header),
+    :global(.tool-hero),
+    :global(.tool-related),
+    :global(.tool-content),
+    :global(.tool-faq),
+    :global(footer),
+    .upc-form-card {
+      display: none !important;
+    }
+
+    :global(body) {
+      background: #ffffff !important;
+    }
+
+    :global(.tool-main),
+    :global(.container) {
+      width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .upc-results-card {
+      border: 0 !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+    }
+
+    .upc-print-meta {
+      display: block !important;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #dbe4f0;
+    }
+
+    .upc-print-meta h2 {
+      margin: 0 0 8px;
+      color: #0f172a;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .upc-print-meta p {
+      margin: 0;
+      color: #475569;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-line;
     }
   }
 </style>

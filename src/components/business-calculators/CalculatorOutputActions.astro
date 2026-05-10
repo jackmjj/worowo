@@ -1,0 +1,296 @@
+---
+interface Props {
+  showReset?: boolean;
+  showPrivacyNote?: boolean;
+  className?: string;
+}
+
+const {
+  showReset = false,
+  showPrivacyNote = false,
+  className = "",
+} = Astro.props as Props;
+---
+
+<div class={`calculator-output-actions no-print ${className}`.trim()}>
+  <div class="calculator-output-actions-main">
+    <div class="calculator-paper-size-control" aria-label="Paper size">
+      <span class="calculator-paper-size-label">Paper Size</span>
+
+      <div class="calculator-paper-size-toggle">
+        <button class="calculator-paper-size-btn is-active" type="button" data-paper-size="a4">
+          A4
+        </button>
+
+        <button class="calculator-paper-size-btn" type="button" data-paper-size="letter">
+          US Letter
+        </button>
+      </div>
+    </div>
+
+    <div class="calculator-output-action-buttons">
+      {
+        showReset && (
+          <button type="button" class="calculator-output-btn calculator-output-btn-secondary" data-reset-form>
+            Reset Form
+          </button>
+        )
+      }
+
+      <button
+        type="button"
+        class="calculator-output-btn calculator-output-btn-primary"
+        data-print-document
+        title="Print or save this report as a PDF"
+        aria-label="Print or save this report as a PDF"
+      >
+        <svg class="calculator-output-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
+          <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
+          <path d="M16 9h3v3h-3z" fill="currentColor"></path>
+        </svg>
+        <span>Print / Save as PDF</span>
+      </button>
+    </div>
+  </div>
+
+  {
+    showPrivacyNote && (
+      <p class="calculator-output-privacy-note">
+        Your data is processed locally in your browser and is not stored on our servers.
+      </p>
+    )
+  }
+</div>
+
+<script is:inline>
+  (() => {
+    if (window.__worowoCalculatorPaperSizeInit) return;
+    window.__worowoCalculatorPaperSizeInit = true;
+
+    const ensurePrintPageSize = (size) => {
+      let styleEl = document.getElementById("dynamicPrintPageSize");
+      if (!(styleEl instanceof HTMLStyleElement)) {
+        styleEl = document.createElement("style");
+        styleEl.id = "dynamicPrintPageSize";
+        document.head.appendChild(styleEl);
+      }
+
+      const pageSize = size === "letter" ? "Letter" : "A4";
+      styleEl.textContent = `@media print { @page { size: ${pageSize}; margin: 10mm; } }`;
+    };
+
+    const applyPaperSize = (size) => {
+      const nextSize = size === "letter" ? "letter" : "a4";
+      document.documentElement.dataset.paperSize = nextSize;
+      document.body.classList.remove("print-a4", "print-letter");
+      document.body.classList.add(nextSize === "letter" ? "print-letter" : "print-a4");
+
+      document.querySelectorAll("[data-paper-size]").forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.paperSize === nextSize);
+      });
+
+      ensurePrintPageSize(nextSize);
+    };
+
+    document.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      const paperButton = target.closest("[data-paper-size]");
+      if (!(paperButton instanceof HTMLButtonElement)) return;
+
+      applyPaperSize(paperButton.dataset.paperSize || "a4");
+    });
+
+    applyPaperSize(document.documentElement.dataset.paperSize || "a4");
+  })();
+</script>
+
+<style>
+  .calculator-output-actions {
+    display: grid;
+    gap: 10px;
+  }
+
+  .calculator-output-actions .calculator-output-privacy-note {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .calculator-output-actions-main,
+  .calculator-output-action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+  }
+
+  .calculator-output-actions-main {
+    width: 100%;
+  }
+
+  .calculator-paper-size-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+  }
+
+  .calculator-paper-size-label {
+    color: #6b7280;
+    font-size: 0.95rem;
+    font-weight: 700;
+    white-space: nowrap;
+    line-height: 1.2;
+  }
+
+  .calculator-paper-size-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    box-sizing: border-box;
+    height: 52px;
+    padding: 0 4px;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    background: #f3f4f6;
+  }
+
+  .calculator-paper-size-btn {
+    min-width: 124px;
+    box-sizing: border-box;
+    height: 44px;
+    min-height: 44px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #475569;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.2;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      box-shadow 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .calculator-paper-size-btn.is-active {
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.18);
+  }
+
+  .calculator-output-action-buttons {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex: 0 0 auto;
+  }
+
+  .calculator-output-btn {
+    box-sizing: border-box;
+    height: 52px;
+    min-height: 52px;
+    padding: 0 24px;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.2;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .calculator-output-btn-secondary {
+    border: 1px dashed #cbd5e1;
+    background: #ffffff;
+    color: #64748b;
+  }
+
+  .calculator-output-btn-secondary:hover {
+    border-color: #f59bb7;
+    background: #fff8fb;
+    color: #be185d;
+  }
+
+  .calculator-output-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 180px;
+    border: 1px solid #2563eb;
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.16);
+  }
+
+  .calculator-output-btn-primary:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(37, 99, 235, 0.2);
+  }
+
+  .calculator-output-icon {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+  }
+
+  @media (max-width: 640px) {
+    .calculator-output-actions-main,
+    .calculator-output-action-buttons {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .calculator-paper-size-control {
+      width: 100%;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .calculator-paper-size-toggle {
+      flex: 1 1 auto;
+      min-width: min(100%, 280px);
+    }
+
+    .calculator-paper-size-btn {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .calculator-output-action-buttons {
+      width: 100%;
+    }
+
+    .calculator-output-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media print {
+    .calculator-output-actions,
+    .calculator-output-actions * {
+      display: none !important;
+    }
+  }
+</style>

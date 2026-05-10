@@ -1,5 +1,6 @@
 ---
 import ToolLayout from "../../layouts/ToolLayout.astro";
+import CalculatorOutputActions from "../../components/business-calculators/CalculatorOutputActions.astro";
 
 const toolMeta = {
   title: "Break-Even Point Calculator",
@@ -54,9 +55,19 @@ const relatedTools = [
     desc: "Calculate profit margin, markup, unit profit, and selling price decisions.",
   },
   {
-    name: "Business Calculators",
-    href: "/business-calculators/",
-    desc: "Browse pricing, profit margin, markup, discount, and business planning tools.",
+    name: "Unit Price Comparison Calculator",
+    href: "/business-calculators/unit-price-comparison/",
+    desc: "Compare supplier landed cost before you set your target sales model.",
+  },
+  {
+    name: "Sales Commission Calculator",
+    href: "/business-calculators/sales-commission-calculator/",
+    desc: "Turn profitable sales targets into a printable commission payout statement.",
+  },
+  {
+    name: "Discount Calculator",
+    href: "/business-calculators/discount-calculator/",
+    desc: "Check whether a discount still supports your break-even plan.",
   },
 ];
 ---
@@ -216,7 +227,7 @@ const relatedTools = [
     </div>
   </div>
 
-  <div slot="results" class="pm-dashboard">
+  <div slot="results" class="pm-dashboard printable-result">
     <div class="pm-results-top js-sync-top">
       <div class="pm-hero-panel">
         <div class="pm-hero-label">Break-Even Units</div>
@@ -270,6 +281,17 @@ const relatedTools = [
           <strong id="targetUnitsText">Calculate first to see required units.</strong>
         </div>
 
+        <div class="pm-target-results">
+          <div class="pm-target-card">
+            <span>Units Needed for Target Profit</span>
+            <strong id="targetUnitsValue">0</strong>
+          </div>
+          <div class="pm-target-card">
+            <span>Sales Needed for Target Profit</span>
+            <strong id="targetSalesValue">$0.00</strong>
+          </div>
+        </div>
+
         <div class="pm-chart-wrap" aria-label="Costs and revenue chart">
           <canvas id="breakEvenChart" width="420" height="210"></canvas>
         </div>
@@ -278,10 +300,10 @@ const relatedTools = [
 
     <div class="pm-results-action js-sync-action">
       <p class="pm-help pm-help-field">
-        Export a PDF after reviewing the calculated break-even result.
+        Print or save a clean break-even summary after reviewing the result.
       </p>
       <p class="pm-error pm-error-placeholder" aria-hidden="true"></p>
-      <button id="exportButton" type="button" class="pm-btn pm-btn-primary">Export PDF</button>
+      <CalculatorOutputActions />
     </div>
   </div>
 
@@ -340,7 +362,7 @@ const relatedTools = [
     const chartCanvas = document.getElementById("breakEvenChart");
     const calculateButton = document.getElementById("calculateButton");
     const resetButton = document.getElementById("resetButton");
-    const exportButton = document.getElementById("exportButton");
+    const exportButton = document.querySelector(".pm-results-action [data-print-document]");
     const errorMessage = document.getElementById("errorMessage");
     const totalFixedCostValue = document.getElementById("totalFixedCostValue");
     const totalVariableCostValue = document.getElementById("totalVariableCostValue");
@@ -355,6 +377,8 @@ const relatedTools = [
       contributionMargin: document.getElementById("contributionMargin"),
       profitPerUnit: document.getElementById("profitPerUnit"),
       targetUnitsText: document.getElementById("targetUnitsText"),
+      targetUnitsValue: document.getElementById("targetUnitsValue"),
+      targetSalesValue: document.getElementById("targetSalesValue"),
     };
 
     let lastResult = null;
@@ -445,6 +469,8 @@ const relatedTools = [
     function updateTargetAnalysis(result = lastResult) {
       if (!result) {
         resultNodes.targetUnitsText.textContent = "Calculate first to see required units.";
+        resultNodes.targetUnitsValue.textContent = "0";
+        resultNodes.targetSalesValue.textContent = "$0.00";
         return;
       }
 
@@ -454,6 +480,8 @@ const relatedTools = [
 
       resultNodes.targetUnitsText.textContent =
         `You need to sell at least ${targetUnits.toLocaleString("en-US")} units (${formatCurrency(targetSales)} sales).`;
+      resultNodes.targetUnitsValue.textContent = targetUnits.toLocaleString("en-US");
+      resultNodes.targetSalesValue.textContent = formatCurrency(targetSales);
     }
 
     function drawEmptyChart() {
@@ -514,16 +542,44 @@ const relatedTools = [
 
       const breakEvenX = mapX(result.breakEvenUnits);
       const breakEvenY = mapY(result.breakEvenSales);
+      const targetPointY = mapY(result.sellingPrice * targetUnits);
       ctx.fillStyle = "#047857";
       ctx.beginPath();
       ctx.arc(breakEvenX, breakEvenY, 5, 0, Math.PI * 2);
       ctx.fill();
+
+      if (targetProfit > 0) {
+        ctx.save();
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = "#7c3aed";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(mapX(targetUnits), height - padding);
+        ctx.lineTo(mapX(targetUnits), targetPointY);
+        ctx.lineTo(padding, targetPointY);
+        ctx.stroke();
+        ctx.restore();
+
+        ctx.fillStyle = "#7c3aed";
+        ctx.beginPath();
+        ctx.arc(mapX(targetUnits), targetPointY, 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
 
       ctx.fillStyle = "#0f172a";
       ctx.font = "700 11px Arial";
       ctx.fillText("Revenue", width - 84, mapY(result.sellingPrice * xMax) + 12);
       ctx.fillText("Costs", width - 70, mapY(result.fixedCosts + result.unitVariableCost * xMax) - 8);
       ctx.fillText("Break-even", Math.min(width - 100, breakEvenX + 8), Math.max(22, breakEvenY - 8));
+
+      if (targetProfit > 0) {
+        ctx.fillStyle = "#6d28d9";
+        ctx.fillText(
+          "Target profit",
+          Math.min(width - 88, mapX(targetUnits) + 8),
+          Math.max(20, targetPointY - 10)
+        );
+      }
     }
 
     function calculateBreakEven({ quiet = false } = {}) {
@@ -591,91 +647,14 @@ const relatedTools = [
       queueSyncSectionHeights();
     }
 
-    function escapePdfText(value) {
-      return String(value).replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
-    }
-
-    function createPdfBlob(lines) {
-      const pageWidth = 612;
-      const pageHeight = 792;
-      const content = [
-        "BT",
-        "/F1 24 Tf",
-        "72 736 Td",
-        `(${escapePdfText(lines[0])}) Tj`,
-        "/F1 10 Tf",
-        "0 -18 Td",
-        ...lines.slice(1).flatMap((line) => [
-          `(${escapePdfText(line)}) Tj`,
-          "0 -16 Td",
-        ]),
-        "ET",
-      ].join("\n");
-
-      const objects = [
-        "<< /Type /Catalog /Pages 2 0 R >>",
-        "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
-        `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>`,
-        "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
-        `<< /Length ${content.length} >>\nstream\n${content}\nendstream`,
-      ];
-
-      let pdf = "%PDF-1.4\n";
-      const offsets = [0];
-
-      objects.forEach((object, index) => {
-        offsets.push(pdf.length);
-        pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
-      });
-
-      const xrefOffset = pdf.length;
-      pdf += `xref\n0 ${objects.length + 1}\n`;
-      pdf += "0000000000 65535 f \n";
-      offsets.slice(1).forEach((offset) => {
-        pdf += `${String(offset).padStart(10, "0")} 00000 n \n`;
-      });
-      pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\n`;
-      pdf += `startxref\n${xrefOffset}\n%%EOF`;
-
-      return new Blob([pdf], { type: "application/pdf" });
-    }
-
     function exportReport() {
       const result = lastResult || calculateBreakEven({ quiet: true });
 
       if (!result) {
-        setError("Calculate a valid break-even result before exporting a PDF.");
+        setError("Calculate a valid break-even result before printing or saving as PDF.");
         return;
       }
-
-      const reportLines = [
-        "worowo",
-        "Break-Even Point Report",
-        "Skip the Software. Get the Result.",
-        "https://www.worowo.com",
-        "",
-        `Fixed Costs: ${formatCurrency(result.fixedCosts)}`,
-        `Selling Price: ${formatCurrency(result.sellingPrice)}`,
-        `Unit Variable Cost: ${formatCurrency(result.unitVariableCost)}`,
-        `Unit Margin: ${formatCurrency(result.contributionMargin)}`,
-        "",
-        `Break-Even Units: ${formatNumber(result.breakEvenUnits)}`,
-        `Minimum Units: ${Math.ceil(result.breakEvenUnits).toLocaleString("en-US")}`,
-        `Break-Even Sales: ${formatCurrency(result.breakEvenSales)}`,
-        `Contribution Margin Ratio: ${formatPercent(result.contributionRatio)}`,
-        `Profit per Unit: ${formatCurrency(result.profitPerUnit)}`,
-        "",
-        `Target Profit: ${formatCurrency(getTargetProfit())}`,
-        resultNodes.targetUnitsText.textContent,
-      ];
-
-      const blob = createPdfBlob(reportLines);
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "break-even-point-report.pdf";
-      link.click();
-      URL.revokeObjectURL(url);
+      window.print();
     }
 
     [...fixedCostInputs, ...variableCostInputs, sellingPriceInput].forEach((input) => {
@@ -720,7 +699,6 @@ const relatedTools = [
       display: flex;
       flex-direction: column;
       flex: 0 0 auto;
-      border-top: 1px solid #e2e8f0;
       padding-top: 24px;
     }
 
@@ -935,16 +913,17 @@ const relatedTools = [
     }
 
     .pm-btn-secondary {
-      border: 1px solid #cbd5e1;
+      border: 1px dashed #d7dce5;
       background: #ffffff;
-      color: var(--text);
+      color: #6b7280;
       text-decoration: none;
-      box-shadow: 0 10px 24px -20px rgba(15, 23, 42, 0.35);
     }
 
     .pm-btn-secondary:hover {
-      border-color: #94a3b8;
-      background: #f8fafc;
+      border-color: #f59bb7;
+      background: #fff8fb;
+      color: #be185d;
+      transform: translateY(-1px);
     }
 
     .pm-btn-outline {
@@ -1173,6 +1152,35 @@ const relatedTools = [
       line-height: 1.45;
     }
 
+    .pm-target-results {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .pm-target-card {
+      padding: 14px 16px;
+      border: 1px solid #dbe4f0;
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .pm-target-card span {
+      display: block;
+      margin-bottom: 8px;
+      color: #64748b;
+      font-size: 0.78rem;
+      font-weight: 850;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .pm-target-card strong {
+      color: #0f172a;
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
     .pm-target-input-wrap input {
       width: 118px;
       height: 38px;
@@ -1200,21 +1208,22 @@ const relatedTools = [
     }
 
     .pm-results-action {
-      gap: 18px;
-      justify-content: space-between;
+      display: grid;
+      gap: 14px;
       margin-top: 0;
-    }
-
-    .pm-results-action .pm-btn {
-      align-self: flex-end;
-      width: calc((100% - 14px) / 2);
-      min-width: 160px;
     }
 
     @media (max-width: 980px) {
       .pm-metrics-grid,
-      .pm-inline-results {
+      .pm-inline-results,
+      .pm-target-results {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .pm-target-results {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -1244,11 +1253,6 @@ const relatedTools = [
       .pm-results-action {
         align-items: stretch;
       }
-
-      .pm-results-action .pm-btn {
-        align-self: stretch;
-        width: 100%;
-      }
     }
 
     .sr-only {
@@ -1261,6 +1265,35 @@ const relatedTools = [
       clip: rect(0, 0, 0, 0);
       white-space: nowrap;
       border: 0;
+    }
+
+    @media print {
+      :global(.site-header),
+      :global(.tool-hero),
+      :global(.tool-related),
+      :global(.tool-content),
+      :global(.tool-faq),
+      :global(footer),
+      .pm-form-card {
+        display: none !important;
+      }
+
+      :global(body) {
+        background: #ffffff !important;
+      }
+
+      :global(.tool-main),
+      :global(.container) {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .pm-dashboard {
+        border: 0 !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+      }
     }
   </style>
 </ToolLayout>

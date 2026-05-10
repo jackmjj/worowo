@@ -1,5 +1,6 @@
 ---
 import ToolLayout from "../../layouts/ToolLayout.astro";
+import CalculatorOutputActions from "../../components/business-calculators/CalculatorOutputActions.astro";
 
 const toolMeta = {
   title: "Profit Margin Calculator",
@@ -49,9 +50,24 @@ const faqItems = [
 
 const relatedTools = [
   {
-    name: "Business Calculators",
-    href: "/business-calculators/",
-    desc: "Browse all pricing, profit, and cost tools.",
+    name: "Break-Even Point Calculator",
+    href: "/business-calculators/break-even-point-calculator/",
+    desc: "See how pricing and unit profit affect the sales volume needed to break even.",
+  },
+  {
+    name: "Discount Calculator",
+    href: "/business-calculators/discount-calculator/",
+    desc: "Check whether a discount still protects the margin you want to keep.",
+  },
+  {
+    name: "Unit Price Comparison Calculator",
+    href: "/business-calculators/unit-price-comparison/",
+    desc: "Compare supplier landed unit cost before locking your selling price.",
+  },
+  {
+    name: "Sales Commission Calculator",
+    href: "/business-calculators/sales-commission-calculator/",
+    desc: "Turn margin-backed sales results into a printable commission statement.",
   },
 ];
 ---
@@ -133,7 +149,7 @@ const relatedTools = [
     </div>
   </div>
 
-  <div slot="results" class="pm-dashboard">
+  <div slot="results" class="pm-dashboard printable-result">
     <div class="pm-results-top js-sync-top">
       <div class="pm-hero-panel">
         <div id="heroLabel" class="pm-hero-label">Profit Margin</div>
@@ -189,7 +205,12 @@ const relatedTools = [
         </div>
       </div>
 
-      <p class="pm-help pm-help-micro pm-note">Estimated using 7 / 30 / 365 days.</p>
+      <div class="pm-results-action">
+        <p class="pm-help pm-help-field">
+          Print or save a clean pricing summary after reviewing the result.
+        </p>
+        <CalculatorOutputActions />
+      </div>
     </div>
   </div>
 
@@ -205,6 +226,10 @@ const relatedTools = [
       <li><strong>Find Selling Price</strong> — Enter cost price and target margin.</li>
       <li><strong>Find Cost Price</strong> — Enter selling price and target margin.</li>
     </ul>
+    <p>
+      <strong>Margin</strong> is profit divided by selling price. <strong>Markup</strong> is profit
+      divided by total cost. They sound similar, but they answer different pricing questions.
+    </p>
   </div>
 
   <div slot="content" class="content-card">
@@ -301,6 +326,7 @@ const relatedTools = [
         dailySales: $("dailySales"),
         calculateButton: $("calculateButton"),
         resetButton: $("resetButton"),
+        printButton: document.querySelector(".pm-results-action [data-print-document]"),
 
         heroLabel: $("heroLabel"),
         headlineValue: $("headlineValue"),
@@ -486,6 +512,7 @@ const relatedTools = [
           totalCost = cost + extra;
           price = margin < 1 ? totalCost / (1 - margin) : 0;
           unitProfit = price - totalCost;
+          markupPct = totalCost > 0 ? (unitProfit / totalCost) * 100 : 0;
           secondaryValue = totalCost;
           dailyProfit = unitProfit * qty;
 
@@ -502,6 +529,7 @@ const relatedTools = [
           cost = allowedTotalCost - extra;
           totalCost = cost + extra;
           unitProfit = price - totalCost;
+          markupPct = totalCost > 0 ? (unitProfit / totalCost) * 100 : 0;
           secondaryValue = cost;
           dailyProfit = unitProfit * qty;
 
@@ -525,6 +553,11 @@ const relatedTools = [
         syncProjectionDivider();
       }
 
+      function exportReport() {
+        calculate();
+        window.print();
+      }
+
       els.modeButtons.forEach((btn) => {
         btn.addEventListener("click", () => applyMode(btn.dataset.mode));
       });
@@ -535,6 +568,7 @@ const relatedTools = [
 
       els.calculateButton?.addEventListener("click", calculate);
       els.resetButton?.addEventListener("click", resetForm);
+      els.printButton?.addEventListener("click", exportReport);
 
       window.addEventListener("resize", syncProjectionDivider);
       window.addEventListener("load", syncProjectionDivider);
@@ -581,6 +615,11 @@ const relatedTools = [
       flex-direction: column;
     }
 
+    .pm-results-bottom {
+      display: flex;
+      flex-direction: column;
+    }
+
     .pm-projection-input-panel {
       padding: 16px;
       border: 1px solid #bbf7d0;
@@ -607,35 +646,34 @@ const relatedTools = [
     .pm-mode-switch {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 6px;
+      gap: 4px;
       margin-bottom: 18px;
-      padding: 5px;
-      border: 1px solid #dbe3ef;
-      border-radius: 14px;
-      background: #f8fafc;
+      padding: 4px;
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      background: #f3f4f6;
     }
 
     .pm-mode-btn {
-      min-height: 40px;
-      padding: 0 10px;
-      border: 1px solid transparent;
-      border-radius: 10px;
+      min-height: 38px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 999px;
       background: transparent;
       color: #475569;
-      font-size: 0.9rem;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 800;
       line-height: 1.15;
       cursor: pointer;
       transition: 0.18s ease;
     }
 
-    .pm-mode-btn:hover { background: #eef4ff; color: #1d4ed8; }
+    .pm-mode-btn:hover { background: #ffffff; color: #2563eb; }
 
     .pm-mode-btn.is-active {
-      background: #ffffff;
-      color: #0f172a;
-      border-color: #c7d7ee;
-      box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.14), 0 6px 16px -12px rgba(15, 23, 42, 0.45);
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.18);
     }
 
     .pm-core-group {
@@ -694,7 +732,8 @@ const relatedTools = [
       justify-content: flex-end;
       align-items: center;
       gap: 16px;
-      margin-top: 24px;
+      margin-top: auto;
+      padding-top: 24px;
     }
 
     .pm-btn {
@@ -707,13 +746,39 @@ const relatedTools = [
       transition: 0.18s ease;
     }
 
-    .pm-btn-secondary { background: transparent; color: var(--text); text-decoration: underline; border:none; }
+    .pm-btn-secondary {
+      border: 1px dashed #d7dce5;
+      background: #ffffff;
+      color: #6b7280;
+      text-decoration: none;
+    }
+
+    .pm-btn-secondary:hover {
+      border-color: #f59bb7;
+      background: #fff8fb;
+      color: #be185d;
+      transform: translateY(-1px);
+    }
+
     .pm-btn-primary {
       min-width: 180px;
       background: #2563eb;
       color: #ffffff;
       border: 1px solid #2563eb;
       box-shadow: 0 14px 30px -18px rgba(37, 99, 235, 0.7);
+    }
+
+    .pm-btn-primary:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .pm-results-action {
+      display: grid;
+      gap: 14px;
+      margin-top: auto;
+      padding-top: 24px;
     }
 
     /* --- 结果显示面板 --- */
@@ -729,19 +794,22 @@ const relatedTools = [
     .pm-hero-value.negative { color: #dc2626; }
 
     .pm-hero-text {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 8px;
       margin-top: 16px;
-      padding: 12px 16px;
+      width: 100%;
+      padding: 12px 14px;
       border: 1px solid #cfe8c5;
-      border-radius: 14px;
+      border-radius: 10px;
       background: #f1f9f5;
       color: #2d6a4f;
       font-size: 0.96rem;
       font-weight: 850;
       line-height: 1.45;
+      text-align: center;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74), 0 8px 18px -16px rgba(45, 106, 79, 0.46);
     }
 
@@ -822,6 +890,35 @@ const relatedTools = [
       .pm-actions { flex-direction: column; }
       .pm-btn { width: 100%; }
       .pm-projection-item { border-right: none; border-bottom: 1px solid #e2e8f0; }
+    }
+
+    @media print {
+      :global(.site-header),
+      :global(.tool-hero),
+      :global(.tool-related),
+      :global(.tool-content),
+      :global(.tool-faq),
+      :global(footer),
+      .pm-form-card {
+        display: none !important;
+      }
+
+      :global(body) {
+        background: #ffffff !important;
+      }
+
+      :global(.tool-main),
+      :global(.container) {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .pm-dashboard {
+        border: 0 !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+      }
     }
   </style>
 </ToolLayout>
