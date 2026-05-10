@@ -1,6 +1,6 @@
 ---
-const currentYear = new Date().getFullYear();
-const years = Array.from({ length: 5 }, (_, index) => currentYear - 2 + index);
+const YEAR_START = 2026;
+const years = Array.from({ length: 8 }, (_, index) => YEAR_START + index);
 const months = [
   "January",
   "February",
@@ -141,6 +141,15 @@ const currencies = [
     ></textarea>
   </section>
 
+  <div class="scc-form-actions">
+    <button type="button" class="scc-btn scc-btn-secondary" data-reset-form>
+      Reset
+    </button>
+    <button type="button" class="scc-btn scc-btn-primary" data-calculate-commission>
+      Calculate Commission
+    </button>
+  </div>
+
   <script type="module" src="/scripts/sales-commission.js"></script>
 </form>
 
@@ -169,12 +178,17 @@ const currencies = [
 
 <style>
   .sc-form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
     width: 100%;
     border: 1px solid #dbe4f0;
     border-radius: 24px;
     background: #ffffff;
     padding: 24px;
     box-shadow: 0 18px 44px -34px rgba(15, 23, 42, 0.18);
+    box-sizing: border-box;
   }
 
   .sc-notice {
@@ -542,6 +556,75 @@ const currencies = [
     .sc-tier-action-btn {
       width: 100%;
       justify-content: center;
+    }
+  }
+</style>
+
+<style is:global>
+  /* Match Profit Margin Calculator (.pm-actions / .pm-btn) for sales commission tool */
+  .scc-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .scc-btn {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    height: 52px;
+    padding: 0 24px;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.2;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.18s ease;
+  }
+
+  .scc-btn-secondary {
+    border: 1px dashed #d7dce5;
+    background: #ffffff;
+    color: #6b7280;
+  }
+
+  .scc-btn-secondary:hover {
+    border-color: #f59bb7;
+    background: #fff8fb;
+    color: #be185d;
+    transform: translateY(-1px);
+  }
+
+  .scc-btn-primary {
+    min-width: 180px;
+    border: 1px solid #2563eb;
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 14px 30px -18px rgba(37, 99, 235, 0.7);
+  }
+
+  .scc-btn-primary:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 700px) {
+    .scc-form-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .scc-btn {
+      width: 100%;
     }
   }
 </style>

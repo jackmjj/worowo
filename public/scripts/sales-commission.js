@@ -1,3 +1,6 @@
+const COMMISSION_YEAR_MIN = 2026;
+const COMMISSION_YEAR_MAX = 2033;
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("salesCommissionForm");
   if (!form) return;
@@ -327,6 +330,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (target.closest("[data-calculate-commission]")) {
+      updateAll();
+      return;
+    }
+
     if (target.closest("#addTierButton")) {
       createTierRow({ cap: "", rate: "" });
       updateAll();
@@ -377,11 +385,22 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const now = new Date();
+
   if (fields.commissionMonth instanceof HTMLSelectElement) {
     fields.commissionMonth.value = fields.commissionMonth.value || now.toLocaleString("en-US", { month: "long" });
   }
   if (fields.commissionYear instanceof HTMLSelectElement) {
-    fields.commissionYear.value = fields.commissionYear.value || String(now.getFullYear());
+    const y = now.getFullYear();
+    const yStr = String(y);
+    const hasYearOption = Array.from(fields.commissionYear.options).some((o) => o.value === yStr);
+    const fallbackYear = hasYearOption ? yStr : String(COMMISSION_YEAR_MIN);
+    fields.commissionYear.value = fields.commissionYear.value || fallbackYear;
+    if (fields.commissionYear.value) {
+      const yv = Number.parseInt(fields.commissionYear.value, 10);
+      if (!Number.isFinite(yv) || yv < COMMISSION_YEAR_MIN || yv > COMMISSION_YEAR_MAX) {
+        fields.commissionYear.value = String(COMMISSION_YEAR_MIN);
+      }
+    }
   }
   if (fields.payoutDate instanceof HTMLInputElement) {
     fields.payoutDate.value = fields.payoutDate.value || now.toISOString().slice(0, 10);

@@ -92,13 +92,26 @@ const relatedTools = [
     </div>
 
     <div class="generator-mobile-actions">
-      <CalculatorOutputActions showReset={true} showPrivacyNote={true} />
+      <div class="generator-mobile-form-actions scc-form-actions">
+        <button type="button" class="scc-btn scc-btn-secondary" data-reset-form>Reset</button>
+        <button type="button" class="scc-btn scc-btn-primary" data-calculate-commission>
+          Calculate Commission
+        </button>
+      </div>
+      <CalculatorOutputActions />
     </div>
 
     <div class="generator-preview">
-      <SalesCommissionPreview />
+      <div class="generator-preview-main">
+        <p class="paper-actions-help">
+          Print or save a clean commission statement after reviewing the result.
+        </p>
+        <div class="generator-preview-sticky">
+          <SalesCommissionPreview />
+        </div>
+      </div>
       <div class="paper-actions">
-        <CalculatorOutputActions showReset={true} showPrivacyNote={true} />
+        <CalculatorOutputActions />
       </div>
     </div>
   </div>
@@ -135,9 +148,9 @@ const relatedTools = [
 <style>
   .generator-split {
     display: grid;
-    grid-template-columns: minmax(360px, 0.95fr) minmax(460px, 1.05fr);
-    gap: 24px;
-    align-items: flex-start;
+    grid-template-columns: minmax(360px, 0.618fr) minmax(520px, 1fr);
+    gap: 28px;
+    align-items: stretch;
     margin-top: 8px;
   }
 
@@ -146,9 +159,31 @@ const relatedTools = [
     min-width: 0;
   }
 
+  .generator-form {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+
   .generator-preview {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+
+  .generator-preview-main {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .generator-preview-sticky {
     position: sticky;
     top: 16px;
+    align-self: flex-start;
+    width: 100%;
   }
 
   .generator-preview :global(.document-paper-shell) {
@@ -172,17 +207,40 @@ const relatedTools = [
   }
 
   .paper-actions {
-    margin-top: 14px;
+    margin-top: auto;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+    width: 100%;
+  }
+
+  .paper-actions-help {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--text-soft);
+    max-width: 52ch;
   }
 
   .generator-mobile-actions {
     display: none;
   }
 
-    .paper-actions :global(.calculator-output-actions) {
-      padding-top: 0;
-      border-top: 0;
-    }
+  .paper-actions :global(.calculator-output-actions) {
+    gap: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  /* Match left .scc-form-actions row: same height, flex-end, primary shadow */
+  .paper-actions :global(.calculator-output-actions-main) {
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .paper-actions :global(.calculator-output-btn-primary) {
+    box-shadow: 0 14px 30px -18px rgba(37, 99, 235, 0.7);
+  }
 
   @media (max-width: 980px) {
     .generator-split {
@@ -190,11 +248,25 @@ const relatedTools = [
     }
 
     .generator-mobile-actions {
-      display: block;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
       position: sticky;
       bottom: 12px;
       z-index: 12;
       margin-top: -4px;
+    }
+
+    .generator-mobile-form-actions.scc-form-actions {
+      margin-top: 0;
+      padding: 12px;
+      padding-top: 12px;
+      border-top: 0;
+      border: 1px solid #dbe4f0;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 -12px 30px rgba(15, 23, 42, 0.08);
+      backdrop-filter: blur(12px);
     }
 
     .generator-mobile-actions :global(.calculator-output-actions) {
@@ -209,8 +281,11 @@ const relatedTools = [
     }
 
     .generator-preview {
+      min-height: 0;
+    }
+
+    .generator-preview-sticky {
       position: static;
-      width: 100%;
     }
 
     .paper-actions {
@@ -220,8 +295,8 @@ const relatedTools = [
 
   @media (max-width: 1200px) and (min-width: 981px) {
     .generator-split {
-      grid-template-columns: minmax(340px, 0.95fr) minmax(420px, 1.05fr);
-      gap: 20px;
+      grid-template-columns: minmax(340px, 0.618fr) minmax(420px, 1fr);
+      gap: 24px;
     }
 
     .generator-preview :global(.document-paper-shell) {
@@ -270,6 +345,11 @@ const relatedTools = [
     }
 
     .generator-preview {
+      min-height: 0 !important;
+      width: 100% !important;
+    }
+
+    .generator-preview-sticky {
       position: static !important;
       width: 100% !important;
     }
