@@ -1,9 +1,10 @@
 const COMMISSION_YEAR_MIN = 2026;
 const COMMISSION_YEAR_MAX = 2033;
 
-document.addEventListener("DOMContentLoaded", () => {
+function initSalesCommission() {
   const form = document.getElementById("salesCommissionForm");
-  if (!form) return;
+  if (!(form instanceof HTMLFormElement) || form.dataset.salesCommissionInit === "true") return;
+  form.dataset.salesCommissionInit = "true";
 
   const paper = document.getElementById("salesCommissionPaper");
   const tierList = document.getElementById("commissionTierList");
@@ -309,6 +310,11 @@ document.addEventListener("DOMContentLoaded", () => {
     updateAll();
   }
 
+  function addTier() {
+    createTierRow({ cap: "", rate: "" });
+    updateAll();
+  }
+
   document.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
@@ -336,8 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (target.closest("#addTierButton")) {
-      createTierRow({ cap: "", rate: "" });
-      updateAll();
+      addTier();
       return;
     }
 
@@ -376,12 +381,38 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("input", updateAll);
   form.addEventListener("change", updateAll);
 
+  addTierButton?.addEventListener("click", (event) => {
+    event.preventDefault();
+    addTier();
+  });
+
   addTierButton?.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      createTierRow({ cap: "", rate: "" });
-      updateAll();
+      addTier();
     }
+  });
+
+  document.querySelectorAll("[data-print-document]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      updateAll();
+      window.print();
+    });
+  });
+
+  document.querySelectorAll("[data-calculate-commission]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      updateAll();
+    });
+  });
+
+  document.querySelectorAll("[data-reset-form]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      resetForm();
+    });
   });
 
   const now = new Date();
@@ -409,8 +440,16 @@ document.addEventListener("DOMContentLoaded", () => {
     fields.commissionCurrency.value = fields.commissionCurrency.value || "USD";
   }
 
-  setPaperSize("a4");
+  setPaperSize(document.documentElement.dataset.paperSize || "a4");
   createTierRow({ cap: "10000", rate: "3" });
   createTierRow({ cap: "", rate: "5" });
   updateAll();
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initSalesCommission, { once: true });
+} else {
+  initSalesCommission();
+}
+
+document.addEventListener("astro:page-load", initSalesCommission);

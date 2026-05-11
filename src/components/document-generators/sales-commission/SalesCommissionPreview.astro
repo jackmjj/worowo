@@ -118,14 +118,14 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
 
 <style>
   .sc-paper {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .sc-paper-head {
     display: flex;
     justify-content: space-between;
     gap: 28px;
-    border-bottom: 2px solid #0f172a;
+    border-bottom: 1px solid #dbe4f0;
     padding-bottom: 22px;
     margin-bottom: 24px;
   }
@@ -141,7 +141,8 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
   .sc-paper-subtitle {
     margin: 8px 0 0;
     color: #64748b;
-    font-size: 0.92rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
   }
 
   .sc-paper-meta {
@@ -166,15 +167,16 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
   .sc-payout-hero {
     margin-bottom: 16px;
     padding: 18px 20px;
-    border: 1px solid #cfe8c5;
-    background: linear-gradient(180deg, #f1f9f5 0%, #f8fcfa 100%);
+    border: 1px solid #dbe4f0;
+    border-radius: 20px;
+    background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
   }
 
   .sc-payout-hero span {
     display: block;
     margin-bottom: 8px;
-    color: #2d6a4f;
-    font-size: 11px;
+    color: #64748b;
+    font-size: 12px;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -182,7 +184,7 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
 
   .sc-payout-hero strong {
     display: block;
-    color: #047857;
+    color: #0f172a;
     font-size: 34px;
     font-weight: 950;
     line-height: 1;
@@ -193,13 +195,15 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
     display: block;
     margin-top: 10px;
     color: #475569;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.45;
   }
 
   .sc-summary-card {
-    border: 1px solid #dbe3ef;
-    padding: 14px;
+    border: 1px solid #dbe4f0;
+    border-radius: 18px;
+    padding: 16px;
+    background: #ffffff;
   }
 
   .sc-summary-card span {
@@ -250,9 +254,11 @@ import DocumentPaper from "../shared/DocumentPaper.astro";
   }
 
   .sc-paper-box {
-    border: 1px solid #dbe3ef;
-    padding: 14px;
+    border: 1px solid #dbe4f0;
+    border-radius: 18px;
+    padding: 16px;
     margin-top: 18px;
+    background: #ffffff;
     color: #334155;
     overflow: visible;
   }

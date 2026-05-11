@@ -103,14 +103,14 @@ const relatedTools = [
 
     <div class="generator-preview">
       <div class="generator-preview-main">
-        <p class="paper-actions-help">
-          Print or save a clean commission statement after reviewing the result.
-        </p>
         <div class="generator-preview-sticky">
           <SalesCommissionPreview />
         </div>
       </div>
       <div class="paper-actions">
+        <p class="paper-actions-help">
+          Print or save a clean commission statement after reviewing the result.
+        </p>
         <CalculatorOutputActions />
       </div>
     </div>
@@ -169,12 +169,18 @@ const relatedTools = [
     display: flex;
     flex-direction: column;
     min-height: 100%;
+    border: 1px solid #dbe4f0;
+    border-radius: 24px;
+    background: #ffffff;
+    padding: 24px;
+    box-shadow: 0 18px 44px -34px rgba(15, 23, 42, 0.18);
+    box-sizing: border-box;
   }
 
   .generator-preview-main {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 18px;
     flex: 1 1 auto;
     min-height: 0;
   }
@@ -187,7 +193,11 @@ const relatedTools = [
   }
 
   .generator-preview :global(.document-paper-shell) {
-    padding: 18px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
     overflow: visible;
   }
 
@@ -207,18 +217,28 @@ const relatedTools = [
   }
 
   .paper-actions {
-    margin-top: auto;
-    padding-top: 24px;
+    margin-top: 18px;
+    display: grid;
+    gap: 14px;
+    padding-top: 20px;
     border-top: 1px solid #e2e8f0;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .paper-actions-help {
     margin: 0;
-    font-size: 0.9rem;
+    font-size: 0.94rem;
     line-height: 1.55;
     color: var(--text-soft);
-    max-width: 52ch;
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1180px) {
+    .paper-actions-help {
+      white-space: normal;
+    }
   }
 
   .generator-mobile-actions {
@@ -227,19 +247,28 @@ const relatedTools = [
 
   .paper-actions :global(.calculator-output-actions) {
     gap: 0;
-    padding-top: 0;
-    border-top: 0;
+    width: 100%;
   }
 
-  /* Match left .scc-form-actions row: same height, flex-end, primary shadow */
   .paper-actions :global(.calculator-output-actions-main) {
     width: 100%;
-    justify-content: flex-end;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
+    gap: 18px;
   }
 
   .paper-actions :global(.calculator-output-btn-primary) {
     box-shadow: 0 14px 30px -18px rgba(37, 99, 235, 0.7);
+  }
+
+  .paper-actions :global(.calculator-paper-size-control) {
+    justify-self: start;
+  }
+
+  .paper-actions :global(.calculator-output-action-buttons) {
+    justify-self: end;
+    justify-content: flex-end;
   }
 
   @media (max-width: 980px) {
@@ -293,6 +322,18 @@ const relatedTools = [
     }
   }
 
+  @media (max-width: 1180px) and (min-width: 981px) {
+    .paper-actions :global(.calculator-output-actions-main) {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .paper-actions :global(.calculator-paper-size-control),
+    .paper-actions :global(.calculator-output-action-buttons) {
+      justify-self: start;
+    }
+  }
+
   @media (max-width: 1200px) and (min-width: 981px) {
     .generator-split {
       grid-template-columns: minmax(340px, 0.618fr) minmax(420px, 1fr);
@@ -300,7 +341,7 @@ const relatedTools = [
     }
 
     .generator-preview :global(.document-paper-shell) {
-      padding: 14px;
+      padding: 0;
     }
 
     .generator-preview :global(.document-paper) {
