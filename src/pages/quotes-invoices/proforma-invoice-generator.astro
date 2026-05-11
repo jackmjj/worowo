@@ -5,7 +5,7 @@ import { getRelatedToolsForTool } from "../../data/toolRelations";
 
 const pageTitle = "Proforma Invoice Generator";
 const pageDescription =
-  "Create a professional proforma invoice online for quotations, pre-sale confirmation, and international trade preparation. Print or save the document as PDF.";
+  "Create a proforma invoice for payment reference, order confirmation, deposits, delivery terms, and trade documentation before final shipment. Print or save as PDF.";
 const canonical = "https://www.worowo.com/quotes-invoices/proforma-invoice-generator/";
 
 const faqItems = [
@@ -46,170 +46,241 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
   <div class="inline-document-mobile-shell" slot="document">
     <div class="desktop-document-editor">
       <div id="proforma-invoice-document" class="inline-document-root proforma-document paper-a4 proforma-sentinel">
-    <div class="inline-document-inner proforma-document-inner">
-      <div class="document-title-row">
-        <input
-          id="documentLogoText"
-          class="document-logo-text"
-          type="text"
-          placeholder="Your Business Name"
-          aria-label="Business name or logo text"
-          data-field="logoText"
-        />
+        <div class="inline-document-inner proforma-document-inner">
+          <div class="document-title-row">
+            <input
+              id="documentLogoText"
+              class="document-logo-text"
+              type="text"
+              placeholder="Your Business Name"
+              aria-label="Business name or logo text"
+              data-field="logoText"
+            />
 
-        <div class="document-title">PROFORMA INVOICE</div>
-      </div>
+            <div class="document-title">PROFORMA INVOICE</div>
+          </div>
 
-              <div class="doc-header">
-                <div>
-                  <div class="doc-subtitle editor-hint no-print">Preliminary invoice for trade and payment reference</div>
+          <div class="doc-header">
+            <div>
+              <div class="doc-subtitle editor-hint no-print">Preliminary invoice for trade and payment reference</div>
+            </div>
+
+            <div class="doc-meta proforma-meta">
+              <div class="proforma-meta-barcode-slot">
+                <div class="proforma-barcode-block" id="proformaBarcodeBlock" hidden>
+                  <svg id="proformaInvoiceBarcode" aria-label="Proforma invoice barcode"></svg>
+                  <span class="proforma-barcode-empty">Enter Proforma No.</span>
                 </div>
+              </div>
+              <div class="field-row proforma-meta-row proforma-meta-row-invoice">
+                <button type="button" class="barcode-action-btn no-print" id="toggleBarcodeBtn">
+                  <span class="barcode-action-icon" aria-hidden="true">▥</span>
+                  <span class="barcode-action-label">Show Barcode</span>
+                </button>
+                <span class="field-label print-label">Proforma No.:</span>
+                <input id="invoiceNumber" class="doc-input inline-input proforma-meta-input" type="text" maxlength="24" placeholder="Proforma No." data-field="invoiceNumber" />
+              </div>
+              <div class="field-row proforma-meta-row proforma-meta-row-date">
+                <span class="proforma-meta-action-spacer no-print" aria-hidden="true"></span>
+                <span class="field-label print-label">Date:</span>
+                <input id="invoiceDate" class="doc-input inline-input proforma-meta-input" type="date" placeholder="Date" data-field="invoiceDate" />
+              </div>
+              <div class="field-row proforma-meta-row proforma-meta-row-valid">
+                <span class="proforma-meta-action-spacer no-print" aria-hidden="true"></span>
+                <span class="field-label print-label">Valid Until:</span>
+                <input id="validUntil" class="doc-input inline-input proforma-meta-input" type="date" placeholder="Valid Until" data-field="validUntil" />
+              </div>
+            </div>
+          </div>
 
-                <div class="doc-meta">
-                  <div class="field-row">
-                    <span class="field-label print-label">Proforma No.:</span>
-                    <input id="invoiceNumber" class="doc-input inline-input" type="text" placeholder="Proforma No." data-field="invoiceNumber" />
-                  </div>
-                  <div class="field-row">
-                    <span class="field-label print-label">Date:</span>
-                    <input id="invoiceDate" class="doc-input inline-input" type="date" placeholder="Date" data-field="invoiceDate" />
-                  </div>
+          <section class="doc-section">
+            <div class="two-col">
+              <div class="box">
+                <h2 class="section-title">Seller</h2>
+                <div class="field-row field-row-block">
+                  <input id="sellerName" class="doc-input" type="text" placeholder="Company Name" data-field="sellerName" />
+                </div>
+                <div class="field-row field-row-block">
+                  <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="sellerAddress"></textarea>
+                </div>
+                <div class="field-row field-row-block">
+                  <input id="sellerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="sellerContact" />
                 </div>
               </div>
 
-              <section class="doc-section">
-                <div class="two-col">
-                  <div class="box">
-                    <h2 class="section-title">Seller</h2>
-                    <div class="field-row field-row-block">
-                      <input id="sellerName" class="doc-input" type="text" placeholder="Company Name" data-field="sellerName" />
-                    </div>
-                    <div class="field-row field-row-block">
-                      <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="sellerAddress"></textarea>
-                    </div>
-                    <div class="field-row field-row-block">
-                      <input id="sellerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="sellerContact" />
-                    </div>
-                  </div>
-
-                  <div class="box">
-                    <h2 class="section-title">Buyer</h2>
-                    <div class="field-row field-row-block">
-                      <input id="buyerName" class="doc-input" type="text" placeholder="Company Name" data-field="buyerName" />
-                    </div>
-                    <div class="field-row field-row-block">
-                      <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="buyerAddress"></textarea>
-                    </div>
-                    <div class="field-row field-row-block">
-                      <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="buyerContact" />
-                    </div>
-                  </div>
+              <div class="box">
+                <h2 class="section-title">Buyer</h2>
+                <div class="field-row field-row-block">
+                  <input id="buyerName" class="doc-input" type="text" placeholder="Company Name" data-field="buyerName" />
                 </div>
-              </section>
-
-              <section class="doc-section">
-                <h2 class="section-title">Shipment & Terms</h2>
-                <div class="box">
-                  <div class="three-col">
-                    <div>
-                      <div class="field-row field-row-block">
-                        <span class="field-label">Ship From:</span>
-                        <input id="shipFrom" class="doc-input" type="text" placeholder="Ship From" data-field="shipFrom" />
-                      </div>
-                      <div class="field-row field-row-block">
-                        <span class="field-label">Port of Loading:</span>
-                        <input id="portOfLoading" class="doc-input" type="text" placeholder="Port of Loading" data-field="portOfLoading" />
-                      </div>
-                      <div class="field-row field-row-block">
-                        <span class="field-label">Estimated Lead Time:</span>
-                        <input id="leadTime" class="doc-input" type="text" placeholder="e.g. 15 days" data-field="leadTime" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <div class="field-row field-row-block">
-                        <span class="field-label">Ship To:</span>
-                        <input id="shipTo" class="doc-input" type="text" placeholder="Ship To" data-field="shipTo" />
-                      </div>
-                      <div class="field-row field-row-block">
-                        <span class="field-label">Port of Discharge:</span>
-                        <input id="portOfDischarge" class="doc-input" type="text" placeholder="Port of Discharge" data-field="portOfDischarge" />
-                      </div>
-                      <div class="field-row field-row-block">
-                        <span class="field-label">Incoterms:</span>
-                        <input id="incoterms" class="doc-input" type="text" placeholder="e.g. FOB, CIF, EXW" data-field="incoterms" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <div class="field-row field-row-block">
-                        <span class="field-label">Shipment Method:</span>
-                        <input id="shipmentMethod" class="doc-input" type="text" placeholder="Sea, Air, Courier..." data-field="shipmentMethod" />
-                      </div>
-                      <div class="field-row field-row-block">
-                        <span class="field-label">Payment Terms:</span>
-                        <input id="paymentTerms" class="doc-input" type="text" placeholder="e.g. 50% deposit, 50% before shipment" data-field="paymentTerms" />
-                      </div>
-                      <div class="field-row field-row-block">
-                        <span class="field-label">Estimated Charges:</span>
-                        <input id="estimatedCharges" class="doc-input" type="number" min="0" step="0.01" value="0" placeholder="Estimated Charges" data-clear-zero-on-focus="true" data-default-value="0" data-field="estimatedCharges" />
-                      </div>
-                    </div>
-                  </div>
+                <div class="field-row field-row-block">
+                  <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="buyerAddress"></textarea>
                 </div>
-              </section>
+                <div class="field-row field-row-block">
+                  <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="buyerContact" />
+                </div>
+              </div>
+            </div>
+          </section>
 
-              <section class="doc-section">
-                <div class="section-title-row">
-                  <h2 class="section-title">Items</h2>
-                  <div class="items-actions">
-                    <label class="currency-control no-print">
-                      <span class="currency-icon" aria-hidden="true">$</span>
-                      <span class="currency-label">Currency</span>
-                      <select id="currencyCode" class="currency-select" data-field="currencyCode">
-                        {commonCurrencyOptions.map((option) => <option value={option.value}>{option.label}</option>)}
-                      </select>
-                    </label>
-                    <button type="button" class="add-item-btn edit-only" id="addItemBtn" data-add-item-trigger>
-                      <span class="add-item-icon" aria-hidden="true">+</span>
-                      <span>Add Item</span>
-                    </button>
+          <section class="doc-section">
+            <h2 class="section-title">Payment & Delivery Terms</h2>
+            <div class="box">
+              <div class="three-col">
+                <div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Ship From:</span>
+                    <input id="shipFrom" class="doc-input" type="text" placeholder="Ship From" data-field="shipFrom" />
+                  </div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Port of Loading:</span>
+                    <input id="portOfLoading" class="doc-input" type="text" placeholder="Port of Loading" data-field="portOfLoading" />
+                  </div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Estimated Lead Time:</span>
+                    <input id="leadTime" class="doc-input" type="text" placeholder="e.g. 15 days" data-field="leadTime" />
+                  </div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Delivery Terms:</span>
+                    <input id="deliveryTerms" class="doc-input" type="text" placeholder="e.g. After deposit / before shipment" data-field="deliveryTerms" />
                   </div>
                 </div>
 
-                <table class="doc-table proforma-table">
-                  <thead>
-                    <tr>
-                      <th style="width: 29%;">Description</th>
-                      <th style="width: 14%;">HS Code</th>
-                      <th style="width: 9%;">Qty</th>
-                      <th style="width: 11%;">Unit</th>
-                      <th style="width: 14%;">Unit Price</th>
-                      <th style="width: 15%;">Amount</th>
-                      <th class="edit-only" style="width: 8%;"></th>
-                    </tr>
-                  </thead>
-                  <tbody id="itemsTableBody"></tbody>
-                </table>
-              </section>
-
-              <section class="doc-section">
-                <div class="two-col notes-totals-row">
-                  <div class="box">
-                    <h2 class="section-title">Notes</h2>
-                    <textarea id="invoiceRemarks" class="doc-textarea compact-remarks" rows="2" data-field="invoiceRemarks"></textarea>
+                <div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Ship To:</span>
+                    <input id="shipTo" class="doc-input" type="text" placeholder="Ship To" data-field="shipTo" />
                   </div>
-
-                  <div class="box totals-box">
-                    <div class="totals-panel">
-                      <div class="total-row"><span>Estimated Goods Value</span><strong id="subtotalValue">USD 0.00</strong></div>
-                      <div class="total-row"><span>Estimated Charges</span><strong id="chargesValue">USD 0.00</strong></div>
-                      <div class="total-row total-row-grand"><span>Estimated Total</span><output id="grandTotalValue" class="total-output">USD 0.00</output></div>
-                    </div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Port of Discharge:</span>
+                    <input id="portOfDischarge" class="doc-input" type="text" placeholder="Port of Discharge" data-field="portOfDischarge" />
+                  </div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Incoterms:</span>
+                    <input id="incoterms" class="doc-input" type="text" placeholder="e.g. FOB, CIF, EXW" data-field="incoterms" />
                   </div>
                 </div>
-              </section>
-    </div>
+
+                <div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Shipment Method:</span>
+                    <input id="shipmentMethod" class="doc-input" type="text" placeholder="Sea, Air, Courier..." data-field="shipmentMethod" />
+                  </div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Payment Terms:</span>
+                    <input id="paymentTerms" class="doc-input" type="text" placeholder="e.g. 30% deposit, 70% before shipment" data-field="paymentTerms" />
+                  </div>
+                  <div class="field-row field-row-block no-print">
+                    <span class="field-label">Estimated Charges:</span>
+                    <input id="estimatedCharges" class="doc-input" type="number" min="0" step="0.01" value="0" placeholder="Estimated Charges" data-clear-zero-on-focus="true" data-default-value="0" data-field="estimatedCharges" />
+                  </div>
+                  <div class="field-row field-row-block no-print">
+                    <span class="field-label">Deposit Required:</span>
+                    <input id="depositRequired" class="doc-input" type="number" min="0" step="0.01" value="0" placeholder="Deposit Required" data-clear-zero-on-focus="true" data-default-value="0" data-field="depositRequired" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-section">
+            <div class="section-title-row">
+              <h2 class="section-title">Items</h2>
+              <div class="items-actions">
+                <label class="currency-control no-print">
+                  <span class="currency-icon" aria-hidden="true">$</span>
+                  <span class="currency-label">Currency</span>
+                  <select id="currencyCode" class="currency-select" data-field="currencyCode">
+                    {commonCurrencyOptions.map((option) => <option value={option.value}>{option.label}</option>)}
+                  </select>
+                </label>
+                <button type="button" class="add-item-btn edit-only" id="addItemBtn" data-add-item-trigger>
+                  <span class="add-item-icon" aria-hidden="true">+</span>
+                  <span>Add Item</span>
+                </button>
+              </div>
+            </div>
+
+            <table class="doc-table proforma-table">
+              <thead>
+                <tr>
+                  <th style="width: 29%;">Description</th>
+                  <th style="width: 14%;">Item Code / SKU</th>
+                  <th style="width: 9%;">Qty</th>
+                  <th style="width: 11%;">Unit</th>
+                  <th style="width: 14%;">Unit Price</th>
+                  <th style="width: 15%;">Amount</th>
+                  <th class="edit-only" style="width: 8%;"></th>
+                </tr>
+              </thead>
+              <tbody id="itemsTableBody"></tbody>
+            </table>
+          </section>
+
+          <section class="doc-section">
+            <div class="two-col notes-totals-row">
+              <div class="box">
+                <h2 class="section-title">Notes</h2>
+                <textarea id="invoiceRemarks" class="doc-textarea compact-remarks" rows="2" placeholder="Notes or special instructions" data-field="invoiceRemarks"></textarea>
+              </div>
+
+              <div class="box totals-box">
+                <div class="totals-panel">
+                  <div class="total-row"><span>Estimated Goods Value</span><strong id="subtotalValue">USD 0.00</strong></div>
+                  <div class="total-row"><span>Estimated Charges</span><strong id="chargesValue">USD 0.00</strong></div>
+                  <div class="total-row total-row-grand"><span>Estimated Total</span><output id="grandTotalValue" class="total-output">USD 0.00</output></div>
+                  <div class="total-row"><span>Deposit Required</span><strong id="depositValue">USD 0.00</strong></div>
+                  <div class="total-row total-row-grand"><span>Balance Due</span><output id="balanceDueValue" class="total-output">USD 0.00</output></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-section bank-details-section" data-print-optional-section>
+            <h2 class="section-title">Bank Details</h2>
+            <div class="box">
+              <div class="two-col">
+                <div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Bank Name:</span>
+                    <input id="bankName" class="doc-input" type="text" placeholder="Bank Name" data-field="bankName" />
+                  </div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Account Name:</span>
+                    <input id="accountName" class="doc-input" type="text" placeholder="Account Name" data-field="accountName" />
+                  </div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Account No. / IBAN:</span>
+                    <input id="accountNumber" class="doc-input" type="text" placeholder="Account Number / IBAN" data-field="accountNumber" />
+                  </div>
+                </div>
+                <div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">SWIFT / BIC:</span>
+                    <input id="swiftCode" class="doc-input" type="text" placeholder="SWIFT / BIC" data-field="swiftCode" />
+                  </div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Bank Address:</span>
+                    <textarea id="bankAddress" class="doc-textarea compact-area" rows="2" placeholder="Bank Address" data-field="bankAddress"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-section signature-grid">
+            <div class="two-col">
+              <div class="box signature-box">
+                <h2 class="section-title">Prepared By</h2>
+                <input id="preparedBy" class="doc-input" type="text" placeholder="Name / Title" data-field="preparedBy" />
+              </div>
+              <div class="box signature-box">
+                <h2 class="section-title">Authorized Signature</h2>
+                <input id="signature" class="doc-input" type="text" placeholder="Signature / Name" data-field="signature" />
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
 
@@ -230,6 +301,7 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
         <input class="mobile-input mobile-logo-input" type="text" placeholder="Your Business Name" data-field="logoText" />
         <input class="mobile-input" type="text" placeholder="Proforma No." data-field="invoiceNumber" />
         <input class="mobile-input" type="date" data-field="invoiceDate" />
+        <input class="mobile-input" type="date" data-field="validUntil" />
       </section>
 
       <section class="mobile-form-card">
@@ -251,12 +323,14 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
         <input class="mobile-input" type="text" placeholder="Ship From" data-field="shipFrom" />
         <input class="mobile-input" type="text" placeholder="Port of Loading" data-field="portOfLoading" />
         <input class="mobile-input" type="text" placeholder="Estimated Lead Time" data-field="leadTime" />
+        <input class="mobile-input" type="text" placeholder="Delivery Terms" data-field="deliveryTerms" />
         <input class="mobile-input" type="text" placeholder="Ship To" data-field="shipTo" />
         <input class="mobile-input" type="text" placeholder="Port of Discharge" data-field="portOfDischarge" />
         <input class="mobile-input" type="text" placeholder="Incoterms" data-field="incoterms" />
         <input class="mobile-input" type="text" placeholder="Shipment Method" data-field="shipmentMethod" />
         <input class="mobile-input" type="text" placeholder="Payment Terms" data-field="paymentTerms" />
         <input class="mobile-input" type="number" min="0" step="0.01" placeholder="Estimated Charges" data-field="estimatedCharges" data-clear-zero-on-focus="true" data-default-value="0" />
+        <input class="mobile-input" type="number" min="0" step="0.01" placeholder="Deposit Required" data-field="depositRequired" data-clear-zero-on-focus="true" data-default-value="0" />
       </section>
 
       <section class="mobile-form-card">
@@ -283,7 +357,20 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
           <div><span>Estimated Goods Value</span><strong id="mobileSubtotalValue">USD 0.00</strong></div>
           <div><span>Estimated Charges</span><strong id="mobileChargesValue">USD 0.00</strong></div>
           <div class="grand-total"><span>Estimated Total</span><output id="mobileGrandTotalValue" class="total-output">USD 0.00</output></div>
+          <div><span>Deposit Required</span><strong id="mobileDepositValue">USD 0.00</strong></div>
+          <div class="grand-total"><span>Balance Due</span><output id="mobileBalanceDueValue" class="total-output">USD 0.00</output></div>
         </div>
+      </section>
+
+      <section class="mobile-form-card">
+        <h2>Bank Details & Signature</h2>
+        <input class="mobile-input" type="text" placeholder="Bank Name" data-field="bankName" />
+        <input class="mobile-input" type="text" placeholder="Account Name" data-field="accountName" />
+        <input class="mobile-input" type="text" placeholder="Account Number / IBAN" data-field="accountNumber" />
+        <input class="mobile-input" type="text" placeholder="SWIFT / BIC" data-field="swiftCode" />
+        <textarea class="mobile-textarea" placeholder="Bank Address" data-field="bankAddress"></textarea>
+        <input class="mobile-input" type="text" placeholder="Prepared By" data-field="preparedBy" />
+        <input class="mobile-input" type="text" placeholder="Authorized Signature" data-field="signature" />
       </section>
     </div>
 
@@ -316,28 +403,27 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
   </div>
 
   <article class="content-card" slot="guide">
-            <h2>How This Proforma Invoice Generator Works</h2>
-            <p>
-              Fill in seller, buyer, shipment terms, and estimated item values directly on the document. The proforma
-              invoice stays print-ready while estimated totals update automatically.
-            </p>
-          </article>
+    <h2>How This Proforma Invoice Generator Works</h2>
+    <p>
+      Fill in seller, buyer, payment terms, delivery details, deposit information, bank details, and estimated item values directly on the document. The proforma invoice stays print-ready while estimated totals, deposits, and balance due update automatically.
+    </p>
+  </article>
 
   <article class="content-card" slot="guide">
-            <h2>When to Use It</h2>
-            <p>
-              Use this proforma invoice generator for quotations, order confirmation, advance payment requests, and
-              international trade preparation before issuing a final commercial invoice.
-            </p>
-          </article>
+    <h2>When to Use It</h2>
+    <p>
+      Use this proforma invoice generator for quotations, order confirmation, advance payment requests, and
+      international trade preparation before issuing a final commercial invoice.
+    </p>
+  </article>
 
   <article class="content-card" slot="guide">
-            <h2>Why It Helps</h2>
-            <p>
-              A structured proforma invoice makes preliminary pricing clearer, helps buyers review terms faster, and
-              gives you a professional document for pre-shipment communication.
-            </p>
-          </article>
+    <h2>Why It Helps</h2>
+    <p>
+      A structured proforma invoice makes preliminary pricing clearer, helps buyers review terms faster, and
+      gives you a professional document for pre-shipment communication.
+    </p>
+  </article>
 
   <style is:global>
     .proforma-invoice-page {
@@ -564,6 +650,139 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
 
     .doc-meta {
       min-width: 250px;
+    }
+
+    .proforma-meta {
+      min-width: 276px;
+      display: grid;
+      gap: 8px;
+      justify-items: stretch;
+      align-content: start;
+    }
+
+    .proforma-meta-barcode-slot {
+      display: flex;
+      justify-content: flex-end;
+      min-height: 0;
+    }
+
+    .proforma-meta-row {
+      display: grid;
+      grid-template-columns: auto 96px 15ch;
+      align-items: center;
+      gap: 8px;
+      width: max-content;
+      margin-left: auto;
+    }
+
+    .proforma-meta-input {
+      width: 15ch;
+      min-width: 0;
+      max-width: 15ch;
+    }
+
+    .proforma-meta-action-spacer {
+      width: 130px;
+      min-width: 130px;
+      height: 1px;
+      display: block;
+    }
+
+    .proforma-barcode-block {
+      width: 3.5cm;
+      height: 1.8cm;
+      margin-top: 4px;
+      padding: 2mm 4mm;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border: 1px dashed #cbd5e1;
+      border-radius: 6px;
+      justify-self: end;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .proforma-barcode-block svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .proforma-barcode-empty {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 0 2mm;
+    }
+
+    .proforma-barcode-block[data-barcode-ready="true"] .proforma-barcode-empty {
+      display: none;
+    }
+
+    .proforma-barcode-block[hidden] {
+      display: none !important;
+    }
+
+    .barcode-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 14px;
+      border: 1px solid #93c5fd;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .barcode-action-btn:hover,
+    .barcode-action-btn.is-active {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+    }
+
+    .barcode-action-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .signature-box {
+      min-height: 80px;
     }
 
     .doc-section {
@@ -819,7 +1038,6 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
       .document-toolbar-right {
         justify-content: flex-start;
       }
-
     }
 
     @media screen and (max-width: 760px) {
@@ -841,6 +1059,40 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
       .three-col {
         grid-template-columns: 1fr;
       }
+
+      .doc-header {
+        flex-direction: column;
+      }
+
+      .proforma-meta {
+        min-width: 0;
+        width: 100%;
+        justify-items: stretch;
+      }
+
+      .proforma-meta-row {
+        grid-template-columns: 1fr;
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .proforma-meta-input {
+        width: 100%;
+        max-width: none;
+      }
+
+      .proforma-meta-action-spacer {
+        display: none;
+      }
+
+      .barcode-action-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .proforma-barcode-block {
+        justify-self: stretch;
+      }
     }
   </style>
 
@@ -857,10 +1109,19 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
       .document-action-bar,
       .editor-hint,
       .doc-subtitle,
+      .barcode-action-btn,
       .field-label:not(.print-label),
       .remove-row-btn,
       .item-delete-btn,
       .edit-only {
+        display: none !important;
+      }
+
+      @page {
+        margin: 10mm 10mm;
+      }
+
+      .print-hidden-section {
         display: none !important;
       }
 
@@ -872,6 +1133,7 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
         height: auto !important;
         min-height: auto !important;
         margin: 0 !important;
+        padding: 0 !important;
         border: 0 !important;
         box-shadow: none !important;
         background: #fff !important;
@@ -888,20 +1150,118 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
         min-height: auto !important;
       }
 
-      .doc-input,
-      .doc-textarea {
+      #proforma-invoice-document .inline-document-inner,
+      #proforma-invoice-document .proforma-document-inner {
+        padding: 0 !important;
+      }
+
+      #proforma-invoice-document .document-title-row {
+        margin-bottom: 10px !important;
+      }
+
+      #proforma-invoice-document .document-title {
+        font-size: 22pt !important;
+        line-height: 1.05 !important;
+      }
+
+      #proforma-invoice-document .doc-header {
+        gap: 10px !important;
+        padding-bottom: 8px !important;
+        border-bottom-width: 1px !important;
+      }
+
+      #proforma-invoice-document .doc-meta,
+      #proforma-invoice-document .proforma-meta {
+        gap: 4px !important;
+      }
+
+      #proforma-invoice-document .doc-section {
+        margin-top: 8px !important;
+      }
+
+      #proforma-invoice-document .box {
+        padding: 7px 8px !important;
+      }
+
+      #proforma-invoice-document .totals-panel {
+        padding: 8px !important;
+      }
+
+      #proforma-invoice-document .two-col,
+      #proforma-invoice-document .three-col {
+        gap: 8px !important;
+      }
+
+      #proforma-invoice-document .field-row-block {
+        margin-bottom: 4px !important;
+        gap: 2px !important;
+      }
+
+      #proforma-invoice-document .doc-input,
+      #proforma-invoice-document .doc-textarea {
         border: 0 !important;
         background: transparent !important;
         box-shadow: none !important;
         padding: 0 !important;
         border-radius: 0 !important;
         resize: none !important;
+        font-size: 8.6pt !important;
+        line-height: 1.2 !important;
       }
 
-      .field-label.print-label {
+      #proforma-invoice-document .field-label.print-label {
         display: inline !important;
         font-weight: 700 !important;
         white-space: nowrap !important;
+      }
+
+      #proforma-invoice-document .compact-area {
+        min-height: 34px !important;
+      }
+
+      #proforma-invoice-document .compact-remarks {
+        min-height: 32px !important;
+      }
+
+      #proforma-invoice-document .doc-table th,
+      #proforma-invoice-document .doc-table td {
+        padding: 4px 5px !important;
+        font-size: 8.4pt !important;
+        line-height: 1.18 !important;
+      }
+
+      #proforma-invoice-document .proforma-table td {
+        height: 22px !important;
+      }
+
+      #proforma-invoice-document .total-row {
+        padding: 2px 0 !important;
+        font-size: 8.6pt !important;
+      }
+
+      #proforma-invoice-document .signature-grid .box {
+        min-height: 34px !important;
+        padding: 6px 8px !important;
+        border: 0 !important;
+        border-top: 1px solid #cbd5e1 !important;
+      }
+
+      #proforma-invoice-document .signature-grid .section-title {
+        font-size: 8.5pt !important;
+        margin-bottom: 8px !important;
+      }
+
+      #proforma-invoice-document .signature-grid input {
+        min-height: 18px !important;
+        border-bottom: 1px solid #94a3b8 !important;
+      }
+
+      #proforma-invoice-document .proforma-barcode-block {
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        margin-top: 2px !important;
       }
     }
   </style>
@@ -913,10 +1273,15 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
   </style>
 
   <script>
+    import JsBarcode from "jsbarcode";
+
     document.documentElement?.setAttribute("data-worowo-inline-script", "1");
     const documentRoot = document.getElementById("proforma-invoice-document");
     const itemsTableBody = document.getElementById("itemsTableBody");
     const mobileItemsList = document.getElementById("mobileItemsList");
+    const barcodeBlock = document.getElementById("proformaBarcodeBlock");
+    const barcodeSvg = document.getElementById("proformaInvoiceBarcode");
+    const toggleBarcodeBtn = document.getElementById("toggleBarcodeBtn");
     const resetTriggers = Array.from(document.querySelectorAll("[data-reset-form-trigger], #resetFormBtn"));
     const printTriggers = Array.from(document.querySelectorAll("[data-print-document]"));
     const paperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
@@ -925,6 +1290,7 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
       "logoText",
       "invoiceNumber",
       "invoiceDate",
+      "validUntil",
       "currencyCode",
       "sellerName",
       "sellerAddress",
@@ -935,12 +1301,21 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
       "shipFrom",
       "portOfLoading",
       "leadTime",
+      "deliveryTerms",
       "shipTo",
       "portOfDischarge",
       "incoterms",
       "shipmentMethod",
       "paymentTerms",
       "estimatedCharges",
+      "depositRequired",
+      "bankName",
+      "accountName",
+      "accountNumber",
+      "swiftCode",
+      "bankAddress",
+      "preparedBy",
+      "signature",
       "invoiceRemarks",
     ];
 
@@ -958,6 +1333,7 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
         logoText: "",
         invoiceNumber: "",
         invoiceDate: "",
+        validUntil: "",
         currencyCode: "USD",
         sellerName: "",
         sellerAddress: "",
@@ -968,12 +1344,21 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
         shipFrom: "",
         portOfLoading: "",
         leadTime: "",
+        deliveryTerms: "",
         shipTo: "",
         portOfDischarge: "",
         incoterms: "",
         shipmentMethod: "",
         paymentTerms: "",
         estimatedCharges: "0",
+        depositRequired: "0",
+        bankName: "",
+        accountName: "",
+        accountNumber: "",
+        swiftCode: "",
+        bankAddress: "",
+        preparedBy: "",
+        signature: "",
         invoiceRemarks: "",
       };
     }
@@ -982,9 +1367,9 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
       return {
         id: `item-${nextItemId++}`,
         description: "",
-        hsCode: "",
+        itemCode: "",
         qty: "1",
-        unit: "",
+        unit: "pcs",
         unitPrice: "0",
       };
     }
@@ -993,6 +1378,7 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
       paper: "a4",
       fields: defaultFields(),
       items: [createItem(), createItem()],
+      barcodeVisible: false,
     };
 
     function toNumber(value) {
@@ -1029,8 +1415,10 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
         subtotal += lineAmounts(item).lineTotal;
       });
       const charges = toNumber(state.fields.estimatedCharges);
+      const deposit = toNumber(state.fields.depositRequired);
       const grandTotal = subtotal + charges;
-      return { subtotal, charges, grandTotal };
+      const balanceDue = Math.max(grandTotal - deposit, 0);
+      return { subtotal, charges, deposit, grandTotal, balanceDue };
     }
 
     function renderSharedFields() {
@@ -1047,7 +1435,7 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
       return `
         <tr class="item-row" data-item-id="${item.id}">
           <td><input class="doc-input table-input item-description" type="text" data-item-id="${item.id}" data-item-field="description" value="${escapeHtml(item.description)}" /></td>
-          <td><input class="doc-input table-input item-hs-code" type="text" data-item-id="${item.id}" data-item-field="hsCode" value="${escapeHtml(item.hsCode)}" /></td>
+          <td><input class="doc-input table-input item-code" type="text" data-item-id="${item.id}" data-item-field="itemCode" value="${escapeHtml(item.itemCode)}" /></td>
           <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" data-item-id="${item.id}" data-item-field="qty" value="${escapeHtml(item.qty)}" /></td>
           <td><input class="doc-input table-input item-unit" type="text" placeholder="pcs" data-item-id="${item.id}" data-item-field="unit" value="${escapeHtml(item.unit)}" /></td>
           <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" data-item-id="${item.id}" data-item-field="unitPrice" value="${escapeHtml(item.unitPrice)}" data-clear-zero-on-focus="true" data-default-value="0" /></td>
@@ -1072,7 +1460,7 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
             <button type="button" class="mobile-delete-item-btn" aria-label="Remove item" data-remove-item="${item.id}">Delete</button>
           </div>
           <input class="mobile-input" type="text" placeholder="Description" data-item-id="${item.id}" data-item-field="description" value="${escapeHtml(item.description)}" />
-          <input class="mobile-input" type="text" placeholder="HS Code" data-item-id="${item.id}" data-item-field="hsCode" value="${escapeHtml(item.hsCode)}" />
+          <input class="mobile-input" type="text" placeholder="Item Code / SKU" data-item-id="${item.id}" data-item-field="itemCode" value="${escapeHtml(item.itemCode)}" />
           <div class="mobile-two-col">
             <input class="mobile-input" type="number" placeholder="Qty" min="0" step="1" data-item-id="${item.id}" data-item-field="qty" value="${escapeHtml(item.qty)}" />
             <input class="mobile-input" type="text" placeholder="Unit" data-item-id="${item.id}" data-item-field="unit" value="${escapeHtml(item.unit)}" />
@@ -1097,7 +1485,7 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
     }
 
     function renderTotals() {
-      const { subtotal, charges, grandTotal } = calculateTotals();
+      const { subtotal, charges, deposit, grandTotal, balanceDue } = calculateTotals();
 
       document.querySelectorAll("[data-item-line-total]").forEach((el) => {
         const id = el.getAttribute("data-item-line-total");
@@ -1109,14 +1497,50 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
         subtotalValue: subtotal,
         chargesValue: charges,
         grandTotalValue: grandTotal,
+        depositValue: deposit,
+        balanceDueValue: balanceDue,
         mobileSubtotalValue: subtotal,
         mobileChargesValue: charges,
         mobileGrandTotalValue: grandTotal,
+        mobileDepositValue: deposit,
+        mobileBalanceDueValue: balanceDue,
       };
       Object.entries(targets).forEach(([id, value]) => {
         const el = document.getElementById(id);
         if (el) el.textContent = formatMoney(value);
       });
+    }
+
+    function renderBarcode() {
+      if (!(barcodeBlock instanceof HTMLElement) || !(barcodeSvg instanceof SVGElement)) return;
+
+      const invoiceValue = state.fields.invoiceNumber.trim();
+      const shouldShow = state.barcodeVisible;
+      const canRenderBarcode = shouldShow && invoiceValue !== "";
+
+      barcodeBlock.hidden = !shouldShow;
+      barcodeBlock.toggleAttribute("data-barcode-visible", shouldShow);
+      barcodeBlock.dataset.barcodeReady = canRenderBarcode ? "true" : "false";
+
+      if (!shouldShow || !invoiceValue) {
+        barcodeSvg.innerHTML = "";
+        return;
+      }
+
+      try {
+        JsBarcode(barcodeSvg, invoiceValue, {
+          format: "CODE128",
+          lineColor: "#111827",
+          width: 1.1,
+          height: 42,
+          displayValue: false,
+          margin: 0,
+        });
+      } catch (error) {
+        console.error("Failed to render proforma invoice barcode", error);
+        barcodeSvg.innerHTML = "";
+        barcodeBlock.dataset.barcodeReady = "false";
+      }
     }
 
     function applyPaper(paper) {
@@ -1159,10 +1583,17 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
     function resetDocumentForm() {
       state.fields = defaultFields();
       state.items = [createItem(), createItem()];
+      state.barcodeVisible = false;
       renderSharedFields();
       renderItems();
       applyPaper("a4");
       renderTotals();
+      renderBarcode();
+      if (toggleBarcodeBtn instanceof HTMLButtonElement) {
+        toggleBarcodeBtn.classList.remove("is-active");
+        const label = toggleBarcodeBtn.querySelector(".barcode-action-label");
+        if (label) label.textContent = "Show Barcode";
+      }
     }
 
     function updateField(field, value, source) {
@@ -1173,6 +1604,7 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
         }
       });
       renderTotals();
+      if (field === "invoiceNumber") renderBarcode();
     }
 
     function updateItemField(itemId, field, value, source) {
@@ -1204,6 +1636,9 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
 
     function restorePrintVisualState() {
       document.body.classList.remove("inline-doc-print-reveal");
+      document.querySelectorAll(".print-hidden-section").forEach((section) => {
+        section.classList.remove("print-hidden-section");
+      });
       documentRoot.querySelectorAll(".print-empty-field").forEach((field) => {
         field.classList.remove("print-empty-field");
         if (field.dataset.restorePlaceholder) {
@@ -1213,8 +1648,20 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
       });
     }
 
+    function updateOptionalPrintSections() {
+      document.querySelectorAll("[data-print-optional-section]").forEach((section) => {
+        const fields = Array.from(section.querySelectorAll("input, textarea, select"));
+        const hasValue = fields.some((field) => {
+          const value = String(field.value || "").trim();
+          return value !== "" && value !== "0" && value !== "0.00";
+        });
+        section.classList.toggle("print-hidden-section", !hasValue);
+      });
+    }
+
     function handleDocumentPrint() {
       preparePrintState();
+      updateOptionalPrintSections();
       document.body.classList.add("inline-doc-print-reveal");
       window.setTimeout(() => window.print(), 60);
     }
@@ -1270,6 +1717,20 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
       trigger.addEventListener("click", resetDocumentForm);
     });
 
+    if (toggleBarcodeBtn instanceof HTMLButtonElement) {
+      toggleBarcodeBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        state.barcodeVisible = !state.barcodeVisible;
+        renderBarcode();
+        toggleBarcodeBtn.classList.toggle("is-active", state.barcodeVisible);
+        const label = toggleBarcodeBtn.querySelector(".barcode-action-label");
+        if (label) {
+          label.textContent = state.barcodeVisible ? "Hide Barcode" : "Show Barcode";
+        }
+      });
+    }
+
     paperButtons.forEach((btn) => {
       btn.addEventListener("click", () => applyPaper(btn.dataset.paperSize || "a4"));
     });
@@ -1284,5 +1745,6 @@ const relatedTools = getRelatedToolsForTool("proforma_invoice_generator");
     renderItems();
     applyPaper(state.paper);
     renderTotals();
+    renderBarcode();
   </script>
 </DocumentGeneratorLayout>

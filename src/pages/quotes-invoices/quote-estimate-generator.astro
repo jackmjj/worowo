@@ -48,161 +48,167 @@ const relatedTools = getRelatedToolsForTool("quotation_estimate_generator");
   relatedTools={relatedTools}
   faqItems={faqItems}
 >
+  <div slot="actionBarCenter" class="qe-toolbar-type-control no-print" data-qe-type-toolbar-control>
+    <span class="qe-type-switch-label">Type</span>
+    <div class="qe-type-switch-options" role="group" aria-label="Document type">
+      <button type="button" class="qe-type-switch-btn is-active" data-document-type-option="Quote">Quote</button>
+      <button type="button" class="qe-type-switch-btn" data-document-type-option="Estimate">Estimate</button>
+    </div>
+  </div>
+
   <div class="inline-document-mobile-shell" slot="document">
     <div class="desktop-document-editor">
       <div id="quote-estimate-document" class="inline-document-root paper-a4 quote-estimate-sentinel">
-    <div class="inline-document-inner">
-      <div class="document-title-row">
-        <input
-          id="documentLogoText"
-          class="document-logo-text"
-          type="text"
-          placeholder="Your Business Name"
-          aria-label="Business name or logo text"
-          data-field="logoText"
-        />
+        <div class="inline-document-inner">
+          <div class="document-title-row">
+            <input
+              id="documentLogoText"
+              class="document-logo-text"
+              type="text"
+              placeholder="Your Business Name"
+              aria-label="Business name or logo text"
+              data-field="logoText"
+            />
 
-        <div class="document-title" id="documentTitlePreview">QUOTATION</div>
-      </div>
+            <div class="document-title" id="documentTitlePreview">QUOTATION</div>
+          </div>
 
-      <div class="doc-header">
-        <div>
-          <div class="doc-subtitle editor-hint no-print">Price offer before an order is confirmed</div>
+          <div class="doc-header">
+            <div>
+              <div class="doc-subtitle editor-hint no-print">Price offer before an order is confirmed</div>
+            </div>
+
+            <div class="doc-meta">
+              <div class="field-row">
+                <span class="field-label print-label" id="documentNumberLabel">Quote No.:</span>
+                <input id="documentNo" class="doc-input inline-input" type="text" placeholder="Quote No." data-field="documentNo" />
+              </div>
+              <div class="field-row">
+                <span class="field-label print-label">Issue Date:</span>
+                <input id="issueDate" class="doc-input inline-input" type="date" placeholder="Issue Date" data-field="issueDate" />
+              </div>
+              <div class="field-row">
+                <span class="field-label print-label">Valid Until:</span>
+                <input id="validUntil" class="doc-input inline-input" type="date" placeholder="Valid Until" data-field="validUntil" />
+              </div>
+            </div>
+          </div>
+
+          <section class="doc-section">
+            <div class="two-col">
+              <div class="box">
+                <h2 class="section-title">From</h2>
+                <div class="field-row field-row-block">
+                  <input id="businessName" class="doc-input" type="text" placeholder="Business Name" data-field="businessName" />
+                </div>
+                <div class="field-row field-row-block">
+                  <textarea id="businessAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="businessAddress"></textarea>
+                </div>
+                <div class="field-row field-row-block">
+                  <input id="businessContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="businessContact" />
+                </div>
+              </div>
+
+              <div class="box">
+                <h2 class="section-title">To</h2>
+                <div class="field-row field-row-block">
+                  <input id="clientName" class="doc-input" type="text" placeholder="Client Name" data-field="clientName" />
+                </div>
+                <div class="field-row field-row-block">
+                  <textarea id="clientAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="clientAddress"></textarea>
+                </div>
+                <div class="field-row field-row-block">
+                  <input id="clientContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="clientContact" />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-section">
+            <div class="section-title-row">
+              <h2 class="section-title">Items / Services</h2>
+              <div class="items-actions">
+                <label class="currency-control no-print">
+                  <span class="currency-icon" aria-hidden="true">$</span>
+                  <span class="currency-label">Currency</span>
+                  <select id="currencyCode" class="currency-select" data-field="currencyCode">
+                    {commonCurrencyOptions.map((option) => <option value={option.value}>{option.label}</option>)}
+                  </select>
+                </label>
+                <button type="button" class="add-item-btn edit-only" id="addItemBtn" data-add-item-trigger>
+                  <span class="add-item-icon" aria-hidden="true">+</span>
+                  <span>Add Item</span>
+                </button>
+              </div>
+            </div>
+
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th style="width: 36%;">Description</th>
+                  <th style="width: 8%;">Qty</th>
+                  <th style="width: 13%;">Unit Price</th>
+                  <th style="width: 10%;">Discount %</th>
+                  <th style="width: 9%;">Tax %</th>
+                  <th style="width: 16%;">Amount</th>
+                  <th class="edit-only" style="width: 8%;"></th>
+                </tr>
+              </thead>
+              <tbody id="itemsTableBody"></tbody>
+            </table>
+          </section>
+
+          <section class="doc-section">
+            <div class="two-col notes-totals-row">
+              <div class="box">
+                <h2 class="section-title">Terms & Notes</h2>
+                <div class="field-row field-row-block">
+                  <span class="field-label">Terms:</span>
+                  <textarea id="terms" class="doc-textarea compact-remarks" rows="2" placeholder="Terms" data-field="terms"></textarea>
+                </div>
+                <div class="field-row field-row-block">
+                  <span class="field-label">Notes:</span>
+                  <textarea id="notes" class="doc-textarea compact-remarks" rows="2" placeholder="Notes" data-field="notes"></textarea>
+                </div>
+              </div>
+
+              <div class="box totals-box">
+                <div class="totals-panel">
+                  <div class="total-row"><span>Subtotal</span><strong id="subtotalValue">USD 0.00</strong></div>
+                  <div class="total-row"><span>Discount</span><strong id="discountValue">USD 0.00</strong></div>
+                  <div class="total-row"><span>Tax</span><strong id="taxValue">USD 0.00</strong></div>
+                  <div class="total-row total-row-grand"><span>Total</span><output id="grandTotalValue" class="total-output">USD 0.00</output></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-section signature-grid">
+            <div class="two-col">
+              <div class="box">
+                <h2 class="section-title">Prepared By</h2>
+                <input id="preparedBy" class="doc-input" type="text" data-field="preparedBy" />
+              </div>
+              <div class="box">
+                <h2 class="section-title">Authorized Signature</h2>
+                <input id="signature" class="doc-input" type="text" data-field="signature" />
+              </div>
+            </div>
+          </section>
         </div>
-
-        <div class="doc-meta">
-          <div class="field-row qe-type-field-row no-print">
-            <label class="qe-type-toggle">
-              <span class="qe-type-toggle__label">Type</span>
-              <select id="documentType" class="qe-type-toggle__select" data-field="documentType">
-                <option value="Quote">Quote</option>
-                <option value="Estimate">Estimate</option>
-              </select>
-            </label>
-          </div>
-          <div class="field-row">
-            <span class="field-label print-label" id="documentNumberLabel">Quote No.:</span>
-            <input id="documentNo" class="doc-input inline-input" type="text" placeholder="Quote No." data-field="documentNo" />
-          </div>
-          <div class="field-row">
-            <span class="field-label print-label">Issue Date:</span>
-            <input id="issueDate" class="doc-input inline-input" type="date" placeholder="Issue Date" data-field="issueDate" />
-          </div>
-          <div class="field-row">
-            <span class="field-label print-label">Valid Until:</span>
-            <input id="validUntil" class="doc-input inline-input" type="date" placeholder="Valid Until" data-field="validUntil" />
-          </div>
-        </div>
-      </div>
-
-      <section class="doc-section">
-        <div class="two-col">
-          <div class="box">
-            <h2 class="section-title">From</h2>
-            <div class="field-row field-row-block">
-              <input id="businessName" class="doc-input" type="text" placeholder="Business Name" data-field="businessName" />
-            </div>
-            <div class="field-row field-row-block">
-              <textarea id="businessAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="businessAddress"></textarea>
-            </div>
-            <div class="field-row field-row-block">
-              <input id="businessContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="businessContact" />
-            </div>
-          </div>
-
-          <div class="box">
-            <h2 class="section-title">To</h2>
-            <div class="field-row field-row-block">
-              <input id="clientName" class="doc-input" type="text" placeholder="Client Name" data-field="clientName" />
-            </div>
-            <div class="field-row field-row-block">
-              <textarea id="clientAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="clientAddress"></textarea>
-            </div>
-            <div class="field-row field-row-block">
-              <input id="clientContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="clientContact" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="doc-section">
-        <div class="section-title-row">
-          <h2 class="section-title">Items / Services</h2>
-          <div class="items-actions">
-            <label class="currency-control no-print">
-              <span class="currency-icon" aria-hidden="true">$</span>
-              <span class="currency-label">Currency</span>
-              <select id="currencyCode" class="currency-select" data-field="currencyCode">
-                {commonCurrencyOptions.map((option) => <option value={option.value}>{option.label}</option>)}
-              </select>
-            </label>
-            <button type="button" class="add-item-btn edit-only" id="addItemBtn" data-add-item-trigger>
-              <span class="add-item-icon" aria-hidden="true">+</span>
-              <span>Add Item</span>
-            </button>
-          </div>
-        </div>
-
-        <table class="doc-table">
-          <thead>
-            <tr>
-              <th style="width: 36%;">Description</th>
-              <th style="width: 8%;">Qty</th>
-              <th style="width: 13%;">Unit Price</th>
-              <th style="width: 10%;">Discount %</th>
-              <th style="width: 9%;">Tax %</th>
-              <th style="width: 16%;">Amount</th>
-              <th class="edit-only" style="width: 8%;"></th>
-            </tr>
-          </thead>
-          <tbody id="itemsTableBody"></tbody>
-        </table>
-      </section>
-
-      <section class="doc-section">
-        <div class="two-col notes-totals-row">
-          <div class="box">
-            <h2 class="section-title">Terms & Notes</h2>
-            <div class="field-row field-row-block">
-              <span class="field-label">Terms:</span>
-              <textarea id="terms" class="doc-textarea compact-remarks" rows="2" placeholder="Terms" data-field="terms"></textarea>
-            </div>
-            <div class="field-row field-row-block">
-              <span class="field-label">Notes:</span>
-              <textarea id="notes" class="doc-textarea compact-remarks" rows="2" placeholder="Notes" data-field="notes"></textarea>
-            </div>
-          </div>
-
-          <div class="box totals-box">
-            <div class="totals-panel">
-              <div class="total-row"><span>Subtotal</span><strong id="subtotalValue">USD 0.00</strong></div>
-              <div class="total-row"><span>Discount</span><strong id="discountValue">USD 0.00</strong></div>
-              <div class="total-row"><span>Tax</span><strong id="taxValue">USD 0.00</strong></div>
-              <div class="total-row total-row-grand"><span>Total</span><output id="grandTotalValue" class="total-output">USD 0.00</output></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="doc-section signature-grid">
-        <div class="two-col">
-          <div class="box">
-            <h2 class="section-title">Prepared By</h2>
-            <input id="preparedBy" class="doc-input" type="text" data-field="preparedBy" />
-          </div>
-          <div class="box">
-            <h2 class="section-title">Authorized Signature</h2>
-            <input id="signature" class="doc-input" type="text" data-field="signature" />
-          </div>
-        </div>
-      </section>
-    </div>
       </div>
     </div>
 
     <div class="mobile-document-editor no-print">
       <div class="mobile-action-card">
         <a href="/quotes-invoices/" class="mobile-back-btn">Back to Quotes & Invoices</a>
+        <div class="qe-type-switch qe-type-switch--mobile" data-qe-type-mobile-control>
+          <span class="qe-type-switch-label">Type</span>
+          <div class="qe-type-switch-options" role="group" aria-label="Document type">
+            <button type="button" class="qe-type-switch-btn is-active" data-document-type-option="Quote">Quote</button>
+            <button type="button" class="qe-type-switch-btn" data-document-type-option="Estimate">Estimate</button>
+          </div>
+        </div>
         <div class="mobile-paper-size">
           <span class="mobile-paper-size-label">Paper Size</span>
           <div class="mobile-paper-toggle" aria-label="Paper size">
@@ -214,13 +220,6 @@ const relatedTools = getRelatedToolsForTool("quotation_estimate_generator");
 
       <section class="mobile-form-card">
         <h2>Document Type & Numbers</h2>
-        <label class="qe-type-toggle qe-type-toggle--mobile">
-          <span class="qe-type-toggle__label">Type</span>
-          <select class="qe-type-toggle__select" data-field="documentType">
-            <option value="Quote">Quote</option>
-            <option value="Estimate">Estimate</option>
-          </select>
-        </label>
         <input class="mobile-input mobile-logo-input" type="text" placeholder="Your Business Name (logo)" data-field="logoText" />
         <input class="mobile-input" type="text" placeholder="Quote No." data-field="documentNo" />
         <input class="mobile-input" type="date" data-field="issueDate" />
@@ -330,83 +329,90 @@ const relatedTools = getRelatedToolsForTool("quotation_estimate_generator");
       --quote-estimate-sentinel: 1;
     }
 
-    .qe-type-field-row {
-      min-height: 36px;
+    .qe-toolbar-type-control {
+      display: inline-flex;
     }
 
-    /* Match `.add-item-btn` pill styling from DocumentGeneratorLayout */
-    .qe-type-toggle {
+    .document-toolbar .qe-toolbar-type-control,
+    .document-action-bar .qe-toolbar-type-control {
+      margin-right: 2px;
+    }
+
+    .qe-type-switch,
+    .qe-toolbar-type-control {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
       min-height: 36px;
-      padding: 0 14px;
-      border: 1px solid #93c5fd;
-      border-radius: 999px;
-      background: #eff6ff;
-      color: #2563eb;
+      padding: 0;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 750;
       line-height: 1;
-      cursor: pointer;
       white-space: nowrap;
+    }
+
+    .qe-type-switch-label {
+      font-size: 13px;
+      font-weight: 750;
+      color: #6b7280;
+      white-space: nowrap;
+    }
+
+    .qe-type-switch-options {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      border: 1px solid #d9e2ee;
+      border-radius: 999px;
+      background: #eef3f8;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    }
+
+    .qe-type-switch-btn {
+      min-width: 84px;
+      height: 36px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
       transition:
         background-color 0.15s ease,
-        border-color 0.15s ease,
         color 0.15s ease,
-        transform 0.15s ease,
         box-shadow 0.15s ease;
     }
 
-    .qe-type-toggle:hover {
-      background: #dbeafe;
-      border-color: #60a5fa;
-      color: #1d4ed8;
-      transform: translateY(-1px);
-      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+    .qe-type-switch-btn.is-active {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.22);
     }
 
-    .qe-type-toggle:focus-within {
+    .qe-type-switch-btn:not(.is-active):hover {
+      color: #1e293b;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .qe-type-switch-btn:focus-visible {
       outline: none;
       box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
     }
 
-    .qe-type-toggle__label {
-      color: #2563eb;
-      white-space: nowrap;
-    }
-
-    .qe-type-toggle:hover .qe-type-toggle__label {
-      color: #1d4ed8;
-    }
-
-    .qe-type-toggle__select {
-      margin: 0;
-      border: 0;
-      background: transparent;
-      color: #111827;
-      font-size: 13px;
-      font-weight: 850;
-      line-height: 1;
-      outline: none;
-      cursor: pointer;
-      padding: 0;
-      min-width: 0;
-      max-width: 9rem;
-    }
-
-    .qe-type-toggle--mobile {
+    .qe-type-switch--mobile {
       width: 100%;
       box-sizing: border-box;
-      min-height: 44px;
-      margin-bottom: 12px;
+      justify-content: space-between;
     }
 
-    .qe-type-toggle--mobile .qe-type-toggle__select {
-      flex: 1 1 auto;
-      max-width: none;
-      font-size: 15px;
-      text-align: right;
+    @media screen and (max-width: 760px) {
+      .document-toolbar .qe-toolbar-type-control,
+      .document-action-bar .qe-toolbar-type-control,
+      .invoice-action-bar .qe-toolbar-type-control {
+        display: none !important;
+      }
     }
 
     @media print {
@@ -582,7 +588,7 @@ const relatedTools = getRelatedToolsForTool("quotation_estimate_generator");
     }
 
     function renderDocumentType() {
-      const type = state.fields.documentType || "Quote";
+      const type = state.fields.documentType === "Estimate" ? "Estimate" : "Quote";
       const titlePreview = document.getElementById("documentTitlePreview");
       const numberLabel = document.getElementById("documentNumberLabel");
       if (titlePreview) titlePreview.textContent = type === "Estimate" ? "ESTIMATE" : "QUOTATION";
@@ -590,6 +596,12 @@ const relatedTools = getRelatedToolsForTool("quotation_estimate_generator");
       const numberPlaceholder = type === "Estimate" ? "Estimate No." : "Quote No.";
       document.querySelectorAll('[data-field="documentNo"]').forEach((el) => {
         if (el instanceof HTMLInputElement) el.placeholder = numberPlaceholder;
+      });
+      document.querySelectorAll("[data-document-type-option]").forEach((button) => {
+        button.classList.toggle("is-active", button.getAttribute("data-document-type-option") === type);
+        if (button instanceof HTMLButtonElement) {
+          button.setAttribute("aria-pressed", button.getAttribute("data-document-type-option") === type ? "true" : "false");
+        }
       });
     }
 
@@ -824,6 +836,13 @@ const relatedTools = getRelatedToolsForTool("quotation_estimate_generator");
     document.addEventListener("click", (event) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
+
+      const typeButton = target.closest("[data-document-type-option]");
+      if (typeButton) {
+        const type = typeButton.getAttribute("data-document-type-option") === "Estimate" ? "Estimate" : "Quote";
+        updateField("documentType", type, typeButton);
+        return;
+      }
 
       const removeButton = target.closest("[data-remove-item]");
       if (removeButton) {

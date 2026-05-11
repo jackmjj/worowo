@@ -5,7 +5,7 @@ import { getBlankTemplateForTool, getRelatedToolsForTool } from "../../data/tool
 
 const pageTitle = "Invoice Generator";
 const pageDescription =
-  "Create a professional invoice online with customer details, item lines, tax, discount, and print-ready totals. Print or save the final invoice as PDF.";
+  "Create a professional invoice online with customer details, item lines, payment terms, payment instructions, tax, discount, barcode, and print-ready totals. Print or save the final invoice as PDF.";
 const canonical = "https://www.worowo.com/quotes-invoices/invoice-generator/";
 const blankTemplate = getBlankTemplateForTool("invoice_generator");
 
@@ -55,125 +55,144 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
     <div class="desktop-document-editor">
       <div id="invoice-document" class="inline-document-root invoice-document paper-a4">
         <div class="inline-document-inner invoice-document-inner">
-              <div class="document-title-row">
-                <input
-                  id="invoiceLogoText"
-                  class="document-logo-text"
-                  type="text"
-                  placeholder="Your Business Name"
-                  aria-label="Business name or logo text"
-                  data-field="businessName"
-                />
+          <div class="document-title-row">
+            <input
+              id="invoiceLogoText"
+              class="document-logo-text"
+              type="text"
+              placeholder="Your Business Name"
+              aria-label="Business name or logo text"
+              data-field="businessName"
+            />
 
-                <div class="document-title">INVOICE</div>
+            <div class="document-title">INVOICE</div>
+          </div>
+
+          <div class="doc-header">
+            <div>
+              <div class="doc-subtitle editor-hint no-print">Billing document for products or services</div>
+              <div class="invoice-barcode-block" id="invoiceBarcodeBlock" hidden>
+                <svg id="invoiceBarcode" aria-label="Invoice barcode"></svg>
+                <span class="barcode-empty-text">Enter Invoice No.</span>
+              </div>
+            </div>
+
+            <div class="doc-meta">
+              <button type="button" class="barcode-action-btn no-print" id="toggleBarcodeBtn">
+                <span class="barcode-action-icon" aria-hidden="true">▥</span>
+                <span class="barcode-action-label">Show Barcode</span>
+              </button>
+              <div class="field-row">
+                <span class="field-label print-label">Invoice No.:</span>
+                <input id="invoiceNumber" class="doc-input inline-input" type="text" placeholder="Invoice No." data-field="invoiceNo" />
+              </div>
+              <div class="field-row">
+                <span class="field-label print-label">Date:</span>
+                <input id="invoiceDate" class="doc-input inline-input" type="date" placeholder="Invoice Date" data-field="invoiceDate" />
+              </div>
+              <div class="field-row">
+                <span class="field-label print-label">Due Date:</span>
+                <input id="dueDate" class="doc-input inline-input" type="date" placeholder="Due Date" data-field="dueDate" />
+              </div>
+            </div>
+          </div>
+
+          <section class="doc-section">
+            <div class="two-col">
+              <div class="box">
+                <h2 class="section-title">From</h2>
+                <div class="field-row field-row-block">
+                  <input id="sellerName" class="doc-input" type="text" placeholder="Business Name" data-field="fromName" />
+                </div>
+                <div class="field-row field-row-block">
+                  <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="fromAddress"></textarea>
+                </div>
+                <div class="field-row field-row-block">
+                  <input id="sellerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="fromContact" />
+                </div>
               </div>
 
-              <div class="doc-header">
-                <div>
-                  <div class="doc-subtitle editor-hint no-print">Billing document for products or services</div>
+              <div class="box">
+                <h2 class="section-title">Bill To</h2>
+                <div class="field-row field-row-block">
+                  <input id="buyerName" class="doc-input" type="text" placeholder="Client Name" data-field="billToName" />
                 </div>
+                <div class="field-row field-row-block">
+                  <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="billToAddress"></textarea>
+                </div>
+                <div class="field-row field-row-block">
+                  <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="billToContact" />
+                </div>
+              </div>
+            </div>
+          </section>
 
-                <div class="doc-meta">
-                  <div class="field-row">
-                    <span class="field-label print-label">Invoice No.:</span>
-                    <input id="invoiceNumber" class="doc-input inline-input" type="text" placeholder="Invoice No." data-field="invoiceNo" />
-                  </div>
-                  <div class="field-row">
-                    <span class="field-label print-label">Date:</span>
-                    <input id="invoiceDate" class="doc-input inline-input" type="date" placeholder="Invoice Date" data-field="invoiceDate" />
-                  </div>
-                  <div class="field-row">
-                    <span class="field-label print-label">Due Date:</span>
-                    <input id="dueDate" class="doc-input inline-input" type="date" placeholder="Due Date" data-field="dueDate" />
-                  </div>
+          <section class="doc-section">
+            <div class="items-section-header">
+              <h2 class="section-title">Items</h2>
+              <div class="items-actions">
+                <label class="currency-control no-print">
+                  <span class="currency-icon" aria-hidden="true">$</span>
+                  <span class="currency-label">Currency</span>
+                  <select id="currencyCode" class="currency-select" data-field="currencyCode">
+                    {commonCurrencyOptions.map((option) => <option value={option.value}>{option.label}</option>)}
+                  </select>
+                </label>
+                <button type="button" id="addItemBtn" class="add-item-btn edit-only" data-add-item-trigger>
+                  <span class="add-item-icon" aria-hidden="true">+</span>
+                  <span>Add Item</span>
+                </button>
+              </div>
+            </div>
+
+            <table class="doc-table invoice-table">
+              <thead>
+                <tr>
+                  <th style="width: 38%;">Description</th>
+                  <th style="width: 11%;">Qty</th>
+                  <th style="width: 16%;">Unit Price</th>
+                  <th style="width: 11%;">Tax %</th>
+                  <th style="width: 18%;">Amount</th>
+                  <th class="edit-only" style="width: 6%;"></th>
+                </tr>
+              </thead>
+              <tbody id="itemsTableBody"></tbody>
+            </table>
+          </section>
+
+          <section class="doc-section">
+            <div class="two-col notes-totals-row">
+              <div class="box payment-notes-box">
+                <h2 class="section-title">Payment & Notes</h2>
+                <div class="field-row field-row-block">
+                  <span class="field-label">Payment Terms:</span>
+                  <input id="paymentTerms" class="doc-input" type="text" placeholder="e.g. Net 30, Due on receipt" data-field="paymentTerms" />
+                </div>
+                <div class="field-row field-row-block">
+                  <span class="field-label">Payment Instructions:</span>
+                  <textarea id="paymentInstructions" class="doc-textarea compact-payment" rows="2" placeholder="Bank transfer, PayPal, Stripe, check payable to..." data-field="paymentInstructions"></textarea>
+                </div>
+                <div class="field-row field-row-block">
+                  <span class="field-label">Notes:</span>
+                  <textarea id="invoiceNotes" class="doc-textarea compact-remarks" rows="2" data-field="notes"></textarea>
                 </div>
               </div>
 
-              <section class="doc-section">
-                <div class="two-col">
-                  <div class="box">
-                    <h2 class="section-title">From</h2>
-                    <div class="field-row field-row-block">
-                      <input id="sellerName" class="doc-input" type="text" placeholder="Business Name" data-field="fromName" />
-                    </div>
-                    <div class="field-row field-row-block">
-                      <textarea id="sellerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="fromAddress"></textarea>
-                    </div>
-                    <div class="field-row field-row-block">
-                      <input id="sellerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="fromContact" />
-                    </div>
-                  </div>
-
-                  <div class="box">
-                    <h2 class="section-title">Bill To</h2>
-                    <div class="field-row field-row-block">
-                      <input id="buyerName" class="doc-input" type="text" placeholder="Client Name" data-field="billToName" />
-                    </div>
-                    <div class="field-row field-row-block">
-                      <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="billToAddress"></textarea>
-                    </div>
-                    <div class="field-row field-row-block">
-                      <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="billToContact" />
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="doc-section">
-                <div class="items-section-header">
-                  <h2 class="section-title">Items</h2>
-                  <div class="items-actions">
-                    <label class="currency-control no-print">
-                      <span class="currency-icon" aria-hidden="true">$</span>
-                      <span class="currency-label">Currency</span>
-                      <select id="currencyCode" class="currency-select" data-field="currencyCode">
-                        {commonCurrencyOptions.map((option) => <option value={option.value}>{option.label}</option>)}
-                      </select>
-                    </label>
-                    <button type="button" id="addItemBtn" class="add-item-btn edit-only" data-add-item-trigger>
-                      <span class="add-item-icon" aria-hidden="true">+</span>
-                      <span>Add Item</span>
-                    </button>
-                  </div>
+              <div class="box totals-box">
+                <div class="field-row field-row-block">
+                  <span class="field-label print-label">Discount:</span>
+                  <input id="discountValue" class="doc-input short-input" type="number" min="0" step="0.01" value="0" placeholder="Discount" data-field="discount" data-clear-zero-on-focus="true" data-default-value="0" />
                 </div>
 
-                <table class="doc-table invoice-table">
-                  <thead>
-                    <tr>
-                      <th style="width: 38%;">Description</th>
-                      <th style="width: 11%;">Qty</th>
-                      <th style="width: 16%;">Unit Price</th>
-                      <th style="width: 11%;">Tax %</th>
-                      <th style="width: 18%;">Amount</th>
-                      <th class="edit-only" style="width: 6%;"></th>
-                    </tr>
-                  </thead>
-                  <tbody id="itemsTableBody"></tbody>
-                </table>
-              </section>
-
-              <section class="doc-section">
-                <div class="two-col notes-totals-row">
-                  <div class="box">
-                    <h2 class="section-title">Notes</h2>
-                    <textarea id="invoiceNotes" class="doc-textarea compact-remarks" rows="2" data-field="notes"></textarea>
-                  </div>
-
-                  <div class="box totals-box">
-                    <div class="field-row field-row-block">
-                      <span class="field-label print-label">Discount:</span>
-                      <input id="discountValue" class="doc-input short-input" type="number" min="0" step="0.01" value="0" placeholder="Discount" data-field="discount" data-clear-zero-on-focus="true" data-default-value="0" />
-                    </div>
-
-                    <div class="totals-panel">
-                      <div class="total-row"><span>Subtotal</span><strong id="subtotalValue">USD 0.00</strong></div>
-                      <div class="total-row"><span>Tax</span><strong id="taxValue">USD 0.00</strong></div>
-                      <div class="total-row"><span>Discount</span><strong id="discountPreviewValue">USD 0.00</strong></div>
-                      <div class="total-row total-row-grand"><span>Grand Total</span><output id="grandTotalValue" class="total-output">USD 0.00</output></div>
-                    </div>
-                  </div>
+                <div class="totals-panel">
+                  <div class="total-row"><span>Subtotal</span><strong id="subtotalValue">USD 0.00</strong></div>
+                  <div class="total-row"><span>Tax</span><strong id="taxValue">USD 0.00</strong></div>
+                  <div class="total-row"><span>Discount</span><strong id="discountPreviewValue">USD 0.00</strong></div>
+                  <div class="total-row total-row-grand"><span>Grand Total</span><output id="grandTotalValue" class="total-output">USD 0.00</output></div>
                 </div>
-              </section>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>
@@ -196,6 +215,10 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
 
         <input class="mobile-input mobile-logo-input" type="text" placeholder="Your Business Name" data-field="businessName" />
         <input class="mobile-input" type="text" placeholder="Invoice No." data-field="invoiceNo" />
+        <button type="button" class="barcode-action-btn barcode-action-btn--mobile" data-mobile-barcode-toggle>
+          <span class="barcode-action-icon" aria-hidden="true">▥</span>
+          <span class="barcode-action-label">Show Barcode</span>
+        </button>
         <input class="mobile-input" type="date" data-field="invoiceDate" />
         <input class="mobile-input" type="date" data-field="dueDate" />
       </section>
@@ -237,6 +260,8 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
       <section class="mobile-form-card">
         <h2>Notes & Totals</h2>
 
+        <input class="mobile-input" type="text" placeholder="Payment Terms" data-field="paymentTerms" />
+        <textarea class="mobile-textarea" placeholder="Payment Instructions" data-field="paymentInstructions"></textarea>
         <textarea class="mobile-textarea" placeholder="Notes" data-field="notes"></textarea>
 
         <input class="mobile-input" type="number" placeholder="Discount" data-field="discount" data-clear-zero-on-focus="true" data-default-value="0" />
@@ -320,8 +345,14 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
         <section class="doc-section">
           <div class="two-col notes-totals-row">
             <div class="box">
-              <h2 class="section-title">Notes</h2>
-              <div class="print-multiline" data-print-field="notes"></div>
+              <h2 class="section-title">Payment & Notes</h2>
+              <div class="print-block-lines">
+                <div><strong>Payment Terms:</strong> <span data-print-field="paymentTerms"></span></div>
+                <div><strong>Payment Instructions:</strong></div>
+                <div class="print-multiline" data-print-field="paymentInstructions"></div>
+                <div><strong>Notes:</strong></div>
+                <div class="print-multiline" data-print-field="notes"></div>
+              </div>
             </div>
 
             <div class="box totals-box">
@@ -725,6 +756,102 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
 
     .doc-meta {
       min-width: 250px;
+      display: grid;
+      justify-items: end;
+      gap: 2px;
+    }
+
+    .invoice-barcode-block {
+      width: 3.5cm;
+      height: 1.8cm;
+      margin-top: 10px;
+      padding: 2mm 4mm;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .invoice-barcode-block[hidden] {
+      display: none !important;
+    }
+
+    .invoice-barcode-block svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .barcode-empty-text {
+      display: none;
+      color: #94a3b8;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .barcode-action-btn {
+      justify-self: end;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      margin-bottom: 8px;
+      padding: 0 12px;
+      border: 1px solid #93c5fd;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .barcode-action-btn:hover {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+    }
+
+    .barcode-action-btn.is-active {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+    }
+
+    .barcode-action-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .barcode-action-btn--mobile {
+      width: 100%;
+      justify-content: center;
+      min-height: 42px;
+      margin: 0 0 12px;
     }
 
     .doc-section {
@@ -914,8 +1041,13 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
     }
 
     .compact-area,
-    .compact-remarks {
+    .compact-remarks,
+    .compact-payment {
       min-height: 64px;
+    }
+
+    .payment-notes-box .field-row-block {
+      margin-bottom: 8px;
     }
 
     .doc-table {
@@ -1618,6 +1750,7 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
       .generator-seo-block,
       .generator-faq-block,
       .no-print,
+      .barcode-action-btn,
       .invoice-action-bar,
       .editor-hint,
       .doc-subtitle,
@@ -1720,6 +1853,15 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
         padding-right: 0 !important;
       }
 
+      .invoice-barcode-block {
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        padding-left: 4mm !important;
+        padding-right: 4mm !important;
+        box-shadow: none !important;
+      }
+
       .invoice-logo-text::placeholder,
       .doc-input::placeholder,
       .doc-textarea::placeholder {
@@ -1782,11 +1924,16 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
   </style>
 
   <script>
+    import JsBarcode from "jsbarcode";
+
     document.documentElement?.setAttribute("data-worowo-inline-script", "1");
     const documentRoot = document.getElementById("invoice-document");
     const itemsTableBody = document.getElementById("itemsTableBody");
     const mobileItemsList = document.getElementById("mobileItemsList");
     const printItemsTableBody = document.getElementById("printItemsTableBody");
+    const barcodeBlock = document.getElementById("invoiceBarcodeBlock");
+    const barcodeSvg = document.getElementById("invoiceBarcode");
+    const barcodeToggleButtons = Array.from(document.querySelectorAll("#toggleBarcodeBtn, [data-mobile-barcode-toggle]"));
     const paperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
     const addItemTriggers = Array.from(document.querySelectorAll("[data-add-item-trigger]"));
     const resetTriggers = Array.from(document.querySelectorAll("[data-reset-form-trigger], #resetFormBtn"));
@@ -1802,6 +1949,8 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
       "billToName",
       "billToAddress",
       "billToContact",
+      "paymentTerms",
+      "paymentInstructions",
       "notes",
       "currencyCode",
       "discount",
@@ -1828,6 +1977,8 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
         billToName: "",
         billToAddress: "",
         billToContact: "",
+        paymentTerms: "",
+        paymentInstructions: "",
         notes: "",
         currencyCode: "USD",
         discount: "0",
@@ -1846,6 +1997,7 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
 
     const state = {
       paper: "a4",
+      barcodeVisible: false,
       fields: defaultFields(),
       items: [createItem(), createItem()],
     };
@@ -1869,6 +2021,45 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;");
+    }
+
+    function renderInvoiceBarcode() {
+      if (!barcodeBlock || !barcodeSvg) return;
+
+      const value = state.fields.invoiceNo.trim();
+
+      if (!state.barcodeVisible || !value) {
+        barcodeBlock.hidden = true;
+        barcodeSvg.innerHTML = "";
+        barcodeToggleButtons.forEach((button) => {
+          button.classList.toggle("is-active", false);
+          const label = button.querySelector(".barcode-action-label");
+          if (label) label.textContent = "Show Barcode";
+        });
+        return;
+      }
+
+      barcodeBlock.hidden = false;
+
+      JsBarcode(barcodeSvg, value, {
+        format: "CODE128",
+        lineColor: "#111827",
+        width: 1.1,
+        height: 42,
+        displayValue: false,
+        margin: 0,
+      });
+
+      barcodeToggleButtons.forEach((button) => {
+        button.classList.toggle("is-active", true);
+        const label = button.querySelector(".barcode-action-label");
+        if (label) label.textContent = "Hide Barcode";
+      });
+    }
+
+    function toggleBarcode() {
+      state.barcodeVisible = !state.barcodeVisible;
+      renderInvoiceBarcode();
     }
 
     function calculateItemAmount(item) {
@@ -1906,6 +2097,8 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
           node.textContent = state.fields[field];
         });
       });
+
+      renderInvoiceBarcode();
 
       const printDiscountFieldValue = document.getElementById("printDiscountFieldValue");
       if (printDiscountFieldValue) {
@@ -1973,7 +2166,7 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
       if (printItemsTableBody) {
         printItemsTableBody.innerHTML = state.items
           .map(
-                (item) => `
+            (item) => `
               <tr>
                 <td>${escapeHtml(item.description)}</td>
                 <td>${escapeHtml(item.qty)}</td>
@@ -1990,7 +2183,7 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
     function renderTotals() {
       const totals = calculateTotals();
 
-      document.querySelectorAll('[data-item-amount]').forEach((el) => {
+      document.querySelectorAll("[data-item-amount]").forEach((el) => {
         const item = state.items.find((entry) => entry.id === el.getAttribute("data-item-amount"));
         if (item) el.textContent = formatMoney(calculateItemAmount(item));
       });
@@ -2055,6 +2248,7 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
 
     function resetDocumentForm() {
       state.fields = defaultFields();
+      state.barcodeVisible = false;
       state.items = [createItem(), createItem()];
       renderSharedFields();
       renderItems();
@@ -2070,6 +2264,10 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
           input.value = value;
         }
       });
+
+      if (field === "invoiceNo") {
+        renderInvoiceBarcode();
+      }
 
       renderTotals();
     }
@@ -2188,6 +2386,10 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
       });
     });
 
+    barcodeToggleButtons.forEach((button) => {
+      button.addEventListener("click", toggleBarcode);
+    });
+
     printTriggers.forEach((trigger) => {
       trigger.addEventListener("click", onPrintTrigger);
     });
@@ -2196,6 +2398,7 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
     renderSharedFields();
     renderItems();
     applyPaper(state.paper);
+    renderInvoiceBarcode();
     renderTotals();
   </script>
 </DocumentGeneratorLayout>

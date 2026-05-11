@@ -93,6 +93,10 @@ const printHref = config?.printHref || "#";
             <a href={categoryHref} class="action-btn action-btn-secondary">{backLabel}</a>
           </div>
 
+          <div class="document-action-bar__middle">
+            <slot name="actionBarCenter" />
+          </div>
+
           <div class="document-action-bar__right">
             <div class="paper-size-group">
               <span class="paper-size-label">Paper Size</span>
@@ -295,6 +299,14 @@ const printHref = config?.printHref || "#";
 
   .document-action-bar__left {
     flex: 0 0 auto;
+  }
+
+  .document-action-bar__middle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   .document-action-bar__right {
@@ -1134,8 +1146,13 @@ const printHref = config?.printHref || "#";
     }
 
     .document-action-bar__left,
+    .document-action-bar__middle,
     .document-action-bar__right {
       width: 100%;
+    }
+
+    .document-action-bar__middle {
+      justify-content: flex-start;
     }
 
     .document-action-bar__right {

@@ -5,7 +5,7 @@ import { getRelatedToolsForTool } from "../../data/toolRelations";
 
 const title = "Free Purchase Order Generator";
 const description =
-  "Create a professional purchase order online for free. Add buyer, vendor, shipping details, items, totals, and print or save as PDF. No sign-up required.";
+  "Create a professional purchase order online for free. Add buyer, supplier, delivery terms, item lines, authorization details, barcode, totals, and print or save as PDF. No sign-up required.";
 const canonical = "https://www.worowo.com/quotes-invoices/purchase-order-generator/";
 
 const faqItems = [
@@ -51,156 +51,187 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
   <div class="inline-document-mobile-shell" slot="document">
     <div class="desktop-document-editor">
       <div id="purchase-order-document" class="inline-document-root paper-a4 purchase-order-sentinel">
-    <div class="inline-document-inner">
-      <div class="document-title-row">
-        <input
-          id="documentLogoText"
-          class="document-logo-text"
-          type="text"
-          placeholder="Your Business Name"
-          aria-label="Business name or logo text"
-          data-field="businessName"
-        />
+        <div class="inline-document-inner">
+          <div class="document-title-row">
+            <input
+              id="documentLogoText"
+              class="document-logo-text"
+              type="text"
+              placeholder="Your Business Name"
+              aria-label="Business name or logo text"
+              data-field="businessName"
+            />
 
-        <div class="document-title">PURCHASE ORDER</div>
-      </div>
+            <div class="document-title">PURCHASE ORDER</div>
+          </div>
 
-      <div class="doc-header">
-        <div>
-          <div class="doc-subtitle editor-hint no-print">Buyer document for ordering goods or services</div>
+          <div class="doc-header">
+            <div>
+              <div class="doc-subtitle editor-hint no-print">Buyer document for ordering goods or services</div>
+            </div>
+
+            <div class="doc-meta po-doc-meta">
+              <div class="po-barcode-slot">
+                <div class="po-barcode-block" id="poBarcodeBlock" hidden>
+                  <svg id="poBarcode" aria-label="Purchase order barcode"></svg>
+                  <span class="po-barcode-empty">Enter PO No.</span>
+                </div>
+              </div>
+              <div class="field-row po-meta-row po-meta-row-number">
+                <button type="button" class="barcode-action-btn no-print" id="toggleBarcodeBtn">
+                  <span class="barcode-action-icon" aria-hidden="true">▥</span>
+                  <span class="barcode-action-label">Show Barcode</span>
+                </button>
+                <span class="field-label print-label">PO No.:</span>
+                <input id="poNumber" class="doc-input inline-input po-meta-input" type="text" maxlength="24" placeholder="PO No." data-field="poNumber" />
+              </div>
+              <div class="field-row po-meta-row">
+                <span class="po-meta-action-spacer no-print" aria-hidden="true"></span>
+                <span class="field-label print-label">PO Date:</span>
+                <input id="poDate" class="doc-input inline-input po-meta-input" type="date" placeholder="PO Date" data-field="poDate" />
+              </div>
+              <div class="field-row po-meta-row">
+                <span class="po-meta-action-spacer no-print" aria-hidden="true"></span>
+                <span class="field-label print-label">Expected Delivery:</span>
+                <input id="deliveryDate" class="doc-input inline-input po-meta-input" type="date" placeholder="Expected Delivery" data-field="deliveryDate" />
+              </div>
+            </div>
+          </div>
+
+          <section class="doc-section">
+            <div class="two-col">
+              <div class="box">
+                <h2 class="section-title">Buyer</h2>
+                <div class="field-row field-row-block">
+                  <input id="buyerName" class="doc-input" type="text" placeholder="Company Name" data-field="buyerName" />
+                </div>
+                <div class="field-row field-row-block">
+                  <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="buyerAddress"></textarea>
+                </div>
+                <div class="field-row field-row-block">
+                  <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="buyerContact" />
+                </div>
+              </div>
+
+              <div class="box">
+                <h2 class="section-title">Vendor / Supplier</h2>
+                <div class="field-row field-row-block">
+                  <input id="vendorName" class="doc-input" type="text" placeholder="Company Name" data-field="vendorName" />
+                </div>
+                <div class="field-row field-row-block">
+                  <textarea id="vendorAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="vendorAddress"></textarea>
+                </div>
+                <div class="field-row field-row-block">
+                  <input id="vendorContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="vendorContact" />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-section">
+            <h2 class="section-title">Delivery & Order Terms</h2>
+            <div class="box">
+              <div class="three-col">
+                <div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Ship To:</span>
+                    <input id="deliveryAddress" class="doc-input" type="text" placeholder="Delivery Address" data-field="deliveryAddress" />
+                  </div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Shipping Method:</span>
+                    <input id="shippingMethod" class="doc-input" type="text" placeholder="Air / Sea / Courier" data-field="shippingMethod" />
+                  </div>
+                </div>
+                <div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Delivery Terms:</span>
+                    <input id="deliveryTerms" class="doc-input" type="text" placeholder="Delivery terms or instructions" data-field="deliveryTerms" />
+                  </div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Payment Terms:</span>
+                    <input id="paymentTerms" class="doc-input" type="text" placeholder="Net 30 / Prepaid" data-field="paymentTerms" />
+                  </div>
+                </div>
+                <div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Incoterms:</span>
+                    <input id="incoterms" class="doc-input" type="text" placeholder="EXW / FOB / CIF" data-field="incoterms" />
+                  </div>
+                  <div class="field-row field-row-block">
+                    <span class="field-label">Reference No.:</span>
+                    <input id="referenceNumber" class="doc-input" type="text" placeholder="Reference No." data-field="referenceNumber" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-section">
+            <div class="section-title-row">
+              <h2 class="section-title">Items</h2>
+              <div class="items-actions">
+                <label class="currency-control no-print">
+                  <span class="currency-icon" aria-hidden="true">$</span>
+                  <span class="currency-label">Currency</span>
+                  <select id="currencyCode" class="currency-select" data-field="currencyCode">
+                    {commonCurrencyOptions.map((option) => <option value={option.value}>{option.label}</option>)}
+                  </select>
+                </label>
+                <button type="button" class="add-item-btn edit-only" id="addItemBtn" data-add-item-trigger>
+                  <span class="add-item-icon" aria-hidden="true">+</span>
+                  <span>Add Item</span>
+                </button>
+              </div>
+            </div>
+
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th style="width: 33%;">Description</th>
+                  <th style="width: 11%;">SKU</th>
+                  <th style="width: 8%;">Qty</th>
+                  <th style="width: 10%;">Unit</th>
+                  <th style="width: 13%;">Unit Price</th>
+                  <th style="width: 9%;">Tax %</th>
+                  <th style="width: 13%;">Amount</th>
+                  <th class="edit-only" style="width: 3%;"></th>
+                </tr>
+              </thead>
+              <tbody id="itemsTableBody"></tbody>
+            </table>
+          </section>
+
+          <section class="doc-section">
+            <div class="two-col notes-totals-row">
+              <div class="box">
+                <h2 class="section-title">Notes</h2>
+                <textarea id="poNotes" class="doc-textarea compact-remarks" rows="2" data-field="notes"></textarea>
+              </div>
+
+              <div class="box totals-box">
+                <div class="totals-panel">
+                  <div class="total-row"><span>Subtotal</span><strong id="subtotalValue">USD 0.00</strong></div>
+                  <div class="total-row"><span>Tax</span><strong id="taxValue">USD 0.00</strong></div>
+                  <div class="total-row total-adjustment-row"><span>Shipping / Handling</span><input id="shippingHandling" class="doc-input inline-input short-inline-input total-adjustment-input" type="number" min="0" step="0.01" value="0" data-clear-zero-on-focus="true" data-default-value="0" data-field="shippingHandling" /></div>
+                  <div class="total-row total-row-grand"><span>Total</span><output id="grandTotalValue" class="total-output">USD 0.00</output></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-section signature-grid">
+            <div class="two-col">
+              <div class="box">
+                <h2 class="section-title">Authorized By</h2>
+                <input id="preparedBy" class="doc-input" type="text" data-field="preparedBy" />
+              </div>
+              <div class="box">
+                <h2 class="section-title">Supplier Acknowledgement</h2>
+                <input id="poSignature" class="doc-input" type="text" data-field="signature" />
+              </div>
+            </div>
+          </section>
         </div>
-
-        <div class="doc-meta">
-          <div class="field-row">
-            <span class="field-label print-label">PO No.:</span>
-            <input id="poNumber" class="doc-input inline-input" type="text" placeholder="PO No." data-field="poNumber" />
-          </div>
-          <div class="field-row">
-            <span class="field-label print-label">PO Date:</span>
-            <input id="poDate" class="doc-input inline-input" type="date" placeholder="PO Date" data-field="poDate" />
-          </div>
-          <div class="field-row">
-            <span class="field-label print-label">Expected Delivery:</span>
-            <input id="deliveryDate" class="doc-input inline-input" type="date" placeholder="Expected Delivery" data-field="deliveryDate" />
-          </div>
-        </div>
-      </div>
-
-      <section class="doc-section">
-        <div class="two-col">
-          <div class="box">
-            <h2 class="section-title">Buyer</h2>
-            <div class="field-row field-row-block">
-              <input id="buyerName" class="doc-input" type="text" placeholder="Company Name" data-field="buyerName" />
-            </div>
-            <div class="field-row field-row-block">
-              <textarea id="buyerAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="buyerAddress"></textarea>
-            </div>
-            <div class="field-row field-row-block">
-              <input id="buyerContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="buyerContact" />
-            </div>
-          </div>
-
-          <div class="box">
-            <h2 class="section-title">Vendor / Supplier</h2>
-            <div class="field-row field-row-block">
-              <input id="vendorName" class="doc-input" type="text" placeholder="Company Name" data-field="vendorName" />
-            </div>
-            <div class="field-row field-row-block">
-              <textarea id="vendorAddress" class="doc-textarea compact-area" rows="2" placeholder="Address" data-field="vendorAddress"></textarea>
-            </div>
-            <div class="field-row field-row-block">
-              <input id="vendorContact" class="doc-input" type="text" placeholder="Email / Phone" data-field="vendorContact" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="doc-section">
-        <h2 class="section-title">Purchase & Shipping Terms</h2>
-        <div class="box">
-          <div class="three-col">
-            <div class="field-row field-row-block">
-              <span class="field-label">Payment Terms:</span>
-              <input id="paymentTerms" class="doc-input" type="text" placeholder="Net 30 / Prepaid" data-field="paymentTerms" />
-            </div>
-            <div class="field-row field-row-block">
-              <span class="field-label">Shipping Method:</span>
-              <input id="shippingMethod" class="doc-input" type="text" placeholder="Air / Sea / Courier" data-field="shippingMethod" />
-            </div>
-            <div class="field-row field-row-block">
-              <span class="field-label">Delivery Address:</span>
-              <input id="deliveryAddress" class="doc-input" type="text" placeholder="Delivery Address" data-field="deliveryAddress" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="doc-section">
-        <div class="section-title-row">
-          <h2 class="section-title">Items</h2>
-          <div class="items-actions">
-            <label class="currency-control no-print">
-              <span class="currency-icon" aria-hidden="true">$</span>
-              <span class="currency-label">Currency</span>
-              <select id="currencyCode" class="currency-select" data-field="currencyCode">
-                {commonCurrencyOptions.map((option) => <option value={option.value}>{option.label}</option>)}
-              </select>
-            </label>
-            <button type="button" class="add-item-btn edit-only" id="addItemBtn" data-add-item-trigger>
-              <span class="add-item-icon" aria-hidden="true">+</span>
-              <span>Add Item</span>
-            </button>
-          </div>
-        </div>
-
-        <table class="doc-table">
-          <thead>
-            <tr>
-              <th style="width: 33%;">Description</th>
-              <th style="width: 11%;">SKU</th>
-              <th style="width: 8%;">Qty</th>
-              <th style="width: 10%;">Unit</th>
-              <th style="width: 13%;">Unit Price</th>
-              <th style="width: 9%;">Tax %</th>
-              <th style="width: 13%;">Amount</th>
-              <th class="edit-only" style="width: 3%;"></th>
-            </tr>
-          </thead>
-          <tbody id="itemsTableBody"></tbody>
-        </table>
-      </section>
-
-      <section class="doc-section">
-        <div class="two-col notes-totals-row">
-          <div class="box">
-            <h2 class="section-title">Notes</h2>
-            <textarea id="poNotes" class="doc-textarea compact-remarks" rows="2" data-field="notes"></textarea>
-          </div>
-
-          <div class="box totals-box">
-            <div class="totals-panel">
-              <div class="total-row"><span>Subtotal</span><strong id="subtotalValue">USD 0.00</strong></div>
-              <div class="total-row"><span>Tax</span><strong id="taxValue">USD 0.00</strong></div>
-              <div class="total-row total-row-grand"><span>Total</span><output id="grandTotalValue" class="total-output">USD 0.00</output></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="doc-section signature-grid">
-        <div class="two-col">
-          <div class="box">
-            <h2 class="section-title">Prepared By</h2>
-            <input id="preparedBy" class="doc-input" type="text" data-field="preparedBy" />
-          </div>
-          <div class="box">
-            <h2 class="section-title">Authorized Signature</h2>
-            <input id="poSignature" class="doc-input" type="text" data-field="signature" />
-          </div>
-        </div>
-      </section>
-    </div>
       </div>
     </div>
 
@@ -220,6 +251,10 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
         <h2>Business & PO Info</h2>
         <input class="mobile-input mobile-logo-input" type="text" placeholder="Your Business Name" data-field="businessName" />
         <input class="mobile-input" type="text" placeholder="PO No." data-field="poNumber" />
+        <button type="button" class="barcode-action-btn barcode-action-btn--mobile no-print" id="mobileToggleBarcodeBtn">
+          <span class="barcode-action-icon" aria-hidden="true">▥</span>
+          <span class="barcode-action-label">Show Barcode</span>
+        </button>
         <input class="mobile-input" type="date" data-field="poDate" />
         <input class="mobile-input" type="date" data-field="deliveryDate" />
       </section>
@@ -239,10 +274,13 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
       </section>
 
       <section class="mobile-form-card">
-        <h2>Purchase & Shipping</h2>
-        <input class="mobile-input" type="text" placeholder="Payment Terms" data-field="paymentTerms" />
+        <h2>Delivery & Order Terms</h2>
+        <input class="mobile-input" type="text" placeholder="Delivery Address / Ship To" data-field="deliveryAddress" />
         <input class="mobile-input" type="text" placeholder="Shipping Method" data-field="shippingMethod" />
-        <input class="mobile-input" type="text" placeholder="Delivery Address" data-field="deliveryAddress" />
+        <input class="mobile-input" type="text" placeholder="Delivery Terms" data-field="deliveryTerms" />
+        <input class="mobile-input" type="text" placeholder="Payment Terms" data-field="paymentTerms" />
+        <input class="mobile-input" type="text" placeholder="Incoterms" data-field="incoterms" />
+        <input class="mobile-input" type="text" placeholder="Reference No." data-field="referenceNumber" />
       </section>
 
       <section class="mobile-form-card">
@@ -265,11 +303,12 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
       <section class="mobile-form-card">
         <h2>Notes & Authorization</h2>
         <textarea class="mobile-textarea" placeholder="Notes" data-field="notes"></textarea>
-        <input class="mobile-input" type="text" placeholder="Prepared By" data-field="preparedBy" />
-        <input class="mobile-input" type="text" placeholder="Authorized Signature" data-field="signature" />
+        <input class="mobile-input" type="text" placeholder="Authorized By" data-field="preparedBy" />
+        <input class="mobile-input" type="text" placeholder="Supplier Acknowledgement" data-field="signature" />
         <div class="mobile-total-card">
           <div><span>Subtotal</span><strong id="mobileSubtotalValue">USD 0.00</strong></div>
           <div><span>Tax</span><strong id="mobileTaxValue">USD 0.00</strong></div>
+          <label class="mobile-total-input-row"><span>Shipping / Handling</span><input class="mobile-input" type="number" min="0" step="0.01" data-field="shippingHandling" data-clear-zero-on-focus="true" data-default-value="0" /></label>
           <div class="grand-total"><span>Total</span><output id="mobileGrandTotalValue" class="total-output">USD 0.00</output></div>
         </div>
       </section>
@@ -332,6 +371,169 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
       --purchase-order-sentinel: 1;
     }
 
+    .po-doc-meta {
+      min-width: 292px;
+      display: grid;
+      gap: 8px;
+      justify-items: stretch;
+      align-content: start;
+    }
+
+    .po-barcode-slot {
+      display: flex;
+      justify-content: flex-end;
+      min-height: 0;
+    }
+
+    .po-barcode-block {
+      width: 3.5cm;
+      height: 1.8cm;
+      margin-top: 4px;
+      padding: 2mm 4mm;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border: 1px dashed #cbd5e1;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .po-barcode-block svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .po-barcode-empty {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 0 2mm;
+    }
+
+    .po-barcode-block[data-barcode-ready="true"] .po-barcode-empty {
+      display: none;
+    }
+
+    .po-barcode-block[hidden] {
+      display: none !important;
+    }
+
+    .po-meta-row {
+      display: grid;
+      grid-template-columns: auto 118px 15ch;
+      align-items: center;
+      gap: 8px;
+      width: max-content;
+      margin-left: auto;
+    }
+
+    .po-meta-input {
+      width: 15ch;
+      min-width: 0;
+      max-width: 15ch;
+    }
+
+    .po-meta-action-spacer {
+      width: 130px;
+      min-width: 130px;
+      height: 1px;
+      display: block;
+    }
+
+    .barcode-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 14px;
+      border: 1px solid #93c5fd;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .barcode-action-btn:hover {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+    }
+
+    .barcode-action-btn.is-active {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12);
+    }
+
+    .barcode-action-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .barcode-action-btn--mobile {
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .total-adjustment-row {
+      align-items: center;
+    }
+
+    .total-adjustment-input {
+      width: 110px;
+      max-width: 110px;
+      text-align: right;
+      justify-self: end;
+    }
+
+    .mobile-total-input-row {
+      display: grid;
+      grid-template-columns: 1fr minmax(130px, 42%);
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .mobile-total-input-row .mobile-input {
+      margin: 0;
+      min-height: 40px;
+      text-align: right;
+    }
+
     @media print {
       #purchase-order-document .inline-document-inner {
         padding: 44px 40px 38px !important;
@@ -373,6 +575,19 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
         min-height: 52px !important;
       }
 
+      .barcode-action-btn,
+      .po-barcode-empty {
+        display: none !important;
+      }
+
+      .po-barcode-block {
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        margin-top: 2px !important;
+      }
+
       #purchase-order-document .doc-table th,
       #purchase-order-document .doc-table td {
         padding-top: 5px !important;
@@ -382,10 +597,15 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
   </style>
 
   <script>
+    import JsBarcode from "jsbarcode";
+
     document.documentElement?.setAttribute("data-worowo-inline-script", "1");
     const documentRoot = document.getElementById("purchase-order-document");
     const itemsTableBody = document.getElementById("itemsTableBody");
     const mobileItemsList = document.getElementById("mobileItemsList");
+    const barcodeBlock = document.getElementById("poBarcodeBlock");
+    const barcodeSvg = document.getElementById("poBarcode");
+    const toggleBarcodeButtons = Array.from(document.querySelectorAll("#toggleBarcodeBtn, #mobileToggleBarcodeBtn"));
     const resetTriggers = Array.from(document.querySelectorAll("[data-reset-form-trigger], #resetFormBtn"));
     const printTriggers = Array.from(document.querySelectorAll("[data-print-document]"));
     const paperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
@@ -405,6 +625,10 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
       "paymentTerms",
       "shippingMethod",
       "deliveryAddress",
+      "deliveryTerms",
+      "incoterms",
+      "referenceNumber",
+      "shippingHandling",
       "notes",
       "preparedBy",
       "signature",
@@ -435,6 +659,10 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
         paymentTerms: "",
         shippingMethod: "",
         deliveryAddress: "",
+        deliveryTerms: "",
+        incoterms: "",
+        referenceNumber: "",
+        shippingHandling: "0",
         notes: "",
         preparedBy: "",
         signature: "",
@@ -447,7 +675,7 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
         description: "",
         sku: "",
         qty: "1",
-        unit: "",
+        unit: "pcs",
         unitPrice: "0",
         tax: "0",
       };
@@ -457,6 +685,7 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
       paper: "a4",
       fields: defaultFields(),
       items: [createItem(), createItem()],
+      barcodeVisible: false,
     };
 
     function toNumber(value) {
@@ -497,7 +726,8 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
         subtotal += lineBase;
         taxTotal += lineTax;
       });
-      return { subtotal, taxTotal, grandTotal: subtotal + taxTotal };
+      const shippingHandling = toNumber(state.fields.shippingHandling);
+      return { subtotal, taxTotal, shippingHandling, grandTotal: subtotal + taxTotal + shippingHandling };
     }
 
     function renderSharedFields() {
@@ -591,6 +821,46 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
       });
     }
 
+    function renderBarcode() {
+      if (!(barcodeBlock instanceof HTMLElement) || !(barcodeSvg instanceof SVGElement)) return;
+
+      const poValue = state.fields.poNumber.trim();
+      const shouldShow = state.barcodeVisible;
+      const canRenderBarcode = shouldShow && poValue !== "";
+
+      barcodeBlock.hidden = !shouldShow;
+      barcodeBlock.dataset.barcodeReady = canRenderBarcode ? "true" : "false";
+
+      if (!shouldShow || !poValue) {
+        barcodeSvg.innerHTML = "";
+        return;
+      }
+
+      try {
+        JsBarcode(barcodeSvg, poValue, {
+          format: "CODE128",
+          lineColor: "#111827",
+          width: 1.1,
+          height: 42,
+          displayValue: false,
+          margin: 0,
+        });
+      } catch (error) {
+        console.error("Failed to render purchase order barcode", error);
+        barcodeSvg.innerHTML = "";
+        barcodeBlock.dataset.barcodeReady = "false";
+      }
+    }
+
+    function updateBarcodeButtons() {
+      toggleBarcodeButtons.forEach((button) => {
+        if (!(button instanceof HTMLButtonElement)) return;
+        button.classList.toggle("is-active", state.barcodeVisible);
+        const label = button.querySelector(".barcode-action-label");
+        if (label) label.textContent = state.barcodeVisible ? "Hide Barcode" : "Show Barcode";
+      });
+    }
+
     function applyPaper(paper) {
       state.paper = paper === "letter" ? "letter" : "a4";
       documentRoot.classList.remove("paper-letter", "paper-a4");
@@ -628,10 +898,13 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
     function resetDocumentForm() {
       state.fields = defaultFields();
       state.items = [createItem(), createItem()];
+      state.barcodeVisible = false;
       renderSharedFields();
       renderItems();
       applyPaper("a4");
       renderTotals();
+      renderBarcode();
+      updateBarcodeButtons();
     }
 
     function updateField(field, value, source) {
@@ -641,6 +914,7 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
           input.value = value;
         }
       });
+      if (field === "poNumber") renderBarcode();
       renderTotals();
     }
 
@@ -724,6 +998,13 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
       const target = event.target;
       if (!(target instanceof Element)) return;
 
+      if (target.closest("#toggleBarcodeBtn, #mobileToggleBarcodeBtn")) {
+        state.barcodeVisible = !state.barcodeVisible;
+        renderBarcode();
+        updateBarcodeButtons();
+        return;
+      }
+
       const removeButton = target.closest("[data-remove-item]");
       if (removeButton) {
         removeItem(removeButton.getAttribute("data-remove-item"));
@@ -753,5 +1034,7 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
     renderItems();
     applyPaper(state.paper);
     renderTotals();
+    renderBarcode();
+    updateBarcodeButtons();
   </script>
 </DocumentGeneratorLayout>

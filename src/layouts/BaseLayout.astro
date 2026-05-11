@@ -460,32 +460,70 @@ const canonicalUrl = canonical || Astro.url.href;
         cursor: pointer;
       }
 
-      .mobile-menu-toggle span {
+      .mobile-menu-toggle .menu-icon {
         display: block;
-        width: 18px;
-        height: 2px;
-        background: var(--text);
-        border-radius: 999px;
         position: relative;
+        width: 18px;
+        height: 14px;
       }
 
-      .mobile-menu-toggle span::before,
-      .mobile-menu-toggle span::after {
+      .mobile-menu-toggle .menu-icon::before,
+      .mobile-menu-toggle .menu-icon::after,
+      .mobile-menu-toggle .menu-icon-line {
         content: "";
         position: absolute;
         left: 0;
         width: 18px;
         height: 2px;
-        background: var(--text);
         border-radius: 999px;
+        background: var(--text);
       }
 
-      .mobile-menu-toggle span::before {
-        top: -6px;
+      .mobile-menu-toggle .menu-icon::before {
+        top: 0;
       }
 
-      .mobile-menu-toggle span::after {
+      .mobile-menu-toggle .menu-icon-line {
         top: 6px;
+      }
+
+      .mobile-menu-toggle .menu-icon::after {
+        top: 12px;
+      }
+
+      .mobile-menu-toggle .close-icon {
+        display: none;
+        position: relative;
+        width: 18px;
+        height: 18px;
+      }
+
+      .mobile-menu-toggle .close-icon::before,
+      .mobile-menu-toggle .close-icon::after {
+        content: "";
+        position: absolute;
+        top: 8px;
+        left: 0;
+        width: 18px;
+        height: 2px;
+        border-radius: 999px;
+        background: var(--text);
+      }
+
+      .mobile-menu-toggle .close-icon::before {
+        transform: rotate(45deg);
+      }
+
+      .mobile-menu-toggle .close-icon::after {
+        transform: rotate(-45deg);
+      }
+
+      .mobile-menu-toggle[aria-expanded="true"] .menu-icon {
+        display: none;
+      }
+
+      .mobile-menu-toggle[aria-expanded="true"] .close-icon {
+        display: block;
       }
 
       .mobile-nav-panel {
@@ -830,7 +868,8 @@ const canonicalUrl = canonical || Astro.url.href;
             aria-controls="mobileNavPanel"
             id="mobileMenuToggle"
           >
-            <span></span>
+            <span class="menu-icon" aria-hidden="true"><span class="menu-icon-line"></span></span>
+            <span class="close-icon" aria-hidden="true"></span>
           </button>
         </div>
       </div>
@@ -952,6 +991,7 @@ const canonicalUrl = canonical || Astro.url.href;
           const open = header.getAttribute("data-open") === "true";
           header.setAttribute("data-open", open ? "false" : "true");
           toggle.setAttribute("aria-expanded", open ? "false" : "true");
+          toggle.setAttribute("aria-label", open ? "Open menu" : "Close menu");
           panel.hidden = open;
         });
 
