@@ -60,27 +60,27 @@ const relatedTools = [
 
       <div class="xplg-toolbar">
         <div class="xplg-toolbar-left">
-          <a href="/" class="xplg-brand-link">worowo</a>
+          <a href="/packing-shipping/" class="xplg-action-btn xplg-action-btn-secondary">Back to Packing & Shipping</a>
         </div>
 
-        <div class="xplg-toolbar-center">
-          <a href="/packing-shipping/" class="xplg-toolbar-link-btn">Back to Packing & Shipping</a>
-        </div>
+        <div class="xplg-toolbar-center"></div>
 
         <div class="xplg-toolbar-right">
-          <span class="xplg-toolbar-label">Paper Size</span>
+          <div class="xplg-paper-size-group">
+            <span class="xplg-paper-size-label">Paper Size</span>
 
-          <div class="xplg-paper-toggle-group">
-            <button type="button" class="xplg-toolbar-btn xplg-paper-toggle is-active" data-paper="letter">
-              US Letter
-            </button>
-            <button type="button" class="xplg-toolbar-btn xplg-paper-toggle" data-paper="a4">
-              A4
-            </button>
+            <div class="xplg-paper-size-toggle" aria-label="Paper size">
+              <button type="button" class="xplg-paper-btn is-active" data-paper-size="letter">
+                US Letter
+              </button>
+              <button type="button" class="xplg-paper-btn" data-paper-size="a4">
+                A4
+              </button>
+            </div>
           </div>
 
-          <button type="button" class="xplg-toolbar-btn" id="resetBtn">Reset Form</button>
-          <button type="button" class="xplg-toolbar-btn xplg-toolbar-btn-primary" id="printBtn">
+          <button type="button" class="xplg-action-btn xplg-action-btn-reset" data-reset-form-trigger>Reset Form</button>
+          <button type="button" class="xplg-action-btn xplg-action-btn-primary" data-print-document>
             Print / Save as PDF
           </button>
         </div>
@@ -90,20 +90,44 @@ const relatedTools = [
         <div class="xplg-document-stage-inner">
           <div id="export-packing-list-document" class="xplg-document xplg-paper-letter">
             <div class="xplg-document-inner">
-              <div class="xplg-doc-header">
+              <div class="xplg-document-title-row">
+                <input
+                  id="documentLogoText"
+                  class="xplg-document-logo-text"
+                  type="text"
+                  placeholder="Your Business Name"
+                  aria-label="Business name or logo text"
+                />
+
                 <div class="xplg-doc-title">PACKING LIST</div>
+              </div>
+
+              <div class="xplg-doc-header">
+                <div></div>
                 <div class="xplg-doc-meta">
-                  <div class="xplg-field-row">
+                  <div class="xplg-meta-barcode-slot">
+                    <div class="xplg-barcode-block" id="xplgBarcodeBlock" hidden>
+                      <svg id="xplgPackingListBarcode" aria-label="Export packing list barcode"></svg>
+                      <span class="xplg-barcode-empty">Enter Packing List No.</span>
+                    </div>
+                  </div>
+                  <div class="xplg-field-row xplg-meta-row">
+                    <button type="button" class="xplg-barcode-action-btn xplg-no-print" id="toggleBarcodeBtn">
+                      <span class="xplg-barcode-action-icon" aria-hidden="true">▥</span>
+                      <span class="xplg-barcode-action-label">Show Barcode</span>
+                    </button>
                     <span class="xplg-field-label">Packing List No.:</span>
-                    <input id="packingListNo" class="xplg-doc-input xplg-inline-input" type="text" />
+                    <input id="packingListNo" class="xplg-doc-input xplg-inline-input xplg-meta-input" type="text" />
                   </div>
-                  <div class="xplg-field-row">
+                  <div class="xplg-field-row xplg-meta-row">
+                    <span class="xplg-meta-action-spacer xplg-no-print" aria-hidden="true"></span>
                     <span class="xplg-field-label">Invoice No.:</span>
-                    <input id="invoiceNo" class="xplg-doc-input xplg-inline-input" type="text" />
+                    <input id="invoiceNo" class="xplg-doc-input xplg-inline-input xplg-meta-input" type="text" />
                   </div>
-                  <div class="xplg-field-row">
+                  <div class="xplg-field-row xplg-meta-row">
+                    <span class="xplg-meta-action-spacer xplg-no-print" aria-hidden="true"></span>
                     <span class="xplg-field-label">Date:</span>
-                    <input id="docDate" class="xplg-doc-input xplg-inline-input" type="date" />
+                    <input id="docDate" class="xplg-doc-input xplg-inline-input xplg-meta-input" type="date" />
                   </div>
                 </div>
               </div>
@@ -208,7 +232,8 @@ const relatedTools = [
                 <div class="xplg-section-title-row">
                   <h2 class="xplg-section-title">Items</h2>
                   <button type="button" class="xplg-toolbar-btn xplg-add-item-inline-btn xplg-edit-only" id="addItemBtn">
-                    Add Item
+                    <span class="xplg-add-item-icon" aria-hidden="true">+</span>
+                    <span>Add Item</span>
                   </button>
                 </div>
 
@@ -295,6 +320,13 @@ const relatedTools = [
       </section>
 
       <section class="xplg-related-block">
+        <div class="xplg-bottom-actions xplg-no-print">
+          <button type="button" class="xplg-action-btn xplg-action-btn-reset" data-reset-form-trigger>Reset Form</button>
+          <button type="button" class="xplg-action-btn xplg-action-btn-primary" data-print-document>
+            Print / Save as PDF
+          </button>
+        </div>
+
         <RelatedTools tools={relatedTools} />
       </section>
 
@@ -332,14 +364,21 @@ const relatedTools = [
     </div>
   </main>
 
-  <script is:inline>
+  <script>
+    import JsBarcode from "jsbarcode";
+
     document.addEventListener("DOMContentLoaded", () => {
       const documentRoot = document.getElementById("export-packing-list-document");
       const itemsTableBody = document.getElementById("itemsTableBody");
       const addItemBtn = document.getElementById("addItemBtn");
-      const resetBtn = document.getElementById("resetBtn");
-      const printBtn = document.getElementById("printBtn");
-      const paperButtons = Array.from(document.querySelectorAll(".xplg-paper-toggle"));
+      const resetTriggers = Array.from(document.querySelectorAll("[data-reset-form-trigger]"));
+      const printTriggers = Array.from(document.querySelectorAll("[data-print-document]"));
+      const paperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
+      const barcodeBlock = document.getElementById("xplgBarcodeBlock");
+      const barcodeSvg = document.getElementById("xplgPackingListBarcode");
+      const toggleBarcodeBtn = document.getElementById("toggleBarcodeBtn");
+      const packingListInput = document.getElementById("packingListNo");
+      let barcodeVisible = false;
 
       const totalQty = document.getElementById("totalQty");
       const totalCartons = document.getElementById("totalCartons");
@@ -445,6 +484,9 @@ const relatedTools = [
         renumberRows();
         updateTotals();
         applyPaper("letter");
+        barcodeVisible = false;
+        renderBarcode();
+        updateBarcodeButton();
       }
 
       function applyPaper(paper) {
@@ -452,7 +494,7 @@ const relatedTools = [
         documentRoot.classList.add(paper === "a4" ? "xplg-paper-a4" : "xplg-paper-letter");
 
         paperButtons.forEach((btn) => {
-          btn.classList.toggle("is-active", btn.dataset.paper === paper);
+          btn.classList.toggle("is-active", btn.dataset.paperSize === paper);
         });
 
         const styleId = "export-packing-print-page-rule";
@@ -481,21 +523,68 @@ const relatedTools = [
         updateTotals();
       });
 
-      resetBtn?.addEventListener("click", resetForm);
-
       paperButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
-          applyPaper(btn.dataset.paper || "letter");
+          applyPaper(btn.dataset.paperSize || "letter");
         });
       });
 
-      printBtn?.addEventListener("click", () => {
-        window.print();
+      function renderBarcode() {
+        if (!(barcodeBlock instanceof HTMLElement) || !(barcodeSvg instanceof SVGElement) || !(packingListInput instanceof HTMLInputElement)) return;
+        const value = packingListInput.value.trim();
+        const canRender = barcodeVisible && value !== "";
+        barcodeBlock.hidden = !barcodeVisible;
+        barcodeBlock.dataset.barcodeReady = canRender ? "true" : "false";
+        if (!barcodeVisible || !value) {
+          barcodeSvg.innerHTML = "";
+          return;
+        }
+        try {
+          JsBarcode(barcodeSvg, value, {
+            format: "CODE128",
+            lineColor: "#111827",
+            width: 1.1,
+            height: 42,
+            displayValue: false,
+            margin: 0,
+          });
+        } catch (error) {
+          console.error("Failed to render export packing list barcode", error);
+          barcodeSvg.innerHTML = "";
+          barcodeBlock.dataset.barcodeReady = "false";
+        }
+      }
+
+      function updateBarcodeButton() {
+        if (!(toggleBarcodeBtn instanceof HTMLButtonElement)) return;
+        toggleBarcodeBtn.classList.toggle("is-active", barcodeVisible);
+        const label = toggleBarcodeBtn.querySelector(".xplg-barcode-action-label");
+        if (label) label.textContent = barcodeVisible ? "Hide Barcode" : "Show Barcode";
+      }
+
+      toggleBarcodeBtn?.addEventListener("click", () => {
+        barcodeVisible = !barcodeVisible;
+        renderBarcode();
+        updateBarcodeButton();
+      });
+
+      packingListInput?.addEventListener("input", renderBarcode);
+
+      resetTriggers.forEach((trigger) => {
+        trigger.addEventListener("click", resetForm);
+      });
+
+      printTriggers.forEach((trigger) => {
+        trigger.addEventListener("click", () => {
+          window.print();
+        });
       });
 
       attachRowHandlers(document);
       updateTotals();
       applyPaper("letter");
+      renderBarcode();
+      updateBarcodeButton();
     });
   </script>
 
@@ -560,21 +649,19 @@ const relatedTools = [
       color: #475569;
     }
 
-    .xplg-toolbar {
-      position: sticky;
-      top: 79px;
-      z-index: 30;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 18px;
+    .xplg-toolbar,
+    .xplg-bottom-actions {
+      position: static;
+      margin: 18px 0 20px;
       padding: 14px 16px;
-      margin-bottom: 22px;
-      border: 1px solid #dbe3ee;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+      border: 1px solid #dbe4ef;
+      border-radius: 16px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
     }
 
     .xplg-toolbar-left {
@@ -582,85 +669,130 @@ const relatedTools = [
       align-items: center;
     }
 
-    .xplg-toolbar-center {
-      display: flex;
-      justify-content: center;
-    }
-
     .xplg-toolbar-right {
       display: flex;
       align-items: center;
       justify-content: flex-end;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
     }
 
-    .xplg-brand-link {
-      color: #0f172a;
-      text-decoration: none;
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.05em;
-      line-height: 1;
+    .xplg-bottom-actions {
+      margin: 18px 0 0;
+      justify-content: flex-end;
+    }
+
+    .xplg-paper-size-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .xplg-paper-size-label {
+      font-size: 13px;
+      font-weight: 750;
+      color: #6b7280;
       white-space: nowrap;
     }
 
-    .xplg-brand-link:hover {
-      color: #2563eb;
+    .xplg-paper-size-toggle {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      border: 1px solid #d9e2ee;
+      border-radius: 999px;
+      background: #eef3f8;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
     }
 
-    .xplg-toolbar-link-btn,
+    .xplg-paper-btn {
+      min-width: 84px;
+      height: 36px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+      transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .xplg-paper-btn.is-active {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.22);
+    }
+
+    .xplg-paper-btn:not(.is-active):hover {
+      color: #1e293b;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .xplg-action-btn,
     .xplg-toolbar-btn {
+      min-height: 38px;
+      padding: 0 14px;
+      border-radius: 10px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 40px;
-      padding: 0 14px;
-      border-radius: 10px;
-      border: 1px solid #dbe3ee;
-      background: #fff;
-      color: #0f172a;
-      font-size: 14px;
-      font-weight: 700;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
       text-decoration: none;
       cursor: pointer;
-      transition: 0.18s ease;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
     }
 
-    .xplg-toolbar-link-btn:hover,
+    .xplg-action-btn-secondary {
+      border: 1px solid #dbe3ef;
+      background: #ffffff;
+      color: #374151;
+    }
+
+    .xplg-action-btn-secondary:hover,
     .xplg-toolbar-btn:hover {
-      border-color: #94a3b8;
-      background: #f8fafc;
+      border-color: #93c5fd;
+      background: #eff6ff;
+      color: #2563eb;
     }
 
-    .xplg-toolbar-btn-primary {
+    .xplg-action-btn-reset {
+      border: 1px dashed #d7dce5;
+      background: #ffffff;
+      color: #6b7280;
+    }
+
+    .xplg-action-btn-reset:hover {
+      border-color: #f59bb7;
+      background: #fff8fb;
+      color: #be185d;
+    }
+
+    .xplg-action-btn-primary {
+      border: 1px solid #2563eb;
       background: #2563eb;
-      border-color: #2563eb;
-      color: #fff;
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.16);
     }
 
-    .xplg-toolbar-btn-primary:hover {
+    .xplg-action-btn-primary:hover {
       background: #1d4ed8;
       border-color: #1d4ed8;
-    }
-
-    .xplg-toolbar-label {
-      font-size: 14px;
-      font-weight: 700;
-      color: #475569;
-      white-space: nowrap;
-    }
-
-    .xplg-paper-toggle-group {
-      display: inline-flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .xplg-paper-toggle.is-active {
-      background: #dbeafe;
-      color: #1d4ed8;
-      border-color: #93c5fd;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
     }
 
     .xplg-document-stage {
@@ -703,6 +835,47 @@ const relatedTools = [
       font-family: Arial, Helvetica, sans-serif;
     }
 
+    .xplg-document-title-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .xplg-document-logo-text {
+      width: 100%;
+      max-width: 360px;
+      min-height: 54px;
+      padding: 8px 12px;
+      border: 2px dashed #d1d5db;
+      border-radius: 14px;
+      background: #ffffff;
+      color: #111827;
+      font-size: 34px;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      outline: none;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .xplg-document-logo-text::placeholder {
+      color: #b6beca;
+    }
+
+    .xplg-document-logo-text:hover,
+    .xplg-document-logo-text:focus {
+      background-color: #fffbea;
+      border-color: #2563eb;
+      box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.22),
+        0 6px 18px rgba(37, 99, 235, 0.1);
+    }
+
     .xplg-doc-header {
       display: flex;
       justify-content: space-between;
@@ -719,7 +892,131 @@ const relatedTools = [
     }
 
     .xplg-doc-meta {
-      min-width: 280px;
+      min-width: 276px;
+      display: grid;
+      gap: 8px;
+      justify-items: stretch;
+      align-content: start;
+    }
+
+    .xplg-meta-barcode-slot {
+      display: flex;
+      justify-content: flex-end;
+      min-height: 0;
+    }
+
+    .xplg-meta-row {
+      display: grid;
+      grid-template-columns: auto 118px 15ch;
+      align-items: center;
+      gap: 8px;
+      width: max-content;
+      margin-left: auto;
+    }
+
+    .xplg-meta-input {
+      width: 15ch;
+      min-width: 0;
+      max-width: 15ch;
+    }
+
+    .xplg-meta-action-spacer {
+      width: 130px;
+      min-width: 130px;
+      height: 1px;
+      display: block;
+    }
+
+    .xplg-barcode-block {
+      width: 3.5cm;
+      height: 1.8cm;
+      margin-top: 4px;
+      padding: 2mm 4mm;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border: 1px dashed #cbd5e1;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .xplg-barcode-block svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .xplg-barcode-empty {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 0 2mm;
+    }
+
+    .xplg-barcode-block[data-barcode-ready="true"] .xplg-barcode-empty {
+      display: none;
+    }
+
+    .xplg-barcode-block[hidden] {
+      display: none !important;
+    }
+
+    .xplg-barcode-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 14px;
+      border: 1px solid #93c5fd;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .xplg-barcode-action-btn:hover,
+    .xplg-barcode-action-btn.is-active {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+    }
+
+    .xplg-barcode-action-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 900;
+      flex: 0 0 auto;
     }
 
     .xplg-doc-section {
@@ -790,33 +1087,39 @@ const relatedTools = [
     .xplg-doc-textarea,
     .xplg-doc-select {
       width: 100%;
-      border: 1px solid transparent;
-      border-radius: 8px;
-      background: transparent;
-      color: #0f172a;
+      border: 1.5px dashed #e5e7eb;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #111827;
       font: inherit;
-      padding: 6px 8px;
+      padding: 9px 10px;
       outline: none;
-      transition: 0.18s ease;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
     }
 
     .xplg-inline-input {
-      padding: 2px 6px;
+      padding: 4px 8px;
+    }
+
+    .xplg-doc-input::placeholder,
+    .xplg-doc-textarea::placeholder {
+      color: #6b7280;
     }
 
     .xplg-doc-input:hover,
     .xplg-doc-textarea:hover,
-    .xplg-doc-select:hover {
-      border-color: #dbe3ee;
-      background: #f8fafc;
-    }
-
+    .xplg-doc-select:hover,
     .xplg-doc-input:focus,
     .xplg-doc-textarea:focus,
     .xplg-doc-select:focus {
-      border-color: #93c5fd;
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.22);
+      background-color: #fffbea !important;
+      border-color: #2563eb !important;
+      box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.22),
+        0 6px 18px rgba(37, 99, 235, 0.1) !important;
     }
 
     .xplg-doc-textarea {
@@ -847,9 +1150,19 @@ const relatedTools = [
     }
 
     .xplg-table-input {
-      padding: 4px 6px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      padding: 8px;
       min-height: 28px;
-      border-radius: 6px;
+    }
+
+    .xplg-table-input:hover,
+    .xplg-table-input:focus {
+      background-color: #fffbea !important;
+      border-color: #2563eb !important;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18) !important;
+      outline: none;
     }
 
     .xplg-row-number {
@@ -867,27 +1180,75 @@ const relatedTools = [
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      border: 1px solid #dbe3ee;
-      background: #fff;
-      color: #64748b;
-      font-size: 16px;
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      border: 1px solid #f9a8d4;
+      border-radius: 10px;
+      background: #fdf2f8;
+      color: #db2777;
+      font-size: 18px;
       line-height: 1;
       cursor: pointer;
-      transition: 0.18s ease;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
     }
 
     .xplg-remove-row-btn:hover {
-      border-color: #94a3b8;
-      background: #f8fafc;
+      background: #fce7f3;
+      border-color: #f472b6;
+      color: #be185d;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(219, 39, 119, 0.12);
     }
 
     .xplg-add-item-inline-btn {
-      min-height: 34px;
-      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 14px;
+      border: 1px solid #93c5fd;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #2563eb;
       font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .xplg-add-item-inline-btn:hover {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+    }
+
+    .xplg-add-item-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 900;
     }
 
     .xplg-totals-box {
@@ -922,13 +1283,13 @@ const relatedTools = [
 
     @media (max-width: 980px) {
       .xplg-toolbar {
-        grid-template-columns: 1fr;
-        gap: 12px;
+        align-items: stretch;
+        flex-direction: column;
       }
 
       .xplg-toolbar-left,
-      .xplg-toolbar-center,
       .xplg-toolbar-right {
+        width: 100%;
         justify-content: flex-start;
       }
     }
@@ -954,6 +1315,40 @@ const relatedTools = [
         grid-template-columns: 1fr;
       }
 
+      .xplg-document-title-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .xplg-document-logo-text {
+        max-width: none;
+        font-size: 30px;
+      }
+
+      .xplg-doc-header {
+        flex-direction: column;
+      }
+
+      .xplg-doc-meta {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .xplg-meta-row {
+        grid-template-columns: 1fr;
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .xplg-meta-input {
+        width: 100%;
+        max-width: none;
+      }
+
+      .xplg-meta-action-spacer {
+        display: none;
+      }
+
     }
 
     @media print {
@@ -971,6 +1366,7 @@ const relatedTools = [
       .xplg-breadcrumb,
       .xplg-hero,
       .xplg-toolbar,
+      .xplg-bottom-actions,
       .xplg-edit-only {
         display: none !important;
       }
@@ -988,6 +1384,43 @@ const relatedTools = [
         margin: 0 auto !important;
         box-shadow: none !important;
         border: none !important;
+      }
+
+      .xplg-barcode-action-btn,
+      .xplg-barcode-empty,
+      .xplg-no-print {
+        display: none !important;
+      }
+
+      .xplg-barcode-block {
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        margin-top: 2px !important;
+      }
+
+      .xplg-doc-input,
+      .xplg-doc-textarea,
+      .xplg-doc-select {
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        resize: none !important;
+      }
+
+      .xplg-document-logo-text {
+        border-color: transparent !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      .xplg-document-logo-text::placeholder {
+        color: transparent !important;
       }
     }
   </style>

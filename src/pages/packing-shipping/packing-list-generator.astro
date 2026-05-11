@@ -63,29 +63,29 @@ const relatedTools = [
         <p class="generator-description">{pageDescription}</p>
       </section>
 
-      <div class="document-toolbar">
-        <div class="document-toolbar-left">
-          <a href="/" class="brand-link">worowo</a>
+      <div class="document-action-bar no-print">
+        <div class="document-action-bar__left">
+          <a href="/packing-shipping/" class="action-btn action-btn-secondary">Back to Packing & Shipping</a>
         </div>
 
-        <div class="document-toolbar-center">
-          <a href="/packing-shipping/" class="toolbar-link-btn">Back to Packing & Shipping</a>
-        </div>
+        <div class="document-action-bar__middle"></div>
 
-        <div class="document-toolbar-right">
-          <span class="toolbar-label">Paper Size</span>
+        <div class="document-action-bar__right">
+          <div class="paper-size-group">
+            <span class="paper-size-label">Paper Size</span>
 
-          <div class="paper-toggle-group">
-            <button type="button" class="toolbar-btn paper-toggle is-active" data-paper="letter">
-              US Letter
-            </button>
-            <button type="button" class="toolbar-btn paper-toggle" data-paper="a4">
-              A4
-            </button>
+            <div class="paper-size-toggle" aria-label="Paper size">
+              <button type="button" class="paper-btn is-active" data-paper-size="letter">
+                US Letter
+              </button>
+              <button type="button" class="paper-btn" data-paper-size="a4">
+                A4
+              </button>
+            </div>
           </div>
 
-          <button type="button" class="toolbar-btn" id="resetBtn">Reset Form</button>
-          <button type="button" class="toolbar-btn toolbar-btn-primary" id="printBtn">
+          <button type="button" class="action-btn action-btn-reset" data-reset-form-trigger>Reset Form</button>
+          <button type="button" class="action-btn action-btn-primary" data-print-document>
             Print / Save as PDF
           </button>
         </div>
@@ -95,16 +95,39 @@ const relatedTools = [
         <div class="document-stage-inner">
           <div id="packing-list-document" class="packing-document paper-letter">
             <div class="packing-document-inner">
+              <div class="document-title-row">
+                <input
+                  id="documentLogoText"
+                  class="document-logo-text"
+                  type="text"
+                  placeholder="Your Business Name"
+                  aria-label="Business name or logo text"
+                />
+
+                <div class="document-title">PACKING LIST</div>
+              </div>
+
               <div class="doc-header">
-                <div class="doc-title">PACKING LIST</div>
+                <div></div>
                 <div class="doc-meta">
-                  <div class="field-row">
-                    <span class="field-label">Packing List No.:</span>
-                    <input class="doc-input inline-input" type="text" />
+                  <div class="packing-meta-barcode-slot">
+                    <div class="packing-barcode-block" id="packingBarcodeBlock" hidden>
+                      <svg id="packingListBarcode" aria-label="Packing list barcode"></svg>
+                      <span class="packing-barcode-empty">Enter Packing List No.</span>
+                    </div>
                   </div>
-                  <div class="field-row">
+                  <div class="field-row packing-meta-row">
+                    <button type="button" class="barcode-action-btn no-print" id="toggleBarcodeBtn">
+                      <span class="barcode-action-icon" aria-hidden="true">▥</span>
+                      <span class="barcode-action-label">Show Barcode</span>
+                    </button>
+                    <span class="field-label">Packing List No.:</span>
+                    <input id="packingListNumber" class="doc-input inline-input packing-meta-input" type="text" />
+                  </div>
+                  <div class="field-row packing-meta-row">
+                    <span class="packing-meta-action-spacer no-print" aria-hidden="true"></span>
                     <span class="field-label">Date:</span>
-                    <input class="doc-input inline-input" type="date" />
+                    <input class="doc-input inline-input packing-meta-input" type="date" />
                   </div>
                 </div>
               </div>
@@ -177,8 +200,9 @@ const relatedTools = [
               <section class="doc-section">
                 <div class="section-title-row">
                   <h2 class="section-title">Items</h2>
-                  <button type="button" class="toolbar-btn add-item-inline-btn edit-only" id="addItemBtn">
-                    Add Item
+                  <button type="button" class="add-item-inline-btn edit-only" id="addItemBtn">
+                    <span class="add-item-icon" aria-hidden="true">+</span>
+                    <span>Add Item</span>
                   </button>
                 </div>
 
@@ -242,6 +266,13 @@ const relatedTools = [
       </section>
 
       <section class="generator-related-block">
+        <div class="document-bottom-actions no-print">
+          <button type="button" class="action-btn action-btn-reset" data-reset-form-trigger>Reset Form</button>
+          <button type="button" class="action-btn action-btn-primary" data-print-document>
+            Print / Save as PDF
+          </button>
+        </div>
+
         <RelatedTools tools={relatedTools} />
       </section>
 
@@ -354,107 +385,151 @@ const relatedTools = [
       text-decoration: none;
     }
 
-    .document-toolbar {
-      position: sticky;
-      top: 79px;
-      z-index: 30;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 18px;
-      padding: 14px 16px;
+    .document-action-bar,
+    .document-bottom-actions {
+      position: static;
       margin-bottom: 22px;
-      border: 1px solid #dbe3ee;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
-    }
-
-    .document-toolbar-left {
+      padding: 14px 16px;
+      border: 1px solid #dbe4ef;
+      border-radius: 16px;
+      background: #ffffff;
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
     }
 
-    .document-toolbar-center {
-      display: flex;
-      justify-content: center;
+    .document-action-bar__left {
+      flex: 0 0 auto;
     }
 
-    .document-toolbar-right {
+    .document-action-bar__middle {
+      flex: 1 1 auto;
+    }
+
+    .document-action-bar__right {
       display: flex;
       align-items: center;
       justify-content: flex-end;
+      gap: 12px;
       flex-wrap: wrap;
-      gap: 10px;
     }
 
-    .brand-link {
-      color: #0f172a;
-      text-decoration: none;
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.05em;
-      line-height: 1;
+    .document-bottom-actions {
+      margin: 18px 0 0;
+      justify-content: flex-end;
+    }
+
+    .paper-size-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .paper-size-label {
+      font-size: 13px;
+      font-weight: 750;
+      color: #6b7280;
       white-space: nowrap;
     }
 
-    .brand-link:hover {
-      color: #2563eb;
+    .paper-size-toggle {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      border: 1px solid #d9e2ee;
+      border-radius: 999px;
+      background: #eef3f8;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
     }
 
-    .toolbar-link-btn,
-    .toolbar-btn {
+    .paper-btn {
+      min-width: 84px;
+      height: 36px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer;
+      transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .paper-btn.is-active {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.22);
+    }
+
+    .paper-btn:not(.is-active):hover {
+      color: #1e293b;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .action-btn {
+      min-height: 38px;
+      padding: 0 14px;
+      border-radius: 10px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 40px;
-      padding: 0 14px;
-      border-radius: 10px;
-      border: 1px solid #dbe3ee;
-      background: #fff;
-      color: #0f172a;
-      font-size: 14px;
-      font-weight: 700;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
       text-decoration: none;
       cursor: pointer;
-      transition: 0.18s ease;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
     }
 
-    .toolbar-link-btn:hover,
-    .toolbar-btn:hover {
-      border-color: #94a3b8;
-      background: #f8fafc;
+    .action-btn-secondary {
+      border: 1px solid #dbe3ef;
+      background: #ffffff;
+      color: #374151;
     }
 
-    .toolbar-btn-primary {
+    .action-btn-secondary:hover {
+      border-color: #93c5fd;
+      background: #eff6ff;
+      color: #2563eb;
+    }
+
+    .action-btn-reset {
+      border: 1px dashed #d7dce5;
+      background: #ffffff;
+      color: #6b7280;
+    }
+
+    .action-btn-reset:hover {
+      border-color: #f59bb7;
+      background: #fff8fb;
+      color: #be185d;
+    }
+
+    .action-btn-primary {
+      border: 1px solid #2563eb;
       background: #2563eb;
-      border-color: #2563eb;
-      color: #fff;
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.16);
     }
 
-    .toolbar-btn-primary:hover {
+    .action-btn-primary:hover {
       background: #1d4ed8;
       border-color: #1d4ed8;
-    }
-
-    .toolbar-label {
-      font-size: 14px;
-      font-weight: 700;
-      color: #475569;
-      white-space: nowrap;
-    }
-
-    .paper-toggle-group {
-      display: inline-flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .paper-toggle.is-active {
-      background: #dbeafe;
-      color: #1d4ed8;
-      border-color: #93c5fd;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
     }
 
     .document-stage {
@@ -497,6 +572,47 @@ const relatedTools = [
       font-family: Arial, Helvetica, sans-serif;
     }
 
+    .document-title-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .document-logo-text {
+      width: 100%;
+      max-width: 360px;
+      min-height: 54px;
+      padding: 8px 12px;
+      border: 2px dashed #d1d5db;
+      border-radius: 14px;
+      background: #ffffff;
+      color: #111827;
+      font-size: 34px;
+      font-weight: 850;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      outline: none;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .document-logo-text::placeholder {
+      color: #b6beca;
+    }
+
+    .document-logo-text:hover,
+    .document-logo-text:focus {
+      background-color: #fffbea;
+      border-color: #2563eb;
+      box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.22),
+        0 6px 18px rgba(37, 99, 235, 0.1);
+    }
+
     .doc-header {
       display: flex;
       justify-content: space-between;
@@ -513,7 +629,131 @@ const relatedTools = [
     }
 
     .doc-meta {
-      min-width: 220px;
+      min-width: 276px;
+      display: grid;
+      gap: 8px;
+      justify-items: stretch;
+      align-content: start;
+    }
+
+    .packing-meta-barcode-slot {
+      display: flex;
+      justify-content: flex-end;
+      min-height: 0;
+    }
+
+    .packing-meta-row {
+      display: grid;
+      grid-template-columns: auto 118px 15ch;
+      align-items: center;
+      gap: 8px;
+      width: max-content;
+      margin-left: auto;
+    }
+
+    .packing-meta-input {
+      width: 15ch;
+      min-width: 0;
+      max-width: 15ch;
+    }
+
+    .packing-meta-action-spacer {
+      width: 130px;
+      min-width: 130px;
+      height: 1px;
+      display: block;
+    }
+
+    .packing-barcode-block {
+      width: 3.5cm;
+      height: 1.8cm;
+      margin-top: 4px;
+      padding: 2mm 4mm;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border: 1px dashed #cbd5e1;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .packing-barcode-block svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .packing-barcode-empty {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 0 2mm;
+    }
+
+    .packing-barcode-block[data-barcode-ready="true"] .packing-barcode-empty {
+      display: none;
+    }
+
+    .packing-barcode-block[hidden] {
+      display: none !important;
+    }
+
+    .barcode-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 14px;
+      border: 1px solid #93c5fd;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .barcode-action-btn:hover,
+    .barcode-action-btn.is-active {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+    }
+
+    .barcode-action-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 900;
+      flex: 0 0 auto;
     }
 
     .doc-section {
@@ -577,31 +817,37 @@ const relatedTools = [
     .doc-input,
     .doc-textarea {
       width: 100%;
-      border: 1px solid transparent;
-      border-radius: 8px;
-      background: transparent;
-      color: #0f172a;
+      border: 1.5px dashed #e5e7eb;
+      border-radius: 10px;
+      background: #ffffff;
+      color: #111827;
       font: inherit;
-      padding: 6px 8px;
+      padding: 9px 10px;
       outline: none;
-      transition: 0.18s ease;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
     }
 
     .inline-input {
-      padding: 2px 6px;
+      padding: 4px 8px;
+    }
+
+    .doc-input::placeholder,
+    .doc-textarea::placeholder {
+      color: #6b7280;
     }
 
     .doc-input:hover,
-    .doc-textarea:hover {
-      border-color: #dbe3ee;
-      background: #f8fafc;
-    }
-
+    .doc-textarea:hover,
     .doc-input:focus,
     .doc-textarea:focus {
-      border-color: #93c5fd;
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.22);
+      background-color: #fffbea !important;
+      border-color: #2563eb !important;
+      box-shadow:
+        0 0 0 4px rgba(37, 99, 235, 0.22),
+        0 6px 18px rgba(37, 99, 235, 0.1) !important;
     }
 
     .doc-textarea {
@@ -632,9 +878,19 @@ const relatedTools = [
     }
 
     .table-input {
-      padding: 4px 6px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      padding: 8px;
       min-height: 28px;
-      border-radius: 6px;
+    }
+
+    .table-input:hover,
+    .table-input:focus {
+      background-color: #fffbea !important;
+      border-color: #2563eb !important;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18) !important;
+      outline: none;
     }
 
     .row-number {
@@ -652,38 +908,89 @@ const relatedTools = [
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      border: 1px solid #dbe3ee;
-      background: #fff;
-      color: #64748b;
-      font-size: 16px;
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      border: 1px solid #f9a8d4;
+      border-radius: 10px;
+      background: #fdf2f8;
+      color: #db2777;
+      font-size: 18px;
       line-height: 1;
       cursor: pointer;
-      transition: 0.18s ease;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
     }
 
     .remove-row-btn:hover {
-      border-color: #94a3b8;
-      background: #f8fafc;
+      background: #fce7f3;
+      border-color: #f472b6;
+      color: #be185d;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(219, 39, 119, 0.12);
     }
 
     .add-item-inline-btn {
-      min-height: 34px;
-      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 14px;
+      border: 1px solid #93c5fd;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #2563eb;
       font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .add-item-inline-btn:hover {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+    }
+
+    .add-item-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 900;
     }
 
     @media (max-width: 980px) {
-      .document-toolbar {
-        grid-template-columns: 1fr;
-        gap: 12px;
+      .document-action-bar {
+        align-items: stretch;
+        flex-direction: column;
       }
 
-      .document-toolbar-left,
-      .document-toolbar-center,
-      .document-toolbar-right {
+      .document-action-bar__left,
+      .document-action-bar__right {
+        width: 100%;
+      }
+
+      .document-action-bar__right {
         justify-content: flex-start;
       }
     }
@@ -707,6 +1014,40 @@ const relatedTools = [
         grid-template-columns: 1fr;
       }
 
+      .document-title-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .document-logo-text {
+        max-width: none;
+        font-size: 30px;
+      }
+
+      .doc-header {
+        flex-direction: column;
+      }
+
+      .doc-meta {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .packing-meta-row {
+        grid-template-columns: 1fr;
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .packing-meta-input {
+        width: 100%;
+        max-width: none;
+      }
+
+      .packing-meta-action-spacer {
+        display: none;
+      }
+
     }
   </style>
 
@@ -723,7 +1064,9 @@ const relatedTools = [
 
       .site-header,
       .site-footer,
-      .document-toolbar,
+      .document-action-bar,
+      .document-bottom-actions,
+      .barcode-action-btn,
       .remove-row-btn,
       .edit-only {
         display: none !important;
@@ -754,16 +1097,43 @@ const relatedTools = [
         border-radius: 0 !important;
         resize: none !important;
       }
+
+      .packing-barcode-block {
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        margin-top: 2px !important;
+      }
+
+      .document-logo-text {
+        border-color: transparent !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      .document-logo-text::placeholder {
+        color: transparent !important;
+      }
     }
   </style>
 
   <script>
+    import JsBarcode from "jsbarcode";
+
     const documentRoot = document.getElementById("packing-list-document");
     const itemsTableBody = document.getElementById("itemsTableBody");
     const addItemBtn = document.getElementById("addItemBtn");
-    const resetBtn = document.getElementById("resetBtn");
-    const printBtn = document.getElementById("printBtn");
-    const paperButtons = Array.from(document.querySelectorAll(".paper-toggle"));
+    const resetTriggers = Array.from(document.querySelectorAll("[data-reset-form-trigger]"));
+    const printTriggers = Array.from(document.querySelectorAll("[data-print-document]"));
+    const paperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
+    const barcodeBlock = document.getElementById("packingBarcodeBlock");
+    const barcodeSvg = document.getElementById("packingListBarcode");
+    const toggleBarcodeBtn = document.getElementById("toggleBarcodeBtn");
+    const packingListNumberInput = document.getElementById("packingListNumber");
+    let barcodeVisible = false;
 
     function renumberRows() {
       const rows = Array.from(itemsTableBody.querySelectorAll(".item-row"));
@@ -820,6 +1190,9 @@ const relatedTools = [
       attachRemoveHandlers(itemsTableBody);
       renumberRows();
       applyPaper("letter");
+      barcodeVisible = false;
+      renderBarcode();
+      updateBarcodeButton();
     }
 
     function applyPaper(paper) {
@@ -827,7 +1200,7 @@ const relatedTools = [
       documentRoot.classList.add(paper === "a4" ? "paper-a4" : "paper-letter");
 
       paperButtons.forEach((btn) => {
-        btn.classList.toggle("is-active", btn.dataset.paper === paper);
+        btn.classList.toggle("is-active", btn.dataset.paperSize === paper);
       });
 
       const styleId = "generator-print-page-rule";
@@ -855,19 +1228,67 @@ const relatedTools = [
       renumberRows();
     });
 
-    resetBtn?.addEventListener("click", resetForm);
-
     paperButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        applyPaper(btn.dataset.paper || "letter");
+        applyPaper(btn.dataset.paperSize || "letter");
       });
     });
 
-    printBtn?.addEventListener("click", () => {
-      window.print();
+
+    function renderBarcode() {
+      if (!(barcodeBlock instanceof HTMLElement) || !(barcodeSvg instanceof SVGElement) || !(packingListNumberInput instanceof HTMLInputElement)) return;
+      const value = packingListNumberInput.value.trim();
+      const canRender = barcodeVisible && value !== "";
+      barcodeBlock.hidden = !barcodeVisible;
+      barcodeBlock.dataset.barcodeReady = canRender ? "true" : "false";
+      if (!barcodeVisible || !value) {
+        barcodeSvg.innerHTML = "";
+        return;
+      }
+      try {
+        JsBarcode(barcodeSvg, value, {
+          format: "CODE128",
+          lineColor: "#111827",
+          width: 1.1,
+          height: 42,
+          displayValue: false,
+          margin: 0,
+        });
+      } catch (error) {
+        console.error("Failed to render packing list barcode", error);
+        barcodeSvg.innerHTML = "";
+        barcodeBlock.dataset.barcodeReady = "false";
+      }
+    }
+
+    function updateBarcodeButton() {
+      if (!(toggleBarcodeBtn instanceof HTMLButtonElement)) return;
+      toggleBarcodeBtn.classList.toggle("is-active", barcodeVisible);
+      const label = toggleBarcodeBtn.querySelector(".barcode-action-label");
+      if (label) label.textContent = barcodeVisible ? "Hide Barcode" : "Show Barcode";
+    }
+
+    toggleBarcodeBtn?.addEventListener("click", () => {
+      barcodeVisible = !barcodeVisible;
+      renderBarcode();
+      updateBarcodeButton();
+    });
+
+    packingListNumberInput?.addEventListener("input", renderBarcode);
+
+    resetTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", resetForm);
+    });
+
+    printTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        window.print();
+      });
     });
 
     attachRemoveHandlers(document);
     applyPaper("letter");
+    renderBarcode();
+    updateBarcodeButton();
   </script>
 </BaseLayout>
