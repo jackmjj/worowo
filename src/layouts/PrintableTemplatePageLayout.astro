@@ -78,9 +78,14 @@ const resolvedRelatedTools =
         <p class="page-description">{description}</p>
       </section>
 
-      <div class="page-toolbar">
-        <a class="btn btn-primary" href={printHref}>Open Full Printable Page</a>
-        <a class="btn" href={backHref}>Back to Printable Templates</a>
+      <div class="template-action-bar">
+        <div class="template-action-bar__left">
+          <a class="template-action-btn template-action-btn-secondary" href={backHref}>Back to Printable Templates</a>
+        </div>
+
+        <div class="template-action-bar__right">
+          <a class="template-action-btn template-action-btn-primary" href={printHref}>Open Full Printable Page</a>
+        </div>
       </div>
 
       <PrintablePreviewFrame title={previewTitle} description={previewDescription}>
@@ -88,6 +93,15 @@ const resolvedRelatedTools =
       </PrintablePreviewFrame>
 
       <slot name="note" />
+
+      <div class="template-bottom-actions">
+        <div class="template-bottom-actions__inner">
+          <div class="template-bottom-actions__buttons">
+            <a class="template-bottom-reset-btn" href={backHref}>Back to Printable Templates</a>
+            <a class="template-bottom-print-btn" href={printHref}>Open Full Printable Page</a>
+          </div>
+        </div>
+      </div>
 
       {resolvedRelatedTools.length > 0 && (
         <section class="template-related">
@@ -130,12 +144,6 @@ const resolvedRelatedTools =
 
     .template-breadcrumb a:hover {
       color: var(--primary);
-    }
-
-    .template-content,
-    .template-faq,
-    .template-related {
-      margin-top: 28px;
     }
 
   </style>
