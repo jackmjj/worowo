@@ -267,10 +267,12 @@ const relatedTools = [
 
       <section class="generator-related-block">
         <div class="document-bottom-actions no-print">
-          <button type="button" class="action-btn action-btn-reset" data-reset-form-trigger>Reset Form</button>
-          <button type="button" class="action-btn action-btn-primary" data-print-document>
-            Print / Save as PDF
-          </button>
+          <div class="tool-actions-footer">
+            <div class="tool-actions-footer__buttons">
+              <button type="button" class="document-bottom-reset-btn" data-reset-form-trigger>Reset Form</button>
+              <button type="button" class="document-bottom-print-btn" data-print-document>Print / Save as PDF</button>
+            </div>
+          </div>
         </div>
 
         <RelatedTools tools={relatedTools} />
@@ -418,7 +420,7 @@ const relatedTools = [
 
     .document-bottom-actions {
       margin: 18px 0 0;
-      justify-content: flex-end;
+      justify-content: center;
     }
 
     .paper-size-group {
@@ -532,6 +534,80 @@ const relatedTools = [
       box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
     }
 
+    .tool-actions-footer {
+      width: min(100%, 640px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px 8px;
+    }
+
+    .tool-actions-footer__buttons {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .document-bottom-print-btn {
+      min-width: min(100%, 380px);
+      min-height: 52px;
+      padding: 0 24px;
+      border: 1px solid #2563eb;
+      border-radius: 6px;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 850;
+      line-height: 1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      white-space: nowrap;
+      box-shadow: 0 18px 38px rgba(37, 99, 235, 0.22);
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .document-bottom-print-btn:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 22px 44px rgba(37, 99, 235, 0.24);
+    }
+
+    .document-bottom-reset-btn {
+      min-height: 52px;
+      padding: 0 18px;
+      border: 1px dashed #d7dce5;
+      border-radius: 6px;
+      background: #ffffff;
+      color: #6b7280;
+      font-size: 14px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition:
+        border-color 0.15s ease,
+        background-color 0.15s ease,
+        color 0.15s ease;
+    }
+
+    .document-bottom-reset-btn:hover {
+      border-color: #f59bb7;
+      background: #fff8fb;
+      color: #be185d;
+    }
+
     .document-stage {
       display: flex;
       justify-content: center;
@@ -611,6 +687,15 @@ const relatedTools = [
       box-shadow:
         0 0 0 4px rgba(37, 99, 235, 0.22),
         0 6px 18px rgba(37, 99, 235, 0.1);
+    }
+
+    .document-title {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: #111827;
+      white-space: nowrap;
     }
 
     .doc-header {
@@ -1024,6 +1109,10 @@ const relatedTools = [
         font-size: 30px;
       }
 
+      .document-title {
+        font-size: 30px;
+      }
+
       .doc-header {
         flex-direction: column;
       }
@@ -1046,6 +1135,15 @@ const relatedTools = [
 
       .packing-meta-action-spacer {
         display: none;
+      }
+
+      .tool-actions-footer__buttons {
+        flex-direction: column;
+      }
+
+      .document-bottom-print-btn,
+      .document-bottom-reset-btn {
+        width: 100%;
       }
 
     }

@@ -69,7 +69,17 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
             </div>
 
             <div class="doc-meta">
+              <div class="dr-meta-barcode-slot">
+                <div class="dr-barcode-block" id="deliveryReceiptBarcodeBlock" hidden>
+                  <svg id="deliveryReceiptBarcode" aria-label="Delivery receipt barcode"></svg>
+                  <span class="dr-barcode-empty">Enter Receipt No.</span>
+                </div>
+              </div>
               <div class="field-row dr-meta-row">
+                <button type="button" class="barcode-action-btn no-print" id="toggleBarcodeBtn">
+                  <span class="barcode-action-icon" aria-hidden="true">▥</span>
+                  <span class="barcode-action-label">Show Barcode</span>
+                </button>
                 <span class="field-label print-label">Receipt No.:</span>
                 <input
                   id="receiptNo"
@@ -80,6 +90,7 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
                 />
               </div>
               <div class="field-row dr-meta-row">
+                <span class="dr-meta-action-spacer no-print" aria-hidden="true"></span>
                 <span class="field-label print-label">Date:</span>
                 <input
                   id="deliveryDate"
@@ -195,6 +206,10 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
         <h2>Receipt Header</h2>
         <input class="mobile-input mobile-logo-input" type="text" placeholder="Your Business Name" data-field="storeName" />
         <input class="mobile-input" type="text" placeholder="Receipt No." data-field="receiptNo" />
+        <button type="button" class="barcode-action-btn barcode-action-btn--mobile no-print" id="mobileToggleBarcodeBtn">
+          <span class="barcode-action-icon" aria-hidden="true">▥</span>
+          <span class="barcode-action-label">Show Barcode</span>
+        </button>
         <input class="mobile-input" type="date" data-field="deliveryDate" />
       </section>
 
@@ -309,7 +324,7 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
 
     .dr-meta-row {
       display: grid;
-      grid-template-columns: 88px 15ch;
+      grid-template-columns: auto 88px 15ch;
       align-items: center;
       gap: 8px;
       width: max-content;
@@ -320,6 +335,117 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
       width: 15ch;
       min-width: 0;
       max-width: 15ch;
+    }
+
+    .dr-meta-barcode-slot {
+      display: flex;
+      justify-content: flex-end;
+      min-height: 0;
+    }
+
+    .dr-meta-action-spacer {
+      width: 130px;
+      min-width: 130px;
+      height: 1px;
+      display: block;
+    }
+
+    .dr-barcode-block {
+      width: 3.5cm;
+      height: 1.8cm;
+      margin-top: 4px;
+      padding: 2mm 4mm;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border: 1px dashed #cbd5e1;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .dr-barcode-block svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .dr-barcode-empty {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 0 2mm;
+    }
+
+    .dr-barcode-block[data-barcode-ready="true"] .dr-barcode-empty {
+      display: none;
+    }
+
+    .dr-barcode-block[hidden] {
+      display: none !important;
+    }
+
+    .barcode-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 14px;
+      border: 1px solid #93c5fd;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #2563eb;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      white-space: nowrap;
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .barcode-action-btn:hover,
+    .barcode-action-btn.is-active {
+      background: #dbeafe;
+      border-color: #60a5fa;
+      color: #1d4ed8;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+    }
+
+    .barcode-action-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .barcode-action-btn--mobile {
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 12px;
     }
 
     .dr-signature-grid {
@@ -366,6 +492,10 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
       .dr-meta-input {
         width: 100%;
         max-width: none;
+      }
+
+      .dr-meta-action-spacer {
+        display: none;
       }
 
       .dr-signature-grid {
@@ -419,6 +549,14 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
       .delivery-document.paper-a4 {
         width: auto !important;
         min-height: auto !important;
+      }
+
+      .dr-barcode-block {
+        border: 0 !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        margin-top: 2px !important;
       }
 
       .delivery-document-inner {
@@ -483,12 +621,17 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
   </style>
 
   <script>
+    import JsBarcode from "jsbarcode";
+
     const documentRoot = document.getElementById("delivery-receipt-document");
     const itemsTableBody = document.getElementById("itemsTableBody");
     const mobileItemsList = document.getElementById("mobileItemsList");
     const resetTriggers = Array.from(document.querySelectorAll("[data-reset-form-trigger], #resetFormBtn"));
     const printTriggers = Array.from(document.querySelectorAll("[data-print-document]"));
     const paperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
+    const barcodeBlock = document.getElementById("deliveryReceiptBarcodeBlock");
+    const barcodeSvg = document.getElementById("deliveryReceiptBarcode");
+    const barcodeToggleButtons = Array.from(document.querySelectorAll("#toggleBarcodeBtn, #mobileToggleBarcodeBtn"));
 
     const syncFields = [
       "storeName",
@@ -536,10 +679,12 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
 
     const state: {
       paper: string;
+      barcodeVisible: boolean;
       fields: Record<string, string>;
       items: any[];
     } = {
       paper: "a4",
+      barcodeVisible: false,
       fields: defaultFields(),
       items: [createItem(), createItem()],
     };
@@ -647,6 +792,45 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
       });
     }
 
+    function renderBarcode() {
+      if (!(barcodeBlock instanceof HTMLElement) || !(barcodeSvg instanceof SVGElement)) return;
+      const receiptValue = state.fields.receiptNo.trim();
+      const shouldShow = state.barcodeVisible;
+      const canRenderBarcode = shouldShow && receiptValue !== "";
+
+      barcodeBlock.hidden = !shouldShow;
+      barcodeBlock.dataset.barcodeReady = canRenderBarcode ? "true" : "false";
+
+      if (!shouldShow || !receiptValue) {
+        barcodeSvg.innerHTML = "";
+        return;
+      }
+
+      try {
+        JsBarcode(barcodeSvg, receiptValue, {
+          format: "CODE128",
+          lineColor: "#111827",
+          width: 1.1,
+          height: 42,
+          displayValue: false,
+          margin: 0,
+        });
+      } catch (error) {
+        console.error("Failed to render delivery receipt barcode", error);
+        barcodeSvg.innerHTML = "";
+        barcodeBlock.dataset.barcodeReady = "false";
+      }
+    }
+
+    function updateBarcodeButtons() {
+      barcodeToggleButtons.forEach((button) => {
+        if (!(button instanceof HTMLButtonElement)) return;
+        button.classList.toggle("is-active", state.barcodeVisible);
+        const label = button.querySelector(".barcode-action-label");
+        if (label) label.textContent = state.barcodeVisible ? "Hide Barcode" : "Show Barcode";
+      });
+    }
+
     function applyPaper(paper: string) {
       state.paper = paper === "letter" ? "letter" : "a4";
       documentRoot?.classList.remove("paper-letter", "paper-a4");
@@ -686,15 +870,17 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
     function resetDocumentForm() {
       state.fields = defaultFields();
       state.items = [createItem(), createItem()];
+      state.barcodeVisible = false;
 
       const now = new Date();
-      state.fields.receiptNo = `DR-${now.toISOString().slice(0, 10).replaceAll("-", "")}-001`;
       state.fields.deliveryDate = now.toISOString().slice(0, 10);
 
       renderSharedFields();
       renderItems();
       applyPaper("a4");
       renderTotals();
+      renderBarcode();
+      updateBarcodeButtons();
     }
 
     function updateField(field: string, value: string, source: EventTarget | null) {
@@ -704,6 +890,7 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
           input.value = value;
         }
       });
+      if (field === "receiptNo") renderBarcode();
       renderTotals();
     }
 
@@ -779,6 +966,13 @@ const relatedTools = getRelatedToolsForTool("delivery_receipt_generator");
     document.addEventListener("click", (event) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
+
+      if (target.closest("#toggleBarcodeBtn, #mobileToggleBarcodeBtn")) {
+        state.barcodeVisible = !state.barcodeVisible;
+        renderBarcode();
+        updateBarcodeButtons();
+        return;
+      }
 
       const removeButton = target.closest("[data-remove-item]");
       if (removeButton) {
