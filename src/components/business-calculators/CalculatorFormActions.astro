@@ -1,0 +1,109 @@
+---
+interface Props {
+  primaryLabel?: string;
+  resetLabel?: string;
+  primaryButtonId?: string;
+  resetButtonId?: string;
+  primaryDataAttribute?: string;
+  resetDataAttribute?: string;
+  className?: string;
+}
+
+const {
+  primaryLabel = "Calculate",
+  resetLabel = "Reset",
+  primaryButtonId,
+  resetButtonId,
+  primaryDataAttribute,
+  resetDataAttribute = "data-reset-form",
+  className = "",
+} = Astro.props as Props;
+
+const primaryAttrs =
+  primaryDataAttribute && primaryDataAttribute.length > 0 ? { [primaryDataAttribute]: true } : {};
+const resetAttrs =
+  resetDataAttribute && resetDataAttribute.length > 0 ? { [resetDataAttribute]: true } : {};
+---
+
+<div class={`calculator-form-actions ${className}`.trim()}>
+  <button
+    id={resetButtonId}
+    type="button"
+    class="calculator-form-btn calculator-form-btn-secondary"
+    {...resetAttrs}
+  >
+    {resetLabel}
+  </button>
+
+  <button
+    id={primaryButtonId}
+    type="button"
+    class="calculator-form-btn calculator-form-btn-primary"
+    {...primaryAttrs}
+  >
+    {primaryLabel}
+  </button>
+</div>
+
+<style>
+  .calculator-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 24px;
+  }
+
+  .calculator-form-btn {
+    min-height: 52px;
+    padding: 0 24px;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+      background-color 0.18s ease,
+      border-color 0.18s ease,
+      color 0.18s ease,
+      transform 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+
+  .calculator-form-btn-secondary {
+    border: 1px dashed #d7dce5;
+    background: #ffffff;
+    color: #6b7280;
+  }
+
+  .calculator-form-btn-secondary:hover {
+    border-color: #f59bb7;
+    background: #fff8fb;
+    color: #be185d;
+    transform: translateY(-1px);
+  }
+
+  .calculator-form-btn-primary {
+    min-width: 180px;
+    border: 1px solid #2563eb;
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 14px 30px -18px rgba(37, 99, 235, 0.7);
+  }
+
+  .calculator-form-btn-primary:hover {
+    border-color: #1d4ed8;
+    background: #1d4ed8;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 700px) {
+    .calculator-form-actions {
+      flex-direction: column;
+    }
+
+    .calculator-form-btn {
+      width: 100%;
+    }
+  }
+</style>

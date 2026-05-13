@@ -20,7 +20,7 @@ const previewOrientation = config.previewOrientation ?? config.defaultOrientatio
   currentToolKey="weekly_employee_schedule_template"
 >
   <Fragment slot="preview">
-    <PrintableDocumentShell paper={previewPaper} orientation={previewOrientation}>
+    <PrintableDocumentShell paper={previewPaper} dynamicPaper={true} orientation={previewOrientation}>
       <WeeklyEmployeeScheduleDocument />
     </PrintableDocumentShell>
   </Fragment>

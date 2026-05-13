@@ -1,5 +1,6 @@
 ---
 import ToolLayout from "../../layouts/ToolLayout.astro";
+import CalculatorFormActions from "../../components/business-calculators/CalculatorFormActions.astro";
 import CalculatorOutputActions from "../../components/business-calculators/CalculatorOutputActions.astro";
 
 const toolMeta = {
@@ -140,12 +141,12 @@ const relatedTools = [
         </p>
       </div>
 
-      <div class="pm-actions">
-        <button id="resetButton" type="button" class="pm-btn pm-btn-secondary">Reset</button>
-        <button id="calculateButton" type="button" class="pm-btn pm-btn-primary">
-          Calculate
-        </button>
-      </div>
+      <CalculatorFormActions
+        className="pm-actions"
+        resetButtonId="resetButton"
+        primaryButtonId="calculateButton"
+        primaryLabel="Calculate"
+      />
     </div>
   </div>
 

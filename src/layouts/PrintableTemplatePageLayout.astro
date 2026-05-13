@@ -2,10 +2,17 @@
 import BaseLayout from "./BaseLayout.astro";
 import "../styles/printable-template.css";
 import PrintablePreviewFrame from "../components/printable/PrintablePreviewFrame.astro";
+import PrintActionFooter from "../components/shared/PrintActionFooter.astro";
 import RelatedTools from "../components/tools/RelatedTools.astro";
+import ToolActionBar from "../components/shared/ToolActionBar.astro";
 import ToolGuide from "../components/tools/ToolGuide.astro";
 import Faq from "../components/tools/Faq.astro";
 import { getRelatedTools } from "../lib/getRelatedTools";
+import {
+  PAGE_CSS_RULES,
+  getPaperModeKey,
+} from "../lib/printable/paper";
+import { getPrintableTemplateConfig } from "../lib/printable/config";
 import type { ToolKey } from "../data/toolDictionary";
 
 interface FaqItem {
@@ -59,9 +66,21 @@ const resolvedRelatedTools =
         desc: tool.description,
       }))
     : relatedTools;
+
+const inferredTemplateSlug = printHref.match(/\/printable-templates\/(.+?)-print\/?/)?.[1];
+const templateConfig = inferredTemplateSlug ? getPrintableTemplateConfig(inferredTemplateSlug) : undefined;
+const templateFaqItems = faqItems.length > 0 ? faqItems : (templateConfig?.faqItems ?? []);
+const templateGuideSections = templateConfig?.guideSections ?? [];
+const defaultPaper = templateConfig?.previewPaper ?? templateConfig?.defaultPaper ?? "a4";
+const defaultOrientation =
+  templateConfig?.previewOrientation ?? templateConfig?.defaultOrientation ?? "portrait";
+const supportedPapers = templateConfig?.supportedPapers ?? ["letter", "a4"];
+const defaultPageRule = PAGE_CSS_RULES[getPaperModeKey(defaultPaper, defaultOrientation)];
 ---
 
 <BaseLayout title={`${pageTitle} | Worowo`} description={description} canonical={canonical}>
+  <style id="template-dynamic-print-page-size" is:inline>{defaultPageRule}</style>
+
   <main class="printable-page-shell">
     <div class="page-wrap">
       <section class="hero">
@@ -78,15 +97,12 @@ const resolvedRelatedTools =
         <p class="page-description">{description}</p>
       </section>
 
-      <div class="template-action-bar">
-        <div class="template-action-bar__left">
-          <a class="template-action-btn template-action-btn-secondary" href={backHref}>Back to Printable Templates</a>
-        </div>
-
-        <div class="template-action-bar__right">
-          <a class="template-action-btn template-action-btn-primary" href={printHref}>Open Full Printable Page</a>
-        </div>
-      </div>
+      <ToolActionBar
+        backHref={backHref}
+        backLabel="Back to Printable Templates"
+        activePaper={defaultPaper}
+        supportedPapers={supportedPapers}
+      />
 
       <PrintablePreviewFrame title={previewTitle} description={previewDescription}>
         <slot name="preview" />
@@ -94,14 +110,7 @@ const resolvedRelatedTools =
 
       <slot name="note" />
 
-      <div class="template-bottom-actions">
-        <div class="template-bottom-actions__inner">
-          <div class="template-bottom-actions__buttons">
-            <a class="template-bottom-reset-btn" href={backHref}>Back to Printable Templates</a>
-            <a class="template-bottom-print-btn" href={printHref}>Open Full Printable Page</a>
-          </div>
-        </div>
-      </div>
+      <PrintActionFooter />
 
       {resolvedRelatedTools.length > 0 && (
         <section class="template-related">
@@ -109,17 +118,31 @@ const resolvedRelatedTools =
         </section>
       )}
 
-      {Astro.slots.has("content") && (
+      {(Astro.slots.has("content") || templateGuideSections.length > 0) && (
         <section class="template-content">
           <ToolGuide title="How It Works & Use Cases">
-            <slot name="content" />
+            {Astro.slots.has("content") ? (
+              <slot name="content" />
+            ) : (
+              templateGuideSections.map((section) => (
+                <article class="content-card">
+                  <h2>{section.title}</h2>
+                  <p>{section.body}</p>
+                  {section.bullets && section.bullets.length > 0 && (
+                    <ul>
+                      {section.bullets.map((bullet) => <li>{bullet}</li>)}
+                    </ul>
+                  )}
+                </article>
+              ))
+            )}
           </ToolGuide>
         </section>
       )}
 
-      {(faqItems.length > 0 || Astro.slots.has("faq")) && (
+      {(templateFaqItems.length > 0 || Astro.slots.has("faq")) && (
         <section class="template-faq">
-          <Faq items={faqItems}>
+          <Faq items={templateFaqItems}>
             <slot name="faq" />
           </Faq>
         </section>
@@ -146,5 +169,114 @@ const resolvedRelatedTools =
       color: var(--primary);
     }
 
+    @media print {
+      .site-header,
+      .site-footer,
+      .hero,
+      .template-breadcrumb,
+      .tool-action-bar,
+      .tool-print-footer,
+      .template-related,
+      .template-content,
+      .template-faq,
+      .helper-note,
+      .preview-card-head,
+      body.template-printing .site-header,
+      body.template-printing .site-footer,
+      body.template-printing .hero,
+      body.template-printing .template-breadcrumb,
+      body.template-printing .tool-action-bar,
+      body.template-printing .tool-print-footer,
+      body.template-printing .template-related,
+      body.template-printing .template-content,
+      body.template-printing .template-faq,
+      body.template-printing .helper-note,
+      body.template-printing .preview-card-head {
+        display: none !important;
+      }
+
+      .printable-page-shell,
+      .page-wrap,
+      .preview-card,
+      .preview-shell,
+      .paper-frame,
+      body.template-printing .printable-page-shell,
+      body.template-printing .page-wrap,
+      body.template-printing .preview-card,
+      body.template-printing .preview-shell,
+      body.template-printing .paper-frame {
+        width: auto !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        overflow: visible !important;
+      }
+
+      .paper,
+      body.template-printing .paper {
+        width: auto !important;
+        min-height: auto !important;
+        padding: 0 !important;
+        border: 0 !important;
+        box-shadow: none !important;
+      }
+    }
   </style>
+
+  <script define:vars={{ defaultPaper, defaultOrientation, pageRules: PAGE_CSS_RULES }} is:inline>
+    const templatePaperButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
+    const templateResetButtons = Array.from(document.querySelectorAll("[data-reset-form-trigger]"));
+    const templatePrintButtons = Array.from(document.querySelectorAll("[data-print-document]"));
+    const templateStyleTag = document.getElementById("template-dynamic-print-page-size");
+    let currentTemplatePaper = defaultPaper;
+
+    function getTemplatePageRule(paper) {
+      return pageRules[`${paper}-${defaultOrientation}`];
+    }
+
+    function applyTemplatePaper(paper) {
+      currentTemplatePaper = paper === "letter" ? "letter" : "a4";
+      document.body.classList.remove("paper-letter", "paper-a4");
+      document.body.classList.add(`paper-${currentTemplatePaper}`);
+      document.body.dataset.paper = currentTemplatePaper;
+
+      templatePaperButtons.forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.paperSize === currentTemplatePaper);
+      });
+
+      if (templateStyleTag) {
+        templateStyleTag.textContent = getTemplatePageRule(currentTemplatePaper);
+      }
+    }
+
+    function resetTemplateState() {
+      applyTemplatePaper(defaultPaper);
+    }
+
+    function printTemplatePreview() {
+      document.body.classList.add("template-printing");
+      window.setTimeout(() => window.print(), 60);
+    }
+
+    templatePaperButtons.forEach((button) => {
+      button.addEventListener("click", () => applyTemplatePaper(button.dataset.paperSize || defaultPaper));
+    });
+
+    templatePrintButtons.forEach((button) => {
+      button.addEventListener("click", printTemplatePreview);
+    });
+
+    templateResetButtons.forEach((button) => {
+      button.addEventListener("click", resetTemplateState);
+    });
+
+    window.addEventListener("afterprint", () => {
+      document.body.classList.remove("template-printing");
+    });
+
+    applyTemplatePaper(defaultPaper);
+  </script>
 </BaseLayout>

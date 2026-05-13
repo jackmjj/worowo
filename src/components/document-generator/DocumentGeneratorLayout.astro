@@ -2,6 +2,8 @@
 import "../../styles/inline-document-mobile-shell.css";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Faq from "../tools/Faq.astro";
+import PrintActionFooter from "../shared/PrintActionFooter.astro";
+import ToolActionBar from "../shared/ToolActionBar.astro";
 import RelatedTools from "../tools/RelatedTools.astro";
 import ToolGuide from "../tools/ToolGuide.astro";
 
@@ -88,57 +90,11 @@ const printHref = config?.printHref || "#";
           </div>
         )}
 
-        <div class="document-action-bar no-print">
-          <div class="document-action-bar__left">
-            <a href={categoryHref} class="action-btn action-btn-secondary">{backLabel}</a>
-          </div>
-
-          <div class="document-action-bar__middle">
+        <ToolActionBar backHref={categoryHref} backLabel={backLabel} printHref={printHref} resetButtonId="resetFormBtn">
+          <div slot="center">
             <slot name="actionBarCenter" />
           </div>
-
-          <div class="document-action-bar__right">
-            <div class="paper-size-group">
-              <span class="paper-size-label">Paper Size</span>
-
-              <div class="paper-size-toggle" aria-label="Paper size">
-                <button type="button" class="paper-btn" data-paper-size="letter">
-                  US Letter
-                </button>
-                <button type="button" class="paper-btn is-active" data-paper-size="a4">
-                  A4
-                </button>
-              </div>
-            </div>
-
-            <button type="button" id="resetFormBtn" class="action-btn action-btn-reset">
-              <span class="action-btn__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-                  <path d="M12 5a7 7 0 1 1-6.67 9.12 1 1 0 1 1 1.91-.59A5 5 0 1 0 8.1 8.3H11a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1V3a1 1 0 1 1 2 0v3.32A8.97 8.97 0 0 1 12 5z" fill="currentColor"></path>
-                </svg>
-              </span>
-              <span>Reset Form</span>
-            </button>
-
-            <a
-              href={printHref}
-              id="printDocumentBtn"
-              class="action-btn action-btn-primary"
-              data-print-document
-              title="Generate and download professional PDF invoice"
-              aria-label="Generate and download professional PDF invoice"
-            >
-              <span class="action-btn__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-                  <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
-                  <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
-                  <path d="M16 9h3v3h-3z" fill="currentColor"></path>
-                </svg>
-              </span>
-              <span>Print / Save as PDF</span>
-            </a>
-          </div>
-        </div>
+        </ToolActionBar>
       </section>
 
       <section class="document-stage">
@@ -147,43 +103,7 @@ const printHref = config?.printHref || "#";
         </div>
       </section>
 
-      <div class="document-bottom-actions no-print">
-        <div class="tool-actions-footer">
-          <div class="tool-actions-footer__buttons">
-            <button type="button" class="document-bottom-reset-btn" data-reset-form-trigger>
-              <span class="action-btn__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
-                  <path d="M12 5a7 7 0 1 1-6.67 9.12 1 1 0 1 1 1.91-.59A5 5 0 1 0 8.1 8.3H11a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1V3a1 1 0 1 1 2 0v3.32A8.97 8.97 0 0 1 12 5z" fill="currentColor"></path>
-                </svg>
-              </span>
-              <span>Reset Form</span>
-            </button>
-
-            <a
-              href={printHref}
-              class="document-bottom-print-btn"
-              data-print-document
-              title="Generate and download professional PDF invoice"
-              aria-label="Generate and download professional PDF invoice"
-            >
-              <svg class="document-bottom-action-icon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
-                <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
-                <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
-                <path d="M16 9h3v3h-3z" fill="currentColor"></path>
-              </svg>
-              <span>Print / Save as PDF</span>
-              <svg class="document-bottom-action-icon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
-                <path d="M12 3a1 1 0 0 1 1 1v9.59l2.3-2.29a1 1 0 1 1 1.4 1.42l-4 3.97a1 1 0 0 1-1.4 0l-4-3.97a1 1 0 1 1 1.4-1.42L11 13.59V4a1 1 0 0 1 1-1z" fill="currentColor"></path>
-                <path d="M5 18a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z" fill="currentColor"></path>
-              </svg>
-            </a>
-          </div>
-
-          <p class="document-bottom-privacy-note">
-            Your data is processed locally in your browser and is not stored on our servers.
-          </p>
-        </div>
-      </div>
+      <PrintActionFooter printHref={printHref} showPrivacyNote={true} />
 
       <section class="generator-related-block">
         <RelatedTools tools={relatedTools} />

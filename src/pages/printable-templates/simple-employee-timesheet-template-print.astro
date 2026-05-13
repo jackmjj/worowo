@@ -25,7 +25,7 @@ const days = [
   canonical={config.canonical}
   recommendedPaperNote={config.recommendedPaperNote}
 >
-  <div class="paper print-document portrait" aria-label="Printable employee timesheet">
+  <div class="paper paper-dynamic orientation-portrait print-document" aria-label="Printable employee timesheet">
     <div class="doc-header">
       <div class="doc-title">EMPLOYEE TIMESHEET</div>
       <div class="doc-meta">
@@ -180,7 +180,7 @@ const days = [
     grid-template-columns: 1fr 1fr;
   }
 
-  body.paper-a4 .print-document.portrait .timesheet-table td {
+  body.paper-a4 .print-document.orientation-portrait .timesheet-table td {
     height: 36px;
   }
 </style>

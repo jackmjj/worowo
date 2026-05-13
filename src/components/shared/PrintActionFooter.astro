@@ -1,0 +1,187 @@
+---
+interface Props {
+  printHref?: string;
+  printLabel?: string;
+  resetLabel?: string;
+  showReset?: boolean;
+  showPrivacyNote?: boolean;
+  privacyNote?: string;
+  className?: string;
+}
+
+const {
+  printHref,
+  printLabel = "Print / Save as PDF",
+  resetLabel = "Reset Form",
+  showReset = true,
+  showPrivacyNote = false,
+  privacyNote = "Your data is processed locally in your browser and is not stored on our servers.",
+  className = "",
+} = Astro.props as Props;
+---
+
+<div class={`tool-print-footer no-print ${className}`.trim()}>
+  <div class="tool-print-footer__inner">
+    <div class="tool-print-footer__buttons">
+      {showReset && (
+        <button type="button" class="tool-print-footer__reset" data-reset-form-trigger data-reset-form>
+          <span class="tool-print-footer__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+              <path d="M12 5a7 7 0 1 1-6.67 9.12 1 1 0 1 1 1.91-.59A5 5 0 1 0 8.1 8.3H11a1 1 0 1 1 0 2H5a1 1 0 0 1-1-1V3a1 1 0 1 1 2 0v3.32A8.97 8.97 0 0 1 12 5z" fill="currentColor"></path>
+            </svg>
+          </span>
+          <span>{resetLabel}</span>
+        </button>
+      )}
+
+      {
+        printHref ? (
+          <a href={printHref} class="tool-print-footer__print" data-print-document>
+            <svg class="tool-print-footer__icon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+              <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
+              <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
+              <path d="M16 9h3v3h-3z" fill="currentColor"></path>
+            </svg>
+            <span>{printLabel}</span>
+            <svg class="tool-print-footer__icon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+              <path d="M12 3a1 1 0 0 1 1 1v9.59l2.3-2.29a1 1 0 1 1 1.4 1.42l-4 3.97a1 1 0 0 1-1.4 0l-4-3.97a1 1 0 1 1 1.4-1.42L11 13.59V4a1 1 0 0 1 1-1z" fill="currentColor"></path>
+              <path d="M5 18a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z" fill="currentColor"></path>
+            </svg>
+          </a>
+        ) : (
+          <button type="button" class="tool-print-footer__print" data-print-document>
+            <svg class="tool-print-footer__icon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+              <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
+              <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
+              <path d="M16 9h3v3h-3z" fill="currentColor"></path>
+            </svg>
+            <span>{printLabel}</span>
+            <svg class="tool-print-footer__icon" viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">
+              <path d="M12 3a1 1 0 0 1 1 1v9.59l2.3-2.29a1 1 0 1 1 1.4 1.42l-4 3.97a1 1 0 0 1-1.4 0l-4-3.97a1 1 0 1 1 1.4-1.42L11 13.59V4a1 1 0 0 1 1-1z" fill="currentColor"></path>
+              <path d="M5 18a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1z" fill="currentColor"></path>
+            </svg>
+          </button>
+        )
+      }
+    </div>
+
+    {showPrivacyNote && <p class="tool-print-footer__note">{privacyNote}</p>}
+  </div>
+</div>
+
+<style>
+  .tool-print-footer {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0 0;
+  }
+
+  .tool-print-footer__inner {
+    width: min(100%, 640px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px 8px;
+  }
+
+  .tool-print-footer__buttons {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .tool-print-footer__print {
+    min-width: min(100%, 380px);
+    min-height: 52px;
+    padding: 0 24px;
+    border: 1px solid #2563eb;
+    border-radius: 6px;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 850;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    white-space: nowrap;
+    text-decoration: none;
+    box-shadow: 0 18px 38px rgba(37, 99, 235, 0.22);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .tool-print-footer__print:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 22px 46px rgba(37, 99, 235, 0.28);
+  }
+
+  .tool-print-footer__reset {
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px dashed #d7dce5;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: nowrap;
+    transition:
+      border-color 0.15s ease,
+      color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .tool-print-footer__reset:hover {
+    border-color: #f59bb7;
+    color: #be185d;
+    background: #fff8fb;
+  }
+
+  .tool-print-footer__icon {
+    width: 17px;
+    height: 17px;
+    min-width: 17px;
+    min-height: 17px;
+    max-width: 17px;
+    max-height: 17px;
+    flex: 0 0 auto;
+  }
+
+  .tool-print-footer__note {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.45;
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .tool-print-footer__buttons {
+      flex-direction: column;
+    }
+
+    .tool-print-footer__print,
+    .tool-print-footer__reset {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+</style>

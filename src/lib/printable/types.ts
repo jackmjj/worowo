@@ -19,4 +19,13 @@ export type PrintableTemplateConfig = {
   previewTitle?: string;
   previewDescription?: string;
   recommendedPaperNote?: string;
+  guideSections?: {
+    title: string;
+    body: string;
+    bullets?: string[];
+  }[];
+  faqItems?: {
+    question: string;
+    answer: string;
+  }[];
 };

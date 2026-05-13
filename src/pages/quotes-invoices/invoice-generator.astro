@@ -1050,6 +1050,12 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
       margin-bottom: 8px;
     }
 
+    #paymentInstructions,
+    #invoiceNotes {
+      font-size: 9.5pt;
+      line-height: 1.45;
+    }
+
     .doc-table {
       width: 100%;
       border-collapse: collapse;
@@ -1273,6 +1279,12 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
       white-space: pre-line;
       line-height: 1.5;
       color: #111827;
+    }
+
+    .print-multiline[data-print-field="paymentInstructions"],
+    .print-multiline[data-print-field="notes"] {
+      font-size: 9.5pt;
+      line-height: 1.45;
     }
 
     .mobile-action-card,
@@ -1837,6 +1849,14 @@ const relatedTools = getRelatedToolsForTool("invoice_generator");
         padding: 0 !important;
         border-radius: 0 !important;
         resize: none !important;
+      }
+
+      #paymentInstructions,
+      #invoiceNotes,
+      .print-multiline[data-print-field="paymentInstructions"],
+      .print-multiline[data-print-field="notes"] {
+        font-size: 9.5pt !important;
+        line-height: 1.45 !important;
       }
 
       .field-label.print-label {

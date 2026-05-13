@@ -534,6 +534,11 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
       text-align: right;
     }
 
+    #poNotes {
+      font-size: 9.5pt;
+      line-height: 1.45;
+    }
+
     @media print {
       #purchase-order-document .inline-document-inner {
         padding: 44px 40px 38px !important;
@@ -573,6 +578,11 @@ const relatedTools = getRelatedToolsForTool("purchase_order_generator");
       #purchase-order-document .compact-area,
       #purchase-order-document .compact-remarks {
         min-height: 52px !important;
+      }
+
+      #poNotes {
+        font-size: 9.5pt !important;
+        line-height: 1.45 !important;
       }
 
       .barcode-action-btn,

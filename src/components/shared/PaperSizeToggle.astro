@@ -1,0 +1,125 @@
+---
+interface Props {
+  activePaper?: "a4" | "letter";
+  papers?: Array<"a4" | "letter">;
+  label?: string;
+  dataAttributeName?: string;
+  rootClass?: string;
+  labelClass?: string;
+  toggleClass?: string;
+  buttonClass?: string;
+  ariaLabel?: string;
+  a4ButtonId?: string;
+  letterButtonId?: string;
+}
+
+const {
+  activePaper = "a4",
+  papers = ["letter", "a4"],
+  label = "Paper Size",
+  dataAttributeName = "data-paper-size",
+  rootClass = "",
+  labelClass = "",
+  toggleClass = "",
+  buttonClass = "",
+  ariaLabel = "Paper size",
+  a4ButtonId,
+  letterButtonId,
+} = Astro.props;
+
+const paperLabels = {
+  letter: "US Letter",
+  a4: "A4",
+} as const;
+
+const paperOrder = { letter: 0, a4: 1 } as const;
+const orderedPapers = [...papers].sort((a, b) => paperOrder[a] - paperOrder[b]);
+---
+
+<div class:list={["paper-size-group", rootClass]}>
+  <span class:list={["paper-size-label", labelClass]}>{label}</span>
+
+  <div class:list={["paper-size-toggle", toggleClass]} aria-label={ariaLabel}>
+    {orderedPapers.map((paper) => (
+      <button
+        type="button"
+        class:list={["paper-btn", buttonClass, paper === activePaper && "is-active"]}
+        id={paper === "a4" ? a4ButtonId : letterButtonId}
+        {...{ [dataAttributeName]: paper }}
+      >
+        {paperLabels[paper]}
+      </button>
+    ))}
+  </div>
+</div>
+
+<style>
+  .paper-size-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .paper-size-label {
+    font-size: 13px;
+    font-weight: 750;
+    color: #6b7280;
+    white-space: nowrap;
+  }
+
+  .paper-size-toggle {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px;
+    border: 1px solid #d9e2ee;
+    border-radius: 999px;
+    background: #eef3f8;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  }
+
+  .paper-btn {
+    min-width: 84px;
+    height: 36px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 750;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .paper-btn.is-active {
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.22);
+  }
+
+  .paper-btn:not(.is-active):hover {
+    color: #1e293b;
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  @media (max-width: 900px) {
+    .paper-size-group {
+      width: 100%;
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .paper-size-toggle {
+      width: 100%;
+    }
+
+    .paper-btn {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+  }
+</style>

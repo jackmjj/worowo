@@ -1,7 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Faq from "../../components/tools/Faq.astro";
+import PrintActionFooter from "../../components/shared/PrintActionFooter.astro";
 import RelatedTools from "../../components/tools/RelatedTools.astro";
+import ToolActionBar from "../../components/shared/ToolActionBar.astro";
 import ToolGuide from "../../components/tools/ToolGuide.astro";
 
 const pageTitle = "Packing List Generator";
@@ -63,33 +65,7 @@ const relatedTools = [
         <p class="generator-description">{pageDescription}</p>
       </section>
 
-      <div class="document-action-bar no-print">
-        <div class="document-action-bar__left">
-          <a href="/packing-shipping/" class="action-btn action-btn-secondary">Back to Packing & Shipping</a>
-        </div>
-
-        <div class="document-action-bar__middle"></div>
-
-        <div class="document-action-bar__right">
-          <div class="paper-size-group">
-            <span class="paper-size-label">Paper Size</span>
-
-            <div class="paper-size-toggle" aria-label="Paper size">
-              <button type="button" class="paper-btn is-active" data-paper-size="letter">
-                US Letter
-              </button>
-              <button type="button" class="paper-btn" data-paper-size="a4">
-                A4
-              </button>
-            </div>
-          </div>
-
-          <button type="button" class="action-btn action-btn-reset" data-reset-form-trigger>Reset Form</button>
-          <button type="button" class="action-btn action-btn-primary" data-print-document>
-            Print / Save as PDF
-          </button>
-        </div>
-      </div>
+      <ToolActionBar backHref="/packing-shipping/" backLabel="Back to Packing & Shipping" />
 
       <section class="document-stage">
         <div class="document-stage-inner">
@@ -266,14 +242,7 @@ const relatedTools = [
       </section>
 
       <section class="generator-related-block">
-        <div class="document-bottom-actions no-print">
-          <div class="tool-actions-footer">
-            <div class="tool-actions-footer__buttons">
-              <button type="button" class="document-bottom-reset-btn" data-reset-form-trigger>Reset Form</button>
-              <button type="button" class="document-bottom-print-btn" data-print-document>Print / Save as PDF</button>
-            </div>
-          </div>
-        </div>
+        <PrintActionFooter />
 
         <RelatedTools tools={relatedTools} />
       </section>
@@ -1287,7 +1256,7 @@ const relatedTools = [
       }
       attachRemoveHandlers(itemsTableBody);
       renumberRows();
-      applyPaper("letter");
+      applyPaper("a4");
       barcodeVisible = false;
       renderBarcode();
       updateBarcodeButton();
@@ -1328,7 +1297,7 @@ const relatedTools = [
 
     paperButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        applyPaper(btn.dataset.paperSize || "letter");
+        applyPaper(btn.dataset.paperSize || "a4");
       });
     });
 
@@ -1385,7 +1354,7 @@ const relatedTools = [
     });
 
     attachRemoveHandlers(document);
-    applyPaper("letter");
+    applyPaper("a4");
     renderBarcode();
     updateBarcodeButton();
   </script>

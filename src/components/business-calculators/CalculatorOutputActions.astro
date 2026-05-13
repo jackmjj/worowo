@@ -1,4 +1,6 @@
 ---
+import PaperSizeToggle from "../shared/PaperSizeToggle.astro";
+
 interface Props {
   showReset?: boolean;
   showPrivacyNote?: boolean;
@@ -14,19 +16,13 @@ const {
 
 <div class={`calculator-output-actions no-print ${className}`.trim()}>
   <div class="calculator-output-actions-main">
-    <div class="calculator-paper-size-control" aria-label="Paper size">
-      <span class="calculator-paper-size-label">Paper Size</span>
-
-      <div class="calculator-paper-size-toggle">
-        <button class="calculator-paper-size-btn is-active" type="button" data-paper-size="a4">
-          A4
-        </button>
-
-        <button class="calculator-paper-size-btn" type="button" data-paper-size="letter">
-          US Letter
-        </button>
-      </div>
-    </div>
+    <PaperSizeToggle
+      activePaper="a4"
+      rootClass="calculator-paper-size-control"
+      labelClass="calculator-paper-size-label"
+      toggleClass="calculator-paper-size-toggle"
+      buttonClass="calculator-paper-size-btn"
+    />
 
     <div class="calculator-output-action-buttons">
       {
@@ -44,12 +40,7 @@ const {
         title="Print or save this report as a PDF"
         aria-label="Print or save this report as a PDF"
       >
-        <svg class="calculator-output-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-          <path d="M7 2h8l5 5v3h-2V8h-4V4H7v6H5V4a2 2 0 0 1 2-2z" fill="currentColor"></path>
-          <path d="M6 12h12a3 3 0 0 1 3 3v4h-4v3H7v-3H3v-4a3 3 0 0 1 3-3zm3 8h6v-4H9v4z" fill="currentColor"></path>
-          <path d="M16 9h3v3h-3z" fill="currentColor"></path>
-        </svg>
-        <span>Print / Save as PDF</span>
+        Print / Save as PDF
       </button>
     </div>
   </div>
@@ -113,7 +104,7 @@ const {
     gap: 10px;
   }
 
-  .calculator-output-actions .calculator-output-privacy-note {
+  .calculator-output-privacy-note {
     margin: 0;
     color: #94a3b8;
     font-size: 12px;
@@ -200,7 +191,6 @@ const {
 
   .calculator-output-btn {
     box-sizing: border-box;
-    height: 52px;
     min-height: 52px;
     padding: 0 24px;
     border-radius: 999px;
@@ -218,40 +208,30 @@ const {
   }
 
   .calculator-output-btn-secondary {
-    border: 1px dashed #cbd5e1;
+    border: 1px dashed #d7dce5;
     background: #ffffff;
-    color: #64748b;
+    color: #6b7280;
   }
 
   .calculator-output-btn-secondary:hover {
     border-color: #f59bb7;
     background: #fff8fb;
     color: #be185d;
+    transform: translateY(-1px);
   }
 
   .calculator-output-btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
     min-width: 180px;
     border: 1px solid #2563eb;
     background: #2563eb;
     color: #ffffff;
-    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.16);
+    box-shadow: 0 14px 30px -18px rgba(37, 99, 235, 0.7);
   }
 
   .calculator-output-btn-primary:hover {
     background: #1d4ed8;
     border-color: #1d4ed8;
     transform: translateY(-1px);
-    box-shadow: 0 14px 30px rgba(37, 99, 235, 0.2);
-  }
-
-  .calculator-output-icon {
-    width: 16px;
-    height: 16px;
-    flex: 0 0 auto;
   }
 
   @media (max-width: 640px) {
@@ -277,13 +257,9 @@ const {
       min-width: 0;
     }
 
-    .calculator-output-action-buttons {
-      width: 100%;
-    }
-
+    .calculator-output-action-buttons,
     .calculator-output-btn {
       width: 100%;
-      justify-content: center;
     }
   }
 

@@ -1,3 +1,7 @@
+---
+import PaperSizeToggle from "../../shared/PaperSizeToggle.astro";
+---
+
 <div class="inv-form-card">
   <div class="inv-notice">
     Fill in the invoice details below. The preview updates automatically and stays ready for printing or saving as PDF.
@@ -144,11 +148,15 @@
   </section>
 
   <div class="inv-actions">
-    <div class="inv-paper-size-control" aria-label="Paper size">
-      <span>Paper Size</span>
-      <button id="invoiceA4Button" class="inv-paper-size-btn active" type="button" data-size="a4">A4</button>
-      <button id="invoiceLetterButton" class="inv-paper-size-btn" type="button" data-size="letter">US Letter</button>
-    </div>
+    <PaperSizeToggle
+      activePaper="a4"
+      dataAttributeName="data-size"
+      rootClass="inv-paper-size-control"
+      labelClass="inv-paper-size-label"
+      buttonClass="inv-paper-size-btn"
+      a4ButtonId="invoiceA4Button"
+      letterButtonId="invoiceLetterButton"
+    />
 
     <div class="inv-action-buttons">
       <button id="invoiceResetButton" type="button" class="inv-btn inv-btn-ghost">Reset</button>
@@ -354,13 +362,13 @@
       if (size === "letter") {
         paper.classList.add("document-paper-letter");
         document.body.classList.add("print-letter");
-        letterButton.classList.add("active");
-        a4Button.classList.remove("active");
+        letterButton.classList.add("is-active");
+        a4Button.classList.remove("is-active");
       } else {
         paper.classList.add("document-paper-a4");
         document.body.classList.add("print-a4");
-        a4Button.classList.add("active");
-        letterButton.classList.remove("active");
+        a4Button.classList.add("is-active");
+        letterButton.classList.remove("is-active");
       }
     }
 
@@ -727,7 +735,7 @@
     background: #f8fafc;
   }
 
-  .inv-paper-size-control span {
+  .inv-paper-size-label {
     padding: 0 8px;
     color: #64748b;
     font-size: 13px;
@@ -745,7 +753,7 @@
     cursor: pointer;
   }
 
-  .inv-paper-size-btn.active {
+  .inv-paper-size-btn.is-active {
     background: #0f172a;
     color: #ffffff;
     box-shadow: 0 6px 14px rgba(15, 23, 42, 0.16);

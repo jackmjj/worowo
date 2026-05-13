@@ -17,7 +17,7 @@ const materialRows = Array.from({ length: 5 }, (_, i) => i + 1);
   canonical={config.canonical}
   recommendedPaperNote={config.recommendedPaperNote}
 >
-  <div class="paper print-document portrait" aria-label="Printable field service work order">
+  <div class="paper paper-dynamic orientation-portrait print-document" aria-label="Printable field service work order">
     <div class="doc-header">
       <div class="doc-title">FIELD SERVICE WORK ORDER</div>
       <div class="doc-meta">
@@ -213,7 +213,7 @@ const materialRows = Array.from({ length: 5 }, (_, i) => i + 1);
     grid-template-columns: 1fr 1fr;
   }
 
-  body.paper-a4 .print-document.portrait .work-order-table td {
+  body.paper-a4 .print-document.orientation-portrait .work-order-table td {
     height: 36px;
   }
 </style>

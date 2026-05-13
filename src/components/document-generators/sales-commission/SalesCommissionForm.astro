@@ -1,4 +1,6 @@
 ---
+import CalculatorFormActions from "../../business-calculators/CalculatorFormActions.astro";
+
 const YEAR_START = 2026;
 const years = Array.from({ length: 8 }, (_, index) => YEAR_START + index);
 const months = [
@@ -141,14 +143,11 @@ const currencies = [
     ></textarea>
   </section>
 
-  <div class="scc-form-actions">
-    <button type="button" class="scc-btn scc-btn-secondary" data-reset-form>
-      Reset
-    </button>
-    <button type="button" class="scc-btn scc-btn-primary" data-calculate-commission>
-      Calculate Commission
-    </button>
-  </div>
+  <CalculatorFormActions
+    className="scc-form-actions"
+    primaryLabel="Calculate Commission"
+    primaryDataAttribute="data-calculate-commission"
+  />
 
   <script type="module" src="/scripts/sales-commission.js?v=20260511b"></script>
 </form>

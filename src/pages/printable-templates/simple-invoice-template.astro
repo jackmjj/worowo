@@ -22,7 +22,7 @@ const generator = getGeneratorForTool("invoice_template");
   currentToolKey="invoice_template"
 >
   <Fragment slot="preview">
-    <PrintableDocumentShell paper={previewPaper} orientation={previewOrientation}>
+    <PrintableDocumentShell paper={previewPaper} dynamicPaper={true} orientation={previewOrientation}>
       <InvoiceDocument />
     </PrintableDocumentShell>
   </Fragment>

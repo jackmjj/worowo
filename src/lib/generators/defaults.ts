@@ -19,7 +19,7 @@ export function createDefaultPackingListItems(count = 5): PackingListItem[] {
 
 export function createDefaultPackingListState(): PackingListFormState {
   return {
-    paper: "letter",
+    paper: "a4",
     packingListNo: "",
     date: "",
     referenceNo: "",

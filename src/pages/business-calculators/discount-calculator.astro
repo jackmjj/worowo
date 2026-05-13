@@ -1,5 +1,6 @@
 ---
 import ToolLayout from "../../layouts/ToolLayout.astro";
+import CalculatorFormActions from "../../components/business-calculators/CalculatorFormActions.astro";
 import CalculatorOutputActions from "../../components/business-calculators/CalculatorOutputActions.astro";
 
 const toolMeta = {
@@ -134,12 +135,12 @@ const relatedTools = [
 
       <p id="errorMessage" class="dc-error" aria-live="polite"></p>
 
-      <div class="dc-actions">
-        <button id="resetButton" type="button" class="dc-btn dc-btn-secondary">Reset</button>
-        <button id="calculateButton" type="button" class="dc-btn dc-btn-primary">
-          Calculate Discount
-        </button>
-      </div>
+      <CalculatorFormActions
+        className="dc-actions"
+        resetButtonId="resetButton"
+        primaryButtonId="calculateButton"
+        primaryLabel="Calculate Discount"
+      />
     </div>
   </div>
 

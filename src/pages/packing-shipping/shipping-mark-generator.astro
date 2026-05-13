@@ -1,5 +1,6 @@
 ---
 import ToolLayout from "../../layouts/ToolLayout.astro";
+import GeneratorPreviewToolbar from "../../components/generators/GeneratorPreviewToolbar.astro";
 
 const toolMeta = {
   title: "Shipping Mark Generator",
@@ -173,17 +174,7 @@ const relatedTools = [
   </div>
 
   <div slot="results" class="tool-card smg-card smg-preview-card">
-    <div class="smg-preview-top">
-      <div>
-        <h2 class="smg-title">Preview</h2>
-        <p class="smg-subtitle">One printable shipping mark per carton.</p>
-      </div>
-
-      <div class="smg-paper-toggle" aria-label="Paper size">
-        <button class="smg-paper-btn is-active" type="button" data-paper="a4">A4</button>
-        <button class="smg-paper-btn" type="button" data-paper="letter">US Letter</button>
-      </div>
-    </div>
+    <GeneratorPreviewToolbar title="Preview" subtitle="One printable shipping mark per carton." />
 
     <div id="printArea" class="smg-print-area paper-a4">
       <div id="marksGrid" class="smg-marks-grid"></div>
@@ -337,15 +328,15 @@ const relatedTools = [
 
       document.getElementById("clearBtn")?.addEventListener("click", clearForm);
 
-      document.querySelectorAll(".smg-paper-btn").forEach((button) => {
+      document.querySelectorAll("[data-paper-size]").forEach((button) => {
         button.addEventListener("click", () => {
-          document.querySelectorAll(".smg-paper-btn").forEach((btn) => btn.classList.remove("is-active"));
+          document.querySelectorAll("[data-paper-size]").forEach((btn) => btn.classList.remove("is-active"));
           button.classList.add("is-active");
 
           const printArea = document.getElementById("printArea");
           if (!printArea) return;
           printArea.classList.remove("paper-a4", "paper-letter");
-          printArea.classList.add(button.dataset.paper === "letter" ? "paper-letter" : "paper-a4");
+          printArea.classList.add(button.dataset.paperSize === "letter" ? "paper-letter" : "paper-a4");
         });
       });
 

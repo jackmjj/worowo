@@ -1,7 +1,9 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import Faq from "../../../components/tools/Faq.astro";
+import PrintActionFooter from "../../../components/shared/PrintActionFooter.astro";
 import RelatedTools from "../../../components/tools/RelatedTools.astro";
+import ToolActionBar from "../../../components/shared/ToolActionBar.astro";
 import ToolGuide from "../../../components/tools/ToolGuide.astro";
 
 const pageTitle = "Export Packing List Generator";
@@ -58,33 +60,7 @@ const relatedTools = [
         <p class="xplg-description">{pageDescription}</p>
       </section>
 
-      <div class="xplg-toolbar">
-        <div class="xplg-toolbar-left">
-          <a href="/packing-shipping/" class="xplg-action-btn xplg-action-btn-secondary">Back to Packing & Shipping</a>
-        </div>
-
-        <div class="xplg-toolbar-center"></div>
-
-        <div class="xplg-toolbar-right">
-          <div class="xplg-paper-size-group">
-            <span class="xplg-paper-size-label">Paper Size</span>
-
-            <div class="xplg-paper-size-toggle" aria-label="Paper size">
-              <button type="button" class="xplg-paper-btn" data-paper-size="letter">
-                US Letter
-              </button>
-              <button type="button" class="xplg-paper-btn is-active" data-paper-size="a4">
-                A4
-              </button>
-            </div>
-          </div>
-
-          <button type="button" class="xplg-action-btn xplg-action-btn-reset" data-reset-form-trigger>Reset Form</button>
-          <button type="button" class="xplg-action-btn xplg-action-btn-primary" data-print-document>
-            Print / Save as PDF
-          </button>
-        </div>
-      </div>
+      <ToolActionBar backHref="/packing-shipping/" backLabel="Back to Packing & Shipping" />
 
       <section class="xplg-document-stage">
         <div class="xplg-document-stage-inner">
@@ -320,14 +296,7 @@ const relatedTools = [
       </section>
 
       <section class="xplg-related-block">
-        <div class="xplg-bottom-actions xplg-no-print">
-          <div class="xplg-tool-actions-footer">
-            <div class="xplg-tool-actions-footer__buttons">
-              <button type="button" class="xplg-document-bottom-reset-btn" data-reset-form-trigger>Reset Form</button>
-              <button type="button" class="xplg-document-bottom-print-btn" data-print-document>Print / Save as PDF</button>
-            </div>
-          </div>
-        </div>
+        <PrintActionFooter className="xplg-no-print" />
 
         <RelatedTools tools={relatedTools} />
       </section>

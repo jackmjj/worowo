@@ -9,47 +9,6 @@ const config = getPrintableTemplateConfig("simple-packing-list-template");
 const previewPaper = config.previewPaper ?? config.defaultPaper;
 const previewOrientation = config.previewOrientation ?? config.defaultOrientation;
 const generator = getGeneratorForTool("packing_list_template");
-
-const faqItems = [
-  {
-    question: "Can I print this packing list template as PDF?",
-    answer:
-      "Yes. Open the full printable page and use your browser print dialog to print it or save it as a PDF.",
-  },
-  {
-    question: "Is this packing list template free to use?",
-    answer:
-      "Yes. You can use this printable packing list template for free for ecommerce, shipping, warehouse, and export documentation needs.",
-  },
-  {
-    question: "What should I include on a packing list?",
-    answer:
-      "A packing list usually includes shipper and consignee details, shipment reference, item descriptions, quantities, carton counts, and remarks.",
-  },
-  {
-    question: "Should I use this template or the online packing list generator?",
-    answer:
-      "Use this template if you want a blank printable form to fill by hand. Use the online packing list generator if you want totals, structured input, and a completed digital document.",
-  },
-];
-
-const relatedTools = [
-  {
-    name: "Packing List Generator",
-    href: "/packing-shipping/packing-list-generator/",
-    desc: "Fill in shipment details online and generate a completed packing list instantly.",
-  },
-  {
-    name: "Export Packing List Generator",
-    href: "/packing-shipping/export-packing-list-generator/",
-    desc: "Create a more formal export packing list for international shipments and trade documents.",
-  },
-  {
-    name: "Printable Templates",
-    href: "/printable-templates/",
-    desc: "Browse all printable business templates for billing, shipping, operations, and field work.",
-  },
-];
 ---
 
 <PrintableTemplatePageLayout
@@ -61,11 +20,9 @@ const relatedTools = [
   printHref="/printable-templates/simple-packing-list-template-print/"
   canonical={config.canonical}
   currentToolKey="packing_list_template"
-  faqItems={faqItems}
-  relatedTools={relatedTools}
 >
   <Fragment slot="preview">
-    <PrintableDocumentShell paper={previewPaper} orientation={previewOrientation}>
+    <PrintableDocumentShell paper={previewPaper} dynamicPaper={true} orientation={previewOrientation}>
       <PackingListDocument />
     </PrintableDocumentShell>
   </Fragment>
@@ -81,33 +38,4 @@ const relatedTools = [
     )}
   </div>
 
-  <div slot="content" class="content-card">
-    <h2>How To Use This Packing List Template</h2>
-    <p>
-      Use this printable packing list template when you need a clean blank form
-      for shipment records, carton contents, and delivery paperwork. You can
-      print it first and complete it by hand, or save the page as PDF for later
-      use.
-    </p>
-    <ul>
-      <li>Add shipper and consignee details clearly.</li>
-      <li>List each item, quantity, carton count, and remarks.</li>
-      <li>Keep one copy for shipping records and one for the buyer or receiver.</li>
-    </ul>
-  </div>
-
-  <div slot="content" class="content-card">
-    <h2>When To Use A Printable Packing List</h2>
-    <p>
-      A blank packing list template is useful when your team needs a flexible
-      paper-based document for warehouse work, local delivery, export prep, or
-      manual shipment checks.
-    </p>
-    <ul>
-      <li>Ecommerce and wholesale order packing</li>
-      <li>Manual warehouse checks before dispatch</li>
-      <li>Local delivery handover paperwork</li>
-      <li>Backup documentation for export shipments</li>
-    </ul>
-  </div>
 </PrintableTemplatePageLayout>

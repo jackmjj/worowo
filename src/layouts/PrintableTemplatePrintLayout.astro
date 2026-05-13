@@ -58,9 +58,11 @@ const defaultPageRule = PAGE_CSS_RULES[getPaperModeKey(defaultPaper, orientation
 
     <script define:vars={{ defaultPaper, orientation, pageRules: PAGE_CSS_RULES }} is:inline>
       const body = document.body;
-      const printBtn = document.getElementById("printBtn");
-      const toggleButtons = Array.from(document.querySelectorAll(".paper-toggle"));
+      const printBtn = document.querySelector("[data-print-document]");
+      const toggleButtons = Array.from(document.querySelectorAll("[data-paper-size]"));
       const styleTag = document.getElementById("dynamic-print-page-size");
+      const requestedPaper = new URLSearchParams(window.location.search).get("paper");
+      const initialPaper = requestedPaper === "letter" || requestedPaper === "a4" ? requestedPaper : defaultPaper;
 
       function getPageRule(paper, pageOrientation) {
         return pageRules[`${paper}-${pageOrientation}`];
@@ -72,14 +74,14 @@ const defaultPageRule = PAGE_CSS_RULES[getPaperModeKey(defaultPaper, orientation
         body.classList.add(`paper-${paper}`);
 
         toggleButtons.forEach((btn) => {
-          const isActive = btn.dataset.paper === paper;
-          btn.classList.toggle("btn-active", isActive);
+          const isActive = btn.dataset.paperSize === paper;
+          btn.classList.toggle("is-active", isActive);
         });
       }
 
       toggleButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
-          applyPaper(btn.dataset.paper || defaultPaper);
+          applyPaper(btn.dataset.paperSize || defaultPaper);
         });
       });
 
@@ -91,7 +93,7 @@ const defaultPageRule = PAGE_CSS_RULES[getPaperModeKey(defaultPaper, orientation
         window.print();
       });
 
-      applyPaper(defaultPaper);
+      applyPaper(initialPaper);
     </script>
   </body>
 </html>

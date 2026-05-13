@@ -1,5 +1,6 @@
 ---
 import ToolLayout from "../../layouts/ToolLayout.astro";
+import GeneratorPreviewToolbar from "../../components/generators/GeneratorPreviewToolbar.astro";
 
 const toolMeta = {
   title: "Carton Label Generator",
@@ -210,25 +211,15 @@ const relatedTools = [
   </div>
 
   <div slot="results" class="tool-card clg-card clg-preview-card">
-    <div class="clg-preview-top">
-      <div>
-        <h2 class="clg-title">Preview</h2>
-        <p class="clg-subtitle">Printable carton labels with automatic carton numbering.</p>
-      </div>
-
+    <GeneratorPreviewToolbar title="Preview" subtitle="Printable carton labels with automatic carton numbering.">
       <div class="clg-toolbar-controls">
-        <div class="clg-paper-toggle" aria-label="Paper size">
-          <button class="clg-paper-btn is-active" type="button" data-paper="a4">A4</button>
-          <button class="clg-paper-btn" type="button" data-paper="letter">US Letter</button>
-        </div>
-
         <select id="layoutSelect" class="clg-layout-select" aria-label="Label layout">
           <option value="2">2 labels / page</option>
           <option value="4" selected>4 labels / page</option>
           <option value="6">6 labels / page</option>
         </select>
       </div>
-    </div>
+    </GeneratorPreviewToolbar>
 
     <div id="printArea" class="clg-print-area paper-a4 layout-4">
       <div id="labelsGrid" class="clg-labels-grid"></div>
@@ -436,15 +427,15 @@ const relatedTools = [
 
       document.getElementById("clearBtn")?.addEventListener("click", clearForm);
 
-      document.querySelectorAll(".clg-paper-btn").forEach((button) => {
+      document.querySelectorAll("[data-paper-size]").forEach((button) => {
         button.addEventListener("click", () => {
-          document.querySelectorAll(".clg-paper-btn").forEach((btn) => btn.classList.remove("is-active"));
+          document.querySelectorAll("[data-paper-size]").forEach((btn) => btn.classList.remove("is-active"));
           button.classList.add("is-active");
 
           const printArea = document.getElementById("printArea");
           if (!printArea) return;
           printArea.classList.remove("paper-a4", "paper-letter");
-          printArea.classList.add(button.dataset.paper === "letter" ? "paper-letter" : "paper-a4");
+          printArea.classList.add(button.dataset.paperSize === "letter" ? "paper-letter" : "paper-a4");
         });
       });
 

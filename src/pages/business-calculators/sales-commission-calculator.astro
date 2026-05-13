@@ -1,6 +1,7 @@
 ---
 import SalesCommissionForm from "../../components/document-generators/sales-commission/SalesCommissionForm.astro";
 import SalesCommissionPreview from "../../components/document-generators/sales-commission/SalesCommissionPreview.astro";
+import CalculatorFormActions from "../../components/business-calculators/CalculatorFormActions.astro";
 import CalculatorOutputActions from "../../components/business-calculators/CalculatorOutputActions.astro";
 import DocumentGeneratorLayout from "../../layouts/DocumentGeneratorLayout.astro";
 
@@ -92,12 +93,11 @@ const relatedTools = [
     </div>
 
     <div class="generator-mobile-actions">
-      <div class="generator-mobile-form-actions scc-form-actions">
-        <button type="button" class="scc-btn scc-btn-secondary" data-reset-form>Reset</button>
-        <button type="button" class="scc-btn scc-btn-primary" data-calculate-commission>
-          Calculate Commission
-        </button>
-      </div>
+      <CalculatorFormActions
+        className="generator-mobile-form-actions scc-form-actions"
+        primaryLabel="Calculate Commission"
+        primaryDataAttribute="data-calculate-commission"
+      />
       <CalculatorOutputActions />
     </div>
 

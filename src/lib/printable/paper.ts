@@ -36,10 +36,10 @@ export const PAPER_LABELS: Record<PaperType, string> = {
 };
 
 export const PAGE_MARGINS: Record<PaperModeKey, string> = {
-  "letter-portrait": "0.7in 0.65in 0.7in 0.65in",
-  "letter-landscape": "0.65in 0.7in 0.65in 0.7in",
-  "a4-portrait": "18mm 16mm 18mm 16mm",
-  "a4-landscape": "16mm 18mm 16mm 18mm",
+  "letter-portrait": "0.55in 0.55in 0.55in 0.55in",
+  "letter-landscape": "0.5in 0.55in 0.5in 0.55in",
+  "a4-portrait": "14mm 14mm 14mm 14mm",
+  "a4-landscape": "12mm 14mm 12mm 14mm",
 };
 
 export const PAGE_CSS_RULES: Record<PaperModeKey, string> = {

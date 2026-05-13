@@ -1,5 +1,6 @@
 ---
 import ToolLayout from "../../layouts/ToolLayout.astro";
+import CalculatorFormActions from "../../components/business-calculators/CalculatorFormActions.astro";
 import CalculatorOutputActions from "../../components/business-calculators/CalculatorOutputActions.astro";
 
 const toolMeta = {
@@ -119,10 +120,12 @@ const relatedTools = [
     </p>
     <p id="errorMessage" class="upc-error" aria-live="polite"></p>
 
-    <div class="upc-actions">
-      <button id="resetButton" type="button" class="upc-btn upc-btn-ghost">Reset</button>
-      <button id="compareButton" type="button" class="upc-btn upc-btn-primary">Compare Prices</button>
-    </div>
+    <CalculatorFormActions
+      className="upc-actions"
+      resetButtonId="resetButton"
+      primaryButtonId="compareButton"
+      primaryLabel="Compare Prices"
+    />
   </div>
 
   <div slot="results" class="upc-results-card printable-result">

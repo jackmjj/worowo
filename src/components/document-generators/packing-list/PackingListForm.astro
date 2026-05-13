@@ -1,4 +1,5 @@
 ---
+import PaperSizeToggle from "../../shared/PaperSizeToggle.astro";
 import PackingListItemsTable from "./PackingListItemsTable.astro";
 ---
 
@@ -178,15 +179,15 @@ import PackingListItemsTable from "./PackingListItemsTable.astro";
   </section>
 
   <div class="epl-actions">
-    <div class="epl-paper-size-control" aria-label="Paper size">
-      <span>Paper Size</span>
-      <button id="a4Button" class="epl-paper-size-btn active" type="button" data-size="a4">
-        A4
-      </button>
-      <button id="letterButton" class="epl-paper-size-btn" type="button" data-size="letter">
-        US Letter
-      </button>
-    </div>
+    <PaperSizeToggle
+      activePaper="a4"
+      dataAttributeName="data-size"
+      rootClass="epl-paper-size-control"
+      labelClass="epl-paper-size-label"
+      buttonClass="epl-paper-size-btn"
+      a4ButtonId="a4Button"
+      letterButtonId="letterButton"
+    />
 
     <div class="epl-action-buttons">
       <button id="resetButton" type="button" class="epl-btn epl-btn-ghost">Reset</button>
@@ -381,7 +382,7 @@ import PackingListItemsTable from "./PackingListItemsTable.astro";
     background: transparent;
   }
 
-  .epl-paper-size-control span {
+  .epl-paper-size-label {
     padding: 0 8px;
     color: #64748b;
     font-size: 13px;
@@ -399,7 +400,7 @@ import PackingListItemsTable from "./PackingListItemsTable.astro";
     cursor: pointer;
   }
 
-  .epl-paper-size-btn.active {
+  .epl-paper-size-btn.is-active {
     border-color: #93c5fd;
     background: #dbeafe;
     color: #1d4ed8;
@@ -410,7 +411,7 @@ import PackingListItemsTable from "./PackingListItemsTable.astro";
     background: #f8fafc;
   }
 
-  .epl-paper-size-btn.active:hover {
+  .epl-paper-size-btn.is-active:hover {
     background: #dbeafe;
   }
 
