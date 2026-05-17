@@ -24,7 +24,7 @@ const faqItems = [
   {
     question: "Can I compare more than two suppliers?",
     answer:
-      "Yes. The calculator starts with two supplier quote blocks by default, and you can add more suppliers up to five in total.",
+      "Yes. Enter one supplier quote at a time on the left, add it to the comparison list, and keep adding quotes until you have all suppliers you want to compare.",
   },
   {
     question: "Should all suppliers use the same unit?",
@@ -86,11 +86,110 @@ const relatedTools = [
       </p>
     </div>
 
-    <div id="supplierCards" class="upc-supplier-list" aria-live="polite"></div>
+    <section class="upc-entry-card upc-tone-blue" aria-labelledby="entryFormTitle">
+      <div class="upc-entry-card-head">
+        <h3 id="entryFormTitle" class="upc-entry-card-title">Add Supplier Quote</h3>
+        <p id="editingHint" class="upc-editing-hint" hidden>Editing an existing quote</p>
+      </div>
 
-    <button id="addSupplierButton" type="button" class="upc-add-btn">
-      + Add Supplier
-    </button>
+      <form id="quoteEntryForm" class="upc-entry-form" novalidate>
+        <div class="upc-fields-grid">
+          <label class="upc-field upc-field-inline upc-field-vendor">
+            <span class="upc-label">Vendor Name</span>
+            <input
+              id="entryName"
+              type="text"
+              data-entry-field="name"
+              placeholder="e.g. Supplier A"
+              autocomplete="organization"
+            />
+          </label>
+
+          <label class="upc-field upc-field-card upc-field-total">
+            <span class="upc-label">Total Price</span>
+            <div class="upc-input-prefix">
+              <span>$</span>
+              <input
+                id="entryPrice"
+                type="number"
+                min="0"
+                step="0.01"
+                data-entry-field="price"
+                placeholder="e.g. 500"
+              />
+            </div>
+          </label>
+
+          <label class="upc-field upc-field-card upc-field-fees">
+            <span class="upc-label">Tax / Fees</span>
+            <div class="upc-input-prefix">
+              <span>$</span>
+              <input
+                id="entryFees"
+                type="number"
+                min="0"
+                step="0.01"
+                data-entry-field="fees"
+                placeholder="e.g. 35"
+              />
+            </div>
+          </label>
+
+          <label class="upc-field upc-field-card upc-field-shipping">
+            <span class="upc-label">Shipping</span>
+            <div class="upc-input-prefix">
+              <span>$</span>
+              <input
+                id="entryShipping"
+                type="number"
+                min="0"
+                step="0.01"
+                data-entry-field="shipping"
+                placeholder="e.g. 10"
+              />
+            </div>
+          </label>
+
+          <div class="upc-field upc-field-card upc-field-quantity-unit">
+            <span class="upc-label">Quantity / Unit</span>
+            <div class="upc-combo-input">
+              <input
+                id="entryQty"
+                type="number"
+                min="0"
+                step="1"
+                data-entry-field="qty"
+                placeholder="e.g. 100"
+              />
+              <select id="entryUnit" data-entry-field="unit" aria-label="Unit">
+                <option value="pcs">pcs</option>
+                <option value="units">units</option>
+                <option value="sets">sets</option>
+                <option value="boxes">boxes</option>
+                <option value="kg">kg</option>
+                <option value="lb">lb</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="upc-supplier-preview">
+          <div>
+            <span>Landed Total</span>
+            <strong id="entryPreviewLanded">$0.00</strong>
+          </div>
+          <div>
+            <span>Unit Price</span>
+            <strong id="entryPreviewPrice">$0.00 / unit</strong>
+          </div>
+        </div>
+      </form>
+
+      <div class="upc-entry-actions">
+        <button id="addQuoteButton" type="button" class="upc-add-btn">+ Add Quote</button>
+        <button id="cancelEditButton" type="button" class="upc-cancel-edit" hidden>Cancel edit</button>
+      </div>
+    </section>
 
     <div class="upc-export-settings">
       <label class="upc-field">
@@ -146,14 +245,18 @@ const relatedTools = [
 
     <div class="upc-results-summary">
       <div class="upc-results-summary-head">
-        <h3>Supplier Ranking</h3>
-        <p>Each supplier is ranked by landed unit price.</p>
+        <div>
+          <h3>Supplier Quotes</h3>
+          <p>Switch between input order and unit price sorting.</p>
+        </div>
+        <button id="sortToggleButton" type="button" class="upc-sort-toggle">
+          <span class="upc-sort-toggle-icon" aria-hidden="true">↕</span>
+          <span>Sort by Unit Price</span>
+        </button>
       </div>
 
-      <div id="rankingList" class="upc-ranking-list">
-        <article class="upc-rank-card upc-rank-card-empty">
-          Add supplier data to compare quotes.
-        </article>
+      <div id="rankingList" class="upc-ranking-list" aria-live="polite">
+        <p class="upc-ranking-empty">No quotes yet. Add a supplier quote on the left.</p>
       </div>
 
       <div id="unitWarning" class="upc-warning" hidden>
@@ -196,72 +299,6 @@ const relatedTools = [
     </div>
   </div>
 
-  <template id="supplierCardTemplate">
-    <section class="upc-supplier-card" data-supplier-card>
-      <div class="upc-supplier-card-head">
-        <div class="upc-supplier-card-title">Quote 1</div>
-        <button type="button" class="upc-remove-btn" data-remove-btn>Remove</button>
-      </div>
-
-      <div class="upc-fields-grid">
-        <label class="upc-field upc-field-inline upc-field-vendor">
-          <span class="upc-label">Vendor Name</span>
-          <input type="text" data-field="name" placeholder="e.g. Supplier A" />
-        </label>
-
-        <label class="upc-field upc-field-card upc-field-total">
-          <span class="upc-label">Total Price</span>
-          <div class="upc-input-prefix">
-            <span>$</span>
-            <input type="number" min="0" step="0.01" data-field="price" placeholder="e.g. 500" />
-          </div>
-        </label>
-
-        <label class="upc-field upc-field-card upc-field-fees">
-          <span class="upc-label">Tax / Fees</span>
-          <div class="upc-input-prefix">
-            <span>$</span>
-            <input type="number" min="0" step="0.01" data-field="fees" placeholder="e.g. 35" />
-          </div>
-        </label>
-
-        <label class="upc-field upc-field-card upc-field-shipping">
-          <span class="upc-label">Shipping</span>
-          <div class="upc-input-prefix">
-            <span>$</span>
-            <input type="number" min="0" step="0.01" data-field="shipping" placeholder="e.g. 10" />
-          </div>
-        </label>
-
-        <div class="upc-field upc-field-card upc-field-quantity-unit">
-          <span class="upc-label">Quantity / Unit</span>
-          <div class="upc-combo-input">
-            <input type="number" min="0" step="1" data-field="qty" placeholder="e.g. 100" />
-            <select data-field="unit" aria-label="Unit">
-              <option value="pcs">pcs</option>
-              <option value="units">units</option>
-              <option value="sets">sets</option>
-              <option value="boxes">boxes</option>
-              <option value="kg">kg</option>
-              <option value="lb">lb</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="upc-supplier-preview">
-        <div>
-          <span>Landed Total</span>
-          <strong data-preview-landed>$0.00</strong>
-        </div>
-        <div>
-          <span>Unit Price</span>
-          <strong data-preview-price>$0.00 / unit</strong>
-        </div>
-      </div>
-    </section>
-  </template>
-
   <div slot="content" class="content-card">
     <h2>How This Unit Price Comparison Calculator Works</h2>
     <p>
@@ -289,11 +326,21 @@ const relatedTools = [
 
 <script>
   (() => {
-    const maxSuppliers = 5;
-    const minSuppliers = 2;
-    const supplierCardsEl = document.getElementById("supplierCards");
-    const template = document.getElementById("supplierCardTemplate");
-    const addSupplierButton = document.getElementById("addSupplierButton");
+    const entryFields = {
+      name: document.getElementById("entryName"),
+      price: document.getElementById("entryPrice"),
+      fees: document.getElementById("entryFees"),
+      shipping: document.getElementById("entryShipping"),
+      qty: document.getElementById("entryQty"),
+      unit: document.getElementById("entryUnit"),
+    };
+    const entryPreviewLandedEl = document.getElementById("entryPreviewLanded");
+    const entryPreviewPriceEl = document.getElementById("entryPreviewPrice");
+    const quoteEntryForm = document.getElementById("quoteEntryForm");
+    const addQuoteButton = document.getElementById("addQuoteButton");
+    const cancelEditButton = document.getElementById("cancelEditButton");
+    const editingHintEl = document.getElementById("editingHint");
+    const entryFormTitleEl = document.getElementById("entryFormTitle");
     const resetButton = document.getElementById("resetButton");
     const compareButton = document.getElementById("compareButton");
     const exportPdfButton = document.querySelector(".upc-export-row [data-print-document]");
@@ -303,6 +350,8 @@ const relatedTools = [
     const bestSupplierPriceEl = document.getElementById("bestSupplierPrice");
     const savingsBannerEl = document.getElementById("savingsBanner");
     const rankingListEl = document.getElementById("rankingList");
+    const sortToggleButton = document.getElementById("sortToggleButton");
+    const sortToggleButtonLabel = sortToggleButton?.querySelector("span:last-child");
     const procurementSummaryEl = document.getElementById("procurementSummary");
     const unitWarningEl = document.getElementById("unitWarning");
     const errorMessageEl = document.getElementById("errorMessage");
@@ -312,13 +361,10 @@ const relatedTools = [
     const printReportTitleEl = document.getElementById("printReportTitle");
     const printDecisionNotesEl = document.getElementById("printDecisionNotes");
 
-    const tones = [
-      "upc-tone-blue",
-      "upc-tone-green",
-      "upc-tone-sand",
-      "upc-tone-purple",
-      "upc-tone-cyan",
-    ];
+    let suppliers = [];
+    let editingId = null;
+    let nextId = 1;
+    let sortMode = "input";
 
     function numberValue(value) {
       const number = Number.parseFloat(value);
@@ -327,6 +373,10 @@ const relatedTools = [
 
     function money(value) {
       return `$${numberValue(value).toFixed(2)}`;
+    }
+
+    function formatQty(value) {
+      return numberValue(value).toLocaleString("en-US", { maximumFractionDigits: 2 });
     }
 
     function escapeHtml(value = "") {
@@ -338,12 +388,24 @@ const relatedTools = [
         .replaceAll("'", "&#039;");
     }
 
-    function getCards() {
-      return Array.from(supplierCardsEl.querySelectorAll("[data-supplier-card]"));
-    }
-
     function setError(message) {
       errorMessageEl.textContent = message;
+    }
+
+    function syncSortToggleLabel() {
+      if (!sortToggleButtonLabel) return;
+
+      if (sortMode === "asc") {
+        sortToggleButtonLabel.textContent = "Sort Descending";
+        return;
+      }
+
+      if (sortMode === "desc") {
+        sortToggleButtonLabel.textContent = "Sort by Input Order";
+        return;
+      }
+
+      sortToggleButtonLabel.textContent = "Sort by Unit Price";
     }
 
     function syncPrintableMeta() {
@@ -356,85 +418,224 @@ const relatedTools = [
       }
     }
 
-    function createSupplierCard(index, preset = {}) {
-      const fragment = template.content.cloneNode(true);
-      const card = fragment.querySelector("[data-supplier-card]");
-      const removeBtn = card.querySelector("[data-remove-btn]");
-      const inputs = Array.from(card.querySelectorAll("input, select"));
+    function enrichSupplier(raw, index) {
+      const landedTotal = raw.price + raw.fees + raw.shipping;
+      const unitPrice = raw.qty > 0 ? landedTotal / raw.qty : 0;
 
-      card.classList.add(tones[(index - 1) % tones.length]);
-      card.dataset.index = String(index);
-      card.querySelector(".upc-supplier-card-title").textContent = `Quote ${index}`;
-
-      card.querySelector('[data-field="name"]').value = preset.name || `Supplier ${String.fromCharCode(64 + index)}`;
-      card.querySelector('[data-field="price"]').value = preset.price ?? "";
-      card.querySelector('[data-field="fees"]').value = preset.fees ?? "";
-      card.querySelector('[data-field="shipping"]').value = preset.shipping ?? "";
-      card.querySelector('[data-field="qty"]').value = preset.qty ?? "";
-      card.querySelector('[data-field="unit"]').value = preset.unit || "pcs";
-
-      inputs.forEach((input) => {
-        input.addEventListener("input", calculateAndRender);
-        input.addEventListener("change", calculateAndRender);
-      });
-
-      removeBtn.addEventListener("click", () => {
-        if (getCards().length <= minSuppliers) return;
-        card.remove();
-        updateCardLabels();
-        calculateAndRender();
-      });
-
-      supplierCardsEl.appendChild(fragment);
-      updateCardLabels();
+      return {
+        ...raw,
+        name: raw.name || `Supplier ${index + 1}`,
+        landedTotal,
+        unitPrice,
+        hasMinimumData: landedTotal > 0 && raw.qty > 0,
+      };
     }
 
-    function updateCardLabels() {
-      const cards = getCards();
-
-      cards.forEach((card, index) => {
-        card.dataset.index = String(index + 1);
-        card.querySelector(".upc-supplier-card-title").textContent = `Quote ${index + 1}`;
-        card.querySelector("[data-remove-btn]").hidden = cards.length <= minSuppliers;
-        card.classList.remove(...tones);
-        card.classList.add(tones[index % tones.length]);
-      });
-
-      addSupplierButton.disabled = cards.length >= maxSuppliers;
-      addSupplierButton.textContent = cards.length >= maxSuppliers
-        ? "Maximum 5 suppliers reached"
-        : "+ Add Supplier";
+    function readEntryForm() {
+      return {
+        name: entryFields.name.value.trim(),
+        price: numberValue(entryFields.price.value),
+        fees: numberValue(entryFields.fees.value),
+        shipping: numberValue(entryFields.shipping.value),
+        qty: numberValue(entryFields.qty.value),
+        unit: entryFields.unit.value || "pcs",
+      };
     }
 
-    function collectSuppliers() {
-      return getCards().map((card, index) => {
-        const name = card.querySelector('[data-field="name"]').value.trim();
-        const price = numberValue(card.querySelector('[data-field="price"]').value);
-        const fees = numberValue(card.querySelector('[data-field="fees"]').value);
-        const shipping = numberValue(card.querySelector('[data-field="shipping"]').value);
-        const qty = numberValue(card.querySelector('[data-field="qty"]').value);
-        const unit = card.querySelector('[data-field="unit"]').value || "pcs";
-        const landedTotal = price + fees + shipping;
-        const unitPrice = qty > 0 ? landedTotal / qty : 0;
+    function clearEntryForm() {
+      entryFields.name.value = "";
+      entryFields.price.value = "";
+      entryFields.fees.value = "";
+      entryFields.shipping.value = "";
+      entryFields.qty.value = "";
+      entryFields.unit.value = "pcs";
+      updateEntryPreview();
+    }
 
-        return {
-          card,
-          name: name || `Supplier ${index + 1}`,
-          price,
-          fees,
-          shipping,
-          qty,
-          unit,
-          landedTotal,
-          unitPrice,
-          hasMinimumData: landedTotal > 0 && qty > 0,
-        };
-      });
+    function fillEntryForm(supplier) {
+      entryFields.name.value = supplier.name;
+      entryFields.price.value = supplier.price || "";
+      entryFields.fees.value = supplier.fees || "";
+      entryFields.shipping.value = supplier.shipping || "";
+      entryFields.qty.value = supplier.qty || "";
+      entryFields.unit.value = supplier.unit || "pcs";
+      updateEntryPreview();
+    }
+
+    function defaultSupplierName() {
+      return `Supplier ${suppliers.length + 1}`;
+    }
+
+    function setEditingMode(id) {
+      editingId = id;
+      const isEditing = Boolean(id);
+
+      addQuoteButton.textContent = isEditing ? "Save Quote" : "+ Add Quote";
+      cancelEditButton.hidden = !isEditing;
+      editingHintEl.hidden = !isEditing;
+      entryFormTitleEl.textContent = isEditing ? "Edit Supplier Quote" : "Add Supplier Quote";
+    }
+
+    function cancelEdit() {
+      setEditingMode(null);
+      clearEntryForm();
+      setError("");
+    }
+
+    function updateEntryPreview() {
+      const draft = enrichSupplier(readEntryForm(), suppliers.length);
+
+      entryPreviewLandedEl.textContent = draft.hasMinimumData ? money(draft.landedTotal) : "$0.00";
+      entryPreviewPriceEl.textContent = draft.hasMinimumData
+        ? `${money(draft.unitPrice)} / ${draft.unit}`
+        : "$0.00 / unit";
+    }
+
+    function validateEntry(entry) {
+      const landedTotal = entry.price + entry.fees + entry.shipping;
+
+      if (landedTotal <= 0) {
+        setError("Enter a total price, tax/fees, or shipping amount greater than zero.");
+        return false;
+      }
+
+      if (entry.qty <= 0) {
+        setError("Enter a quantity greater than zero.");
+        return false;
+      }
+
+      setError("");
+      return true;
+    }
+
+    function addOrUpdateQuote() {
+      const entry = readEntryForm();
+
+      if (!validateEntry(entry)) return;
+
+      const payload = {
+        name: entry.name || defaultSupplierName(),
+        price: entry.price,
+        fees: entry.fees,
+        shipping: entry.shipping,
+        qty: entry.qty,
+        unit: entry.unit,
+      };
+
+      if (editingId) {
+        suppliers = suppliers.map((supplier) =>
+          supplier.id === editingId ? { ...supplier, ...payload } : supplier,
+        );
+        cancelEdit();
+      } else {
+        suppliers = [...suppliers, { id: nextId++, ...payload }];
+        clearEntryForm();
+        entryFields.name.focus();
+      }
+
+      calculateAndRender();
+    }
+
+    function removeQuote(id) {
+      const row = rankingListEl.querySelector(`[data-supplier-id="${id}"]`);
+
+      if (row) {
+        row.classList.add("upc-row-removing");
+        window.setTimeout(() => {
+          suppliers = suppliers.filter((supplier) => supplier.id !== id);
+          if (editingId === id) cancelEdit();
+          calculateAndRender();
+        }, 180);
+        return;
+      }
+
+      suppliers = suppliers.filter((supplier) => supplier.id !== id);
+      if (editingId === id) cancelEdit();
+      calculateAndRender();
+    }
+
+    function startEdit(id) {
+      const supplier = suppliers.find((item) => item.id === id);
+      if (!supplier) return;
+
+      fillEntryForm(supplier);
+      setEditingMode(id);
+      setError("");
+      entryFields.name.focus();
+    }
+
+    function getDisplaySuppliers(enriched) {
+      const displaySuppliers = [...enriched];
+
+      if (sortMode === "asc") {
+        displaySuppliers.sort((a, b) => a.unitPrice - b.unitPrice);
+      } else if (sortMode === "desc") {
+        displaySuppliers.sort((a, b) => b.unitPrice - a.unitPrice);
+      }
+
+      return displaySuppliers;
+    }
+
+    function renderQuoteResults(displaySuppliers) {
+      if (suppliers.length === 0) {
+        rankingListEl.innerHTML =
+          '<p class="upc-ranking-empty">No quotes yet. Add a supplier quote on the left.</p>';
+        return;
+      }
+
+      const highlightId = displaySuppliers.length >= 2
+        ? displaySuppliers.reduce((bestId, supplier, index, list) => {
+          if (index === 0) return supplier.id;
+          const bestSupplier = list.find((item) => item.id === bestId);
+          return supplier.unitPrice < bestSupplier.unitPrice ? supplier.id : bestId;
+        }, null)
+        : null;
+
+      rankingListEl.innerHTML = displaySuppliers
+        .map((supplier, displayIndex) => {
+          const supplierName = escapeHtml(supplier.name);
+          const unit = escapeHtml(supplier.unit);
+          const rawMeta = `(${money(supplier.landedTotal)} / ${formatQty(supplier.qty)} ${unit})`;
+          const isBestValue = supplier.id === highlightId;
+
+          return `
+            <article
+              class="upc-compact-row ${isBestValue ? "is-best-value" : ""}"
+              data-supplier-id="${supplier.id}"
+            >
+              <span class="upc-row-sequence" aria-hidden="true">#${displayIndex + 1}</span>
+              <div class="upc-row-body">
+                <div class="upc-row-title-line">
+                  <strong class="upc-row-name">${supplierName}</strong>
+                  <span class="upc-row-unit-price">${money(supplier.unitPrice)} / ${unit}</span>
+                </div>
+                <span class="upc-row-meta">${rawMeta}</span>
+              </div>
+              <div class="upc-row-actions">
+                <button type="button" class="upc-icon-btn upc-icon-btn-edit" data-edit-btn aria-label="Edit ${supplierName}">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                    <path
+                      d="M3 17.25V21h3.75L17.8 9.94l-3.75-3.75L3 17.25zm14.71-9.04c.39-.39.39-1.02 0-1.41l-2.5-2.5a.996.996 0 1 0-1.41 1.41l2.5 2.5c.38.39 1.02.39 1.41 0z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+                <button type="button" class="upc-icon-btn upc-icon-btn-delete" data-delete-btn aria-label="Delete ${supplierName}">
+                  <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                    <path
+                      d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
     }
 
     function renderEmptyState() {
-      const suppliers = collectSuppliers();
-      updateSupplierPreviews(suppliers);
       bestSupplierNameEl.textContent = "—";
       bestSupplierPriceEl.textContent = "$0.00 / unit";
       savingsBannerEl.textContent = "Add at least two complete quotes to compare savings.";
@@ -443,111 +644,22 @@ const relatedTools = [
       bestUnitPriceSummaryEl.textContent = "$0.00";
       savingsVsHighestEl.textContent = "$0.00";
       savingsVsSecondEl.textContent = "$0.00";
-      renderQuoteResults(suppliers, []);
+      renderQuoteResults([]);
       unitWarningEl.hidden = true;
-    }
-
-    function updateSupplierPreviews(suppliers) {
-      suppliers.forEach((supplier) => {
-        const preview = supplier.card.querySelector("[data-preview-price]");
-        const landedPreview = supplier.card.querySelector("[data-preview-landed]");
-        if (!preview || !landedPreview) return;
-
-        landedPreview.textContent = supplier.hasMinimumData
-          ? money(supplier.landedTotal)
-          : "$0.00";
-        preview.textContent = supplier.hasMinimumData
-          ? `${money(supplier.unitPrice)} / ${supplier.unit}`
-          : "$0.00 / unit";
-      });
-    }
-
-    function syncQuoteRows() {
-      const supplierCards = getCards();
-      const resultCards = Array.from(rankingListEl.querySelectorAll("[data-result-card]"));
-
-      [...supplierCards, ...resultCards].forEach((card) => {
-        card.style.minHeight = "";
-      });
-
-      if (window.matchMedia("(max-width: 900px)").matches) return;
-
-      supplierCards.forEach((supplierCard, index) => {
-        const resultCard = resultCards[index];
-        if (!resultCard) return;
-
-        const height = Math.max(supplierCard.offsetHeight, resultCard.offsetHeight);
-        supplierCard.style.minHeight = `${height}px`;
-        resultCard.style.minHeight = `${height}px`;
-      });
-    }
-
-    function queueSyncQuoteRows() {
-      window.requestAnimationFrame(() => {
-        syncQuoteRows();
-        window.requestAnimationFrame(syncQuoteRows);
-      });
-    }
-
-    function renderQuoteResults(suppliers, sorted) {
-      rankingListEl.innerHTML = suppliers
-        .map((supplier, index) => {
-          const rankIndex = sorted.findIndex((item) => item.card === supplier.card);
-          const isBest = rankIndex === 0;
-          const toneClass = tones[index % tones.length];
-          const supplierName = escapeHtml(supplier.name);
-          const rankLabel = supplier.hasMinimumData
-            ? (isBest ? "#1 Best Value" : `#${rankIndex + 1} Ranked`)
-            : `Quote ${index + 1}`;
-          const price = supplier.hasMinimumData ? money(supplier.unitPrice) : "$0.00";
-          const meta = supplier.hasMinimumData
-            ? `Landed total: ${money(supplier.landedTotal)} · Shipping: ${money(supplier.shipping)} · Qty: ${supplier.qty} ${escapeHtml(supplier.unit)}`
-            : "Enter total price and quantity to calculate.";
-          const deltaValue = supplier.hasMinimumData && best
-            ? Math.max(0, supplier.unitPrice - best.unitPrice)
-            : 0;
-          const summaryTitle = !supplier.hasMinimumData
-            ? "Needs Data"
-            : isBest
-              ? "Best Price"
-              : `+${money(deltaValue)} / ${escapeHtml(best.unit)}`;
-          const summaryText = !supplier.hasMinimumData
-            ? "complete this quote"
-            : isBest
-              ? "current leader"
-              : `higher than ${escapeHtml(best.name)}`;
-
-          return `
-            <article class="upc-rank-card ${toneClass} ${isBest ? "is-best" : ""} ${supplier.hasMinimumData ? "" : "is-incomplete"}" data-result-card>
-              <div class="upc-rank-main">
-                <span class="upc-rank-label">${rankLabel}</span>
-                <strong class="upc-rank-supplier-name">${supplierName}</strong>
-                <div class="upc-rank-unit-price">${price} / ${escapeHtml(supplier.unit)}</div>
-                <small>${meta}</small>
-              </div>
-              <div class="upc-rank-summary">
-                <span class="upc-rank-summary-label">${summaryTitle}</span>
-                <strong class="upc-rank-summary-value">${summaryText}</strong>
-              </div>
-            </article>
-          `;
-        })
-        .join("");
-
-      queueSyncQuoteRows();
     }
 
     function calculateAndRender() {
       setError("");
 
-      const suppliers = collectSuppliers();
-      updateSupplierPreviews(suppliers);
-      const validSuppliers = suppliers.filter((supplier) => supplier.hasMinimumData);
+      const enriched = suppliers.map((supplier, index) => enrichSupplier(supplier, index));
+      const validSuppliers = enriched.filter((supplier) => supplier.hasMinimumData);
 
       if (validSuppliers.length === 0) {
         renderEmptyState();
         return validSuppliers;
       }
+
+      renderQuoteResults(getDisplaySuppliers(enriched));
 
       const sorted = [...validSuppliers].sort((a, b) => a.unitPrice - b.unitPrice);
       const best = sorted[0];
@@ -580,20 +692,20 @@ const relatedTools = [
         savingsVsSecondEl.textContent = "$0.00";
       }
 
-      renderQuoteResults(suppliers, sorted);
-
       return sorted;
     }
 
     function resetCalculator() {
-      supplierCardsEl.innerHTML = "";
+      suppliers = [];
+      nextId = 1;
+      sortMode = "input";
       reportTitleInput.value = "Supplier Unit Price Comparison";
       decisionNotesInput.value = "";
-      setError("");
-      createSupplierCard(1);
-      createSupplierCard(2);
+      cancelEdit();
+      syncSortToggleLabel();
       syncPrintableMeta();
       renderEmptyState();
+      updateEntryPreview();
     }
 
     function exportPdf() {
@@ -607,19 +719,50 @@ const relatedTools = [
       window.print();
     }
 
-    addSupplierButton.addEventListener("click", () => {
-      const cards = getCards();
-      if (cards.length >= maxSuppliers) return;
-      createSupplierCard(cards.length + 1);
-      calculateAndRender();
+    Object.values(entryFields).forEach((field) => {
+      field.addEventListener("input", updateEntryPreview);
+      field.addEventListener("change", updateEntryPreview);
     });
 
+    quoteEntryForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      addOrUpdateQuote();
+    });
+
+    addQuoteButton.addEventListener("click", addOrUpdateQuote);
+    cancelEditButton.addEventListener("click", cancelEdit);
     resetButton.addEventListener("click", resetCalculator);
     compareButton.addEventListener("click", calculateAndRender);
+    sortToggleButton.addEventListener("click", () => {
+      if (sortMode === "input") {
+        sortMode = "asc";
+      } else if (sortMode === "asc") {
+        sortMode = "desc";
+      } else {
+        sortMode = "input";
+      }
+
+      syncSortToggleLabel();
+      calculateAndRender();
+    });
     exportPdfButton.addEventListener("click", exportPdf);
     reportTitleInput.addEventListener("input", syncPrintableMeta);
     decisionNotesInput.addEventListener("input", syncPrintableMeta);
-    window.addEventListener("resize", queueSyncQuoteRows);
+
+    rankingListEl.addEventListener("click", (event) => {
+      const row = event.target.closest("[data-supplier-id]");
+      if (!row) return;
+
+      const id = Number(row.dataset.supplierId);
+      if (event.target.closest("[data-edit-btn]")) {
+        startEdit(id);
+        return;
+      }
+
+      if (event.target.closest("[data-delete-btn]")) {
+        removeQuote(id);
+      }
+    });
 
     resetCalculator();
   })();
@@ -659,7 +802,8 @@ const relatedTools = [
 
   .upc-form-header,
   .upc-hero-panel {
-    min-height: 168px;
+    min-height: 208px;
+    height: 208px;
   }
 
   .upc-form-header {
@@ -680,17 +824,59 @@ const relatedTools = [
     font-weight: 700;
   }
 
-  .upc-supplier-list {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .upc-supplier-card {
+  .upc-entry-card {
     position: relative;
     padding: 22px 16px 16px;
     border: 1px solid #d7e2ef;
     border-radius: 16px;
+  }
+
+  .upc-entry-card-head {
+    margin: 0 0 14px;
+  }
+
+  .upc-entry-card-title {
+    margin: 0;
+    color: #0f172a;
+    font-size: 0.74rem;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .upc-editing-hint {
+    margin: 6px 0 0;
+    color: #2563eb;
+    font-size: 0.82rem;
+    font-weight: 800;
+  }
+
+  .upc-entry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .upc-entry-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .upc-cancel-edit {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #64748b;
+    font-size: 0.88rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .upc-cancel-edit:hover {
+    color: #2563eb;
   }
 
   .upc-tone-blue {
@@ -716,43 +902,6 @@ const relatedTools = [
   .upc-tone-cyan {
     border-color: #bfe5ea;
     background: #eff9fb;
-  }
-
-  .upc-supplier-card-head {
-    margin: 0;
-  }
-
-  .upc-supplier-card-title {
-    position: absolute;
-    top: -9px;
-    left: 16px;
-    z-index: 1;
-    padding: 0 8px;
-    border-radius: 999px;
-    background: inherit;
-    color: #0f172a;
-    font-size: 0.74rem;
-    font-weight: 850;
-    letter-spacing: 0.12em;
-    line-height: 1.35;
-    text-transform: uppercase;
-  }
-
-  .upc-remove-btn {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: #64748b;
-    font-size: 0.82rem;
-    font-weight: 800;
-    cursor: pointer;
-  }
-
-  .upc-remove-btn:hover {
-    color: #2563eb;
   }
 
   .upc-fields-grid {
@@ -1010,7 +1159,7 @@ const relatedTools = [
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 18px 22px 16px;
+    padding: 22px;
     border: 1px solid #c7daf6;
     border-radius: 18px;
     background: linear-gradient(180deg, #eef4fb 0%, #f7faff 100%);
@@ -1056,6 +1205,60 @@ const relatedTools = [
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74), 0 8px 18px -16px rgba(45, 106, 79, 0.46);
   }
 
+  .upc-results-summary-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .upc-sort-toggle {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 0 14px;
+    border: 1px solid #93c5fd;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .upc-sort-toggle:hover {
+    background: #dbeafe;
+    border-color: #60a5fa;
+    color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.12);
+  }
+
+  .upc-sort-toggle-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 900;
+    flex: 0 0 auto;
+  }
+
   .upc-results-summary-head h3 {
     margin: 0;
     color: #0f172a;
@@ -1071,150 +1274,187 @@ const relatedTools = [
   }
 
   .upc-ranking-list {
-    display: grid;
-    gap: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
     margin-top: 16px;
   }
 
-  :global(.upc-rank-card) {
-    position: relative;
-    display: flex;
-    align-items: stretch;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 22px 16px 16px;
-    border: 1px solid #d7e2ef;
-    border-radius: 16px;
-    background: #ffffff;
-    box-sizing: border-box;
-  }
-
-  :global(.upc-rank-card.upc-tone-blue) {
-    border-color: #bcd0f7;
-    background: #eef4fc;
-  }
-
-  :global(.upc-rank-card.upc-tone-green) {
-    border-color: #b8e7c9;
-    background: #eefbf4;
-  }
-
-  :global(.upc-rank-card.upc-tone-sand) {
-    border-color: #f0d7a4;
-    background: #fff8ee;
-  }
-
-  :global(.upc-rank-card.upc-tone-purple) {
-    border-color: #dacdfb;
-    background: #f5f2ff;
-  }
-
-  :global(.upc-rank-card.upc-tone-cyan) {
-    border-color: #bfe5ea;
-    background: #eff9fb;
-  }
-
-  :global(.upc-rank-card.is-best) {
-    border-color: #86efac;
-    box-shadow:
-      inset 0 0 0 1px rgba(4, 120, 87, 0.18),
-      0 14px 28px -24px rgba(4, 120, 87, 0.45);
-  }
-
-  :global(.upc-rank-card.is-incomplete) {
-    opacity: 0.78;
-  }
-
-  :global(.upc-rank-card-empty) {
+  .upc-ranking-empty {
+    margin: 0;
+    padding: 12px 14px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
     color: #64748b;
+    font-size: 0.92rem;
     font-weight: 750;
+    line-height: 1.5;
+    text-align: center;
   }
 
-  :global(.upc-rank-main) {
+  :global(.upc-compact-row) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-height: 48px;
+    padding: 8px 12px;
+    border: 1px solid #d7e2ef;
+    border-radius: 12px;
+    background: #f8fafc;
+    box-sizing: border-box;
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease,
+      background-color 0.18s ease;
+    animation: upc-row-enter 0.22s ease;
+  }
+
+  :global(.upc-compact-row.upc-row-removing) {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  :global(.upc-compact-row.is-best-value) {
+    border-color: #86efac;
+    border-left: 4px solid #16a34a;
+    background: rgba(236, 253, 245, 0.78);
+  }
+
+  :global(.upc-row-sequence) {
+    flex: 0 0 2.5rem;
+    color: #0f172a;
+    font-size: 0.92rem;
+    font-weight: 900;
+    line-height: 1;
+    text-align: center;
+  }
+
+  :global(.upc-row-body) {
     display: flex;
     min-width: 0;
     flex: 1;
     flex-direction: column;
-    justify-content: center;
+    gap: 2px;
   }
 
-  :global(.upc-rank-label) {
-    position: absolute;
-    top: -9px;
-    left: 16px;
-    display: inline-flex;
-    padding: 0 8px;
-    border-radius: 999px;
-    background: inherit;
-    color: #64748b;
-    font-size: 0.74rem;
-    font-weight: 850;
-    letter-spacing: 0.12em;
-    line-height: 1.35;
-    text-transform: uppercase;
-  }
-
-  :global(.upc-rank-card strong) {
-    display: block;
-    color: #0f7a55;
-    font-size: 1.34rem;
-    font-weight: 900;
-    line-height: 1.05;
-  }
-
-  :global(.upc-rank-supplier-name) {
-    color: #0f172a;
-    font-size: 1.18rem;
-    font-weight: 900;
-    line-height: 1.1;
-  }
-
-  :global(.upc-rank-unit-price) {
-    margin-top: 10px;
-    color: #0f7a55;
-    font-size: 1.28rem;
-    font-weight: 900;
-    line-height: 1.1;
-  }
-
-  :global(.upc-rank-card small) {
-    display: block;
-    margin-top: 10px;
-    color: #64748b;
-    font-size: 0.84rem;
-    line-height: 1.55;
-  }
-
-  :global(.upc-rank-card small b) {
-    color: #0f172a;
-    font-weight: 850;
-  }
-
-  :global(.upc-rank-summary) {
+  :global(.upc-row-title-line) {
     display: flex;
-    min-width: 148px;
-    padding: 10px 0 10px 14px;
-    border-left: 1px solid rgba(148, 163, 184, 0.32);
-    flex-direction: column;
-    justify-content: center;
-    text-align: right;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
   }
 
-  :global(.upc-rank-summary-label) {
-    color: #64748b;
-    font-size: 0.73rem;
-    font-weight: 850;
-    letter-spacing: 0.12em;
-    line-height: 1.35;
-    text-transform: uppercase;
-  }
-
-  :global(.upc-rank-summary-value) {
-    margin-top: 8px;
+  :global(.upc-row-name) {
     color: #0f172a;
-    font-size: 0.9rem;
-    font-weight: 800;
-    line-height: 1.45;
+    font-size: 0.95rem;
+    font-weight: 900;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :global(.upc-row-unit-price) {
+    flex-shrink: 0;
+    color: #0f7a55;
+    font-size: 0.98rem;
+    font-weight: 900;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  :global(.upc-compact-row.is-best-value .upc-row-unit-price) {
+    color: #047857;
+  }
+
+  :global(.upc-row-meta) {
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  :global(.upc-row-actions) {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 4px;
+  }
+
+  :global(.upc-icon-btn) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    padding: 0;
+    border-radius: 10px;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  :global(.upc-icon-btn svg) {
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
+
+  :global(.upc-icon-btn-edit) {
+    border: 1px solid #93c5fd;
+    background: #eff6ff;
+    color: #2563eb;
+  }
+
+  :global(.upc-icon-btn-edit:hover) {
+    background: #dbeafe;
+    border-color: #60a5fa;
+    color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12);
+  }
+
+  :global(.upc-icon-btn-edit:focus-visible) {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.22);
+  }
+
+  :global(.upc-icon-btn-delete) {
+    border: 1px solid #f9a8d4;
+    background: #fdf2f8;
+    color: #db2777;
+  }
+
+  :global(.upc-icon-btn-delete:hover) {
+    background: #fce7f3;
+    border-color: #f472b6;
+    color: #be185d;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(219, 39, 119, 0.12);
+  }
+
+  :global(.upc-icon-btn-delete:focus-visible) {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.22);
+  }
+
+  @keyframes upc-row-enter {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .upc-warning {
@@ -1333,6 +1573,10 @@ const relatedTools = [
       grid-template-columns: 1fr;
     }
 
+    .upc-results-summary-head {
+      flex-direction: column;
+    }
+
     .upc-actions {
       align-items: stretch;
       flex-direction: column;
@@ -1346,22 +1590,34 @@ const relatedTools = [
       width: 100%;
     }
 
-    :global(.upc-rank-card) {
-      align-items: stretch;
-      flex-direction: column;
+    .upc-sort-toggle {
+      width: 100%;
     }
 
-    :global(.upc-rank-summary) {
-      min-width: 0;
-      padding-top: 12px;
-      padding-left: 0;
-      border-top: 1px solid rgba(148, 163, 184, 0.32);
-      border-left: 0;
-      text-align: left;
+    :global(.upc-compact-row) {
+      align-items: flex-start;
+      min-height: auto;
+      padding: 10px 12px;
+    }
+
+    :global(.upc-row-title-line) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    :global(.upc-icon-btn) {
+      width: 36px;
+      height: 36px;
     }
   }
 
   @media print {
+    @page {
+      size: A4 portrait;
+      margin: 10mm;
+    }
+
     :global(.site-header),
     :global(.tool-hero),
     :global(.tool-related),
@@ -1374,6 +1630,8 @@ const relatedTools = [
 
     :global(body) {
       background: #ffffff !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
     :global(.tool-main),
@@ -1387,19 +1645,21 @@ const relatedTools = [
       border: 0 !important;
       box-shadow: none !important;
       padding: 0 !important;
+      gap: 10px !important;
+      break-inside: avoid;
     }
 
     .upc-print-meta {
       display: block !important;
-      margin-bottom: 18px;
-      padding-bottom: 14px;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
       border-bottom: 1px solid #dbe4f0;
     }
 
     .upc-print-meta h2 {
-      margin: 0 0 8px;
+      margin: 0 0 6px;
       color: #0f172a;
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 900;
       letter-spacing: -0.03em;
     }
@@ -1407,9 +1667,125 @@ const relatedTools = [
     .upc-print-meta p {
       margin: 0;
       color: #475569;
-      font-size: 13px;
-      line-height: 1.6;
+      font-size: 12px;
+      line-height: 1.45;
       white-space: pre-line;
+    }
+
+    .upc-hero-panel,
+    .upc-results-summary,
+    .upc-procurement-box,
+    .upc-savings-grid {
+      break-inside: avoid;
+    }
+
+    .upc-hero-panel {
+      min-height: 0 !important;
+      padding: 14px 16px !important;
+    }
+
+    .upc-hero-label,
+    .upc-procurement-label {
+      margin-bottom: 6px;
+      font-size: 0.72rem;
+    }
+
+    .upc-hero-name {
+      font-size: 2rem;
+    }
+
+    .upc-hero-price {
+      margin-top: 8px;
+      font-size: 1.08rem;
+    }
+
+    .upc-savings-banner {
+      margin-top: 12px;
+      padding: 10px 12px;
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+
+    .upc-results-summary-head {
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .upc-results-summary-head h3 {
+      font-size: 1.08rem;
+    }
+
+    .upc-results-summary-head p {
+      margin-top: 4px;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+
+    .upc-sort-toggle,
+    :global(.upc-row-actions),
+    .upc-export-row,
+    .upc-action-divider {
+      display: none !important;
+    }
+
+    .upc-ranking-list {
+      margin-top: 10px;
+      gap: 4px;
+    }
+
+    :global(.upc-compact-row) {
+      min-height: 0;
+      padding: 6px 10px;
+      gap: 8px;
+      page-break-inside: avoid;
+    }
+
+    :global(.upc-row-sequence) {
+      flex-basis: 2rem;
+      font-size: 0.82rem;
+    }
+
+    :global(.upc-row-name) {
+      font-size: 0.86rem;
+    }
+
+    :global(.upc-row-unit-price) {
+      font-size: 0.88rem;
+    }
+
+    :global(.upc-row-meta) {
+      font-size: 0.72rem;
+      line-height: 1.25;
+    }
+
+    .upc-right-divider {
+      margin: 0;
+    }
+
+    .upc-procurement-box {
+      padding: 12px 14px;
+    }
+
+    .upc-procurement-box p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .upc-savings-grid {
+      gap: 8px;
+    }
+
+    .upc-savings-card {
+      padding: 10px 12px;
+    }
+
+    .upc-savings-card span {
+      margin-bottom: 6px;
+      font-size: 0.68rem;
+    }
+
+    .upc-savings-card strong {
+      font-size: 0.96rem;
     }
   }
 </style>

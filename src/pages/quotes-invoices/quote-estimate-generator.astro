@@ -154,7 +154,25 @@ const relatedTools = getRelatedToolsForTool("quotation_estimate_generator");
                   <th class="edit-only" style="width: 8%;"></th>
                 </tr>
               </thead>
-              <tbody id="itemsTableBody"></tbody>
+              <tbody id="itemsTableBody">
+                {["item-1", "item-2"].map((itemId) => (
+                  <tr class="item-row" data-item-id={itemId}>
+                    <td><input class="doc-input table-input item-description" type="text" data-item-id={itemId} data-item-field="description" value="" /></td>
+                    <td><input class="doc-input table-input item-qty" type="number" min="0" step="1" data-item-id={itemId} data-item-field="qty" value="1" /></td>
+                    <td><input class="doc-input table-input item-unit-price" type="number" min="0" step="0.01" data-item-id={itemId} data-item-field="unitPrice" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+                    <td><input class="doc-input table-input item-discount" type="number" min="0" step="0.01" data-item-id={itemId} data-item-field="discount" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+                    <td><input class="doc-input table-input item-tax" type="number" min="0" step="0.01" data-item-id={itemId} data-item-field="tax" value="0" data-clear-zero-on-focus="true" data-default-value="0" /></td>
+                    <td class="amount-cell"><span class="line-amount" data-item-line-total={itemId}>USD 0.00</span></td>
+                    <td class="edit-only action-cell">
+                      <button type="button" class="item-delete-btn" aria-label="Remove item" data-remove-item={itemId}>
+                        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                          <path d="M9 3h6l1 2h4v2H4V5h4l1-2zm1 6h2v8h-2V9zm4 0h2v8h-2V9zM7 9h2v8H7V9zm-1 12h12a2 2 0 0 0 2-2V7H4v12a2 2 0 0 0 2 2z" fill="currentColor" />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </section>
 
@@ -254,7 +272,32 @@ const relatedTools = getRelatedToolsForTool("quotation_estimate_generator");
             <button type="button" class="mobile-add-item-btn" data-add-item-trigger>+ Add Item</button>
           </div>
         </div>
-        <div id="mobileItemsList" class="mobile-items-list"></div>
+        <div id="mobileItemsList" class="mobile-items-list">
+          {[1, 2].map((itemNumber) => {
+            const itemId = `item-${itemNumber}`;
+            return (
+              <article class="mobile-item-card" data-item-id={itemId}>
+                <div class="mobile-item-title">
+                  <strong>{`Item ${itemNumber}`}</strong>
+                  <button type="button" class="mobile-delete-item-btn" aria-label="Remove item" data-remove-item={itemId}>Delete</button>
+                </div>
+                <input class="mobile-input" type="text" placeholder="Description" data-item-id={itemId} data-item-field="description" value="" />
+                <div class="mobile-two-col">
+                  <input class="mobile-input" type="number" placeholder="Qty" min="0" step="1" data-item-id={itemId} data-item-field="qty" value="1" />
+                  <input class="mobile-input" type="number" placeholder="Unit Price" min="0" step="0.01" data-item-id={itemId} data-item-field="unitPrice" value="0" data-clear-zero-on-focus="true" data-default-value="0" />
+                </div>
+                <div class="mobile-two-col">
+                  <input class="mobile-input" type="number" placeholder="Discount %" min="0" step="0.01" data-item-id={itemId} data-item-field="discount" value="0" data-clear-zero-on-focus="true" data-default-value="0" />
+                  <input class="mobile-input" type="number" placeholder="Tax %" min="0" step="0.01" data-item-id={itemId} data-item-field="tax" value="0" data-clear-zero-on-focus="true" data-default-value="0" />
+                </div>
+                <div class="mobile-amount-box">
+                  <span>Line total</span>
+                  <strong data-item-line-total={itemId}>USD 0.00</strong>
+                </div>
+              </article>
+            );
+          })}
+        </div>
       </section>
 
       <section class="mobile-form-card">
