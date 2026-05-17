@@ -189,6 +189,10 @@ const relatedTools = [
         <button id="addQuoteButton" type="button" class="upc-add-btn">+ Add Quote</button>
         <button id="cancelEditButton" type="button" class="upc-cancel-edit" hidden>Cancel edit</button>
       </div>
+
+      <p class="upc-entry-tip">
+        Tip: When comparing suppliers, include hidden costs like domestic logistics, pallet fees, or handling charges in the total price for a more accurate supplier unit price comparison.
+      </p>
     </section>
 
     <div class="upc-export-settings">
@@ -470,7 +474,8 @@ const relatedTools = [
       editingId = id;
       const isEditing = Boolean(id);
 
-      addQuoteButton.textContent = isEditing ? "Save Quote" : "+ Add Quote";
+      addQuoteButton.textContent = isEditing ? "Update Quote" : "+ Add Quote";
+      addQuoteButton.classList.toggle("is-editing", isEditing);
       cancelEditButton.hidden = !isEditing;
       editingHintEl.hidden = !isEditing;
       entryFormTitleEl.textContent = isEditing ? "Edit Supplier Quote" : "Add Supplier Quote";
@@ -607,7 +612,10 @@ const relatedTools = [
               <div class="upc-row-body">
                 <div class="upc-row-title-line">
                   <strong class="upc-row-name">${supplierName}</strong>
-                  <span class="upc-row-unit-price">${money(supplier.unitPrice)} / ${unit}</span>
+                  <span class="upc-row-unit-price">
+                    <span class="upc-row-unit-price-value">${money(supplier.unitPrice)}</span>
+                    <span class="upc-row-unit-price-unit">/ ${unit}</span>
+                  </span>
                 </div>
                 <span class="upc-row-meta">${rawMeta}</span>
               </div>
@@ -1060,11 +1068,45 @@ const relatedTools = [
     font-size: 1rem;
     font-weight: 800;
     cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .upc-add-btn:hover {
+    background: #dbeafe;
+    border-color: #60a5fa;
+    color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.12);
+  }
+
+  .upc-add-btn.is-editing {
+    border-color: #86efac;
+    background: #ecfdf5;
+    color: #047857;
+    box-shadow: 0 10px 22px rgba(16, 185, 129, 0.12);
+  }
+
+  .upc-add-btn.is-editing:hover {
+    border-color: #4ade80;
+    background: #d1fae5;
+    color: #065f46;
   }
 
   .upc-add-btn:disabled {
     cursor: not-allowed;
     opacity: 0.65;
+  }
+
+  .upc-entry-tip {
+    margin: 12px 2px 0;
+    color: #64748b;
+    font-size: 0.8rem;
+    line-height: 1.55;
   }
 
   .upc-export-settings {
@@ -1340,7 +1382,7 @@ const relatedTools = [
 
   :global(.upc-row-title-line) {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: 10px;
   }
@@ -1356,16 +1398,41 @@ const relatedTools = [
   }
 
   :global(.upc-row-unit-price) {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     flex-shrink: 0;
     color: #0f7a55;
-    font-size: 0.98rem;
-    font-weight: 900;
     line-height: 1.2;
     white-space: nowrap;
   }
 
+  :global(.upc-row-unit-price-value) {
+    color: #0f7a55;
+    font-size: 1.12rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+
+  :global(.upc-row-unit-price-unit) {
+    color: #94a3b8;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
   :global(.upc-compact-row.is-best-value .upc-row-unit-price) {
     color: #047857;
+  }
+
+  :global(.upc-compact-row.is-best-value .upc-row-unit-price-value) {
+    color: #047857;
+  }
+
+  :global(.upc-compact-row.is-best-value .upc-row-unit-price-unit) {
+    color: #4b5563;
   }
 
   :global(.upc-row-meta) {
@@ -1604,6 +1671,10 @@ const relatedTools = [
       flex-direction: column;
       align-items: flex-start;
       gap: 4px;
+    }
+
+    :global(.upc-row-unit-price-value) {
+      font-size: 1.04rem;
     }
 
     :global(.upc-icon-btn) {
