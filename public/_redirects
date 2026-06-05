@@ -1,0 +1,6 @@
+/commercial-invoice-generator/ /quotes-invoices/commercial-invoice-generator/ 301
+/invoice-generator/ /quotes-invoices/invoice-generator/ 301
+/packing-list-generator/ /packing-shipping/packing-list-generator/ 301
+/proforma-invoice-generator/ /quotes-invoices/proforma-invoice-generator/ 301
+/purchase-order-generator/ /quotes-invoices/purchase-order-generator/ 301
+/quote-estimate-generator/ /quotes-invoices/quote-estimate-generator/ 301
